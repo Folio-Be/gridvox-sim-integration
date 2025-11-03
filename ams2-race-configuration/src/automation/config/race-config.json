@@ -1,0 +1,15 @@
+{
+  "track": "Interlagos",
+  "carClass": "GT3",
+  "opponents": {
+    "count": 20,
+    "difficulty": "Medium",
+    "aggression": 50
+  },
+  "weather": "Clear",
+  "timeOfDay": "Noon",
+  "sessionLength": {
+    "type": "laps",
+    "value": 10
+  }
+}
