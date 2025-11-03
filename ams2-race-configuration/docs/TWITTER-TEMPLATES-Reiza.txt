@@ -1,0 +1,147 @@
+TWEET #1 (Initial Contact):
+Hey @ReizaStudios! 👋 Building an AI voice assistant for sim racing (GridVox) - already integrated AMS2 telemetry successfully. Question: Any docs on race config file format (default.sav)? Want to enable voice-commanded race setup but format is proprietary binary. UI automation works but direct file = better UX 🏎️
+
+---
+
+TWEET #2 (If they respond positively):
+Thanks for responding! 🙏 Quick summary: GridVox lets drivers say "Set up GT3 race at Spa with 24 opponents" and it configures everything. Already have real-time telemetry working (<1ms latency). Race config is final piece. Happy to share details via email/call if easier!
+
+---
+
+TWEET #3 (Showcase project):
+Working on GridVox 🎙️ - AI voice assistant for sim racing. Already integrated @ReizaStudios AMS2 telemetry:
+✅ <1ms latency via shared memory
+✅ Real-time event detection
+✅ Live AI commentary
+Next: Voice-commanded race setup! 🏁
+
+[Attach screenshot/demo if available]
+
+---
+
+DM TEMPLATE (If they respond to tweet):
+
+Thanks for the response! Really appreciate it.
+
+Quick context on GridVox:
+• AI voice assistant for sim racing (think "Alexa for racing games")
+• Already working: Real-time AMS2 telemetry integration via shared memory
+• 20+ event types detected: overtakes, incidents, pit stops, etc.
+• Live AI commentary based on race events
+• Tested successfully with 41-car races
+
+The Challenge:
+Need to configure races programmatically for voice commands like:
+"Set up a GT3 race at Spa with 24 opponents in the rain"
+
+We've investigated the race config file (default.sav) but it's proprietary binary format. We can use UI automation as fallback, but direct file access = much better user experience.
+
+Our Request:
+Any chance you could share:
+• File format documentation (full or partial)?
+• Guidance on safe modification?
+• Or confirm UI automation is the only way?
+
+Mutual Benefits:
+• GridVox will showcase AMS2 prominently (free marketing)
+• Could drive sales from AI/accessibility market
+• We're willing to sign NDA, share our code, collaborate however works best
+
+Would love to discuss via email if that's easier:
+[YOUR EMAIL]
+
+Even if the answer is "not possible," knowing that helps us plan our approach!
+
+Thanks again for building such an amazing sim. 🏎️
+
+Best,
+[YOUR NAME]
+GridVox Team
+SUBJECT: Development Partnership Inquiry - AI Voice Assistant Integration (AMS2)
+
+TO: support@reizastudios.com
+CC: info@reizastudios.com
+
+---
+
+Dear Reiza Studios Team,
+
+My name is [YOUR NAME], and I'm reaching out regarding a potential collaboration opportunity that could benefit both our projects.
+
+PROJECT OVERVIEW:
+I'm developing GridVox, an AI-powered voice assistant for sim racing that enables drivers to control their simulator through natural voice commands. The system allows commands like "Set up a GT3 race at Spa with 24 opponents in the rain" and handles the entire race configuration automatically.
+
+CURRENT PROGRESS WITH AMS2:
+We've successfully integrated with Automobilista 2 for real-time telemetry:
+• Direct shared memory access for <1ms latency telemetry
+• 20+ event detection types (overtakes, incidents, pit stops, etc.)
+• Live AI commentary based on race events
+• Proven with 41-car race sessions (100% reliability)
+
+THE CHALLENGE:
+The next feature is voice-commanded race configuration. We've investigated two approaches:
+
+1. DIRECT FILE MANIPULATION (Preferred):
+   • File: default.sav (race configuration storage)
+   • Format: Proprietary binary (compressed/encrypted)
+   • Estimated reverse engineering time: 2-4 weeks minimum
+   • Risk: May break with updates, no guarantee of success
+
+2. UI AUTOMATION (Current Fallback):
+   • Using AutoHotkey to simulate menu navigation
+   • Works but fragile and requires maintenance
+   • Slower and less reliable
+
+OUR REQUEST:
+Would Reiza Studios be willing to provide:
+• Documentation on the race configuration file format (full or partial)?
+• Guidance on safe modification approaches?
+• Or confirmation that UI automation is the only supported path?
+
+We understand if the format is proprietary and you prefer not to share. In that case, we'll proceed with UI automation and revisit this in the future.
+
+MUTUAL BENEFITS:
+
+For Reiza Studios:
+• Free marketing: GridVox will prominently feature AMS2 integration
+• New market segment: Accessibility features attract voice control enthusiasts
+• Potential increased sales from AI/gaming crossover audience
+• Community goodwill through open development approach
+
+For GridVox:
+• More reliable race configuration system
+• Better user experience
+• Reduced long-term maintenance burden
+
+WHAT WE'RE WILLING TO OFFER:
+• Sign NDA if needed
+• Provide beta access for your team's feedback
+• Share our telemetry integration code with the community
+• Open to formal partnership or simple informal guidance
+• Showcase AMS2 prominently in all GridVox marketing
+
+ALTERNATIVE OPTION:
+If direct file format documentation isn't feasible now, would you consider adding an official API for race configuration in a future AMS2 update? We'd be happy to contribute requirements and test implementations.
+
+WHY THIS MATTERS:
+Voice control and AI integration represent the future of sim racing accessibility. GridVox aims to make sim racing more accessible while showcasing the incredible capabilities of simulators like AMS2. If GridVox succeeds, it will drive more players to AMS2 - it's a genuine win-win scenario.
+
+NEXT STEPS:
+I'd appreciate a brief email exchange or call to discuss possibilities. Even if the answer is "not possible right now," that feedback would help us plan our development roadmap effectively.
+
+Thank you for creating such an incredible simulator. We're excited to showcase AMS2's capabilities through GridVox and introduce your sim to new audiences.
+
+Best regards,
+
+[YOUR NAME]
+GridVox Development Team
+
+---
+Project Location: C:\DATA\GridVox
+Contact: [YOUR EMAIL]
+[Add website/demo if available]
+
+---
+
+P.S. We chose AMS2 as one of our primary integration targets because of Reiza's reputation for supporting the community and creating an authentic racing experience. We'd love to work together to make this integration truly exceptional.
+

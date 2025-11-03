@@ -26,6 +26,12 @@ Deliverables
 - 04-ui-automation-design.md: Robust plan for automation + resilience
 - 05-risk-log.md: Risk register and mitigations
 - 06-next-steps.md: Current status assessment and recommended immediate actions
+- 07-session-log-2025-11-03.md: Development session log and findings
+- 08-reiza-contact-research.md: Strategy for contacting Reiza Studios about file format
+- 09-action-checklist.md: Quick action plan for Reiza contact
+- EMAIL-TEMPLATE-Reiza-Professional.txt: Ready-to-send professional email
+- FORUM-POST-TEMPLATE-Reiza.txt: Ready-to-post forum message
+- TWITTER-TEMPLATES-Reiza.txt: Social media contact templates
 
 KPIs / Success Criteria
 - Configure at least 20 distinct race sessions programmatically without corruption

@@ -1,0 +1,58 @@
+wwSUBJECT: Development Partnership Inquiry - AI Voice Assistant for Historical Racing (AMS2)
+
+TO: support@reizastudios.com
+CC: info@reizastudios.com
+
+---
+
+Dear Reiza Studios Team,
+
+My name is [YOUR NAME], and I'm reaching out from our small development team based in Antwerp, Belgium. We're working on something that could be really interesting addition to your upcoming career mode.
+
+About GridVox:
+We're developing GridVox - an AI-powered voice crew chief for sim racing. Think of it like CrewChief but with AI-generated communication that adapts to race situations in real-time.
+
+What excites us most about AMS2 is your historical content. Imagine racing the 1991 F1 season with an AI crew chief using period-authentic terminology, or hearing your engineer discuss tire strategy like they did in the 80s. AMS2 already excels at historical authenticity - GridVox would bring that same authenticity to crew communication.
+
+Why We Need Your Help:
+To make this work, we need to configure single races outside the simulator. This would let us set up race scenarios that the AI crew can enhance with real-time communication.
+
+More importantly, this could really elevate your upcoming career mode - imagine AI-generated team communications and strategic advice that evolves throughout the player's career. Your career mode provides the structure; GridVox would add the living crew personality.
+
+The Challenge:
+We've located the race configuration files (default.sav) but the format is proprietary binary. We have some understanding of the structure, but we'd rather not reverse-engineer through trial and error if there's a cleaner solution.
+
+Our Request:
+Would you be willing to provide documentation on the race configuration file format, or at least some guidance on safe modification? Alternatively, just confirmation that UI automation is the only supported way would also help us plan our approach.
+
+We understand if the format is proprietary. We have fallback options (UI automation works), but file-level access would be much cleaner solution.
+
+Why This Benefits Both:
+For you - GridVox will showcase AMS2's historical content in completely new way, and elevate your career mode with AI crew personality without additional development on your side. Plus free marketing to AI/voice control community.
+
+For us - Clean integration with AMS2's exceptional content and ability to enhance your career mode.
+
+We're happy to sign NDA if needed, give you beta access, and we'll prominently feature AMS2 in all our marketing. If file format isn't possible now, would you consider adding an official API in future update? We'd gladly help with requirements and testing.
+
+Why AMS2?
+Honestly, no other sim has the depth of historical racing that AMS2 offers. Your reputation for community support is also why we're reaching out directly instead of just trying to crack the files ourselves.
+
+Next Steps:
+Would appreciate if we could have brief email exchange about this. Even if answer is "not possible right now" - that feedback helps us plan our approach.
+
+Thanks for creating such incredible simulator. We're really excited about potential to enhance the experience with AI crew communication.
+
+Best regards,
+
+[YOUR NAME]
+GridVox Development Team
+Antwerp, Belgium
+
+Contact: [YOUR EMAIL]
+
+---
+
+P.S. On personal note - as long-time AMS2 VR racer, I'm really excited about your upcoming career mode. Being able to add AI crew communication to those races would make the experience much more immersive. Imagine driving Senna's MP4/4 with AI race engineer who understands the context of 1988 F1 - that's exactly the kind of experience we want to build.
+
+Also, I'd love to have more than current limit of 5 custom championship templates and 4 running championships. Being able to programmatically manage these, or have a extended UI options would let us create richer experiences without hitting those limits.
+
