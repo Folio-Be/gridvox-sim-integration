@@ -1,1 +1,14 @@
+# Node.js dependencies
+node_modules/
+
+# Voice recognition model (large binary files)
+/ams2/savegame-reverse-engineering/vosk-model*/
+
+# Snapshots
 /ams2/savegame-reverse-engineering/snapshots/*
+
+# Logs
+/ams2/savegame-reverse-engineering/annotations.log
+/ams2/savegame-reverse-engineering/*.log
+
+

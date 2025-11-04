@@ -72,7 +72,8 @@ async function getVoiceInput(timeout = 5000) {
       .on('data', (chunk) => {
         hasReceivedAudio = true;
         if (recognizer.acceptWaveform(chunk)) {
-          const result = JSON.parse(recognizer.result());
+          const resultRaw = recognizer.result();
+          const result = typeof resultRaw === 'string' ? JSON.parse(resultRaw) : resultRaw;
           if (result.text && result.text.trim()) {
             clearTimeout(timeoutId);
             mic.stop();
@@ -92,7 +93,8 @@ async function getVoiceInput(timeout = 5000) {
       })
       .on('end', () => {
         clearTimeout(timeoutId);
-        const finalResult = JSON.parse(recognizer.finalResult());
+        const finalResultRaw = recognizer.finalResult();
+        const finalResult = typeof finalResultRaw === 'string' ? JSON.parse(finalResultRaw) : finalResultRaw;
         recognizer.free();
         recognizer = new vosk.Recognizer({ model: model, sampleRate: 16000 });
 
