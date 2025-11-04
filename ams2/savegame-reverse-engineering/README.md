@@ -8,9 +8,19 @@
 Instead of UI automation, this tool:
 1. Watches AMS2 save directory for file changes
 2. Beeps when changes detected
-3. You annotate what you just did in AMS2
+3. **NEW**: You speak (or type) what you just did in AMS2
 4. Links your actions to specific file changes
 5. Analyzes patterns to reverse engineer file formats
+
+## 🎤 NEW: Voice Annotation Input
+
+**No more focus loss issues!** The tool now supports voice input, so you can speak your annotations instead of typing. This prevents AMS2 from losing focus and creating spurious 0-byte save file changes.
+
+**Quick Start:**
+- See [VOICE_SETUP.md](./VOICE_SETUP.md) for full setup instructions
+- Requires: Node packages (auto-installed) + SoX + Vosk speech model
+- Works completely offline, no API keys needed!
+- Automatic fallback to keyboard if voice unavailable
 
 ## Quick Start
 
