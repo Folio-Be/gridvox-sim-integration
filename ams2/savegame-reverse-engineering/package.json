@@ -6,10 +6,14 @@
   "scripts": {
     "watch": "node watcher.js",
     "analyze": "node analyzer.js",
-    "start": "node watcher.js"
+    "start": "node watcher.js",
+    "setup-voice": "node download-vosk-model.js small",
+    "setup-voice-large": "node download-vosk-model.js large"
   },
   "dependencies": {
-    "chokidar": "^3.5.3"
+    "chokidar": "^3.5.3",
+    "node-record-lpcm16": "^1.0.1",
+    "vosk": "^0.3.38"
   },
   "type": "module"
 }
