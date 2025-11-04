@@ -1,0 +1,15 @@
+{
+  "name": "ams2-savegame-reverse-engineering",
+  "version": "1.0.0",
+  "description": "File watcher + voice annotation tool for reverse engineering AMS2 save files",
+  "main": "watcher.js",
+  "scripts": {
+    "watch": "node watcher.js",
+    "analyze": "node analyzer.js",
+    "start": "node watcher.js"
+  },
+  "dependencies": {
+    "chokidar": "^3.5.3"
+  },
+  "type": "module"
+}
