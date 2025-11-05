@@ -1,0 +1,42 @@
+{
+  "name": "@gridvox/sim-detection",
+  "version": "0.1.0",
+  "description": "Racing simulator detection library for GridVox - detects installed racing sims across Steam, Epic, EA, and manual installations",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "node --test",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "keywords": [
+    "racing",
+    "simulator",
+    "detection",
+    "steam",
+    "epic",
+    "electron",
+    "iracing",
+    "assetto-corsa"
+  ],
+  "author": "GridVox",
+  "license": "MIT",
+  "dependencies": {
+    "@node-steam/vdf": "^2.2.0",
+    "node-cache": "^5.1.2",
+    "regedit": "^5.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
