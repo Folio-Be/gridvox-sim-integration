@@ -1,0 +1,25 @@
+{
+  "name": "ams2-car-image-extractor",
+  "version": "1.0.0",
+  "description": "Developer tool to extract car images from AMS2 .bff archives using PCarsTools",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "extract": "ts-node src/cli.ts extract",
+    "list": "ts-node src/cli.ts list",
+    "convert": "ts-node src/cli.ts convert",
+    "upload": "ts-node src/cli.ts upload"
+  },
+  "keywords": ["ams2", "pcarstools", "image-extraction"],
+  "author": "GridVox Team",
+  "license": "MIT",
+  "dependencies": {
+    "sharp": "^0.34.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
