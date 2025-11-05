@@ -6,10 +6,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "extract": "ts-node src/cli.ts extract",
-    "list": "ts-node src/cli.ts list",
-    "convert": "ts-node src/cli.ts convert",
-    "upload": "ts-node src/cli.ts upload"
+    "process-all": "ts-node src/cli.ts",
+    "test": "ts-node src/cli.ts --test",
+    "help": "ts-node src/cli.ts --help"
   },
   "keywords": ["ams2", "pcarstools", "image-extraction"],
   "author": "GridVox Team",

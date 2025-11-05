@@ -4,13 +4,15 @@
 
 ## Purpose
 
-Automobilista 2 stores car livery textures in compressed .bff archive files, not as individual thumbnail images. This tool:
+Automobilista 2 stores car preview images in a compressed `GUIVEHICLEIMAGES.bff` archive, not as individual thumbnail files. This tool:
 
-1. **Extracts** livery textures from .bff files using PCarsTools
+1. **Extracts** 3D-rendered car preview images from GUIVEHICLEIMAGES.bff using PCarsTools
 2. **Converts** DDS textures to web-friendly PNG format
-3. **Crops & Resizes** to thumbnail dimensions (512x128)
+3. **Crops & Resizes** to thumbnail dimensions (512×128)
 4. **Organizes** output by manufacturer, class, and DLC
 5. **Generates** manifest for GridVox integration
+
+**Note:** This tool extracts proper 3D-rendered car showcase images (2048×768), NOT UV-mapped livery textures.
 
 ## Output Use Cases
 
@@ -24,7 +26,7 @@ Extracted images can be:
 This is a **developer tool** for the GridVox team. It requires:
 - .NET 6.0 Runtime
 - PCarsTools binary
-- Oodle compression DLL (`oo2core_7_win64.dll`)
+- Oodle compression DLL (`oo2core_4_win64.dll`)
 - AMS2 installation with full game files
 
 End users will **NOT** run this tool - they receive pre-processed images.
@@ -45,19 +47,41 @@ dotnet --version
 
 Download from: https://github.com/Nenkai/PCarsTools/releases
 
-1. Download latest `PCarsTools_x64.zip`
-2. Extract to `tools/PCarsTools/`
-3. Verify `tools/PCarsTools/pcarstools_x64.exe` exists
+**Steps:**
+1. Go to https://github.com/Nenkai/PCarsTools/releases
+2. Download latest `PCarsTools_x64.zip` (or similar)
+3. Extract the ZIP file
+4. Create directory: `tools/PCarsTools/` in this project
+5. Copy `pcarstools_x64.exe` to `tools/PCarsTools/`
+6. Verify: `tools/PCarsTools/pcarstools_x64.exe` exists
 
 ### 3. Oodle DLL
 
 **Legal Note:** This DLL is proprietary. You must:
 - Extract from your own AMS2 installation
-- OR use from PCarsTools dependencies
-- DO NOT redistribute
+- OR obtain from PCarsTools releases (if included)
+- DO NOT redistribute publicly
 
-Location:
-- Copy `oo2core_7_win64.dll` to `tools/PCarsTools/` directory
+**Option A: Extract from AMS2 (Recommended)**
+
+The `oo2core_4_win64.dll` file is located in your AMS2 installation root directory:
+
+```bash
+# Default location
+C:\GAMES\Automobilista 2\oo2core_4_win64.dll
+
+# Or in Steam
+C:\Program Files (x86)\Steam\steamapps\common\Automobilista 2\oo2core_4_win64.dll
+```
+
+**Steps:**
+1. Copy `oo2core_4_win64.dll` from your AMS2 installation
+2. Paste it into `tools/PCarsTools/` directory in this project
+3. Verify: `tools/PCarsTools/oo2core_4_win64.dll` exists
+
+**Option B: From other sources**
+- May be included with PCarsTools releases
+- May be in other Codemasters/Slightly Mad Studios games
 
 ### 4. Node.js Dependencies
 
@@ -74,51 +98,59 @@ npm install
 
 ## Usage
 
-### Step 1: List Available Content
+### Quick Start
 
 ```bash
-npm run list
+# Test mode - process only 5 vehicles
+npm run test
+
+# Full extraction - all 387 vehicles (45-90 min)
+npm run process-all
+
+# With options
+npm run process-all -- --limit 10 --verbose
 ```
 
-Scans AMS2 installation and lists all .bff files with car liveries.
-
-### Step 2: Extract Textures
+### Command Options
 
 ```bash
-npm run extract
+# Show help
+npm run help
+
+# Custom AMS2 installation path
+npm run process-all -- --path "D:\Games\Automobilista 2"
+
+# Process specific number of vehicles
+npm run process-all -- --limit 50
+
+# Test mode (5 vehicles only)
+npm run process-all -- --test
+
+# Verbose output
+npm run process-all -- --verbose
 ```
 
-Uses PCarsTools to extract livery DDS files from .bff archives to `output/extracted/`.
+### What the Tool Does
 
-**Note:** This is SLOW - may take 30-60 minutes for all 387 cars.
+The `process-all` command runs all phases automatically:
 
-### Step 3: Convert to PNG Thumbnails
+1. ✅ **Verification** - Checks PCarsTools and Oodle DLL
+2. 🔍 **Scanning** - Finds all vehicles using ams2-content-listing
+3. 📦 **Extraction** - Extracts GUIVEHICLEIMAGES.bff (once for all vehicles)
+4. 🖼️ **Conversion** - Converts DDS→PNG, crops to 512×128
+5. 📁 **Organization** - Sorts by manufacturer/class/DLC
+6. 📄 **Manifest** - Generates JSON metadata
 
-```bash
-npm run convert
-```
-
-Processes extracted DDS files:
-- Converts DDS → PNG
-- Crops/resizes to 512x128 thumbnail
-- Organizes by manufacturer/class
-- Outputs to `output/thumbnails/`
-
-### Step 4: Upload (Optional)
-
-```bash
-npm run upload
-```
-
-Uploads processed thumbnails to CDN or bundles with GridVox.
+**Performance:**
+- Test mode (5 vehicles): <1 second (after initial extraction)
+- Initial GUIVEHICLEIMAGES.bff extraction: ~5-10 minutes (1.1GB file)
+- Full processing (387 vehicles): ~10-15 minutes total
 
 ## Project Status
 
-🚧 **NOT YET IMPLEMENTED** 🚧
+✅ **IMPLEMENTED**
 
-This project is documented for future development. Implementation will be done when needed for GridVox production.
-
-See [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for detailed architecture and implementation guide.
+Core functionality complete. Tool is ready for production use.
 
 ## Directory Structure
 
@@ -152,27 +184,29 @@ ams2-car-image-extractor/
 ### Thumbnail Organization
 
 ```
-output/thumbnails/
-├── by-manufacturer/
-│   ├── Porsche/
-│   │   ├── porsche_963_gtp.png
-│   │   ├── porsche_911_gt3_cup.png
-│   │   └── ...
-│   ├── Ferrari/
-│   │   └── ...
-│   └── ...
-├── by-class/
-│   ├── GT3/
-│   │   └── ...
-│   ├── LMDh/
-│   │   └── ...
-│   └── ...
-└── by-dlc/
-    ├── base/
+output/
+├── extracted/
+│   └── gui/
+│       └── vehicleimages/
+│           ├── vehicleimages_alpine_a424/
+│           │   ├── alpine_a424_livery_51.dds  (2048×768 preview)
+│           │   ├── alpine_a424_livery_52.dds
+│           │   └── ...
+│           └── ...
+└── thumbnails/
+    ├── by-manufacturer/
+    │   ├── Porsche/
+    │   │   ├── Porsche_963_GTP.png  (512×128)
+    │   │   └── ...
     │   └── ...
-    ├── endurancept2pack/
+    ├── by-class/
+    │   ├── GT3/
+    │   │   └── ...
     │   └── ...
-    └── ...
+    └── by-dlc/
+        ├── base/
+        │   └── ...
+        └── ...
 ```
 
 ### Manifest Format
@@ -192,9 +226,9 @@ output/thumbnails/
       "manufacturer": "Porsche",
       "class": "LMDh",
       "dlc": "endurancept2pack",
-      "bffFile": "Pakfiles\\Vehicles\\Porsche_963_GTP_Livery.bff",
-      "thumbnailPath": "output/thumbnails/by-manufacturer/Porsche/porsche_963_gtp.png",
-      "sourceTexture": "livery_00.dds",
+      "bffFile": "Pakfiles\\GUIVEHICLEIMAGES.bff",
+      "thumbnailPath": "thumbnails/by-manufacturer/Porsche/Porsche_963_GTP.png",
+      "sourceTexture": "porsche_963_gtp_livery_51.dds",
       "extractedAt": "2025-11-05T12:05:00Z"
     }
   ]
@@ -205,11 +239,12 @@ output/thumbnails/
 
 | Task | Duration | Notes |
 |------|----------|-------|
-| Extract all .bff files | 30-60 min | PCarsTools is slow |
-| Convert DDS → PNG | 5-10 min | 387 files with Sharp |
-| Crop & resize | 2-3 min | Fast with Sharp |
+| Extract GUIVEHICLEIMAGES.bff | 5-10 min | One-time, 1.1GB archive |
+| Convert DDS → PNG | 3-5 min | 387 files with Sharp |
+| Crop & resize | Included | Sharp resizes during conversion |
+| Organization | <1 min | File copying |
 | Upload to CDN | 5-10 min | Depends on bandwidth |
-| **Total** | **45-90 min** | One-time process |
+| **Total** | **10-20 min** | One-time process |
 
 ## GridVox Integration
 
