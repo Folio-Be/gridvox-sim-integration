@@ -1,0 +1,34 @@
+{
+  "name": "ams2-content-listing",
+  "version": "1.0.0",
+  "description": "Scan and list all installed content (cars, tracks, DLC) for Automobilista 2",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test",
+    "dev": "ts-node src/index.ts",
+    "scan": "ts-node src/cli.ts",
+    "list": "ts-node src/list-content.ts",
+    "convert": "ts-node src/convert-cli.ts all",
+    "convert-delta": "ts-node src/convert-cli.ts delta"
+  },
+  "keywords": [
+    "ams2",
+    "automobilista",
+    "content",
+    "scanner"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "fast-xml-parser": "^4.3.4",
+    "glob": "^10.3.10",
+    "sharp": "^0.34.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
