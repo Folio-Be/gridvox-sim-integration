@@ -2,7 +2,6 @@ import chokidar from 'chokidar';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { initializeVosk, getVoiceInput, cleanup } from './voiceInput.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,10 +10,6 @@ const __dirname = path.dirname(__filename);
 const SAVEGAME_PATH = 'C:\\Users\\tomat\\OneDrive\\Documents\\Automobilista 2\\savegame';
 const LOG_FILE = path.join(__dirname, 'annotations.log');
 const SNAPSHOTS_DIR = path.join(__dirname, 'snapshots');
-const USE_VOICE_INPUT = true; // Set to false to use keyboard input
-
-// Voice input state
-let voiceInputAvailable = false;
 
 // Create snapshots directory
 if (!fs.existsSync(SNAPSHOTS_DIR)) {
@@ -58,25 +53,7 @@ async function initialize() {
   console.log(`📁 Watching: ${SAVEGAME_PATH}`);
   console.log(`📝 Annotations: ${LOG_FILE}`);
   console.log(`📸 Snapshots: ${SNAPSHOTS_DIR}`);
-
-  // Initialize voice input if enabled
-  if (USE_VOICE_INPUT) {
-    console.log('\n🎤 Initializing voice input...');
-    voiceInputAvailable = await initializeVosk();
-
-    if (voiceInputAvailable) {
-      console.log('✅ Voice input ready!');
-      console.log('\n🎤 When you hear a BEEP, just SPEAK what you did in AMS2!');
-      console.log('   (No typing needed - your annotation will be captured by voice)');
-      console.log('   💡 Tip: Keep AMS2 in focus, no need to switch windows!\n');
-    } else {
-      console.log('⚠️  Voice input unavailable, using keyboard mode');
-      console.log('\n⌨️  When you hear a BEEP, press ENTER and type your annotation.\n');
-    }
-  } else {
-    console.log('\n⌨️  Voice input disabled (using keyboard mode)');
-    console.log('   When you hear a BEEP, press ENTER and type your annotation.\n');
-  }
+  console.log('\n⌨️  When you hear a BEEP, type your annotation and press ENTER.\n');
 
   // Write header if file doesn't exist
   if (!fs.existsSync(LOG_FILE)) {
@@ -138,38 +115,15 @@ watcher.on('error', error => {
   console.error('Watcher error:', error);
 });
 
-// Simple annotation prompt with voice or keyboard
+// Keyboard annotation prompt
 async function promptAnnotation(filename, snapshotPath) {
   console.log('\n' + '─'.repeat(80));
   console.log(`💬 ANNOTATION for "${filename}":`);
+  console.log(`   What did you just do in AMS2? (or press ENTER to skip)`);
+  console.log('─'.repeat(80));
+  process.stdout.write('> ');
 
-  let annotation = null;
-
-  // Try voice input first if available
-  if (voiceInputAvailable && USE_VOICE_INPUT) {
-    console.log(`   🎤 Speak what you did (or press ENTER to skip)...`);
-    console.log('─'.repeat(80));
-
-    try {
-      annotation = await getVoiceInput(5000); // 5 second timeout
-    } catch (err) {
-      console.error('Voice input error:', err.message);
-      annotation = null;
-    }
-
-    // If voice failed or returned nothing, fall back to keyboard
-    if (!annotation) {
-      console.log('   ⌨️  Voice input failed/skipped. Type annotation or press ENTER to skip:');
-      console.log('> ');
-      annotation = await getKeyboardInput();
-    }
-  } else {
-    // Keyboard-only mode
-    console.log(`   What did you just do in AMS2?`);
-    console.log('─'.repeat(80));
-    console.log('> ');
-    annotation = await getKeyboardInput();
-  }
+  const annotation = await getKeyboardInput();
 
   // Update the last line in the log file with annotation
   if (annotation && annotation.trim()) {
@@ -204,14 +158,12 @@ process.stdin.resume();
 // Cleanup on exit
 process.on('SIGINT', () => {
   console.log('\n\n🛑 Shutting down...');
-  cleanup();
   watcher.close();
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
   console.log('\n\n🛑 Shutting down...');
-  cleanup();
   watcher.close();
   process.exit(0);
 });

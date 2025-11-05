@@ -1,76 +1,22 @@
 Timestamp | Filename | Snapshot | Annotation
 ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-2025-11-04T08:12:45.227Z | default.localsettings.v1.03.sav | 1762243965226_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T08:12:45.231Z | default.controllersettings.v1.03.sav | 1762243965230_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T08:12:45.236Z | default.sav | 1762243965233_default.sav | NO ANNOTATION
-2025-11-04T08:12:45.240Z | default.championshipeditor.v1.00.sav | 1762243965239_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T08:12:48.549Z | default.localsettings.v1.03.sav | 1762243968548_default.localsettings.v1.03.sav | chose a bmw
-2025-11-04T08:13:20.250Z | default.localsettings.v1.03.sav | 1762244000249_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T08:13:20.267Z | default.sav | 1762244000265_default.sav | NO ANNOTATION
-2025-11-04T08:13:20.269Z | default.championshipeditor.v1.00.sav | 1762244000268_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T08:13:20.271Z | default.controllersettings.v1.03.sav | 1762244000270_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T08:13:23.678Z | default.localsettings.v1.03.sav | 1762244003677_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T08:13:26.882Z | default.localsettings.v1.03.sav | 1762244006881_default.localsettings.v1.03.sav | chose a merc
-2025-11-04T19:27:28.526Z | default.controllersettings.v1.03.sav | 1762284448524_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:28.528Z | default.localsettings.v1.03.sav | 1762284448526_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:28.529Z | default.controllersettings.v1.03.sav | 1762284448528_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:28.530Z | default.controllersettings.v1.03.sav | 1762284448528_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:28.532Z | default.localsettings.v1.03.sav | 1762284448532_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:28.533Z | default.championshipeditor.v1.00.sav | 1762284448532_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:27:28.534Z | default.localsettings.v1.03.sav | 1762284448534_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:28.546Z | default.championshipeditor.v1.00.sav | 1762284448546_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:27:28.548Z | default.sav | 1762284448546_default.sav | NO ANNOTATION
-2025-11-04T19:27:28.550Z | default.localsettings.v1.03.sav | 1762284448549_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:28.550Z | default.sav | 1762284448548_default.sav | NO ANNOTATION
-2025-11-04T19:27:28.560Z | default.championshipeditor.v1.00.sav | 1762284448559_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:27:36.653Z | default.controllersettings.v1.03.sav | 1762284456651_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:36.653Z | default.controllersettings.v1.03.sav | 1762284456652_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:36.653Z | default.controllersettings.v1.03.sav | 1762284456652_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:36.655Z | default.localsettings.v1.03.sav | 1762284456655_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:36.657Z | default.localsettings.v1.03.sav | 1762284456656_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:36.658Z | default.localsettings.v1.03.sav | 1762284456657_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:36.659Z | default.championshipeditor.v1.00.sav | 1762284456658_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:27:36.660Z | default.championshipeditor.v1.00.sav | 1762284456659_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:27:36.661Z | default.championshipeditor.v1.00.sav | 1762284456661_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:27:36.663Z | default.sav | 1762284456661_default.sav | NO ANNOTATION
-2025-11-04T19:27:36.664Z | default.sav | 1762284456662_default.sav | NO ANNOTATION
-2025-11-04T19:27:36.665Z | default.sav | 1762284456663_default.sav | NO ANNOTATION
-2025-11-04T19:27:44.842Z | default.controllersettings.v1.03.sav | 1762284464841_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:44.842Z | default.controllersettings.v1.03.sav | 1762284464841_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:44.842Z | default.controllersettings.v1.03.sav | 1762284464841_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:44.845Z | default.localsettings.v1.03.sav | 1762284464844_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:44.846Z | default.localsettings.v1.03.sav | 1762284464845_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:44.848Z | default.localsettings.v1.03.sav | 1762284464847_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:27:44.847Z | default.championshipeditor.v1.00.sav | 1762284464847_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:27:44.850Z | default.sav | 1762284464848_default.sav | NO ANNOTATION
-2025-11-04T19:27:44.851Z | default.championshipeditor.v1.00.sav | 1762284464850_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:27:44.852Z | default.sav | 1762284464849_default.sav | NO ANNOTATION
-2025-11-04T19:27:44.854Z | default.championshipeditor.v1.00.sav | 1762284464854_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:27:44.857Z | default.sav | 1762284464855_default.sav | NO ANNOTATION
-2025-11-04T19:28:01.262Z | default.controllersettings.v1.03.sav | 1762284481260_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:28:01.262Z | default.championshipeditor.v1.00.sav | 1762284481260_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:28:01.263Z | default.controllersettings.v1.03.sav | 1762284481262_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:28:01.266Z | default.controllersettings.v1.03.sav | 1762284481265_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:28:01.267Z | default.sav | 1762284481264_default.sav | NO ANNOTATION
-2025-11-04T19:28:01.267Z | default.localsettings.v1.03.sav | 1762284481267_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:28:01.269Z | default.localsettings.v1.03.sav | 1762284481268_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:28:01.269Z | default.championshipeditor.v1.00.sav | 1762284481269_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:28:01.273Z | default.sav | 1762284481270_default.sav | NO ANNOTATION
-2025-11-04T19:28:01.273Z | default.localsettings.v1.03.sav | 1762284481272_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:28:01.275Z | default.sav | 1762284481271_default.sav | NO ANNOTATION
-2025-11-04T19:28:23.159Z | default.championshipeditor.v1.00.sav | 1762284503158_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:28:23.159Z | default.controllersettings.v1.03.sav | 1762284503158_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:28:23.159Z | default.localsettings.v1.03.sav | 1762284503158_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:28:23.165Z | default.controllersettings.v1.03.sav | 1762284503164_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:28:23.165Z | default.championshipeditor.v1.00.sav | 1762284503163_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:28:23.165Z | default.sav | 1762284503161_default.sav | NO ANNOTATION
-2025-11-04T19:28:23.167Z | default.championshipeditor.v1.00.sav | 1762284503167_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:28:23.169Z | default.localsettings.v1.03.sav | 1762284503169_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:28:23.171Z | default.sav | 1762284503168_default.sav | NO ANNOTATION
-2025-11-04T19:28:23.173Z | default.sav | 1762284503170_default.sav | NO ANNOTATION
-2025-11-04T19:28:23.172Z | default.controllersettings.v1.03.sav | 1762284503172_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:28:23.174Z | default.localsettings.v1.03.sav | 1762284503173_default.localsettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:31:59.733Z | default.controllersettings.v1.03.sav | 1762284719732_default.controllersettings.v1.03.sav | NO ANNOTATION
-2025-11-04T19:31:59.845Z | default.sav | 1762284719843_default.sav | NO ANNOTATION
-2025-11-04T19:31:59.857Z | default.championshipeditor.v1.00.sav | 1762284719856_default.championshipeditor.v1.00.sav | NO ANNOTATION
-2025-11-04T19:31:59.866Z | default.localsettings.v1.03.sav | 1762284719865_default.localsettings.v1.03.sav | NO ANNOTATION
+2025-11-05T17:30:05.147Z | default.localsettings.v1.03.sav | 1762363805145_default.localsettings.v1.03.sav | NO ANNOTATION
+2025-11-05T17:30:05.152Z | default.controllersettings.v1.03.sav | 1762363805151_default.controllersettings.v1.03.sav | NO ANNOTATION
+2025-11-05T17:30:05.158Z | default.sav | 1762363805154_default.sav | NO ANNOTATION
+2025-11-05T17:30:05.161Z | default.championshipeditor.v1.00.sav | 1762363805160_default.championshipeditor.v1.00.sav | baseline mercedes
+2025-11-05T17:30:34.166Z | default.localsettings.v1.03.sav | 1762363834164_default.localsettings.v1.03.sav | NO ANNOTATION
+2025-11-05T17:30:34.181Z | default.controllersettings.v1.03.sav | 1762363834180_default.controllersettings.v1.03.sav | NO ANNOTATION
+2025-11-05T17:30:34.184Z | default.championshipeditor.v1.00.sav | 1762363834183_default.championshipeditor.v1.00.sav | NO ANNOTATION
+2025-11-05T17:30:34.187Z | default.sav | 1762363834185_default.sav | changed to audi
+2025-11-05T17:30:54.651Z | default.localsettings.v1.03.sav | 1762363854650_default.localsettings.v1.03.sav | NO ANNOTATION
+2025-11-05T17:30:54.655Z | default.championshipeditor.v1.00.sav | 1762363854654_default.championshipeditor.v1.00.sav | NO ANNOTATION
+2025-11-05T17:30:54.661Z | default.sav | 1762363854658_default.sav | NO ANNOTATION
+2025-11-05T17:30:54.665Z | default.controllersettings.v1.03.sav | 1762363854663_default.controllersettings.v1.03.sav | changed to mclaren
+2025-11-05T17:31:13.302Z | default.controllersettings.v1.03.sav | 1762363873301_default.controllersettings.v1.03.sav | NO ANNOTATION
+2025-11-05T17:31:13.306Z | default.championshipeditor.v1.00.sav | 1762363873305_default.championshipeditor.v1.00.sav | NO ANNOTATION
+2025-11-05T17:31:13.312Z | default.sav | 1762363873309_default.sav | NO ANNOTATION
+2025-11-05T17:31:13.315Z | default.localsettings.v1.03.sav | 1762363873314_default.localsettings.v1.03.sav | changed to porsche
+2025-11-05T17:31:37.142Z | default.localsettings.v1.03.sav | 1762363897140_default.localsettings.v1.03.sav | NO ANNOTATION
+2025-11-05T17:31:37.145Z | default.championshipeditor.v1.00.sav | 1762363897144_default.championshipeditor.v1.00.sav | NO ANNOTATION
+2025-11-05T17:31:37.149Z | default.controllersettings.v1.03.sav | 1762363897148_default.controllersettings.v1.03.sav | NO ANNOTATION
+2025-11-05T17:31:37.154Z | default.sav | 1762363897152_default.sav | changed to nissan
