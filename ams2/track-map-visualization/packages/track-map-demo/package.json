@@ -1,0 +1,20 @@
+{
+    "name": "@gridvox/track-map-demo",
+    "version": "1.0.0",
+    "description": "Demo application for track map visualization",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@gridvox/track-map-core": "file:../track-map-core",
+        "@gridvox/track-map-ams2": "file:../track-map-ams2"
+    },
+    "devDependencies": {
+        "typescript": "^5.3.0",
+        "vite": "^5.0.0"
+    }
+}

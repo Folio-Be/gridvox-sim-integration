@@ -1,0 +1,46 @@
+{
+    "name": "@gridvox/track-map-core",
+    "version": "1.0.0",
+    "description": "Core track map rendering library (sim-agnostic) with Pixi.js",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "./rendering": {
+            "types": "./dist/rendering/index.d.ts",
+            "import": "./dist/rendering/index.js"
+        },
+        "./llm": {
+            "types": "./dist/llm/index.d.ts",
+            "import": "./dist/llm/index.js"
+        },
+        "./types": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/types/index.js"
+        }
+    },
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "clean": "rimraf dist"
+    },
+    "dependencies": {
+        "pixi.js": "^8.0.0"
+    },
+    "devDependencies": {
+        "typescript": "^5.3.0"
+    },
+    "peerDependencies": {},
+    "keywords": [
+        "racing",
+        "telemetry",
+        "track-map",
+        "pixi.js",
+        "webgl"
+    ],
+    "author": "GridVox Team",
+    "license": "MIT"
+}

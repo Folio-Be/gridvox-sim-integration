@@ -1,0 +1,12 @@
+{
+    "extends": "../track-map-core/tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "rootDir": "./src"
+    },
+    "references": [
+        {
+            "path": "../track-map-core"
+        }
+    ]
+}

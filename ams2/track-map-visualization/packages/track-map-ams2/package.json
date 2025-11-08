@@ -1,0 +1,32 @@
+{
+    "name": "@gridvox/track-map-ams2",
+    "version": "1.0.0",
+    "description": "AMS2 adapter for track map core library",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    },
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "clean": "rimraf dist"
+    },
+    "dependencies": {
+        "@gridvox/track-map-core": "file:../track-map-core"
+    },
+    "devDependencies": {
+        "typescript": "^5.3.0"
+    },
+    "keywords": [
+        "ams2",
+        "automobilista-2",
+        "racing",
+        "telemetry"
+    ],
+    "author": "GridVox Team",
+    "license": "MIT"
+}

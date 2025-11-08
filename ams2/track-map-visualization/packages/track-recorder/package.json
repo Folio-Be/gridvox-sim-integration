@@ -1,0 +1,29 @@
+{
+    "name": "@gridvox/track-recorder",
+    "version": "1.0.0",
+    "description": "AMS2 track coordinate recorder - drive 1 lap to generate track JSON files",
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "dev": "tsx src/recorder.ts",
+        "build": "tsc",
+        "record": "tsx src/recorder.ts"
+    },
+    "keywords": [
+        "ams2",
+        "track",
+        "recorder",
+        "telemetry"
+    ],
+    "author": "GridVox",
+    "license": "MIT",
+    "dependencies": {
+        "@gridvox/track-map-ams2": "file:../track-map-ams2"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.0",
+        "tsx": "^4.7.0",
+        "typescript": "^5.3.3"
+    }
+}
