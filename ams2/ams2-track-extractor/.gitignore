@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Extracted game files
+extracted-tracks/
+*.gmt
+*.meb
+*.scn
+*.tex
+
+# Converted tracks (output)
+converted-tracks/*.glb
+converted-tracks/*.gltf
+
+# Downloaded community models
+downloaded-models/
+
+# Telemetry data
+telemetry-data/*.json
+
+# Tools
+tools/PCarsTools/
+tools/*.dll
+
+# Configuration files with local paths
+AMS2_PATH.txt
+PCARSTOOLS_PATH.txt
+BLENDER_PATH.txt
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Test outputs
+test-output/

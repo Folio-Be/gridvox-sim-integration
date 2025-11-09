@@ -3,28 +3,34 @@
  * 
  * Demonstrates:
  * 1. Pixi.js renderer with WebGL
- * 2. AMS2 adapter (sim mode for now)
+ * 2. AMS2 live telemetry via POC-02
  * 3. Real-time car position updates
- * 4. Track recording from telemetry
+ * 4. Track recording from actual driving
  */
 
 import { PixiTrackRenderer } from '@gridvox/track-map-core/rendering';
 import { TrackRecorder } from '@gridvox/track-map-core';
 import type { TrackDefinition, CarPosition } from '@gridvox/track-map-core';
-import { AMS2Adapter } from '@gridvox/track-map-ams2';
+import { AMS2LiveConnector } from '@gridvox/track-map-ams2';
 import { loadTrack, TRACK_CATALOG, getTracksByCategory, type TrackMetadata } from './trackLoader';
 
 // Get DOM elements
 const canvas = document.getElementById('track-canvas') as HTMLCanvasElement;
 const statusMessage = document.getElementById('status-message') as HTMLDivElement;
+const btnConnectAMS2 = document.getElementById('btn-connect-ams2') as HTMLButtonElement;
 const btnDemoMode = document.getElementById('btn-demo-mode') as HTMLButtonElement;
 const btnRecordTrack = document.getElementById('btn-record-track') as HTMLButtonElement;
 const trackSelect = document.getElementById('track-select') as HTMLSelectElement;
 
-// Initialize renderer and recorder
+// Initialize renderer, recorder, and live connector
 let renderer: PixiTrackRenderer | null = null;
 let currentTrack: TrackDefinition | null = null;
 const trackRecorder = new TrackRecorder();
+const liveConnector = new AMS2LiveConnector();
+
+// Track mode state
+let isLiveMode = false;
+let isDemoMode = false;
 
 /**
  * Mock track data for demo
@@ -133,7 +139,7 @@ async function handleTrackChange(trackId: string) {
 
         // Update UI
         document.getElementById('track-name')!.textContent = track.name;
-        document.getElementById('track-source')!.textContent = track.metadata?.source || 'Generated';
+        document.getElementById('track-source')!.textContent = track.metadata?.generatedBy || 'Generated';
         document.getElementById('track-length')!.textContent = `${track.length}m`;
         document.getElementById('track-points')!.textContent = track.points.length.toString();
 
@@ -277,22 +283,21 @@ function demoLoop(timestamp: number) {
     // Generate mock cars
     const cars = generateMockCars(12, elapsed);
 
-    // Record player car position if recording
+    // Record ALL car positions if recording (multi-car averaging)
     if (trackRecorder.isRecording() && cars.length > 0) {
-        const playerCar = cars.find(car => car.isPlayer);
-        if (playerCar) {
-            trackRecorder.recordSample(playerCar);
+        for (const car of cars) {
+            trackRecorder.recordSample(car);
+        }
 
-            // Check if lap completed
-            const status = trackRecorder.getStatus();
-            if (!status.recording && status.pointCount > 0) {
-                // Auto-stop recording when lap completes
-                setTimeout(() => {
-                    if (btnRecordTrack.classList.contains('recording')) {
-                        btnRecordTrack.click();
-                    }
-                }, 100);
-            }
+        // Check if recording completed
+        const status = trackRecorder.getStatus();
+        if (!status.recording && status.pointCount > 0) {
+            // Auto-stop recording when enough cars complete laps
+            setTimeout(() => {
+                if (btnRecordTrack.classList.contains('recording')) {
+                    btnRecordTrack.click();
+                }
+            }, 100);
         }
     }
 
@@ -316,6 +321,151 @@ function demoLoop(timestamp: number) {
 
     animationFrameId = requestAnimationFrame(demoLoop);
 }
+
+/**
+ * Helper to update status message
+ */
+function updateStatus(message: string) {
+    statusMessage.textContent = message;
+}
+
+/**
+ * Connect to AMS2 via POC-02 native addon
+ */
+async function connectToAMS2() {
+    if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+        btnDemoMode.textContent = '🎮 Start Demo Mode';
+    }
+
+    updateStatus('🔌 Connecting to AMS2...');
+    btnConnectAMS2.disabled = true;
+
+    try {
+        const connected = await liveConnector.connect();
+
+        if (connected) {
+            updateStatus('✅ Connected to AMS2 - Live telemetry active');
+            isLiveMode = true;
+            isDemoMode = false;
+
+            // Update UI
+            btnConnectAMS2.textContent = '🔌 Disconnect from AMS2';
+            btnConnectAMS2.disabled = false;
+            document.getElementById('connection-status')!.textContent = 'Live - AMS2';
+            document.getElementById('status-dot')!.className = 'status-indicator connected';
+
+            // Set up telemetry callback
+            liveConnector.onTelemetryUpdate((cars: CarPosition[]) => {
+                // If recording, show blank canvas with traced path
+                if (trackRecorder.isRecording()) {
+                    // Clear and draw recording visualization
+                    if (renderer) {
+                        renderer.clear();
+
+                        // Get all recorded points from all cars
+                        const recordingData = (trackRecorder as any).recording;
+                        if (recordingData && recordingData.carData) {
+                            // Draw all car paths being traced
+                            recordingData.carData.forEach((carData: any, carId: number) => {
+                                if (carData.points && carData.points.length > 1) {
+                                    renderer.drawRecordingPath(carData.points, carData.lapCompleted);
+                                }
+                            });
+                        }
+
+                        // Draw current car positions as dots
+                        cars.forEach(car => {
+                            if (car.worldPosition) {
+                                renderer.drawRecordingPoint(car.worldPosition, car.isPlayer);
+                            }
+                        });
+                    }
+
+                    // Record ALL car positions
+                    for (const car of cars) {
+                        trackRecorder.recordSample(car);
+                    }
+
+                    // Update recording status in UI
+                    const status = trackRecorder.getStatus();
+                    statusMessage.textContent = `🔴 Recording... ${status.completedCars}/${status.targetCars} cars completed`;
+
+                    // Check if recording completed
+                    if (!status.recording && status.completedCars > 0) {
+                        setTimeout(() => {
+                            if (btnRecordTrack.classList.contains('recording')) {
+                                btnRecordTrack.click();
+                            }
+                        }, 100);
+                    }
+                } else {
+                    // Normal mode - use track for positioning
+                    const track = currentTrack || mockTrack;
+
+                    if (renderer) {
+                        renderer.updateCars(cars, track);
+                    }
+
+                    // Debug: Log first car position occasionally
+                    if (Math.random() < 0.016) {
+                        console.log(`📍 Sample car: ${cars[0]?.driverName} @ ${(cars[0]?.lapPercentage * 100).toFixed(1)}% lap`);
+                    }
+                }
+
+                // Update car count
+                document.getElementById('car-count')!.textContent = cars.length.toString();
+            });
+
+            // Set up connection change callback
+            liveConnector.onConnectionChanged((connected: boolean) => {
+                if (!connected) {
+                    updateStatus('⚠️ Lost connection to AMS2');
+                    isLiveMode = false;
+                    btnConnectAMS2.textContent = '🔌 Connect to AMS2';
+                    document.getElementById('connection-status')!.textContent = 'Disconnected';
+                    document.getElementById('status-dot')!.className = 'status-indicator disconnected';
+                }
+            });
+
+            // Start polling at 60 FPS
+            liveConnector.startPolling(16);
+        } else {
+            updateStatus('❌ Connection failed - Start bridge server: node server.js');
+            btnConnectAMS2.textContent = '🔌 Connect to AMS2';
+            btnConnectAMS2.disabled = false;
+        }
+    } catch (error) {
+        console.error('Connection error:', error);
+        updateStatus(`❌ Bridge server not running! Run: node server.js`);
+        btnConnectAMS2.textContent = '🔌 Connect to AMS2';
+        btnConnectAMS2.disabled = false;
+    }
+}
+
+/**
+ * Disconnect from AMS2
+ */
+function disconnectFromAMS2() {
+    liveConnector.disconnect();
+    isLiveMode = false;
+    btnConnectAMS2.textContent = '🔌 Connect to AMS2';
+    document.getElementById('connection-status')!.textContent = 'Disconnected';
+    document.getElementById('status-dot')!.className = 'status-indicator disconnected';
+    updateStatus('Disconnected from AMS2');
+}
+
+/**
+ * Connect button handler
+ */
+btnConnectAMS2.addEventListener('click', () => {
+    if (isLiveMode) {
+        disconnectFromAMS2();
+    } else {
+        connectToAMS2();
+    }
+});
 
 /**
  * Start demo mode
@@ -400,13 +550,16 @@ btnRecordTrack.addEventListener('click', async () => {
 
     } else {
         // Start recording
-        const trackName = prompt('Enter track name:');
+        const trackName = prompt('Enter track name (e.g., "Brands-Hatch-Indy"):');
         if (!trackName) return;
 
-        trackRecorder.startRecording(trackName, 'ams2');
+        trackRecorder.startRecording(trackName, 'ams2', 10); // Track 10 cars
         btnRecordTrack.textContent = '⏹️ Stop Recording';
         btnRecordTrack.classList.add('recording');
-        statusMessage.textContent = `🔴 Recording ${trackName}... Drive one clean lap!`;
+        statusMessage.textContent = `🔴 Recording ${trackName}... Tracking first 10 cars to complete a lap`;
+
+        console.log(`🎬 Started recording: ${trackName}`);
+        console.log(`   Waiting for cars to complete laps...`);
     }
 });
 

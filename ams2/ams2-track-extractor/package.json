@@ -1,0 +1,61 @@
+{
+    "name": "ams2-track-extractor",
+    "version": "0.1.0",
+    "description": "Extract and convert AMS2 race tracks to glTF 2.0 format for Three.js visualization",
+    "main": "dist/index.js",
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "generate-procedural": "ts-node scripts/generate-procedural-track.ts",
+        "convert-gltf": "ts-node scripts/convert-to-gltf.ts",
+        "extract-track": "ts-node scripts/extract-track.ts",
+        "validate": "ts-node scripts/validate-track.ts",
+        "optimize": "ts-node scripts/optimize-gltf.ts",
+        "test-threejs": "ts-node scripts/test-in-threejs.ts",
+        "batch-extract": "ts-node scripts/batch-extract.ts",
+        "verify-setup": "ts-node scripts/verify-setup.ts",
+        "test": "npm run test:generate && npm run test:convert && npm run test:validate",
+        "test:generate": "ts-node scripts/generate-procedural-track.ts -- --test",
+        "test:convert": "ts-node scripts/convert-to-gltf.ts -- --test",
+        "test:validate": "ts-node scripts/validate-track.ts -- --test"
+    },
+    "keywords": [
+        "ams2",
+        "automobilista",
+        "racing",
+        "track",
+        "extraction",
+        "gltf",
+        "three.js",
+        "3d",
+        "visualization",
+        "telemetry"
+    ],
+    "author": "GridVox",
+    "license": "MIT",
+    "dependencies": {
+        "three": "^0.181.0",
+        "@gltf-transform/core": "^4.4.0",
+        "@gltf-transform/extensions": "^4.4.0",
+        "@gltf-transform/functions": "^4.4.0",
+        "commander": "^12.0.0",
+        "chalk": "^5.3.0",
+        "ora": "^8.0.1"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.0",
+        "@types/three": "^0.181.0",
+        "typescript": "^5.3.3",
+        "ts-node": "^10.9.2",
+        "@gltf-transform/cli": "^4.4.0"
+    },
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=9.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/GridVox/gridvox-sim-integration.git",
+        "directory": "ams2/ams2-track-extractor"
+    }
+}

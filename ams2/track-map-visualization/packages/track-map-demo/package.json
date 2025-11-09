@@ -10,8 +10,9 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@gridvox/track-map-ams2": "file:../track-map-ams2",
         "@gridvox/track-map-core": "file:../track-map-core",
-        "@gridvox/track-map-ams2": "file:../track-map-ams2"
+        "ws": "^8.18.3"
     },
     "devDependencies": {
         "typescript": "^5.3.0",

@@ -18,44 +18,60 @@ export class AMS2Adapter {
     toCarPositions(shared: AMS2SharedMemory): CarPosition[] {
         const positions: CarPosition[] = [];
 
-        for (let i = 0; i < shared.mNumParticipants; i++) {
-            const participant = shared.mParticipantInfo[i];
+        // POC-02 returns data with camelCase properties
+        const numParticipants = (shared as any).numParticipants || shared.mNumParticipants || 0;
+        const participants = (shared as any).participants || shared.mParticipantInfo || [];
+        const trackLength = (shared as any).trackLength || shared.mTrackLength || 1;
+        const viewedIndex = (shared as any).viewedParticipantIndex ?? shared.mViewedParticipantIndex ?? -1;
+        const carClassName = (shared as any).carClassName || shared.mCarClassName || 'Unknown';
+
+        for (let i = 0; i < numParticipants && i < participants.length; i++) {
+            const participant = participants[i];
 
             // Skip inactive participants
-            if (participant.mIsActive === 0) {
+            const isActive = participant.isActive ?? (participant.mIsActive !== 0);
+            if (!isActive) {
                 continue;
             }
 
+            // Get participant properties (handle both camelCase and mPrefix)
+            const name = participant.name || participant.mName || `Driver ${i + 1}`;
+            const raceNumber = participant.raceNumber?.toString() || participant.mRaceNumber?.toString() || `${i + 1}`;
+            const racePosition = participant.racePosition || participant.mRacePosition || i + 1;
+            const currentLapDistance = participant.currentLapDistance ?? participant.mCurrentLapDistance ?? 0;
+            const currentLap = participant.currentLap || participant.mCurrentLap || 0;
+            const currentSector = participant.currentSector ?? participant.mCurrentSector ?? 0;
+            const pitMode = participant.pitMode ?? participant.mPitMode ?? 0;
+
+            // World position
+            const worldPos = participant.worldPosition || participant.mWorldPosition || { x: 0, y: 0, z: 0 };
+
             positions.push({
                 carId: i,
-                driverName: participant.mName || `Driver ${i + 1}`,
-                carNumber: participant.mRaceNumber?.toString() || `${i + 1}`,
-                racePosition: participant.mRacePosition,
-                classPosition: participant.mRacePosition, // AMS2 doesn't separate class position
+                driverName: name,
+                carNumber: raceNumber,
+                racePosition: racePosition,
+                classPosition: racePosition, // AMS2 doesn't separate class position
 
                 // PRIMARY: Calculate lap percentage from distance
-                // This is the key transformation - distance (meters) to percentage (0-1)
-                lapPercentage: this.calculateLapPercentage(
-                    participant.mCurrentLapDistance,
-                    shared.mTrackLength
-                ),
+                lapPercentage: this.calculateLapPercentage(currentLapDistance, trackLength),
 
-                currentLap: participant.mCurrentLap,
-                currentSector: this.normalizeSector(participant.mCurrentSector),
+                currentLap: currentLap,
+                currentSector: this.normalizeSector(currentSector),
 
-                carClass: shared.mCarClassName || 'Unknown',
-                classColor: this.getClassColor(shared.mCarClassName),
+                carClass: carClassName,
+                classColor: this.getClassColor(carClassName),
 
-                isPlayer: i === shared.mViewedParticipantIndex,
-                isInPit: participant.mPitMode !== 0, // 0 = None, 1+ = In pit
+                isPlayer: i === viewedIndex,
+                isInPit: pitMode !== 0,
 
-                speed: shared.mSpeeds[i] * 3.6, // Convert m/s to km/h
+                speed: ((shared as any).speeds?.[i] || (shared as any).mSpeeds?.[i] || 0) * 3.6, // Convert m/s to km/h
 
                 // OPTIONAL: Include world position for debugging/track recording
                 worldPosition: {
-                    x: participant.mWorldPosition.x,
-                    y: participant.mWorldPosition.y,
-                    z: participant.mWorldPosition.z,
+                    x: worldPos.x,
+                    y: worldPos.y,
+                    z: worldPos.z,
                 },
             });
         }
