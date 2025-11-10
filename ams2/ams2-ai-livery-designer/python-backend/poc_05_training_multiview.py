@@ -9,10 +9,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import random
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Iterable, List, Optional, Tuple
 
 import cv2
 import numpy as np
@@ -367,6 +368,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--epochs", type=int, default=50)
     parser.add_argument("--batch-size", type=int, default=6)
     parser.add_argument("--lr", type=float, default=2e-4)
+    parser.add_argument("--lr-scheduler", choices=["none", "cosine"], default="none")
+    parser.add_argument("--lr-scheduler-tmax", type=int, default=None,
+                        help="Override cosine scheduler T_max (defaults to epochs)")
     parser.add_argument("--image-size", type=int, default=256)
     parser.add_argument("--val-split", type=float, default=0.1)
     parser.add_argument("--seed", type=int, default=1337)
@@ -375,6 +379,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--w-uv", type=float, default=0.25)
     parser.add_argument("--w-direct", type=float, default=0.30)
     parser.add_argument("--w-cross", type=float, default=0.15)
+    parser.add_argument("--w-cycle-end", type=float, default=None)
+    parser.add_argument("--w-uv-end", type=float, default=None)
+    parser.add_argument("--w-direct-end", type=float, default=None)
+    parser.add_argument("--w-cross-end", type=float, default=None)
+    parser.add_argument("--checkpoint-name", type=str, default="poc_05_best_model.pt")
+    parser.add_argument("--checkpoint-every", type=int, default=0,
+                        help="Optional frequency (epochs) to snapshot additional checkpoints")
     return parser.parse_args()
 
 
@@ -411,21 +422,45 @@ def main() -> None:
     optim_uv = torch.optim.Adam(model_uv.parameters(), lr=args.lr, betas=(0.5, 0.999))
     optim_renderer = torch.optim.Adam(model_renderer.parameters(), lr=args.lr, betas=(0.5, 0.999))
 
+    schedulers: Iterable[torch.optim.lr_scheduler._LRScheduler] = []
+    if args.lr_scheduler == "cosine":
+        t_max = args.lr_scheduler_tmax or args.epochs
+        sched_uv = torch.optim.lr_scheduler.CosineAnnealingLR(optim_uv, T_max=t_max)
+        sched_renderer = torch.optim.lr_scheduler.CosineAnnealingLR(optim_renderer, T_max=t_max)
+        schedulers = (sched_uv, sched_renderer)
+
     lpips_net = lpips.LPIPS(net="alex").to(device) if lpips is not None else None
 
     best_val = float("inf")
     best_state = None
 
-    weights = {
-        "cycle": args.w_cycle,
-        "uv_recon": args.w_uv,
-        "direct": args.w_direct,
-        "cross": args.w_cross,
-    }
+    def build_weights(epoch: int) -> Dict[str, float]:
+        def interp(start: float, end: Optional[float]) -> float:
+            target = start if end is None else end
+            if end is None or args.epochs <= 1:
+                return start
+            # Cosine interpolation across epochs (1-indexed).
+            progress = (epoch - 1) / (args.epochs - 1)
+            weight = target + (start - target) * (0.5 * (1 + math.cos(math.pi * progress)))
+            return weight
+
+        return {
+            "cycle": interp(args.w_cycle, args.w_cycle_end),
+            "uv_recon": interp(args.w_uv, args.w_uv_end),
+            "direct": interp(args.w_direct, args.w_direct_end),
+            "cross": interp(args.w_cross, args.w_cross_end),
+        }
 
     for epoch in range(1, args.epochs + 1):
-        metrics_train = train_epoch(train_loader, model_uv, model_renderer, optim_uv, optim_renderer, device, weights)
-        metrics_val = evaluate(val_loader, model_uv, model_renderer, device, lpips_net, weights)
+        epoch_weights = build_weights(epoch)
+        metrics_train = train_epoch(
+            train_loader, model_uv, model_renderer, optim_uv, optim_renderer, device, epoch_weights
+        )
+        metrics_val = evaluate(val_loader, model_uv, model_renderer, device, lpips_net, epoch_weights)
+
+        if args.lr_scheduler != "none":
+            for scheduler in schedulers:
+                scheduler.step()
 
         val_score = metrics_val["total"]
 
@@ -444,13 +479,34 @@ def main() -> None:
                 "uv": model_uv.state_dict(),
                 "renderer": model_renderer.state_dict(),
                 "metrics": metrics_val,
+                "weights": epoch_weights,
+                "epoch": epoch,
+                "args": vars(args),
             }
+
+        if args.checkpoint_every and epoch % args.checkpoint_every == 0:
+            output_dir = Path("poc_results")
+            output_dir.mkdir(exist_ok=True)
+            snapshot_path = output_dir / f"{Path(args.checkpoint_name).stem}_epoch{epoch:03d}.pt"
+            torch.save(
+                {
+                    "uv": model_uv.state_dict(),
+                    "renderer": model_renderer.state_dict(),
+                    "metrics": metrics_val,
+                    "weights": epoch_weights,
+                    "epoch": epoch,
+                    "args": vars(args),
+                },
+                snapshot_path,
+            )
+            print(f"Saved periodic checkpoint to {snapshot_path}")
 
     if best_state is not None:
         output_dir = Path("poc_results")
         output_dir.mkdir(exist_ok=True)
-        torch.save(best_state, output_dir / "poc_05_best_model.pt")
-        print(f"Saved best checkpoint to {output_dir / 'poc_05_best_model.pt'}")
+        checkpoint_path = output_dir / args.checkpoint_name
+        torch.save(best_state, checkpoint_path)
+        print(f"Saved best checkpoint to {checkpoint_path}")
         print(f"Best Val Metrics: {best_state['metrics']}")
 
 

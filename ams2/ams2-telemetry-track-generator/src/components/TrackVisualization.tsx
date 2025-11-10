@@ -29,6 +29,38 @@ export default function TrackVisualization({
   const animationFrameRef = useRef<number | null>(null);
   const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
+  const clearSceneObjects = () => {
+    const scene = sceneRef.current;
+    if (!scene) {
+      return;
+    }
+
+    lineSegmentsRef.current.forEach(line => {
+      scene.remove(line);
+      line.geometry.dispose();
+      if (Array.isArray(line.material)) {
+        line.material.forEach(m => m.dispose());
+      } else {
+        line.material.dispose();
+      }
+    });
+    lineSegmentsRef.current = [];
+
+    pointsCloudsRef.current.forEach(pointsCloud => {
+      scene.remove(pointsCloud);
+      pointsCloud.geometry.dispose();
+      (pointsCloud.material as THREE.Material).dispose();
+    });
+    pointsCloudsRef.current = [];
+
+    if (gridRef.current) {
+      scene.remove(gridRef.current);
+      gridRef.current.geometry.dispose();
+      (gridRef.current.material as THREE.Material).dispose();
+      gridRef.current = null;
+    }
+  };
+
   // Initialize Three.js scene
   useEffect(() => {
     if (!containerRef.current) return;
@@ -129,38 +161,13 @@ export default function TrackVisualization({
 
   // Update track path when telemetry points change
   useEffect(() => {
-    if (!sceneRef.current || !cameraRef.current || !rendererRef.current || telemetryPoints.length === 0) {
+    if (!sceneRef.current || !cameraRef.current || !rendererRef.current) {
       return;
     }
 
-    const scene = sceneRef.current!;
-    const camera = cameraRef.current!;
-
-    // Remove old line segments
-    lineSegmentsRef.current.forEach(line => {
-      scene.remove(line);
-      line.geometry.dispose();
-      if (Array.isArray(line.material)) {
-        line.material.forEach(m => m.dispose());
-      } else {
-        line.material.dispose();
-      }
-    });
-    lineSegmentsRef.current = [];
-
-    // Remove old points clouds
-    pointsCloudsRef.current.forEach(pointsCloud => {
-      scene.remove(pointsCloud);
-      pointsCloud.geometry.dispose();
-      (pointsCloud.material as THREE.Material).dispose();
-    });
-    pointsCloudsRef.current = [];
-
-    // Remove old grid
-    if (gridRef.current) {
-      scene.remove(gridRef.current);
-      gridRef.current.geometry.dispose();
-      (gridRef.current.material as THREE.Material).dispose();
+    if (telemetryPoints.length === 0) {
+      clearSceneObjects();
+      return;
     }
 
     // Calculate bounds first (in world coordinates)
@@ -175,6 +182,17 @@ export default function TrackVisualization({
     const rangeX = maxX - minX;
     const rangeZ = maxZ - minZ;
     const maxRange = Math.max(rangeX, rangeZ);
+
+    const MIN_RENDER_RANGE = 60;
+    if (!Number.isFinite(maxRange) || maxRange < MIN_RENDER_RANGE) {
+      clearSceneObjects();
+      return;
+    }
+
+    const scene = sceneRef.current!;
+    const camera = cameraRef.current!;
+
+    clearSceneObjects();
 
     // Helper function to get color for run type
     const getColorForRunType = (runType: 'outside' | 'inside' | 'racing' | null, inPit?: boolean): number => {
@@ -286,8 +304,8 @@ export default function TrackVisualization({
     }
 
     // Add dynamic grid sized to track (now at origin)
-    const gridSize = Math.ceil(maxRange * 1.2);
-    const gridDivisions = Math.min(Math.ceil(gridSize / 20), 50);
+    const gridSize = Math.max(200, Math.ceil(maxRange * 1.2));
+    const gridDivisions = Math.min(Math.ceil(gridSize / 20), 60);
     const grid = new THREE.GridHelper(gridSize, gridDivisions, 0x1a3d1a, 0x0d1f0d);
     grid.position.set(0, -0.5, 0); // Grid at origin
     scene.add(grid);
@@ -298,7 +316,7 @@ export default function TrackVisualization({
     <div
       ref={containerRef}
       className={`relative ${className}`}
-      style={{ height: '100%', minHeight: '400px', maxHeight: '600px' }}
+      style={{ height: '100%', minHeight: '400px' }}
     >
       {telemetryPoints.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center">

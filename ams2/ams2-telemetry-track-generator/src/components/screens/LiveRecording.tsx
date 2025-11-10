@@ -97,6 +97,12 @@ const RUN_TYPE_OUTLINE_COLORS: Record<RunType, string> = {
   racing: "border-red-400 text-red-200",
 };
 
+const RUN_TYPE_HISTORY_CLASSES: Record<RunType, string> = {
+  outside: "border-l-2 border-blue-500/80 bg-blue-500/10",
+  inside: "border-l-2 border-green-500/80 bg-green-500/10",
+  racing: "border-l-2 border-red-500/80 bg-red-500/10",
+};
+
 const RUN_TYPE_TILE_COLORS: Record<RunType, {
   assigned: string;
   hover: string;
@@ -154,8 +160,13 @@ function formatPosition(worldPos: [number, number, number]): string {
 }
 
 function formatLapTime(currentTime: number): string {
-  const minutes = Math.floor(currentTime / 60);
-  const seconds = currentTime % 60;
+  if (!Number.isFinite(currentTime) || currentTime <= 0) {
+    return "0:00.000";
+  }
+
+  const totalSeconds = Math.max(0, currentTime);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
   return `${minutes}:${seconds.toFixed(3).padStart(6, "0")}`;
 }
 
@@ -230,6 +241,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
   const [overlayRunType, setOverlayRunType] = useState<RunType | null>(null);
   const overlayTelemetryRef = useRef<VisualizerTelemetryPoint[] | null>(null);
   const overlayRunTypeRef = useRef<RunType | null>(null);
+  const trackInfoRef = useRef(trackInfo);
 
   const clearRunTypeAssignment = (
     runType: RunType,
@@ -359,6 +371,48 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
     setLapProgress(0);
   };
 
+  const resetActiveLapState = () => {
+    const activeLapId = currentLapIdRef.current;
+    if (activeLapId !== null) {
+      const nextLaps = lapsRef.current.filter((lap) => !(lap.id === activeLapId && lap.isActive));
+      if (nextLaps.length !== lapsRef.current.length) {
+        lapsRef.current = nextLaps;
+        setLaps(nextLaps);
+      }
+
+      delete lapTelemetryRef.current[activeLapId];
+      delete lapVisualizerTelemetryRef.current[activeLapId];
+      delete lapValidityRef.current[activeLapId];
+    }
+
+    currentLapIdRef.current = null;
+    hasActiveLapRef.current = false;
+    previousLapDistanceRef.current = null;
+
+    if (selectedLapIdRef.current === activeLapId) {
+      selectedLapIdRef.current = null;
+      setSelectedLapId(null);
+    }
+
+    setCurrentLapMetrics({ timeSeconds: 0, distanceMeters: 0 });
+    setLapProgress(0);
+
+    if (selectedRunTypeRef.current) {
+      const activeRunType = selectedRunTypeRef.current;
+      const telemetryPoints = runTypeTelemetryRef.current[activeRunType] ?? [];
+      overlayRunTypeRef.current = activeRunType;
+      setOverlayRunType(activeRunType);
+      const overlayPoints = telemetryPoints.map((point) => ({ ...point }));
+      overlayTelemetryRef.current = overlayPoints;
+      setOverlayTelemetry(overlayPoints);
+    } else {
+      overlayRunTypeRef.current = null;
+      setOverlayRunType(null);
+      overlayTelemetryRef.current = null;
+      setOverlayTelemetry(null);
+    }
+  };
+
   useEffect(() => {
     selectedLapIdRef.current = selectedLapId;
   }, [selectedLapId]);
@@ -379,6 +433,10 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
     overlayRunTypeRef.current = overlayRunType;
   }, [overlayRunType]);
 
+  useEffect(() => {
+    trackInfoRef.current = trackInfo;
+  }, [trackInfo]);
+
   const persistentVisualizerPoints = useMemo(() => (
     RUN_TYPES.flatMap((runType) =>
       (runTypeTelemetryState[runType] ?? []).map((point) => ({
@@ -388,6 +446,17 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
       }))
     )
   ), [runTypeTelemetryState]);
+
+  const hasRunTypeAssignments = useMemo(
+    () => RUN_TYPES.some((runType) => Boolean(runTypeAssignments[runType])),
+    [runTypeAssignments]
+  );
+
+  const completedLapCount = useMemo(
+    () => laps.filter((lap) => !lap.isActive).length,
+    [laps]
+  );
+  const completedLapLabel = completedLapCount === 1 ? "1 completed" : `${completedLapCount} completed`;
 
   useEffect(() => {
     const overlayPoints = overlayTelemetry && overlayTelemetry.length > 0
@@ -503,6 +572,10 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
         if (gameState === GAME_STATES.IN_GAME_PAUSED) {
           debugConsole.warn(`Pause menu detected (gameState=${gameState}).`);
           updateRecordingIndicator("paused", "Paused");
+          setCurrentLapMetrics((prev) => ({
+            timeSeconds: prev.timeSeconds,
+            distanceMeters: prev.distanceMeters,
+          }));
         } else if (
           lastGameState === GAME_STATES.IN_GAME_PAUSED &&
           gameState === GAME_STATES.IN_GAME_PLAYING
@@ -512,7 +585,11 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
         } else if (gameState === GAME_STATES.IN_GAME_RESTARTING) {
           debugConsole.warn("Race restart requested from pause menu.");
           updateRecordingIndicator("restarting", "Restarting race...");
+          resetActiveLapState();
           purgeInvalidLapsFromHistory();
+          setCurrentLapMetrics({ timeSeconds: 0, distanceMeters: 0 });
+          lastGameStateRef.current = gameState;
+          return;
         } else if (
           lastGameState === GAME_STATES.IN_GAME_RESTARTING &&
           gameState === GAME_STATES.IN_GAME_PLAYING
@@ -531,6 +608,10 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
         lastGameStateRef.current = gameState;
       }
 
+      if (gameState === GAME_STATES.IN_GAME_RESTARTING) {
+        return;
+      }
+
       // Calculate telemetry rate (Hz)
       updateCount++;
       const elapsed = (now - rateCheckStart) / 1000;
@@ -540,13 +621,28 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
         rateCheckStart = now;
       }
 
+      const rawLocation = (data.track_location ?? "").trim();
+      const rawVariation = (data.track_variation ?? "").trim();
+      const fallbackLocation = rawLocation.length > 0
+        ? rawLocation
+        : data.track_length
+          ? `Unknown Track (${Math.round(data.track_length)}m)`
+          : "Unknown Track";
+      const nextTrackInfo = {
+        location: fallbackLocation,
+        variation: rawVariation,
+      };
+
       if (firstUpdate) {
         firstUpdate = false;
-        setTrackInfo({
-          location: data.track_location,
-          variation: data.track_variation
-        });
-        debugConsole.success(`Connected to AMS2! Track: ${data.track_location} ${data.track_variation}`);
+        setTrackInfo(nextTrackInfo);
+        debugConsole.success(`Connected to AMS2! Track: ${nextTrackInfo.location} ${nextTrackInfo.variation}`.trim());
+      } else if (
+        nextTrackInfo.location !== trackInfoRef.current.location ||
+        nextTrackInfo.variation !== trackInfoRef.current.variation
+      ) {
+        setTrackInfo(nextTrackInfo);
+        debugConsole.info(`Track context updated: ${nextTrackInfo.location} ${nextTrackInfo.variation}`.trim());
       }
 
       const playerIndex = data.viewed_participant_index;
@@ -794,10 +890,14 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
         const throttlePct = Math.round(data.throttle * 100);
         const brakePct = Math.round(data.brake * 100);
 
+        const rawLapNumber = Number(player.current_lap);
+        const lapNumber = Number.isFinite(rawLapNumber) && rawLapNumber > 0 ? rawLapNumber : 1;
+        const lapValue = `Lap ${lapNumber}\n${formatLapTime(data.current_time)}`;
+
         setTelemetry({
           speed: Math.round(data.speed * 2.23694),
           position: formatPosition(player.world_position),
-          lap: `${player.current_lap} / ${formatLapTime(data.current_time)}`,
+          lap: lapValue,
           gear: data.gear,
           throttle: throttlePct,
           brake: brakePct,
@@ -840,6 +940,18 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
   }, []);
 
   const handleClearLaps = () => {
+    if (lapsRef.current.length === 0) {
+      debugConsole.info("Lap history is already empty.");
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      const confirmed = window.confirm("Are you sure you want to clear all recorded laps?");
+      if (!confirmed) {
+        return;
+      }
+    }
+
     lapsRef.current = [];
     previousLapDistanceRef.current = null;
     hasActiveLapRef.current = false;
@@ -875,6 +987,13 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
       return;
     }
 
+    if (typeof window !== "undefined") {
+      const confirmed = window.confirm("Are you sure you want to delete all the assigned run types?");
+      if (!confirmed) {
+        return;
+      }
+    }
+
     setIsClearingRunTypes(true);
     try {
       RUN_TYPES.forEach((runType) => {
@@ -891,9 +1010,17 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
   };
 
   const handleRunTypeRemove = (runType: RunType) => {
-    if (!runTypeAssignmentsRef.current[runType]) {
+    const existingAssignment = runTypeAssignmentsRef.current[runType];
+    if (!existingAssignment) {
       debugConsole.info(`${RUN_TYPE_LABELS[runType]} is already unassigned.`);
       return;
+    }
+
+    if (typeof window !== "undefined") {
+      const confirmed = window.confirm(`Remove the ${RUN_TYPE_LABELS[runType]} assignment?`);
+      if (!confirmed) {
+        return;
+      }
     }
 
     clearRunTypeAssignment(runType, {
@@ -1109,7 +1236,12 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                       compact
                       valueClassName="whitespace-pre-line text-white/80 text-xs leading-tight tracking-normal"
                     />
-                    <TelemetryCard label="Lap" value={telemetry.lap} compact />
+                    <TelemetryCard
+                      label="Lap"
+                      value={telemetry.lap}
+                      compact
+                      valueClassName="whitespace-pre-line text-white text-xs leading-tight"
+                    />
                     <TelemetryCard label="Gear" value={telemetry.gear} compact />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -1124,7 +1256,19 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                 <div className="flex flex-col flex-1 rounded-lg border border-green-border bg-green-bg/30 min-h-0">
                   <div className="flex items-center justify-between border-b border-green-border px-4 py-3">
                     <h3 className="text-white text-sm font-bold uppercase tracking-wide">Lap History</h3>
-                    <span className="text-xs text-white/60">{laps.length} recorded</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-white/60">{completedLapLabel}</span>
+                      <button
+                        type="button"
+                        className="rounded-full p-1.5 text-white/60 hover:text-red-300 hover:bg-red-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400/60 disabled:opacity-30 disabled:cursor-not-allowed"
+                        onClick={() => handleClearLaps()}
+                        title="Clear lap history"
+                        aria-label="Clear lap history"
+                        disabled={laps.length === 0}
+                      >
+                        <span className="material-symbols-outlined text-base">delete</span>
+                      </button>
+                    </div>
                   </div>
                   <div className="flex-1 overflow-y-auto">
                     {laps.length === 0 ? (
@@ -1136,13 +1280,22 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                         {laps.map((lap) => {
                           const isActive = lap.isActive;
                           const isSelected = selectedLapId === lap.id;
-                          const hasTrackContext = Boolean(trackInfo.location);
-                          const canAssignRunType = hasTrackContext && !isActive && lap.validity === "valid";
+                          const lapAssignmentRunType = RUN_TYPES.find((runType) => runTypeAssignments[runType]?.lapId === lap.id) ?? null;
+                          const assignmentHighlightClass = lapAssignmentRunType ? RUN_TYPE_HISTORY_CLASSES[lapAssignmentRunType] : "";
+                          const stateClasses: string[] = [];
+                          if (isSelected) {
+                            stateClasses.push("bg-green-bg/70");
+                          } else if (isActive) {
+                            stateClasses.push("bg-green-bg/40");
+                          }
+                          if (assignmentHighlightClass) {
+                            stateClasses.push(assignmentHighlightClass);
+                          }
+                          const rowClassName = stateClasses.join(" ");
+                          const canAssignRunType = !isActive && lap.validity === "valid";
                           let runTypeHelperText: string | null = null;
                           if (!canAssignRunType && isSelected) {
-                            if (!hasTrackContext) {
-                              runTypeHelperText = "Track details are still loading; try again in a moment.";
-                            } else if (isActive) {
+                            if (isActive) {
                               runTypeHelperText = "Complete the lap before assigning a run type.";
                             } else if (lap.validity !== "valid") {
                               runTypeHelperText = "Only valid laps can be assigned to a run type.";
@@ -1176,7 +1329,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                           return (
                             <li
                               key={`lap-${lap.startedAt}`}
-                              className={`${isSelected ? "bg-green-bg/70" : isActive ? "bg-green-bg/40" : ""}`}
+                              className={rowClassName}
                             >
                               <div className="px-4 py-3">
                                 <button
@@ -1247,19 +1400,20 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                 <div className="rounded-lg border border-green-border bg-green-bg/30 px-4 py-4">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <h4 className="text-white text-sm font-bold uppercase tracking-wide">Run Type Laps</h4>
-                    <div className="flex items-center gap-3">
-                      <span className="text-[11px] uppercase text-white/50">Outside / Inside / Racing</span>
-                      <button
-                        type="button"
-                        className="text-[11px] uppercase tracking-wide text-primary hover:text-primary/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 disabled:cursor-not-allowed disabled:opacity-40"
-                        onClick={() => {
-                          void handleClearRunTypeAssignments();
-                        }}
-                        disabled={isClearingRunTypes || !trackKeyRef.current}
-                      >
-                        {isClearingRunTypes ? "Clearing…" : "Clear Memory"}
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      className="rounded-full p-1.5 text-white/60 transition-colors hover:text-red-300 hover:bg-red-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400/60 disabled:cursor-not-allowed disabled:opacity-30"
+                      onClick={() => {
+                        void handleClearRunTypeAssignments();
+                      }}
+                      disabled={isClearingRunTypes || !hasRunTypeAssignments}
+                      title="Clear all run type assignments"
+                      aria-label="Clear all run type assignments"
+                    >
+                      <span className="material-symbols-outlined text-base">
+                        {isClearingRunTypes ? "hourglass_top" : "delete"}
+                      </span>
+                    </button>
                   </div>
                   <ul className="mt-3 flex flex-col gap-2">
                     {RUN_TYPES.map((runType) => {
@@ -1288,12 +1442,12 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                             >
                               <button
                                 type="button"
-                                className="w-full text-left px-3 py-3 text-xs text-white/80"
+                                className="w-full text-left px-3 py-3 pr-10 text-xs text-white/80"
                                 onClick={() => handleRunTypeSelect(runType)}
                               >
                                 <div className="flex items-center justify-between text-xs">
                                   <span className={`font-semibold ${tileColors.accent}`}>{RUN_TYPE_LABELS[runType]} Line</span>
-                                  <span className="font-mono text-white/80">Lap {assignment.lapNumber}</span>
+                                  <span className="font-mono text-white/80 inline-block pr-4">Lap {assignment.lapNumber}</span>
                                 </div>
                                 <div className="mt-2 flex flex-wrap gap-3 text-[11px] text-white/70">
                                   <div>
@@ -1320,7 +1474,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                               </button>
                               <button
                                 type="button"
-                                className={`absolute top-2 right-2 rounded-full p-1 transition-all focus:outline-none focus-visible:ring-2 ${tileColors.remove}`}
+                                className={`absolute top-2.5 right-2 rounded-full p-1 transition-all focus:outline-none focus-visible:ring-2 ${tileColors.remove}`}
                                 onClick={(event) => {
                                   event.stopPropagation();
                                   handleRunTypeRemove(runType);
@@ -1356,14 +1510,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
             </div>
 
             {/* Stop Button */}
-            <div className="flex justify-end p-4 gap-3">
-              <button
-                className="flex min-w-[84px] max-w-[240px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 border border-green-border bg-transparent text-white text-sm font-semibold leading-normal tracking-[0.015em] gap-2 hover:bg-green-bg/40"
-                onClick={handleClearLaps}
-              >
-                <span className="material-symbols-outlined">restart_alt</span>
-                <span className="truncate">Clear Laps</span>
-              </button>
+            <div className="flex justify-end p-4">
               <button
                 className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-red-600 hover:bg-red-700 text-white text-base font-bold leading-normal tracking-[0.015em] gap-2"
                 onClick={onStopRecording}
