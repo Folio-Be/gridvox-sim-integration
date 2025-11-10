@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<Reflection>
+    <class name="BRTTIRefCount" base="root class" />
+    <class name="BPersistent" base="BRTTIRefCount">
+        <prop name="Name" type="String" />
+    </class>
+    <class name="CLensFlare" base="BPersistent">
+        <prop name="SunAngle Sensitivity" type="Float" />
+        <prop name="GlobalScale" type="Float" />
+        <prop name="Intensity Falloff Distance" type="Float" />
+        <prop name="FlareElements" type="Fct" />
+    </class>
+    <class name="BRTTIRefCount" base="root class" />
+    <class name="BPersistent" base="BRTTIRefCount">
+        <prop name="Name" type="String" />
+    </class>
+    <class name="CLensFlare::FlareElement" base="BPersistent">
+        <prop name="texture" type="String" />
+        <prop name="Scale" type="Float" />
+        <prop name="Width Scale Min" type="Float" />
+        <prop name="Width Scale Max" type="Float" />
+        <prop name="Height Scale Min" type="Float" />
+        <prop name="Height Scale Max" type="Float" />
+        <prop name="Position" type="Float" />
+        <prop name="Alpha" type="Float" />
+        <prop name="Angle Sensitivity" type="Float" />
+        <prop name="Rotation Sensitivity" type="Float" />
+        <prop name="Colour" type="Vec3f" />
+        <prop name="Rotate" type="Bool" />
+    </class>
+    <data class="CLensFlare" id="0xC656BDC0">
+        <prop name="Name" data="LensFlare - Headlight #3" />
+        <prop name="SunAngle Sensitivity" data="0.4" />
+        <prop name="GlobalScale" data="2.5" />
+        <prop name="Intensity Falloff Distance" data="200" />
+        <prop name="FlareElements" elements="8">
+            <funcpropdata>
+                <data class="CLensFlare::FlareElement" id="0xC4559D10">
+                    <prop name="Name" data="Star" />
+                    <prop name="texture" data="headlight_arc01.dds" />
+                    <prop name="Scale" data="10" />
+                    <prop name="Width Scale Min" data="1" />
+                    <prop name="Width Scale Max" data="1" />
+                    <prop name="Height Scale Min" data="1" />
+                    <prop name="Height Scale Max" data="1" />
+                    <prop name="Position" data="0" />
+                    <prop name="Alpha" data="0" />
+                    <prop name="Angle Sensitivity" data="0.8" />
+                    <prop name="Rotation Sensitivity" data="0" />
+                    <prop name="Colour" data="255;0;0" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0xC455B8D0">
+                    <prop name="Name" data="Rainbow" />
+                    <prop name="texture" data="headlight_blue_disk.DDS" />
+                    <prop name="Scale" data="15" />
+                    <prop name="Width Scale Min" data="1" />
+                    <prop name="Width Scale Max" data="1" />
+                    <prop name="Height Scale Min" data="1" />
+                    <prop name="Height Scale Max" data="1" />
+                    <prop name="Position" data="1" />
+                    <prop name="Alpha" data="0" />
+                    <prop name="Angle Sensitivity" data="1" />
+                    <prop name="Rotation Sensitivity" data="0" />
+                    <prop name="Colour" data="255;0;0" />
+                    <prop name="Rotate" data="true" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0xC455D490">
+                    <prop name="Name" data="Secondary" />
+                    <prop name="texture" data="headlight_spot.dds" />
+                    <prop name="Scale" data="10" />
+                    <prop name="Width Scale Min" data="1" />
+                    <prop name="Width Scale Max" data="1" />
+                    <prop name="Height Scale Min" data="1" />
+                    <prop name="Height Scale Max" data="1" />
+                    <prop name="Position" data="1" />
+                    <prop name="Alpha" data="0" />
+                    <prop name="Angle Sensitivity" data="1" />
+                    <prop name="Rotation Sensitivity" data="0" />
+                    <prop name="Colour" data="255;0;0" />
+                    <prop name="Rotate" data="true" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0xC455F050">
+                    <prop name="Name" data="Streak" />
+                    <prop name="texture" data="star_chroma01.dds" />
+                    <prop name="Scale" data="50" />
+                    <prop name="Width Scale Min" data="1" />
+                    <prop name="Width Scale Max" data="1" />
+                    <prop name="Height Scale Min" data="1" />
+                    <prop name="Height Scale Max" data="1" />
+                    <prop name="Position" data="0" />
+                    <prop name="Alpha" data="0.015" />
+                    <prop name="Angle Sensitivity" data="1" />
+                    <prop name="Rotation Sensitivity" data="1" />
+                    <prop name="Colour" data="255;0;0" />
+                    <prop name="Rotate" data="true" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0xC4560C10">
+                    <prop name="Name" data="Glare (big)" />
+                    <prop name="texture" data="headlight_green_disk.dds" />
+                    <prop name="Scale" data="5" />
+                    <prop name="Width Scale Min" data="0" />
+                    <prop name="Width Scale Max" data="1" />
+                    <prop name="Height Scale Min" data="0" />
+                    <prop name="Height Scale Max" data="1" />
+                    <prop name="Position" data="1" />
+                    <prop name="Alpha" data="0" />
+                    <prop name="Angle Sensitivity" data="0.3" />
+                    <prop name="Rotation Sensitivity" data="0" />
+                    <prop name="Colour" data="255;0;0" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0xC45627D0">
+                    <prop name="Name" data="Glow" />
+                    <prop name="texture" data="headlight_green_disk.dds" />
+                    <prop name="Scale" data="20" />
+                    <prop name="Width Scale Min" data="1" />
+                    <prop name="Width Scale Max" data="1" />
+                    <prop name="Height Scale Min" data="1" />
+                    <prop name="Height Scale Max" data="1" />
+                    <prop name="Position" data="1" />
+                    <prop name="Alpha" data="0" />
+                    <prop name="Angle Sensitivity" data="1" />
+                    <prop name="Rotation Sensitivity" data="0" />
+                    <prop name="Colour" data="255;255;255" />
+                    <prop name="Rotate" data="true" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0xC4564390">
+                    <prop name="Name" data="Rainbow" />
+                    <prop name="texture" data="chromaHexIris1Blur.dds" />
+                    <prop name="Scale" data="12" />
+                    <prop name="Width Scale Min" data="1" />
+                    <prop name="Width Scale Max" data="1" />
+                    <prop name="Height Scale Min" data="1" />
+                    <prop name="Height Scale Max" data="1" />
+                    <prop name="Position" data="-1.6" />
+                    <prop name="Alpha" data="0.06" />
+                    <prop name="Angle Sensitivity" data="0.3" />
+                    <prop name="Rotation Sensitivity" data="0" />
+                    <prop name="Colour" data="255;0;0" />
+                    <prop name="Rotate" data="true" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0xC4565F50">
+                    <prop name="Name" data="Rainbow2" />
+                    <prop name="texture" data="chromaHexIris1Blur.dds" />
+                    <prop name="Scale" data="15" />
+                    <prop name="Width Scale Min" data="1" />
+                    <prop name="Width Scale Max" data="1" />
+                    <prop name="Height Scale Min" data="1" />
+                    <prop name="Height Scale Max" data="1" />
+                    <prop name="Position" data="-1.2" />
+                    <prop name="Alpha" data="0.08" />
+                    <prop name="Angle Sensitivity" data="0.3" />
+                    <prop name="Rotation Sensitivity" data="0" />
+                    <prop name="Colour" data="255;0;0" />
+                    <prop name="Rotate" data="false" />
+                </data>
+            </funcpropdata>
+        </prop>
+    </data>
+</Reflection>

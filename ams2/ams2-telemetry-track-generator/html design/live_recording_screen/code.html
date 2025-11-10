@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Telemetry Capture</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#4bd260",
+              "background-light": "#f6f8f6",
+              "background-dark": "#131f15",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .pulse-red {
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-[#132015] dark group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-10 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col w-full max-w-[1200px] flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#29422d] px-10 py-3">
+<div class="flex items-center gap-4 text-white">
+<div class="size-4 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z" fill="currentColor" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Telemetry Capture</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-red-500 pulse-red"></div>
+<span class="text-white text-sm font-bold leading-normal tracking-[0.015em]">Recording...</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-green-500"></div>
+<span class="text-white text-sm font-bold leading-normal tracking-[0.015em]">Connected</span>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User avatar placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBZUJRAK6Wp0Y3TFhNQjM_1EastAQS-rSrJ62Co6GS99GDKxGDKEPGI4MWmtzU8pl-29eczGQOVG4tbUnnvf7QaAnBJPPlKtNJ6YjN82tHXCgSksozCePmJbOvMiutDfrCqZmEZYOzxB8j_f3uZoq2wr9YBMzZ9fsEYojOWx3wbuxRMkLXBJoPG5Udyl78N3L4i2hasR17NN74Hu5odwQyZxEx5exCf-atSGQ0xzR8ly3l63CbG5oWIOfMRSjieN0nbpUJ_xnkqJrM");'></div>
+</div>
+</header>
+<main class="flex flex-col flex-1 p-4 gap-4">
+<div class="flex flex-col gap-3 p-4">
+<div class="flex gap-6 justify-between">
+<p class="text-white text-base font-medium leading-normal">Lap Completion</p>
+<p class="text-white text-sm font-normal leading-normal">65%</p>
+</div>
+<div class="rounded bg-[#3a5f40]">
+<div class="h-2 rounded bg-primary" style="width: 65%;"></div>
+</div>
+<p class="text-[#9ac1a0] text-sm font-normal leading-normal">Lap 3</p>
+</div>
+<div class="flex flex-1 gap-4">
+<div class="w-3/5 flex">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg object-cover bg-[#0a110b]" data-location="Silverstone Circuit" style="https://lh3.googleusercontent.com/aida-public/AB6AXuA2QJBUqFnMDtJ_UgOL0AFoaazm3udo93VgWqSZULyZtGq2OuTYD5XdjqBvKvYCai0mqzUcttln_UQvI6-H5AnHA8dY-HPzHkOsMzM9BYgRx47ZYzZWD3yvphmF8J1h1vwUcUpJL06yHhEZDSJixatwAjYarLAajjee0g7S2nxArqgcCTwTVi4hm-yjqlfxxxuEYN9n7r4Hct3TpDjKebyR2puZjGXPo0ulRYIBz2UaMI37pg0GDIHNmHVmjfpjeQGMZ0qZgPGu2M4">
+<img alt="A 2D track map showing a car's position and the path recorded in lime green on a dark background." class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrig_QgB2VhvtDYXYfstwxL0-hzx4nZVDMRRPmQ73-fup6YqD9qdQ8zZBcPuxy4tF9UwfkQr8Ip1BXw7x44ppleyctIgMBE34dqOgnWR2koE4lFN6wWQU116qzYlQUBSuuUFQzkMIk5fyRPTQ2BJSo8pkBdgdESBSDck64k4Jz60BuC9iVPtSbuDP5cEIlE9021bsG5V6h1qwcdli6V6LgDJG68baER512PT9WBzwAoxsGOjY7z5JNPWw_IK0RuCdqITDNV6hRzYY"/>
+</div>
+</div>
+<div class="w-2/5 flex flex-col">
+<div class="flex flex-wrap gap-4">
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#3a5f40]">
+<p class="text-white text-base font-medium leading-normal">Speed</p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">150 MPH</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#3a5f40]">
+<p class="text-white text-base font-medium leading-normal">Position</p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">X:123 Y:456 Z:78</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#3a5f40]">
+<p class="text-white text-base font-medium leading-normal">Lap</p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">3 / 2:05.123</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#3a5f40]">
+<p class="text-white text-base font-medium leading-normal">Gear</p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">5</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#3a5f40]">
+<p class="text-white text-base font-medium leading-normal">Throttle</p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">88%</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#3a5f40]">
+<p class="text-white text-base font-medium leading-normal">Brake</p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">12%</p>
+</div>
+</div>
+</div>
+</div>
+<div class="px-4 py-3 @container flex-1 flex flex-col min-h-0">
+<h3 class="text-white text-lg font-bold mb-3">Debug Log</h3>
+<div class="flex overflow-hidden rounded-lg border border-[#3a5f40] bg-[#132015] flex-1">
+<table class="w-full">
+<thead class="sticky top-0 bg-[#1d2f20]">
+<tr>
+<th class="px-4 py-3 text-left text-white w-1/4 text-sm font-medium leading-normal">Timestamp</th>
+<th class="px-4 py-3 text-left text-white w-3/4 text-sm font-medium leading-normal">Event</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#3a5f40]">
+<tr>
+<td class="px-4 py-2 text-[#9ac1a0] text-sm font-normal leading-normal whitespace-nowrap">14:32:05.123</td>
+<td class="px-4 py-2 text-[#9ac1a0] text-sm font-normal leading-normal">Connection established with simulator.</td>
+</tr>
+<tr>
+<td class="px-4 py-2 text-[#9ac1a0] text-sm font-normal leading-normal whitespace-nowrap">14:32:05.456</td>
+<td class="px-4 py-2 text-[#9ac1a0] text-sm font-normal leading-normal">Recording session started.</td>
+</tr>
+<tr>
+<td class="px-4 py-2 text-[#9ac1a0] text-sm font-normal leading-normal whitespace-nowrap">14:33:15.789</td>
+<td class="px-4 py-2 text-[#9ac1a0] text-sm font-normal leading-normal">Lap 1 completed.</td>
+</tr>
+<tr>
+<td class="px-4 py-2 text-[#9ac1a0] text-sm font-normal leading-normal whitespace-nowrap">14:34:25.912</td>
+<td class="px-4 py-2 text-[#9ac1a0] text-sm font-normal leading-normal">Lap 2 completed.</td>
+</tr>
+<tr>
+<td class="px-4 py-2 text-[#9ac1a0] text-sm font-normal leading-normal whitespace-nowrap">14:35:01.337</td>
+<td class="px-4 py-2 text-[#9ac1a0] text-sm font-normal leading-normal">Data packet received.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="flex justify-end p-4">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-red-600 hover:bg-red-700 text-white text-base font-bold leading-normal tracking-[0.015em] gap-2">
+<span class="material-symbols-outlined">stop_circle</span>
+<span class="truncate">Stop &amp; Save Recording</span>
+</button>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+</body></html>

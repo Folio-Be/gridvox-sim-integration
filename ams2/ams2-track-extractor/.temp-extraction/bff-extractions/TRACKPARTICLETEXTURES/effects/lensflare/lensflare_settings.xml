@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<LensFlare>
+	<Intensity>
+		<Light name="eVL_LEFT_HEAD_LIGHT" v="1.5" />
+		<Light name="eVL_RIGHT_HEAD_LIGHT" v="1.5" />
+		<Light name="eVL_LEFT_BRAKE_LIGHT" v="1.0" />
+		<Light name="eVL_RIGHT_BRAKE_LIGHT" v="1.0" />
+		<Light name="eVL_LEFT_TAIL_LIGHT" v="1.5" />
+		<Light name="eVL_RIGHT_TAIL_LIGHT" v="1.5" />
+		<Light name="eVL_LEFT_COMBINED_TAIL_BRAKE_LIGHT" v="1.0" />
+		<Light name="eVL_RIGHT_COMBINED_TAIL_BRAKE_LIGHT" v="1.0" />
+		<Light name="eVL_LEFT_REVERSE_LIGHT" v="0.2" />
+		<Light name="eVL_RIGHT_REVERSE_LIGHT" v="0.2" />
+		<Light name="eVL_COCKPIT_LIGHT" v="1.0" />
+		<Light name="eVL_MIDDLE_BRAKE_LIGHT" v="0.8" />
+		<Light name="eVL_FRONTLEFT_BRAKE_GLOW" v="0.8" />
+		<Light name="eVL_FRONTRIGHT_BRAKE_GLOW" v="0.8" />
+		<Light name="eVL_REARLEFT_BRAKE_GLOW" v="0.8" />
+		<Light name="eVL_REARRIGHT_BRAKE_GLOW" v="0.8" />
+		<Light name="eVL_FRONTLEFT_DAY_LIGHT" v="1.0" />
+		<Light name="eVL_FRONTRIGHT_DAY_LIGHT" v="1.0" />
+		<Light name="eVL_NUMBERPLATE_LIGHT" v="1.0" />
+		<Light name="eVL_LEADER_LIGHT_P1" v="1.0" />
+		<Light name="eVL_LEADER_LIGHT_P2" v="1.0" />
+		<Light name="eVL_LEADER_LIGHT_P3" v="1.0" />
+		<Light name="eVL_REARLEFT_DAY_LIGHT" v="1.0" />
+		<Light name="eVL_REARRIGHT_DAY_LIGHT" v="1.0" />
+		<Light name="eVL_REARLEFT_COMBINED_DAY_BRAKE_LIGHT" v="1.0" />
+		<Light name="eVL_REARRIGHT_COMBINED_DAY_BRAKE_LIGHT" v="1.0" />
+		<Light name="eVL_COCKPIT_PERMANENT_LIGHT" v="1.0" />
+		<Light name="eVL_EXHAUST_GLOW" v="0.8" />
+		<Light name="eVL_AUX_LIGHT" v="1.0" />
+	</Intensity>
+</LensFlare>

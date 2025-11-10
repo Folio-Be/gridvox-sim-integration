@@ -1,0 +1,156 @@
+<?xml version="1.0" ?>
+<Reflection>
+    <class name="BRTTIRefCount" base="root class" />
+    <class name="BPersistent" base="BRTTIRefCount">
+        <prop name="Name" type="String" />
+    </class>
+    <class name="CLensFlare" base="BPersistent">
+        <prop name="SunAngle Sensitivity" type="Float" />
+        <prop name="GlobalScale" type="Float" />
+        <prop name="Size Falloff Distance" type="Float" />
+        <prop name="Intensity Falloff Distance" type="Float" />
+        <prop name="FlareElements" type="Fct" />
+    </class>
+    <class name="BRTTIRefCount" base="root class" />
+    <class name="BPersistent" base="BRTTIRefCount">
+        <prop name="Name" type="String" />
+    </class>
+    <class name="CLensFlare::FlareElement" base="BPersistent">
+        <prop name="texture" type="String" />
+        <prop name="Scale" type="Float" />
+        <prop name="Position" type="Float" />
+        <prop name="Alpha" type="Float" />
+        <prop name="Rotate" type="Bool" />
+    </class>
+    <data class="CLensFlare" id="0x1AF4198">
+        <prop name="Name" data="LensFlare" />
+        <prop name="SunAngle Sensitivity" data="0.37" />
+        <prop name="GlobalScale" data="8" />
+        <prop name="Size Falloff Distance" data="0" />
+        <prop name="Intensity Falloff Distance" data="0" />
+        <prop name="FlareElements" elements="15">
+            <funcpropdata>
+                <data class="CLensFlare::FlareElement" id="0x2F1F340">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="LENS_FLARE_SUN_DUSK.dds" />
+                    <prop name="Scale" data="17" />
+                    <prop name="Position" data="0" />
+                    <prop name="Alpha" data="10" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F344">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun01.dds" />
+                    <prop name="Scale" data="10" />
+                    <prop name="Position" data="0.01" />
+                    <prop name="Alpha" data="15" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F379">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun11.dds" />
+                    <prop name="Scale" data="0.45" />
+                    <prop name="Position" data="0.32" />
+                    <prop name="Alpha" data="4" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F380">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun11.dds" />
+                    <prop name="Scale" data="0.56" />
+                    <prop name="Position" data="0.35" />
+                    <prop name="Alpha" data="4" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F348">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun08.dds" />
+                    <prop name="Scale" data="1.2" />
+                    <prop name="Position" data="0.38" />
+                    <prop name="Alpha" data="20" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F34C">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun08.dds" />
+                    <prop name="Scale" data="0.82" />
+                    <prop name="Position" data="0.42" />
+                    <prop name="Alpha" data="2" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F374">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun11.dds" />
+                    <prop name="Scale" data="0.7" />
+                    <prop name="Position" data="0.45" />
+                    <prop name="Alpha" data="4" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F375">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun11.dds" />
+                    <prop name="Scale" data="0.5" />
+                    <prop name="Position" data="0.48" />
+                    <prop name="Alpha" data="4" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F376">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun08.dds" />
+                    <prop name="Scale" data="1.2" />
+                    <prop name="Position" data="0.55" />
+                    <prop name="Alpha" data="5" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F377">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun11.dds" />
+                    <prop name="Scale" data="0.8" />
+                    <prop name="Position" data="0.58" />
+                    <prop name="Alpha" data="4" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F378">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun11.dds" />
+                    <prop name="Scale" data="0.5" />
+                    <prop name="Position" data="0.62" />
+                    <prop name="Alpha" data="1" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F373">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun11.dds" />
+                    <prop name="Scale" data="0.9" />
+                    <prop name="Position" data="0.89" />
+                    <prop name="Alpha" data="0.5" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F35C">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun11.dds" />
+                    <prop name="Scale" data="0.6" />
+                    <prop name="Position" data="1.1" />
+                    <prop name="Alpha" data="0.1" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F360">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun11.dds" />
+                    <prop name="Scale" data="1" />
+                    <prop name="Position" data="1.2" />
+                    <prop name="Alpha" data="0.1" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0x2F1F364">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="lens_flare_sun09.dds" />
+                    <prop name="Scale" data="5" />
+                    <prop name="Position" data="1.3" />
+                    <prop name="Alpha" data="10" />
+                    <prop name="Rotate" data="true" />
+                </data>
+            </funcpropdata>
+        </prop>
+    </data>
+</Reflection>

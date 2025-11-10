@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<Reflection>
+    <class name="BRTTIRefCount" base="root class" />
+    <class name="BPersistent" base="BRTTIRefCount">
+        <prop name="Name" type="String" />
+    </class>
+    <class name="CLensFlare" base="BPersistent">
+        <prop name="SunAngle Sensitivity" type="Float" />
+        <prop name="GlobalScale" type="Float" />
+        <prop name="Intensity Falloff Distance" type="Float" />
+        <prop name="FlareElements" type="Fct" />
+    </class>
+    <class name="BRTTIRefCount" base="root class" />
+    <class name="BPersistent" base="BRTTIRefCount">
+        <prop name="Name" type="String" />
+    </class>
+    <class name="CLensFlare::FlareElement" base="BPersistent">
+        <prop name="texture" type="String" />
+        <prop name="Scale" type="Float" />
+        <prop name="Width Scale Min" type="Float" />
+        <prop name="Width Scale Max" type="Float" />
+        <prop name="Height Scale Min" type="Float" />
+        <prop name="Height Scale Max" type="Float" />
+        <prop name="Position" type="Float" />
+        <prop name="Alpha" type="Float" />
+        <prop name="Angle Sensitivity" type="Float" />
+        <prop name="Rotation Sensitivity" type="Float" />
+        <prop name="Colour" type="Vec3f" />
+        <prop name="Rotate" type="Bool" />
+    </class>
+    <data class="CLensFlare" id="0xB07A6F40">
+        <prop name="Name" data="LensFlare - Headlight #3" />
+        <prop name="SunAngle Sensitivity" data="0.2" />
+        <prop name="GlobalScale" data="1.75" />
+        <prop name="Intensity Falloff Distance" data="300" />
+        <prop name="FlareElements" elements="2">
+            <funcpropdata>
+                <data class="CLensFlare::FlareElement" id="0xACBFF420">
+                    <prop name="Name" data="star" />
+                    <prop name="texture" data="sparkle02.dds" />
+                    <prop name="Scale" data="200" />
+                    <prop name="Width Scale Min" data="1" />
+                    <prop name="Width Scale Max" data="1" />
+                    <prop name="Height Scale Min" data="1" />
+                    <prop name="Height Scale Max" data="1" />
+                    <prop name="Position" data="0" />
+                    <prop name="Alpha" data="0.025" />
+                    <prop name="Angle Sensitivity" data="3" />
+                    <prop name="Rotation Sensitivity" data="0" />
+                    <prop name="Colour" data="255;255;255" />
+                    <prop name="Rotate" data="false" />
+                </data>
+                <data class="CLensFlare::FlareElement" id="0xB07BD6D0">
+                    <prop name="Name" data="glow" />
+                    <prop name="texture" data="aries_glow.dds" />
+                    <prop name="Scale" data="75" />
+                    <prop name="Width Scale Min" data="1" />
+                    <prop name="Width Scale Max" data="1" />
+                    <prop name="Height Scale Min" data="1" />
+                    <prop name="Height Scale Max" data="1" />
+                    <prop name="Position" data="0" />
+                    <prop name="Alpha" data="0.025" />
+                    <prop name="Angle Sensitivity" data="7" />
+                    <prop name="Rotation Sensitivity" data="0" />
+                    <prop name="Colour" data="255;255;255" />
+                    <prop name="Rotate" data="false" />
+                </data>
+            </funcpropdata>
+        </prop>
+    </data>
+</Reflection>

@@ -1,52 +1,133 @@
-# AMS2 Track Extractor
+# AMS2 Track Extractor (PCarsTools Approach)
 
-Extract and convert Automobilista 2 race tracks to glTF 2.0 format for Three.js visualization.
+⚠️ **PROJECT DISCONTINUED** - See [PROJECT-STOPPED.md](./PROJECT-STOPPED.md) for details.
 
-## Project Overview
+## Status: BLOCKED
 
-**Purpose:** Generate 3D track models usable in GridVox telemetry visualization system  
+**This extraction approach does NOT work for built-in AMS2 tracks** due to incompatible pak encryption.
+
+- ❌ **Built-in tracks** (Cadwell Park, Silverstone, Spa, Monza, etc.): Encrypted - CANNOT extract
+- ✅ **Mod/DLC tracks** (Fuji, Emirates, Florence, Knockhill, etc.): Unencrypted - CAN extract
+- ✅ **Recommended Alternative**: Telemetry-based approach in [ams2-telemetry-track-generator](../ams2-telemetry-track-generator/)
+
+## Why It Failed
+
+After 22 hours of deep investigation, we discovered:
+
+1. **Built-in AMS2 tracks** store geometry in encrypted pak files with incompatible encryption
+2. **PCarsTools** was designed for Project Cars 1/2 and cannot decrypt AMS2's newer pak system
+3. **Only mod tracks** have extractable .meb mesh files in Tracks/ directories
+4. **~200+ built-in tracks** are inaccessible using this approach
+
+See **[PROJECT-STOPPED.md](./PROJECT-STOPPED.md)** for complete technical analysis.
+
+## What We Built (Still Valuable)
+
+Despite the blocker, 800+ lines of working code were created:
+- ✅ DirectX mesh binary parser (MebParser.ts)
+- ✅ glTF converter with coordinate transformation (MebToGltfConverter.ts)
+- ✅ Extraction workflow orchestration (extract-track-v2.ts)
+
+**This code CAN extract mod tracks** that have .meb files (e.g., Fuji, Emirates Raceway).
+
+---
+
+## Original Project Overview (Historical)
+
+**Purpose:** Generate 3D track models from AMS2 game files for GridVox telemetry visualization  
+**Method:** PCarsTools extraction → Blender conversion → glTF optimization  
 **Target Format:** glTF 2.0 (optimized for Three.js)  
-**Approaches:** 4 methods with varying success rates (40-95%)
+**Success Rate:** ~40% (requires accessible game files and manual workflow)
 
-## Quick Start
+> **Note:** For a simpler approach with 95% success rate, see the telemetry-based method:  
+> [ams2-telemetry-track-generator](../ams2-telemetry-track-generator/)
 
-### Prerequisites
+## ⚠️ Important Limitations
 
-**For All Approaches:**
-- Node.js 18+
-- npm or yarn
+**This approach has significant challenges:**
+- ❌ **Manual coordinate alignment required** - Telemetry won't align automatically
+- ❌ **40% success rate** - Many tracks have inaccessible or encrypted files
+- ❌ **Complex toolchain** - Requires PCarsTools, Blender, .NET, manual steps
+- ❌ **Game updates break workflow** - File structure changes with patches
+- ❌ **2+ hours per track** - Time-intensive manual process
 
-**For Procedural Tracks (Recommended):**
-- Telemetry recordings from `track-map-core`
+**When to use this approach:**
+- ✅ You need high-fidelity visual models (for presentations/marketing)
+- ✅ Telemetry alignment is not critical
+- ✅ You're willing to invest time in manual calibration
 
-**For Extraction (Advanced):**
-- AMS2 installation
-- .NET 6.0 SDK
-- Blender 4.0+
-- See [MANUAL-SETUP.md](./MANUAL-SETUP.md)
+**When NOT to use:**
+- ❌ You need telemetry replay (coordinates won't match)
+- ❌ You want quick results
+- ❌ You want to process many tracks
 
-### Installation
+## Prerequisites
+
+### Required Software
+
+1. **Node.js 18+**
+   - Download: https://nodejs.org/
+
+2. **.NET 6.0 Runtime**
+   - Download: https://dotnet.microsoft.com/download/dotnet/6.0
+   - Verify: `dotnet --version`
+
+3. **Blender 4.0+**
+   - Download: https://www.blender.org/download/
+   - Used for file format conversion
+
+4. **AMS2 Installation**
+   - Full game installation required
+   - Access to game files directory
+
+### PCarsTools Setup
+
+See [SETUP.md](./SETUP.md) for detailed setup instructions.
+
+**Quick checklist:**
+- [ ] PCarsTools binary (`pcarstools_x64.exe`) in `tools/PCarsTools/`
+- [ ] Oodle DLL (`oo2core_4_win64.dll`) in `tools/PCarsTools/`
+- [ ] .NET 6.0 Runtime installed
+- [ ] Blender installed and in PATH
+
+## Installation
 
 ```bash
 cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor
 npm install
 ```
 
-### Usage
+## Usage
 
-#### Generate 3-Run Mapped Track (Recommended)
+### Step 1: Extract Track Files
 
 ```bash
-# After driving 3 laps (outside/inside/racing line)
-npm run generate-procedural -- \
-  --mapping-mode \
-  --track silverstone \
-  --outside-border telemetry-data/silverstone-outside.json \
-  --inside-border telemetry-data/silverstone-inside.json \
-  --racing-line telemetry-data/silverstone-racing.json
-
-# Output: converted-tracks/silverstone-mapped.glb
+# Extract track geometry from AMS2
+npm run extract -- --track silverstone
 ```
+
+This uses PCarsTools to:
+- Locate track files in AMS2 installation
+- Extract compressed `.bff` archives
+- Convert to intermediate format
+
+### Step 2: Convert to glTF (Manual - Blender Required)
+
+Currently requires manual Blender workflow:
+1. Open extracted files in Blender
+2. Import track mesh
+3. Export as glTF 2.0
+4. Save to `extracted-tracks/`
+
+See [MANUAL-SETUP.md](./MANUAL-SETUP.md) for detailed Blender workflow.
+
+### Step 3: Optimize for Web
+
+```bash
+npm run optimize -- extracted-tracks/silverstone.glb
+```
+
+Output: `converted-tracks/silverstone-optimized.glb`
 
 #### Extract from AMS2 (Try First)
 

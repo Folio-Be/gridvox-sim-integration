@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>3D Track Visualization</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4bd260",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#131f15",
+                        "status-warning": "#FFBF00",
+                        "status-error": "#FF3131"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        .custom-checkbox-label input:checked + .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white">
+<div class="flex h-screen w-full flex-row">
+<!-- Left Sidebar -->
+<aside class="flex w-[280px] flex-col border-r border-white/10 bg-[#1A1A1A]">
+<div class="flex h-full flex-col p-4">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3 p-2">
+<span class="material-symbols-outlined text-primary">layers</span>
+<div class="flex flex-col">
+<h1 class="text-base font-medium leading-normal text-white">Layers</h1>
+<p class="text-sm font-normal leading-normal text-gray-400">Toggle visibility</p>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="custom-checkbox-label flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 hover:bg-white/5 has-[:checked]:text-primary">
+<input class="peer hidden" type="checkbox"/>
+<span class="material-symbols-outlined text-gray-400 peer-checked:text-primary">check_box_outline_blank</span>
+<p class="text-sm font-medium leading-normal text-white">Racing Line</p>
+</label>
+<label class="custom-checkbox-label flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 hover:bg-white/5 has-[:checked]:text-primary">
+<input checked="" class="peer hidden" type="checkbox"/>
+<span class="material-symbols-outlined text-primary">check_box</span>
+<p class="text-sm font-medium leading-normal text-white">Track Centerline</p>
+</label>
+<label class="custom-checkbox-label flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 hover:bg-white/5 has-[:checked]:text-primary">
+<input class="peer hidden" type="checkbox"/>
+<span class="material-symbols-outlined text-gray-400 peer-checked:text-primary">check_box_outline_blank</span>
+<p class="text-sm font-medium leading-normal text-white">Track Edges</p>
+</label>
+<label class="custom-checkbox-label flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 hover:bg-white/5 has-[:checked]:text-primary">
+<input checked="" class="peer hidden" type="checkbox"/>
+<span class="material-symbols-outlined text-primary">check_box</span>
+<p class="text-sm font-medium leading-normal text-white">Sector Markers</p>
+</label>
+<label class="custom-checkbox-label flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 hover:bg-white/5 has-[:checked]:text-primary">
+<input class="peer hidden" type="checkbox"/>
+<span class="material-symbols-outlined text-gray-400 peer-checked:text-primary">check_box_outline_blank</span>
+<p class="text-sm font-medium leading-normal text-white">Start/Finish Line</p>
+</label>
+<label class="custom-checkbox-label flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 hover:bg-white/5 has-[:checked]:text-primary">
+<input class="peer hidden" type="checkbox"/>
+<span class="material-symbols-outlined text-gray-400 peer-checked:text-primary">check_box_outline_blank</span>
+<p class="text-sm font-medium leading-normal text-white">Apex Points</p>
+</label>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex flex-1 flex-col">
+<div class="relative flex flex-1 flex-col bg-gradient-to-b from-[#1A1A1A] to-black">
+<!-- This div would be the WebGL canvas -->
+<div class="flex h-full w-full items-center justify-center">
+<img alt="3D visualization of a race track with a glowing green racing line on a dark background, representing a simulator view." class="h-auto w-full max-w-4xl object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPMvbK5mMhsucNidM-OFmHY6J0OhuYjkA77V2F5gzBzwGmqLuBk-NYBxEb3cYKuHbc4u8QPqhwCOdTnRMDlId_tbeyKcs8RiMG73kNSZ0f7d_zijbro_3wtRhnjHv8cyiwr8r6R_U4RrHxTLK2tK84HOfM5IZOxrX0cUHQns6vqobEVaxo1UuRAdlnjSzQjk3Jm2kCUegXijHk0v7_Xw1vOG6XCb99WzuAVK5Dx1BQ-qQ3i13VnU_NCvVeOWzpnEa92WH_ik30j0o"/>
+</div>
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-lg bg-black/50 px-4 py-2">
+<p class="text-base font-normal leading-normal text-gray-300">Right-click to pan, Scroll to zoom</p>
+</div>
+</div>
+<!-- Bottom Panel -->
+<div class="flex h-[240px] flex-col border-t border-white/10 bg-[#1A1A1A]">
+<div class="flex flex-1">
+<div class="flex w-full">
+<div class="flex flex-1 flex-col px-4 py-3">
+<div class="flex h-10 w-full items-center justify-center rounded-lg bg-[#2d2d2d] p-1">
+<label class="flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-md px-2 text-sm font-medium leading-normal text-gray-300 has-[:checked]:bg-[#1A1A1A] has-[:checked]:text-white">
+<span class="truncate">Track Statistics</span>
+<input class="invisible w-0" name="panel-toggle" type="radio" value="Track Statistics"/>
+</label>
+<label class="flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-md px-2 text-sm font-medium leading-normal text-gray-300 has-[:checked]:bg-[#1A1A1A] has-[:checked]:text-white">
+<span class="truncate">Validation Results</span>
+<input checked="" class="invisible w-0" name="panel-toggle" type="radio" value="Validation Results"/>
+</label>
+</div>
+<div class="grid flex-1 grid-cols-4 p-4">
+<div class="flex flex-col gap-1 border-r border-solid border-white/10 py-2 pr-4">
+<p class="text-sm font-normal leading-normal text-gray-400">Data Integrity</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined fill text-sm text-primary">check_circle</span>
+<p class="text-sm font-normal leading-normal text-white">Success</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 border-r border-solid border-white/10 py-2 px-4">
+<p class="text-sm font-normal leading-normal text-gray-400">Track Smoothness</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined fill text-sm text-primary">check_circle</span>
+<p class="text-sm font-normal leading-normal text-white">Success</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 border-r border-solid border-white/10 py-2 px-4">
+<p class="text-sm font-normal leading-normal text-gray-400">Closed Loop</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined fill text-sm text-primary">check_circle</span>
+<p class="text-sm font-normal leading-normal text-white">Success</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 py-2 pl-4">
+<p class="text-sm font-normal leading-normal text-gray-400">Telemetry Gaps</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined fill text-sm text-status-warning">warning</span>
+<p class="text-sm font-normal leading-normal text-status-warning">Warning</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-end gap-3 border-t border-white/10 px-4 py-3">
+<button class="flex h-10 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-[#444444] px-5 text-base font-bold leading-normal tracking-[0.015em] text-white hover:bg-[#555555]">
+<span class="truncate">Re-process</span>
+</button>
+<button class="flex h-10 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary px-5 text-base font-bold leading-normal tracking-[0.015em] text-black hover:bg-primary/90">
+<span class="truncate">Export Track</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

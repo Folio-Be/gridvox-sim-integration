@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+dist/
+
+# Output files
+output/*.glb
+output/*.gltf
+output/*.json
+
+# Telemetry data (can be large)
+telemetry-data/*.json
+telemetry-data/*.csv
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+*.tmp
+temp/

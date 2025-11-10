@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create New Track Model</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#4bd260",
+              "background-light": "#f6f8f6",
+              "background-dark": "#131f15",
+              "modal-bg": "#2A2A2A",
+              "input-bg": "#222222",
+              "accent": "#ADFF2F",
+              "text-light": "#E0E0E0",
+              "charcoal": "#1E1E1E"
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .custom-radio:checked {
+            background-color: #ADFF2F;
+            border-color: #ADFF2F;
+        }
+        .custom-radio:checked:after {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            border-radius: 9999px;
+            background-color: #1E1E1E;
+        }
+    </style>
+</head>
+<body class="font-display bg-charcoal">
+<div class="relative flex min-h-screen w-full items-center justify-center p-4">
+<!-- Modal Overlay -->
+<div class="absolute inset-0 bg-black/50"></div>
+<!-- Modal Container -->
+<div class="relative flex flex-col w-full max-w-[600px] h-[580px] bg-modal-bg text-text-light rounded-xl shadow-2xl p-6">
+<!-- PageHeading -->
+<div class="flex flex-wrap justify-between gap-3 pb-4">
+<p class="text-white text-2xl font-bold leading-tight">Create New Track Model</p>
+</div>
+<!-- Form Content -->
+<div class="flex flex-col space-y-4">
+<!-- Track Details -->
+<div class="grid grid-cols-2 gap-4">
+<label class="flex flex-col">
+<p class="text-text-light text-sm font-medium pb-1.5">Track Name</p>
+<input class="form-input flex w-full resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 focus:ring-2 focus:ring-accent border-none bg-input-bg h-12 placeholder:text-gray-500 p-3 text-base font-normal leading-normal" placeholder="e.g., Silverstone" value=""/>
+</label>
+<label class="flex flex-col">
+<p class="text-text-light text-sm font-medium pb-1.5">Variation</p>
+<input class="form-input flex w-full resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 focus:ring-2 focus:ring-accent border-none bg-input-bg h-12 placeholder:text-gray-500 p-3 text-base font-normal leading-normal" placeholder="e.g., Grand Prix Circuit" value=""/>
+</label>
+</div>
+<label class="flex flex-col">
+<p class="text-text-light text-sm font-medium pb-1.5">Location</p>
+<input class="form-input flex w-full resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 focus:ring-2 focus:ring-accent border-none bg-input-bg h-12 placeholder:text-gray-500 p-3 text-base font-normal leading-normal" placeholder="e.g., United Kingdom" value=""/>
+</label>
+<label class="flex flex-col">
+<p class="text-text-light text-sm font-medium pb-1.5">Notes</p>
+<textarea class="form-input flex w-full resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 focus:ring-2 focus:ring-accent border-none bg-input-bg min-h-24 placeholder:text-gray-500 p-3 text-base font-normal leading-normal" placeholder="e.g., Dry conditions, GT3 setup"></textarea>
+</label>
+<!-- SectionHeader -->
+<h3 class="text-white text-base font-bold leading-tight tracking-[-0.015em] pt-2">Recording Method</h3>
+<!-- Radio Buttons -->
+<div class="space-y-2">
+<label class="flex items-center gap-3 p-3 rounded-lg bg-input-bg border-2 border-transparent has-[:checked]:border-accent cursor-pointer">
+<input checked="" class="form-radio custom-radio flex items-center justify-center appearance-none w-5 h-5 rounded-full bg-charcoal border-2 border-gray-600 checked:bg-accent checked:border-accent focus:ring-2 focus:ring-offset-2 focus:ring-offset-input-bg focus:ring-accent" name="recording-method" type="radio"/>
+<span class="text-text-light text-sm font-medium">Manual 3-Run Recording</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg bg-input-bg border-2 border-transparent has-[:checked]:border-accent cursor-pointer">
+<input class="form-radio custom-radio flex items-center justify-center appearance-none w-5 h-5 rounded-full bg-charcoal border-2 border-gray-600 checked:bg-accent checked:border-accent focus:ring-2 focus:ring-offset-2 focus:ring-offset-input-bg focus:ring-accent" name="recording-method" type="radio"/>
+<span class="text-text-light text-sm font-medium">Load Existing Telemetry Files</span>
+</label>
+</div>
+<!-- Output Directory -->
+<label class="flex flex-col pt-2">
+<p class="text-text-light text-sm font-medium pb-1.5">Output Directory</p>
+<div class="flex items-center gap-2">
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-gray-400 border-none bg-input-bg h-12 p-3 text-sm font-normal" readonly="" value="C:\Users\User\Documents\TrackModels\"/>
+<button class="flex items-center justify-center rounded-lg h-12 px-4 bg-gray-600 text-text-light text-sm font-medium hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-accent">Browse...</button>
+</div>
+</label>
+</div>
+<!-- Footer Actions -->
+<div class="flex-grow"></div>
+<div class="flex justify-end items-center gap-3 pt-6 border-t border-t-gray-700/50">
+<button class="flex items-center justify-center rounded-lg h-11 px-6 bg-transparent text-text-light text-base font-medium hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-accent">Cancel</button>
+<button class="flex items-center justify-center rounded-lg h-11 px-6 bg-accent text-charcoal text-base font-bold hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-modal-bg focus:ring-accent">Next: Recording</button>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<Reflection>
+    <class name="BRTTIRefCount" base="root class" />
+    <class name="BPersistent" base="BRTTIRefCount">
+        <prop name="Name" type="String" />
+    </class>
+    <class name="CLensFlare" base="BPersistent">
+        <prop name="SunAngle Sensitivity" type="Float" />
+        <prop name="GlobalScale" type="Float" />
+        <prop name="Size Falloff Distance" type="Float" />
+        <prop name="Intensity Falloff Distance" type="Float" />
+        <prop name="FlareElements" type="Fct" />
+    </class>
+    <class name="BRTTIRefCount" base="root class" />
+    <class name="BPersistent" base="BRTTIRefCount">
+        <prop name="Name" type="String" />
+    </class>
+    <class name="CLensFlare::FlareElement" base="BPersistent">
+        <prop name="texture" type="String" />
+        <prop name="Scale" type="Float" />
+        <prop name="Width Scale" type="Float" />
+        <prop name="Height Scale" type="Float" />
+        <prop name="Position" type="Float" />
+        <prop name="Alpha" type="Float" />
+        <prop name="Rotate" type="Bool" />
+        <prop name="Colour" type="Vec3f" />
+    </class>
+    <data class="CLensFlare" id="0x1AF4198">
+        <prop name="Name" data="LensFlare" />
+        <prop name="SunAngle Sensitivity" data="1" />
+        <prop name="GlobalScale" data="6" />
+        <prop name="Size Falloff Distance" data="0" />
+        <prop name="Intensity Falloff Distance" data="0" />
+        <prop name="FlareElements" elements="2">
+            <funcpropdata>
+                <data class="CLensFlare::FlareElement" id="0x2F1F340">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="Moon_Full.dds" />
+                    <prop name="Scale" data="0.85" />
+                    <prop name="Width Scale" data="1.0" />
+                    <prop name="Height Scale" data="1.0" />
+                    <prop name="Position" data="0.0" />
+                    <prop name="Alpha" data="1" />
+                    <prop name="Rotate" data="false" />
+                    <prop name="Colour" data="255; 255; 255" />
+                </data>
+				<data class="CLensFlare::FlareElement" id="0x2F1F379">
+                    <prop name="Name" data="" />
+                    <prop name="texture" data="Full_Moon_Glow.DDS" />
+                    <prop name="Scale" data="2.0" />
+                    <prop name="Width Scale" data="1.0" />
+                    <prop name="Height Scale" data="1.0" />
+                    <prop name="Position" data="0.00" />
+                    <prop name="Alpha" data="0.25" />
+                    <prop name="Rotate" data="false" />
+                    <prop name="Colour" data="255; 255; 255" />
+                </data>
+            </funcpropdata>
+        </prop>
+    </data>
+</Reflection>
