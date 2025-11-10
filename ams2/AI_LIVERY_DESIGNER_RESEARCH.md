@@ -877,6 +877,186 @@ Given that GridVox users already have gaming PCs with capable GPUs, the optimal 
 7. ✅ **Scalability** - More users = zero additional cost to GridVox
 8. ✅ **Competitive Advantage** - No other tool offers local AI livery generation
 
+#### ⚠️ Critical Challenge: Quality Consistency Across Hardware
+
+**Problem:** Local processing creates inconsistent quality based on user's GPU.
+
+| User GPU | Quality Result | User Experience |
+|----------|----------------|-----------------|
+| RTX 4090 | 90% (excellent) | "This is amazing!" ⭐⭐⭐⭐⭐ |
+| RTX 3070 | 82% (good) | "Pretty good!" ⭐⭐⭐⭐ |
+| RTX 2060 | 75% (okay) | "Hmm, expected better..." ⭐⭐⭐ |
+| GTX 1660 | 70% (mediocre) | "This looks bad compared to screenshots" ⭐⭐ |
+
+**Why This Is a Problem:**
+
+1. 🔴 **Viral Marketing Impact** - Users with older GPUs share poor-quality results, hurting brand perception
+2. 🔴 **Community Confusion** - "Why does mine look worse than yours?"
+3. 🔴 **Support Burden** - Constant complaints from lower-tier GPU users
+4. 🔴 **Inconsistent Screenshots** - Marketing materials can't show "typical" results
+5. 🔴 **Competitive Disadvantage** - Professional designers will mock the low-end results
+6. 🔴 **User Disappointment** - Expectations set by high-end examples not met
+
+**Solutions:**
+
+**Option A: Normalize to Baseline Quality (Recommended)**
+```
+All users get RTX 3070-equivalent quality (82%)
+
+RTX 4090 users: Throttle to match RTX 3070 (same quality, faster speed)
+RTX 3070 users: Full native processing (baseline)
+RTX 2060 users: Offer cloud upgrade "Get RTX 3070 quality for $1.99/livery"
+```
+
+**Pros:**
+- ✅ Consistent quality for all users
+- ✅ Clear expectations (one quality tier)
+- ✅ Upsell opportunity for older GPU users
+- ✅ Simple messaging
+
+**Cons:**
+- ❌ "Wastes" potential of high-end GPUs
+- ❌ RTX 4090 users may feel cheated
+- ❌ Doesn't showcase full technology capability
+
+**Option B: Explicit Quality Tiers**
+```
+🥉 Bronze (GTX 1660-RTX 2060): 70-75% quality, SD 1.5
+🥈 Silver (RTX 3060-3070): 82-85% quality, SDXL optimized
+🥇 Gold (RTX 3080-4090): 88-90% quality, Full SDXL pipeline
+💎 Platinum (Cloud): 92-95% quality, Multi-view + de-lighting
+```
+
+**Implementation:**
+- Show user their tier upfront: "Your RTX 3060 qualifies for Silver Quality"
+- Example gallery for each tier
+- Upgrade path visible: "Get Gold quality with cloud processing ($1.99/livery)"
+
+**Pros:**
+- ✅ Transparent about quality differences
+- ✅ Sets correct expectations
+- ✅ Natural upsell path to cloud
+- ✅ Gamification ("I want Gold tier!")
+
+**Cons:**
+- ❌ Complex messaging
+- ❌ May discourage lower-tier users
+- ❌ Creates quality "classes" in community
+
+**Option C: Hybrid Local + Cloud "Premium Quality Mode"**
+```
+Free Mode (Local): "Fast & Private" - Quality varies by GPU
+Premium Mode (Cloud): "Best Quality" - Consistent 90%+ for everyone
+
+Even RTX 4090 users may choose Premium for:
+- Multi-photo processing (6 reference angles)
+- Advanced de-lighting
+- Higher resolution (4K textures)
+- Batch processing (10+ liveries)
+```
+
+**Pricing:**
+- Local: Free unlimited (varies by GPU)
+- Premium: $1.99/livery or $9.99/month unlimited
+
+**Pros:**
+- ✅ Best of both worlds
+- ✅ Local is "good enough" for most
+- ✅ Premium is available when it matters (championships, showcases)
+- ✅ Clear value proposition
+- ✅ Recurring revenue opportunity
+
+**Cons:**
+- ❌ Two quality levels to maintain
+- ❌ Infrastructure costs for cloud tier
+- ❌ More complex UX
+
+**Option D: "Standard" Mode Only (No High-End Optimization)**
+```
+Everyone gets "Standard Quality" (RTX 3060 equivalent)
+
+Implementation:
+- Limit SDXL steps to 20 (regardless of GPU)
+- Fixed resolution 1024x1024
+- No multi-view or advanced features locally
+- Save advanced features for cloud tier
+```
+
+**Pros:**
+- ✅ Perfectly consistent quality
+- ✅ Simplest implementation
+- ✅ Strong upsell to cloud for "Pro" features
+
+**Cons:**
+- ❌ Underutilizes high-end GPUs
+- ❌ May anger enthusiast users
+
+#### ✅ Recommended Approach: Option C (Hybrid Local + Cloud Premium)
+
+**Why this wins:**
+
+1. **Free tier is viable** - Local processing good enough for 80% of use cases
+2. **Premium tier adds value** - Not just "faster", but genuinely better (multi-photo, de-lighting)
+3. **Natural upgrade path** - Users try free, love it, upgrade for important liveries
+4. **Revenue generation** - Cloud tier is profitable, subsidizes free tier
+5. **No artificial limits** - RTX 4090 users get full local performance, but cloud is still attractive
+
+**Implementation:**
+
+```
+GridVox AI Livery Designer
+
+Free Mode (Local):
+- "Fast & Private Generation"
+- Single photo input
+- Quality: Depends on your GPU (show tier: Bronze/Silver/Gold)
+- Generation time: 15-30 seconds
+- Unlimited generations
+
+Premium Mode (Cloud):
+- "Professional Quality"
+- Multi-photo input (up to 6 angles)
+- Advanced de-lighting
+- 4K texture output
+- Multi-view consistency
+- Quality: 92-95% (consistent for everyone)
+- Generation time: 8-12 seconds
+- Pricing: $1.99/livery or $9.99/month unlimited
+```
+
+**User Journey:**
+1. User tries Free mode on local GPU → Gets 75-85% quality result
+2. "Not bad! But this is for my league championship..."
+3. Sees Premium option: "Professional Quality with multi-photo"
+4. Pays $1.99 for championship livery → Gets 92% quality
+5. Loves it → Subscribes for $9.99/month
+
+**Quality Messaging:**
+```
+Your GPU: RTX 3070 (Silver Tier)
+Free Mode: Good quality (⭐⭐⭐⭐)
+Premium Mode: Professional quality (⭐⭐⭐⭐⭐)
+
+Want better? Upgrade your GPU or use Premium Mode.
+```
+
+**Marketing Strategy:**
+- Showcase Free tier results prominently (set expectations)
+- Show Premium comparisons: "Good vs Professional"
+- Testimonials: "I use Free for practice liveries, Premium for races"
+- Emphasize: "Free forever, Premium when it matters"
+
+**Economic Model:**
+- 80% of users: Free (local) → $0 cost to GridVox
+- 15% of users: Occasional Premium ($2-10/month) → Profitable
+- 5% of users: Premium subscribers ($9.99/month) → Highly profitable
+
+**Expected Revenue:**
+- 1,000 users: 150 occasional × $5 + 50 subscribers × $10 = $1,250/month
+- 5,000 users: 750 occasional × $5 + 250 subscribers × $10 = $6,250/month
+- Cloud costs: ~$1,500-2,000/month
+- Net profit: $4,250-4,750/month at 5,000 users
+
 #### User Experience Flow
 
 ```
@@ -1262,6 +1442,11 @@ This represents a genuine innovation in sim racing modding tools, with a **massi
 - Market is ready (3,000+ ACC liveries show demand)
 - **Hardware is already deployed** (80% of users have RTX 3060+)
 - Integration is natural (GridVox already detects GPUs for sim detection)
+
+**Quality Strategy:**
+- **Free tier (Local):** Good quality (75-85%), unlimited, privacy-focused
+- **Premium tier (Cloud):** Professional quality (92-95%), $1.99/livery or $9.99/month
+- Both tiers valuable, natural upgrade path, no artificial limitations
 
 While it won't replace professional livery designers for championship-level work, it will:
 - **Democratize** livery creation for 70%+ of sim racers
