@@ -73,7 +73,11 @@ export const OverlayPage = () => {
           boxShadow: "0 10px 40px rgba(0, 0, 0, 0.8)",
         }}
       />
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 1761a8852d46747e3d9163f45ed89c3c4dc15e71
       {/* Skip instruction overlay */}
       <div
         style={{
