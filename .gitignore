@@ -1,5 +1,64 @@
-# Node.js dependencies
+# ============================================
+# Dependencies & Package Managers
+# ============================================
 node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ============================================
+# Build Artifacts & Compiled Code
+# ============================================
+
+# TypeScript/JavaScript builds
+dist/
+build/
+out/
+*.js.map
+*.d.ts.map
+*.tsbuildinfo
+
+# Rust builds
+target/
+**/*.rs.bk
+Cargo.lock
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ============================================
+# Generated/Extracted Content
+# ============================================
+
+# Car image extractor output
+/ams2/ams2-car-image-extractor/output/
+/ams2/ams2-car-image-extractor/extracted/
+**/*.dds
+
+# Track extractor output
+/ams2/ams2-track-extractor/extracted-tracks/
+
+# Telemetry track generator output
+/ams2/ams2-telemetry-track-generator/output/
 
 # Voice recognition model (large binary files)
 /ams2/savegame-reverse-engineering/vosk-model*/
@@ -7,8 +66,101 @@ node_modules/
 # Snapshots
 /ams2/savegame-reverse-engineering/snapshots/*
 
-# Logs
+# ============================================
+# Logs & Debug Files
+# ============================================
+*.log
+*.log.*
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
 /ams2/savegame-reverse-engineering/annotations.log
-/ams2/savegame-reverse-engineering/*.log
+
+# ============================================
+# IDE & Editor Files
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============================================
+# OS Files
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ============================================
+# Environment & Secrets
+# ============================================
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ============================================
+# Test Coverage
+# ============================================
+coverage/
+.nyc_output/
+*.lcov
+
+# ============================================
+# Temporary Files
+# ============================================
+*.tmp
+*.temp
+.cache/
+.parcel-cache/
+.turbo/
+.next/
+.nuxt/
+.vuepress/dist
+
+# ============================================
+# Binary Files (Keep Small Test Files)
+# ============================================
+*.bin
+*.exe
+*.dll
+*.dylib
+*.o
+*.a
+*.lib
+*.rlib
+*.rmeta
+
+# ============================================
+# Archive Files
+# ============================================
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# ============================================
+# Large Media Files (Allow Small Test Assets)
+# ============================================
+*.mp4
+*.avi
+*.mov
+*.mkv
+# Keep small test images, ignore large texture atlases
+*.dds
+*.tga
+*.bmp
 
 
