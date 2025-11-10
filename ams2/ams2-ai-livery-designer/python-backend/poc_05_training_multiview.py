@@ -234,7 +234,7 @@ class Renderer(nn.Module):
 # ---------------------------------------------------------------------------
 
 
-def train_epoch(loader, model_uv, model_renderer, optim_uv, optim_renderer, device):
+def train_epoch(loader, model_uv, model_renderer, optim_uv, optim_renderer, device, weights):
     model_uv.train()
     model_renderer.train()
 
@@ -265,7 +265,12 @@ def train_epoch(loader, model_uv, model_renderer, optim_uv, optim_renderer, devi
 
         L_cross = masked_l1(uv_pred_a, uv_pred_b, None)
 
-        loss = 0.30 * L_cycle + 0.25 * L_uv_recon + 0.30 * L_direct + 0.15 * L_cross
+        loss = (
+            weights["cycle"] * L_cycle
+            + weights["uv_recon"] * L_uv_recon
+            + weights["direct"] * L_direct
+            + weights["cross"] * L_cross
+        )
 
         optim_uv.zero_grad()
         optim_renderer.zero_grad()
@@ -285,7 +290,7 @@ def train_epoch(loader, model_uv, model_renderer, optim_uv, optim_renderer, devi
 
 
 @torch.no_grad()
-def evaluate(loader, model_uv, model_renderer, device, lpips_net=None):
+def evaluate(loader, model_uv, model_renderer, device, lpips_net=None, weights=None):
     model_uv.eval()
     model_renderer.eval()
 
@@ -338,6 +343,16 @@ def evaluate(loader, model_uv, model_renderer, device, lpips_net=None):
 
     for key in totals:
         totals[key] /= count
+
+    if weights is not None:
+        totals["total"] = (
+            weights["cycle"] * totals["cycle"]
+            + weights["uv_recon"] * totals["uv_recon"]
+            + weights["direct"] * totals["direct"]
+            + weights["cross"] * totals["cross"]
+        )
+    else:
+        totals["total"] = float("nan")
     return totals
 
 
@@ -356,6 +371,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--val-split", type=float, default=0.1)
     parser.add_argument("--seed", type=int, default=1337)
     parser.add_argument("--num-workers", type=int, default=0)
+    parser.add_argument("--w-cycle", type=float, default=0.30)
+    parser.add_argument("--w-uv", type=float, default=0.25)
+    parser.add_argument("--w-direct", type=float, default=0.30)
+    parser.add_argument("--w-cross", type=float, default=0.15)
     return parser.parse_args()
 
 
@@ -397,16 +416,18 @@ def main() -> None:
     best_val = float("inf")
     best_state = None
 
-    for epoch in range(1, args.epochs + 1):
-        metrics_train = train_epoch(train_loader, model_uv, model_renderer, optim_uv, optim_renderer, device)
-        metrics_val = evaluate(val_loader, model_uv, model_renderer, device, lpips_net)
+    weights = {
+        "cycle": args.w_cycle,
+        "uv_recon": args.w_uv,
+        "direct": args.w_direct,
+        "cross": args.w_cross,
+    }
 
-        val_score = (
-            0.30 * metrics_val["cycle"]
-            + 0.25 * metrics_val["uv_recon"]
-            + 0.30 * metrics_val["direct"]
-            + 0.15 * metrics_val["cross"]
-        )
+    for epoch in range(1, args.epochs + 1):
+        metrics_train = train_epoch(train_loader, model_uv, model_renderer, optim_uv, optim_renderer, device, weights)
+        metrics_val = evaluate(val_loader, model_uv, model_renderer, device, lpips_net, weights)
+
+        val_score = metrics_val["total"]
 
         print(
             f"Epoch {epoch:03d}/{args.epochs} | "

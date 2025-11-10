@@ -1,0 +1,32 @@
+{
+  "dataset": "poc_results\\augmented_dataset_ginetta",
+  "unique_uv_textures": 5,
+  "total_augmented_pairs": 224,
+  "min_pairs_per_uv": 32,
+  "max_pairs_per_uv": 96,
+  "avg_pairs_per_uv": 44.8,
+  "num_singleton_uvs": 0,
+  "singleton_examples": [],
+  "lowest_coverage": [
+    {
+      "source_uv": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body1.png",
+      "pairs": 32
+    },
+    {
+      "source_uv": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body3.png",
+      "pairs": 32
+    },
+    {
+      "source_uv": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body4.png",
+      "pairs": 32
+    },
+    {
+      "source_uv": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body5.png",
+      "pairs": 32
+    },
+    {
+      "source_uv": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body2.png",
+      "pairs": 96
+    }
+  ]
+}

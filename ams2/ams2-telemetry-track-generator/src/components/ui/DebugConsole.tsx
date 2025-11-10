@@ -17,10 +17,13 @@ class ConsoleManager {
 
   log(message: string, level: "info" | "warn" | "error" | "success" = "info") {
     const entry: LogEntry = {
-      timestamp: new Date().toLocaleTimeString("en-US", {
+      timestamp: new Intl.DateTimeFormat("en-US", {
         hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
         fractionalSecondDigits: 3,
-      }),
+      } as Intl.DateTimeFormatOptions & { fractionalSecondDigits?: number }).format(new Date()),
       level,
       message,
     };
@@ -62,7 +65,9 @@ class ConsoleManager {
 
   subscribe(listener: (entries: LogEntry[]) => void) {
     this.listeners.add(listener);
-    return () => this.listeners.delete(listener);
+    return () => {
+      this.listeners.delete(listener);
+    };
   }
 
   private notifyListeners() {
@@ -127,9 +132,8 @@ export default function DebugConsole({ entries: propEntries }: DebugConsoleProps
 
   return (
     <div
-      className={`h-full border-r border-green-border bg-[#0a110b] flex flex-col transition-all duration-300 ${
-        isCollapsed ? "w-12" : "w-96"
-      }`}
+      className={`h-full border-r border-green-border bg-[#0a110b] flex flex-col transition-all duration-300 ${isCollapsed ? "w-12" : "w-80"
+        }`}
     >
       {/* Console Header */}
       <div className="px-4 py-3 border-b border-green-border flex items-center justify-between">

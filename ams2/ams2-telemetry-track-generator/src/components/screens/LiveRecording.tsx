@@ -9,6 +9,7 @@ import {
   loadRunTypeAssignments,
   saveRunTypeAssignment,
   clearRunTypeAssignments,
+  deleteRunTypeAssignment,
   RunTypeAssignmentPayload,
   RunTypeName,
 } from "../../lib/run-type-storage";
@@ -96,12 +97,60 @@ const RUN_TYPE_OUTLINE_COLORS: Record<RunType, string> = {
   racing: "border-red-400 text-red-200",
 };
 
+const RUN_TYPE_TILE_COLORS: Record<RunType, {
+  assigned: string;
+  hover: string;
+  accent: string;
+  badge: string;
+  remove: string;
+  unassigned: string;
+  unassignedText: string;
+}> = {
+  outside: {
+    assigned: "border-blue-500/70 bg-blue-500/10",
+    hover: "hover:bg-blue-500/15",
+    accent: "text-blue-200",
+    badge: "bg-blue-500/30 text-blue-100 border border-blue-400/60",
+    remove: "text-blue-200 hover:text-blue-100 focus-visible:ring-blue-400/50",
+    unassigned: "border-dashed border-blue-500/40 bg-blue-500/5",
+    unassignedText: "text-blue-200/70",
+  },
+  inside: {
+    assigned: "border-green-500/70 bg-green-500/10",
+    hover: "hover:bg-green-500/15",
+    accent: "text-green-200",
+    badge: "bg-green-500/30 text-green-100 border border-green-400/60",
+    remove: "text-green-200 hover:text-green-100 focus-visible:ring-green-400/50",
+    unassigned: "border-dashed border-green-500/40 bg-green-500/5",
+    unassignedText: "text-green-200/70",
+  },
+  racing: {
+    assigned: "border-red-500/70 bg-red-500/10",
+    hover: "hover:bg-red-500/15",
+    accent: "text-red-200",
+    badge: "bg-red-500/30 text-red-100 border border-red-400/60",
+    remove: "text-red-200 hover:text-red-100 focus-visible:ring-red-400/50",
+    unassigned: "border-dashed border-red-500/40 bg-red-500/5",
+    unassignedText: "text-red-200/70",
+  },
+};
+
+const MIN_LAP_COVERAGE_RATIO = 0.95;
+
 interface LiveRecordingProps {
   onStopRecording: () => void;
 }
 
 function formatPosition(worldPos: [number, number, number]): string {
-  return `X:${worldPos[0].toFixed(1)} Y:${worldPos[1].toFixed(1)} Z:${worldPos[2].toFixed(1)}`;
+  const clip = (value: number) => {
+    if (!Number.isFinite(value)) {
+      return "--";
+    }
+    const fixed = value.toFixed(1);
+    return fixed.length > 8 ? fixed.slice(0, 8) : fixed;
+  };
+
+  return `X: ${clip(worldPos[0])}\nY: ${clip(worldPos[1])}\nZ: ${clip(worldPos[2])}`;
 }
 
 function formatLapTime(currentTime: number): string {
@@ -181,6 +230,64 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
   const [overlayRunType, setOverlayRunType] = useState<RunType | null>(null);
   const overlayTelemetryRef = useRef<VisualizerTelemetryPoint[] | null>(null);
   const overlayRunTypeRef = useRef<RunType | null>(null);
+
+  const clearRunTypeAssignment = (
+    runType: RunType,
+    options?: { persist?: boolean; message?: string }
+  ) => {
+    const { persist = true, message } = options ?? {};
+
+    const currentAssignments = runTypeAssignmentsRef.current;
+    const hadAssignment = Boolean(currentAssignments[runType]);
+
+    runTypeAssignmentsRef.current = {
+      ...currentAssignments,
+      [runType]: null,
+    };
+    setRunTypeAssignments((prev) => ({ ...prev, [runType]: null }));
+
+    runTypeTelemetryRef.current = {
+      ...runTypeTelemetryRef.current,
+      [runType]: [],
+    };
+    setRunTypeTelemetryState((prev) => ({ ...prev, [runType]: [] }));
+
+    if (selectedRunTypeRef.current === runType) {
+      selectedRunTypeRef.current = null;
+      setSelectedRunType(null);
+      const selectedLapIdValue = selectedLapIdRef.current;
+      if (selectedLapIdValue && lapVisualizerTelemetryRef.current[selectedLapIdValue]) {
+        const lapTelemetry = (lapVisualizerTelemetryRef.current[selectedLapIdValue] ?? []).map((point) => ({ ...point }));
+        overlayRunTypeRef.current = null;
+        overlayTelemetryRef.current = lapTelemetry;
+        setOverlayRunType(null);
+        setOverlayTelemetry(lapTelemetry);
+      } else {
+        overlayRunTypeRef.current = null;
+        overlayTelemetryRef.current = null;
+        setOverlayRunType(null);
+        setOverlayTelemetry(null);
+      }
+    }
+
+    if (overlayRunTypeRef.current === runType) {
+      overlayRunTypeRef.current = null;
+      overlayTelemetryRef.current = null;
+      setOverlayRunType(null);
+      setOverlayTelemetry(null);
+    }
+
+    if (message && hadAssignment) {
+      debugConsole.info(message);
+    }
+
+    const trackKey = trackKeyRef.current;
+    if (persist && trackKey && hadAssignment) {
+      void deleteRunTypeAssignment(trackKey, runType).catch((error) => {
+        debugConsole.error(`Failed to remove ${RUN_TYPE_LABELS[runType]} assignment: ${String(error)}`);
+      });
+    }
+  };
 
   const toVisualizerTelemetryPoint = (point: any, runTypeOverride?: RunType | null): VisualizerTelemetryPoint => {
     const positionSource = Array.isArray(point.position) ? point.position : [0, 0, 0];
@@ -512,55 +619,101 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
               const completedDistance = previousLastPoint?.lapDistance
                 ?? previousLapDistanceRef.current
                 ?? previousLapRecord.distanceMeters;
-              const validityState = lapValidityRef.current[previousLapId];
-              const finalizedValidity = validityState === "flagged" || validityState === "invalid"
-                ? "invalid"
-                : "valid";
-              lapValidityRef.current[previousLapId] = finalizedValidity;
-              updatedLaps[previousIndex] = {
-                ...previousLapRecord,
-                durationSeconds: completedDuration,
-                distanceMeters: completedDistance,
-                isActive: false,
-                validity: finalizedValidity,
-                hadInvalidation: finalizedValidity === "invalid",
-              };
-              RUN_TYPES.forEach((runType) => {
-                const assignment = runTypeAssignmentsRef.current[runType];
-                if (assignment && assignment.lapId === previousLapId) {
-                  const updatedAssignment: RunTypeAssignmentState = {
-                    ...assignment,
-                    validity: finalizedValidity,
-                    timeSeconds: completedDuration,
-                    distanceMeters: completedDistance,
-                  };
-                  runTypeAssignmentsRef.current = {
-                    ...runTypeAssignmentsRef.current,
-                    [runType]: updatedAssignment,
-                  };
-                  setRunTypeAssignments((prev) => ({
-                    ...prev,
-                    [runType]: updatedAssignment,
-                  }));
+              const distanceMeters = Number.isFinite(completedDistance ?? NaN)
+                ? Number(completedDistance)
+                : 0;
+              const trackLengthMeters = Number.isFinite(data.track_length ?? NaN)
+                ? Number(data.track_length)
+                : 0;
+              const meetsCoverageThreshold = trackLengthMeters <= 0
+                ? distanceMeters > 0
+                : distanceMeters >= trackLengthMeters * MIN_LAP_COVERAGE_RATIO;
 
-                  const trackKey = trackKeyRef.current;
-                  if (trackKey) {
-                    const telemetryPoints = runTypeTelemetryRef.current[runType] ?? [];
-                    const payload: RunTypeAssignmentPayload = {
-                      lapId: updatedAssignment.lapId,
-                      lapNumber: updatedAssignment.lapNumber,
-                      assignedAt: updatedAssignment.assignedAt,
-                      validity: updatedAssignment.validity,
-                      timeSeconds: updatedAssignment.timeSeconds,
-                      distanceMeters: updatedAssignment.distanceMeters,
-                      telemetryPoints: toStorageTelemetryArray(telemetryPoints),
-                    };
-                    void saveRunTypeAssignment(trackKey, runType, payload).catch((error) => {
-                      debugConsole.error(`Failed to refresh ${RUN_TYPE_LABELS[runType]} assignment: ${String(error)}`);
+              if (!meetsCoverageThreshold) {
+                updatedLaps.splice(previousIndex, 1);
+                delete lapTelemetryRef.current[previousLapId];
+                delete lapVisualizerTelemetryRef.current[previousLapId];
+                delete lapValidityRef.current[previousLapId];
+
+                RUN_TYPES.forEach((runType) => {
+                  const assignment = runTypeAssignmentsRef.current[runType];
+                  if (assignment && assignment.lapId === previousLapId) {
+                    clearRunTypeAssignment(runType, {
+                      message: `${RUN_TYPE_LABELS[runType]} assignment cleared because Lap ${previousLapRecord.lap} did not cover enough track distance.`,
                     });
                   }
+                });
+
+                if (selectedLapIdRef.current === previousLapId) {
+                  selectedLapIdRef.current = null;
+                  setSelectedLapId(null);
+                  overlayRunTypeRef.current = null;
+                  overlayTelemetryRef.current = null;
+                  setOverlayRunType(null);
+                  setOverlayTelemetry(null);
                 }
-              });
+
+                if (distanceMeters > 0 && trackLengthMeters > 0) {
+                  const coveragePercent = Math.min(100, (distanceMeters / trackLengthMeters) * 100);
+                  debugConsole.warn(
+                    `Discarded Lap ${previousLapRecord.lap}: covered only ${coveragePercent.toFixed(1)}% (${distanceMeters.toFixed(0)}m of ${trackLengthMeters.toFixed(0)}m).`
+                  );
+                } else {
+                  debugConsole.warn(
+                    `Discarded Lap ${previousLapRecord.lap}: insufficient track coverage detected.`
+                  );
+                }
+              } else {
+                const validityState = lapValidityRef.current[previousLapId];
+                const finalizedValidity = validityState === "flagged" || validityState === "invalid"
+                  ? "invalid"
+                  : "valid";
+                lapValidityRef.current[previousLapId] = finalizedValidity;
+                updatedLaps[previousIndex] = {
+                  ...previousLapRecord,
+                  durationSeconds: completedDuration,
+                  distanceMeters: distanceMeters,
+                  isActive: false,
+                  validity: finalizedValidity,
+                  hadInvalidation: finalizedValidity === "invalid",
+                };
+                RUN_TYPES.forEach((runType) => {
+                  const assignment = runTypeAssignmentsRef.current[runType];
+                  if (assignment && assignment.lapId === previousLapId) {
+                    const updatedAssignment: RunTypeAssignmentState = {
+                      ...assignment,
+                      validity: finalizedValidity,
+                      timeSeconds: completedDuration,
+                      distanceMeters,
+                    };
+                    runTypeAssignmentsRef.current = {
+                      ...runTypeAssignmentsRef.current,
+                      [runType]: updatedAssignment,
+                    };
+                    setRunTypeAssignments((prev) => ({
+                      ...prev,
+                      [runType]: updatedAssignment,
+                    }));
+
+                    const trackKey = trackKeyRef.current;
+                    if (trackKey) {
+                      const telemetryPoints = runTypeTelemetryRef.current[runType] ?? [];
+                      const payload: RunTypeAssignmentPayload = {
+                        lapId: updatedAssignment.lapId,
+                        lapNumber: updatedAssignment.lapNumber,
+                        assignedAt: updatedAssignment.assignedAt,
+                        validity: updatedAssignment.validity,
+                        timeSeconds: updatedAssignment.timeSeconds,
+                        distanceMeters: updatedAssignment.distanceMeters,
+                        telemetryPoints: toStorageTelemetryArray(telemetryPoints),
+                      };
+                      void saveRunTypeAssignment(trackKey, runType, payload).catch((error) => {
+                        debugConsole.error(`Failed to refresh ${RUN_TYPE_LABELS[runType]} assignment: ${String(error)}`);
+                      });
+                    }
+                  }
+                });
+              }
             }
           }
           currentLapNumberRef.current += 1;
@@ -606,7 +759,10 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
           const activeLapRecord = lapsRef.current.find((lap) => lap.id === activeLapId);
           if (activeLapRecord) {
             const elapsedSeconds = Math.max((telemetryPoint.timestamp - activeLapRecord.startedAt) / 1000, 0);
-            setCurrentLapMetrics({ timeSeconds: elapsedSeconds, distanceMeters: lapDistance });
+            setCurrentLapMetrics((prev) => ({
+              timeSeconds: gameState === GAME_STATES.IN_GAME_PLAYING ? elapsedSeconds : prev.timeSeconds,
+              distanceMeters: lapDistance,
+            }));
             if (data.lap_invalidated && lapValidityRef.current[activeLapId] === "pending") {
               lapValidityRef.current[activeLapId] = "flagged";
               const nextLaps = lapsRef.current.map((lap) =>
@@ -627,11 +783,12 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
         previousLapDistanceRef.current = lapDistance;
 
         // Calculate lap progress
-        const progress = data.track_length > 0
+        const rawProgress = data.track_length > 0
           ? (player.current_lap_distance / data.track_length) * 100
           : 0;
+        const roundedProgress = Math.min(100, Math.max(0, Math.round(rawProgress)));
 
-        setLapProgress(Math.min(100, Math.max(0, progress)));
+        setLapProgress(roundedProgress);
 
         // Update telemetry display
         const throttlePct = Math.round(data.throttle * 100);
@@ -720,43 +877,28 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
 
     setIsClearingRunTypes(true);
     try {
+      RUN_TYPES.forEach((runType) => {
+        clearRunTypeAssignment(runType, { persist: false });
+      });
+
       await clearRunTypeAssignments(trackKey);
-
-      const clearedAssignments: RunTypeAssignmentsState = {
-        outside: null,
-        inside: null,
-        racing: null,
-      };
-      const clearedTelemetry: Record<RunType, VisualizerTelemetryPoint[]> = {
-        outside: [],
-        inside: [],
-        racing: [],
-      };
-
-      runTypeAssignmentsRef.current = clearedAssignments;
-      runTypeTelemetryRef.current = {
-        outside: [],
-        inside: [],
-        racing: [],
-      };
-
-      setRunTypeAssignments(clearedAssignments);
-      setRunTypeTelemetryState(clearedTelemetry);
-
-      setSelectedRunType(null);
-      selectedRunTypeRef.current = null;
-
-      setOverlayTelemetry(null);
-      setOverlayRunType(null);
-      overlayTelemetryRef.current = null;
-      overlayRunTypeRef.current = null;
-
       debugConsole.info("Cleared saved run type assignments for this track.");
     } catch (error) {
       debugConsole.error(`Failed to clear run type assignments: ${String(error)}`);
     } finally {
       setIsClearingRunTypes(false);
     }
+  };
+
+  const handleRunTypeRemove = (runType: RunType) => {
+    if (!runTypeAssignmentsRef.current[runType]) {
+      debugConsole.info(`${RUN_TYPE_LABELS[runType]} is already unassigned.`);
+      return;
+    }
+
+    clearRunTypeAssignment(runType, {
+      message: `${RUN_TYPE_LABELS[runType]} assignment cleared.`,
+    });
   };
 
   const assignRunType = async (runType: RunType, lap: LapRecord) => {
@@ -779,6 +921,17 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
       debugConsole.warn(`No telemetry data captured for Lap ${lap.lap}; unable to assign.`);
       return;
     }
+
+    RUN_TYPES.forEach((existingRunType) => {
+      if (existingRunType !== runType) {
+        const existingAssignment = runTypeAssignmentsRef.current[existingRunType];
+        if (existingAssignment?.lapId === lap.id) {
+          clearRunTypeAssignment(existingRunType, {
+            message: `${RUN_TYPE_LABELS[existingRunType]} assignment cleared; Lap ${lap.lap} reassigned to ${RUN_TYPE_LABELS[runType]}.`,
+          });
+        }
+      }
+    });
 
     const lastPoint = telemetryPoints[telemetryPoints.length - 1];
     const durationSeconds = typeof lap.durationSeconds === "number"
@@ -932,11 +1085,11 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
           </header>
 
           {/* Main Content */}
-          <main className="flex flex-col flex-1 p-4 gap-4">
+          <main className="flex flex-col flex-1 p-4 gap-3">
             {/* Track Map & Telemetry Cards */}
-            <div className="flex flex-1 gap-4 overflow-hidden">
+            <div className="flex flex-1 gap-3 overflow-hidden">
               {/* 3D Track Visualization & Telemetry Snapshot */}
-              <div className="w-3/5 flex flex-col gap-4 h-full">
+              <div className="w-3/5 flex flex-col gap-3 h-full">
                 <div className="flex-1 rounded-lg border border-green-border overflow-hidden">
                   <TrackVisualization
                     telemetryPoints={displayedTelemetryPoints}
@@ -944,25 +1097,30 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                     className="w-full h-full"
                   />
                 </div>
-                <div className="rounded-lg border border-green-border bg-green-bg/30">
-                  <ProgressBar label="Lap Progress" value={lapProgress} />
+                <div className="rounded-lg border border-green-border/80 bg-green-bg/40">
+                  <ProgressBar label="Lap Progress" value={lapProgress} compact />
                 </div>
-                <div className="flex flex-col gap-4 rounded-lg border border-green-border bg-green-bg/30 p-4">
-                  <div className="flex flex-wrap gap-4">
-                    <TelemetryCard label="Speed" value={`${telemetry.speed} MPH`} />
-                    <TelemetryCard label="Position" value={telemetry.position} />
-                    <TelemetryCard label="Lap" value={telemetry.lap} />
-                    <TelemetryCard label="Gear" value={telemetry.gear} />
+                <div className="flex flex-col gap-3 rounded-lg border border-green-border/80 bg-green-bg/40 p-3">
+                  <div className="flex flex-wrap gap-3">
+                    <TelemetryCard label="Speed" value={`${telemetry.speed} MPH`} compact />
+                    <TelemetryCard
+                      label="Position"
+                      value={telemetry.position}
+                      compact
+                      valueClassName="whitespace-pre-line text-white/80 text-xs leading-tight tracking-normal"
+                    />
+                    <TelemetryCard label="Lap" value={telemetry.lap} compact />
+                    <TelemetryCard label="Gear" value={telemetry.gear} compact />
                   </div>
-                  <div className="flex flex-col gap-3">
-                    <ProgressBar label="Throttle" value={telemetry.throttle} />
-                    <ProgressBar label="Brake" value={telemetry.brake} />
+                  <div className="flex flex-col gap-2">
+                    <ProgressBar label="Throttle" value={telemetry.throttle} compact />
+                    <ProgressBar label="Brake" value={telemetry.brake} compact />
                   </div>
                 </div>
               </div>
 
               {/* Lap History */}
-              <div className="w-2/5 flex flex-col gap-4">
+              <div className="w-2/5 flex flex-col gap-3">
                 <div className="flex flex-col flex-1 rounded-lg border border-green-border bg-green-bg/30 min-h-0">
                   <div className="flex items-center justify-between border-b border-green-border px-4 py-3">
                     <h3 className="text-white text-sm font-bold uppercase tracking-wide">Lap History</h3>
@@ -1108,6 +1266,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                       const assignment = runTypeAssignments[runType];
                       const telemetryAvailable = runTypeTelemetryRef.current[runType]?.length > 0;
                       const isSelectedRunType = selectedRunType === runType;
+                      const tileColors = RUN_TYPE_TILE_COLORS[runType];
                       const validityLabel = assignment?.validity === "valid"
                         ? "Valid"
                         : assignment?.validity === "invalid"
@@ -1124,38 +1283,54 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                       if (assignment && telemetryAvailable) {
                         return (
                           <li key={`run-${runType}`}>
-                            <button
-                              type="button"
-                              className={`w-full rounded-lg border px-3 py-3 text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${isSelectedRunType ? "border-primary/60 bg-green-bg/60" : "border-green-border/70 bg-green-bg/40 hover:bg-green-bg/50"}`}
-                              onClick={() => handleRunTypeSelect(runType)}
+                            <div
+                              className={`relative overflow-hidden rounded-lg border transition-colors focus-within:ring-2 focus-within:ring-primary/60 ${tileColors.assigned} ${tileColors.hover} ${isSelectedRunType ? "ring-1 ring-primary/60" : ""}`}
                             >
-                              <div className="flex items-center justify-between text-xs text-white/70">
-                                <span className="font-semibold text-white">{RUN_TYPE_LABELS[runType]} Line</span>
-                                <span className="font-mono">Lap {assignment.lapNumber}</span>
-                              </div>
-                              <div className="mt-2 grid grid-cols-2 gap-2 text-[11px] text-white/60">
-                                <div>
-                                  <div className="uppercase tracking-wide">Time</div>
-                                  <div className="font-mono text-sm text-white">
-                                    {typeof assignment.timeSeconds === "number"
-                                      ? formatLapTime(assignment.timeSeconds)
-                                      : "--:--"}
+                              <button
+                                type="button"
+                                className="w-full text-left px-3 py-3 text-xs text-white/80"
+                                onClick={() => handleRunTypeSelect(runType)}
+                              >
+                                <div className="flex items-center justify-between text-xs">
+                                  <span className={`font-semibold ${tileColors.accent}`}>{RUN_TYPE_LABELS[runType]} Line</span>
+                                  <span className="font-mono text-white/80">Lap {assignment.lapNumber}</span>
+                                </div>
+                                <div className="mt-2 flex flex-wrap gap-3 text-[11px] text-white/70">
+                                  <div>
+                                    <div className="uppercase tracking-wide">Time</div>
+                                    <div className="font-mono text-sm text-white">
+                                      {typeof assignment.timeSeconds === "number"
+                                        ? formatLapTime(assignment.timeSeconds)
+                                        : "--:--"}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className="uppercase tracking-wide">Distance</div>
+                                    <div className="font-mono text-sm text-white">
+                                      {typeof assignment.distanceMeters === "number"
+                                        ? formatDistance(assignment.distanceMeters)
+                                        : "--"}
+                                    </div>
                                   </div>
                                 </div>
-                                <div>
-                                  <div className="uppercase tracking-wide">Distance</div>
-                                  <div className="font-mono text-sm text-white">
-                                    {typeof assignment.distanceMeters === "number"
-                                      ? formatDistance(assignment.distanceMeters)
-                                      : "--"}
-                                  </div>
+                                <div className="mt-3 flex items-center justify-between text-[11px]">
+                                  <span className={`uppercase tracking-wide ${statusClass}`}>{validityLabel}</span>
+                                  <span className={`${tileColors.accent}`}>Tap to view</span>
                                 </div>
-                              </div>
-                              <div className="mt-3 flex items-center justify-between text-[11px]">
-                                <span className={`uppercase tracking-wide ${statusClass}`}>{validityLabel}</span>
-                                <span className="text-white/40">Tap to view</span>
-                              </div>
-                            </button>
+                              </button>
+                              <button
+                                type="button"
+                                className={`absolute top-2 right-2 rounded-full p-1 transition-all focus:outline-none focus-visible:ring-2 ${tileColors.remove}`}
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  handleRunTypeRemove(runType);
+                                }}
+                                title={`Clear ${RUN_TYPE_LABELS[runType]} assignment`}
+                                aria-label={`Clear ${RUN_TYPE_LABELS[runType]} assignment`}
+                              >
+                                <span className="material-symbols-outlined text-base">delete</span>
+                              </button>
+                            </div>
                           </li>
                         );
                       }
@@ -1163,10 +1338,10 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                       return (
                         <li
                           key={`run-${runType}`}
-                          className="rounded-lg border border-dashed border-green-border/60 bg-green-bg/30 px-3 py-3 text-left"
+                          className={`rounded-lg px-3 py-3 text-left ${tileColors.unassigned}`}
                         >
-                          <div className="flex items-center justify-between text-xs text-white/60">
-                            <span className="font-semibold text-white/80">{RUN_TYPE_LABELS[runType]} Line</span>
+                          <div className={`flex items-center justify-between text-xs ${tileColors.unassignedText}`}>
+                            <span className="font-semibold">{RUN_TYPE_LABELS[runType]} Line</span>
                             <span className="uppercase">Unassigned</span>
                           </div>
                           <div className="mt-2 text-[11px] text-white/40">

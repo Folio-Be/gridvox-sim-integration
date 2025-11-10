@@ -97,6 +97,30 @@ pub fn save_run_type_assignment<R: tauri::Runtime>(
 }
 
 #[tauri::command]
+pub fn delete_run_type_assignment<R: tauri::Runtime>(
+    app: tauri::AppHandle<R>,
+    track_key: String,
+    run_type: String,
+) -> Result<(), String> {
+    if track_key.trim().is_empty() || run_type.trim().is_empty() {
+        return Ok(());
+    }
+
+    let mut all = read_all(&app)?;
+    if let Some(run_type_map) = all.get_mut(&track_key) {
+        let removed = run_type_map.remove(&run_type).is_some();
+        if removed {
+            if run_type_map.is_empty() {
+                all.remove(&track_key);
+            }
+            write_all(&app, &all)?;
+        }
+    }
+
+    Ok(())
+}
+
+#[tauri::command]
 pub fn clear_run_type_assignments<R: tauri::Runtime>(
     app: tauri::AppHandle<R>,
     track_key: String,

@@ -18,6 +18,7 @@ export default function TrackVisualization({
   currentRunType,
   className = ''
 }: TrackVisualizationProps) {
+  const BASE_FRUSTUM_SIZE = 100;
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
@@ -26,6 +27,7 @@ export default function TrackVisualization({
   const pointsCloudsRef = useRef<THREE.Points[]>([]);
   const gridRef = useRef<THREE.GridHelper | null>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
   // Initialize Three.js scene
   useEffect(() => {
@@ -49,7 +51,7 @@ export default function TrackVisualization({
 
     // Use orthographic camera for perfect top-down 2D view
     const aspect = width / height;
-    const frustumSize = 100;
+    const frustumSize = BASE_FRUSTUM_SIZE;
     const camera = new THREE.OrthographicCamera(
       -frustumSize * aspect / 2,
       frustumSize * aspect / 2,
@@ -85,19 +87,34 @@ export default function TrackVisualization({
       if (!containerRef.current || !cameraRef.current || !rendererRef.current) return;
       const w = containerRef.current.clientWidth;
       const h = containerRef.current.clientHeight;
+      if (w === 0 || h === 0) {
+        return;
+      }
       const asp = w / h;
-      cameraRef.current.left = -frustumSize * asp / 2;
-      cameraRef.current.right = frustumSize * asp / 2;
-      cameraRef.current.top = frustumSize / 2;
-      cameraRef.current.bottom = -frustumSize / 2;
+      cameraRef.current.left = -BASE_FRUSTUM_SIZE * asp / 2;
+      cameraRef.current.right = BASE_FRUSTUM_SIZE * asp / 2;
+      cameraRef.current.top = BASE_FRUSTUM_SIZE / 2;
+      cameraRef.current.bottom = -BASE_FRUSTUM_SIZE / 2;
       cameraRef.current.updateProjectionMatrix();
       rendererRef.current.setSize(w, h);
     };
     window.addEventListener('resize', handleResize);
 
+    if (containerRef.current) {
+      const observer = new ResizeObserver(() => handleResize());
+      observer.observe(containerRef.current);
+      resizeObserverRef.current = observer;
+    }
+
+    handleResize();
+
     // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
+      if (resizeObserverRef.current) {
+        resizeObserverRef.current.disconnect();
+        resizeObserverRef.current = null;
+      }
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -244,7 +261,7 @@ export default function TrackVisualization({
 
     // Update camera to frame track (now centered at origin)
     if (allPoints.length > 10 && maxRange > 0) {
-      const padding = 10; // 10m padding on each side
+      const padding = Math.max(15, maxRange * 0.35); // generous padding to keep full track in frame
       const container = containerRef.current;
       if (!container) {
         return;
