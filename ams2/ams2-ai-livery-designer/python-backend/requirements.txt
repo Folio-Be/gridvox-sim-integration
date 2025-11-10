@@ -1,44 +1,44 @@
 # Python Backend Requirements - AMS2 AI Livery Designer
 # Install with: pip install -r requirements.txt
+# 
+# Installation order:
+# 1. Run install.bat (creates venv + installs these base deps)
+# 2. Run install-cuda.bat (installs PyTorch with CUDA)
+# 3. Run install-ai.bat (installs diffusers/transformers)
 
 # Web Framework
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 python-multipart==0.0.6
 
-# PyTorch with CUDA (matching POC-08)
-torch>=2.0.0
-torchvision>=0.15.0
-torchaudio>=2.0.0
+# Core Dependencies (installed by install.bat)
+Pillow==10.4.0
+numpy==1.26.4
+requests==2.32.3
+huggingface-hub==0.26.2
+psutil==5.9.6
+python-dotenv==1.0.1
 
-# AI/ML - Week 2 Installation
-# Stable Diffusion XL
-diffusers>=0.25.0
-transformers>=4.35.0
-accelerate>=0.24.0
-safetensors>=0.4.0
+# PyTorch with CUDA (installed separately via install-cuda.bat)
+# torch>=2.5.0+cu126
+# torchvision>=0.20.0+cu126
+# torchaudio>=2.5.0+cu126
 
-# ControlNet & IPAdapter - Week 2
-# controlnet-aux>=0.0.7
-# insightface>=0.7.3  # For IPAdapter
+# AI/ML - Stable Diffusion XL (installed via install-ai.bat)
+# diffusers==0.31.0
+# transformers==4.46.0
+# accelerate==1.1.1
+# safetensors==0.4.5
+# invisible-watermark==0.2.0
 
-# Segment Anything Model (SAM) - Week 3
-# segment-anything>=1.0
-# git+https://github.com/facebookresearch/segment-anything.git
+# ControlNet Support (installed via install-ai.bat)
+# controlnet-aux==0.0.9
 
-# Image Processing
-Pillow>=10.1.0
-opencv-python>=4.8.0
-numpy>=1.24.0
-scipy>=1.11.0
+# Image Processing (installed via install-ai.bat)
+# opencv-python==4.10.0.84
+# scipy==1.14.1
 
-# DDS Texture Support - Week 6
-# pydds  # DDS file format handling
-
-# Utilities
-requests>=2.31.0
-huggingface-hub>=0.19.0
-psutil>=5.9.0
-
-# Development
-python-dotenv>=1.0.0
+# Future Dependencies (Week 3+)
+# segment-anything>=1.0  # SAM for background removal
+# insightface>=0.7.3     # IPAdapter for style transfer
+# pydds                  # DDS texture export

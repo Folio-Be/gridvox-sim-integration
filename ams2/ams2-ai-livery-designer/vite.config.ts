@@ -13,16 +13,16 @@ export default defineConfig(async () => ({
   // 1. prevent Vite from obscuring rust errors
   clearScreen: false,
   // 2. tauri expects a fixed port, fail if that port is not available
-  // Using port 1430/1431 to avoid conflicts with other POCs (POC-08 uses 1420/1421)
+  // Using port 1435/1436 to avoid conflicts
   server: {
-    port: 1430,
+    port: 1435,
     strictPort: true,
     host: host || false,
     hmr: host
       ? {
         protocol: "ws",
         host,
-        port: 1431,
+        port: 1436,
       }
       : undefined,
     watch: {

@@ -157,19 +157,21 @@ export default function TrackVisualization({
     const maxRange = Math.max(rangeX, rangeZ);
 
     // Helper function to get color for run type
-    const getColorForRunType = (runType: 'outside' | 'inside' | 'racing' | null): number => {
+    const getColorForRunType = (runType: 'outside' | 'inside' | 'racing' | null, inPit?: boolean): number => {
+      if (inPit) return 0xffca28; // Yellow for pit entry
       switch (runType) {
         case 'outside': return 0x4a9eff;  // Blue
-        case 'inside': return 0xffca28;   // Yellow
+        case 'inside': return 0x10b981;   // Green
         case 'racing': return 0xff5252;   // Red
         default: return 0xffffff;         // White (null = not recording yet)
       }
     };
 
     // Translate points to origin and group by run type
-    // Group consecutive points with the same runType to create colored segments
+    // Group consecutive points with the same runType and inPit status to create colored segments
     interface PointSegment {
       runType: 'outside' | 'inside' | 'racing' | null;
+      inPit: boolean;
       points: THREE.Vector3[];
     }
 
@@ -183,8 +185,10 @@ export default function TrackVisualization({
         point.position[2] - centerZ      // Translate to origin
       );
 
-      // Start new segment if runType changes
-      if (!currentSegment || currentSegment.runType !== point.runType) {
+      const pointInPit = point.inPit || false;
+
+      // Start new segment if runType or inPit status changes
+      if (!currentSegment || currentSegment.runType !== point.runType || currentSegment.inPit !== pointInPit) {
         // If there's a previous segment, add the current point to it for continuity
         if (currentSegment && currentSegment.points.length > 0) {
           currentSegment.points.push(vector);
@@ -192,6 +196,7 @@ export default function TrackVisualization({
 
         currentSegment = {
           runType: point.runType,
+          inPit: pointInPit,
           points: [vector]
         };
         segments.push(currentSegment);
@@ -206,7 +211,7 @@ export default function TrackVisualization({
       if (segment.points.length < 2) return; // Need at least 2 points for a line
 
       const geometry = new THREE.BufferGeometry().setFromPoints(segment.points);
-      const color = getColorForRunType(segment.runType);
+      const color = getColorForRunType(segment.runType, segment.inPit);
       const material = new THREE.LineBasicMaterial({
         color,
         linewidth: 1
@@ -227,7 +232,7 @@ export default function TrackVisualization({
       if (segment.points.length === 0) return;
 
       const pointsGeometry = new THREE.BufferGeometry().setFromPoints(segment.points);
-      const color = getColorForRunType(segment.runType);
+      const color = getColorForRunType(segment.runType, segment.inPit);
       const pointsMaterial = new THREE.PointsMaterial({ color, size: 5, sizeAttenuation: false });
       const pointsCloud = new THREE.Points(pointsGeometry, pointsMaterial);
       sceneRef.current.add(pointsCloud);

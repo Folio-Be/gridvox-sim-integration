@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import ProgressBar from "../ui/ProgressBar";
 import TelemetryCard from "../ui/TelemetryCard";
 import StatusIndicator from "../ui/StatusIndicator";
@@ -10,11 +10,6 @@ interface LiveRecordingProps {
   onStopRecording: () => void;
 }
 
-function formatTimestamp(ms: number): string {
-  const date = new Date(ms);
-  return date.toLocaleTimeString("en-US", { hour12: false, fractionalSecondDigits: 3 });
-}
-
 function formatPosition(worldPos: [number, number, number]): string {
   return `X:${worldPos[0].toFixed(1)} Y:${worldPos[1].toFixed(1)} Z:${worldPos[2].toFixed(1)}`;
 }
@@ -23,23 +18,6 @@ function formatLapTime(currentTime: number): string {
   const minutes = Math.floor(currentTime / 60);
   const seconds = currentTime % 60;
   return `${minutes}:${seconds.toFixed(3).padStart(6, "0")}`;
-}
-
-type RunType = "outside" | "inside" | "racing";
-
-interface LapData {
-  id: string;
-  runType: RunType;
-  lapNumber: number;
-  lapTime: number;
-  timestamp: number;
-  telemetryData: any[]; // Full telemetry points
-}
-
-interface RunStats {
-  outside: number;
-  inside: number;
-  racing: number;
 }
 
 export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
@@ -56,80 +34,23 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
     maxRpm: 0,
   });
 
-  // Run type management
-  const [currentRunType, setCurrentRunType] = useState<RunType | null>(null); // null = not started yet
-  const currentRunTypeRef = useRef<RunType | null>(null); // Ref for event handlers
-  const [nextRunType, setNextRunType] = useState<RunType>("outside");
-  const [recordedLaps, setRecordedLaps] = useState<LapData[]>([]);
-  const [runStats, setRunStats] = useState<RunStats>({
-    outside: 0,
-    inside: 0,
-    racing: 0,
-  });
-
-  // Current lap telemetry buffer
-  const [currentLapTelemetry, setCurrentLapTelemetry] = useState<any[]>([]);
-
-  // Backup phase tracking
-  const [needsBackup, setNeedsBackup] = useState(false);
-  const [hasBackedUp, setHasBackedUp] = useState(false);
-  const [isInitialMount, setIsInitialMount] = useState(true);
-
-  // Sync ref with state
-  useEffect(() => {
-    currentRunTypeRef.current = currentRunType;
-  }, [currentRunType]);
-
-  // Recording now starts on first starting line crossing, not on connection
-  // (removed auto-start effect)
-
-  // Auto-advance next run type (only when a run is active)
-  useEffect(() => {
-    if (isInitialMount) {
-      setIsInitialMount(false);
-      return;
-    }
-
-    // Only auto-advance if we have an active run
-    if (currentRunType !== null) {
-      if (currentRunType === "outside") {
-        setNextRunType("inside");
-      } else if (currentRunType === "inside") {
-        setNextRunType("racing");
-      } else if (currentRunType === "racing") {
-        setNextRunType("outside");
-      }
-    }
-  }, [currentRunType, isInitialMount]);
-
-  // Track info
+  const [allTelemetryPoints, setAllTelemetryPoints] = useState<any[]>([]);
   const [trackInfo, setTrackInfo] = useState({ location: "", variation: "" });
-
-  // Recording consistency (telemetry rate tracking)
   const [telemetryRate, setTelemetryRate] = useState(0);
 
-
-  // Initialize telemetry service
   useEffect(() => {
     const service = getTelemetryService();
     let firstUpdate = true;
-    let lastLap = -1; // -1 means not initialized yet
-    let lastSector = -1;
     let lastUpdateTime = Date.now();
     let connectionLostWarned = false;
     let updateCount = 0;
     let rateCheckStart = Date.now();
-    let localTelemetryCount = 0; // Track telemetry count locally instead of relying on state
-    let recordingLapNumber = 0; // Track lap numbers for recording (starts at 1 on first start line crossing)
-    let lastLapDistance = 0; // Track lap distance to detect start line crossing via wrap-around
 
     const handleTelemetryUpdate = (data: TelemetryData) => {
       setIsConnected(true);
       const now = Date.now();
 
-      // Reset connection lost warning
       if (connectionLostWarned) {
-        debugConsole.success("Telemetry connection restored!");
         connectionLostWarned = false;
       }
       lastUpdateTime = now;
@@ -143,7 +64,6 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
         rateCheckStart = now;
       }
 
-      // Log first telemetry update
       if (firstUpdate) {
         firstUpdate = false;
         setTrackInfo({
@@ -153,12 +73,10 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
         debugConsole.success(`Connected to AMS2! Track: ${data.track_location} ${data.track_variation}`);
       }
 
-      // Get player data (viewed participant)
       const playerIndex = data.viewed_participant_index;
       const player = data.participants[playerIndex];
 
       if (player) {
-        // Collect telemetry point for current lap (store run type with each point)
         const telemetryPoint = {
           timestamp: now,
           speed: data.speed,
@@ -168,144 +86,25 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
           gear: data.gear,
           rpm: data.rpm,
           lapDistance: player.current_lap_distance,
-          runType: currentRunTypeRef.current, // Store current run type (null for white, 'outside' for blue, etc.)
+          runType: null,
+          inPit: data.game_state === 3,
         };
 
-        // Initialize lastLap on first telemetry update
-        if (lastLap === -1) {
-          lastLap = player.current_lap;
-          debugConsole.info(`🏁 Initial lap: ${lastLap}`);
-        }
+        setAllTelemetryPoints(prev => [...prev, telemetryPoint]);
 
-        // Detect race restart (lap number decreased)
-        if (player.current_lap < lastLap) {
-          debugConsole.info(`🔄 Race restarted. Clearing telemetry buffer.`);
-          setCurrentLapTelemetry([]);
-          setCurrentRunType(null);
-          lastLap = player.current_lap; // Reset to current lap
-          localTelemetryCount = 0;
-          recordingLapNumber = 0; // Reset recording lap counter
-          skipNextLapDetection = true; // Don't trigger finish line detection on this frame
-        }
-
-        // Always collect telemetry (needed for start line detection and white line visualization)
-        setCurrentLapTelemetry(prev => [...prev, telemetryPoint]);
-        localTelemetryCount++;
-
-        // Debug: Periodically log to see telemetry state
-        if (Math.random() < 0.01) { // ~1% = roughly once per second at 60Hz
-          debugConsole.info(`📊 DEBUG: lap=${player.current_lap}, lap_distance=${player.current_lap_distance.toFixed(1)}m, lastDist=${lastLapDistance.toFixed(1)}m, points=${localTelemetryCount}`);
-        }
-
-        // Detect start line crossing: Use lap distance wrap-around
-        // When lap_distance goes from high value (>50% track) back to low value (<20% track), that's a start line crossing
-        const currentLapDistance = player.current_lap_distance;
-        const trackLength = data.track_length;
-
-        // Detect wrap-around: was in second half of track, now in first 20%
-        const wasInSecondHalf = lastLapDistance > trackLength * 0.5;
-        const nowInFirstPart = currentLapDistance < trackLength * 0.2;
-        const isStartLineCrossing = wasInSecondHalf && nowInFirstPart;
-
-        // Ensure player has actually driven (not just race countdown/session load)
-        const hasActuallyDriven = localTelemetryCount > 100; // At least 100 points (~1.5 seconds at 60Hz)
-
-        if (isStartLineCrossing && !skipNextLapDetection) {
-          debugConsole.info(`🏁 Start line crossed! lap_distance: ${lastLapDistance.toFixed(1)}m → ${currentLapDistance.toFixed(1)}m, driven: ${hasActuallyDriven}, points: ${localTelemetryCount}`);
-
-          // Save completed lap if we were recording
-          if (recordingLapNumber > 0 && currentRunTypeRef.current !== null && currentLapTelemetry.length > 0) {
-            const lapTime = data.current_time;
-            const lapTimeFormatted = formatLapTime(lapTime);
-
-            const completedLap: LapData = {
-              id: `${Date.now()}-${recordingLapNumber}`,
-              runType: currentRunTypeRef.current,
-              lapNumber: recordingLapNumber,
-              lapTime: lapTime,
-              timestamp: now,
-              telemetryData: currentLapTelemetry,
-            };
-
-            setRecordedLaps(prev => [...prev, completedLap]);
-            debugConsole.success(`🏁 Lap ${recordingLapNumber} completed! Time: ${lapTimeFormatted} [${currentRunTypeRef.current.toUpperCase()}] (${localTelemetryCount} telemetry points)`);
-
-            // Clear telemetry buffer for next lap
-            setCurrentLapTelemetry([]);
-            localTelemetryCount = 0;
-
-            // Increment lap number for next lap
-            recordingLapNumber++;
-          }
-
-          // Start new recording if none active (triggers on first finish line crossing)
-          // ONLY start if player has actually driven to the line (not just session load)
-          if (currentRunTypeRef.current === null && hasActuallyDriven) {
-            recordingLapNumber = 1; // Start with lap 1
-            setCurrentRunType(nextRunType);
-            setRunStats(prev => ({
-              ...prev,
-              [nextRunType]: prev[nextRunType] + 1,
-            }));
-            debugConsole.success(`🏁 Finish line crossed! Starting Lap ${recordingLapNumber} [${nextRunType.toUpperCase()}]`);
-
-            // Clear telemetry buffer to start fresh (white lines before this point)
-            setCurrentLapTelemetry([]);
-            localTelemetryCount = 0;
-          } else if (currentRunTypeRef.current === null && !hasActuallyDriven) {
-            debugConsole.warn(`⏸️ Lap change ignored - player hasn't driven yet (${localTelemetryCount} points)`);
-          }
-          // Handle run type switching with backup requirement
-          else if (currentRunTypeRef.current !== nextRunType && !hasBackedUp) {
-            setNeedsBackup(true);
-            debugConsole.warn(`⚠️ Please back up over the finish line before starting ${nextRunType.toUpperCase()} run`);
-            setCurrentLapTelemetry([]);
-            localTelemetryCount = 0;
-          } else if (hasBackedUp || currentRunTypeRef.current === nextRunType) {
-            // Switch to next run type or continue current
-            setCurrentRunType(nextRunType);
-            setNeedsBackup(false);
-            setHasBackedUp(false);
-
-            // Update run stats
-            setRunStats(prev => ({
-              ...prev,
-              [nextRunType]: prev[nextRunType] + 1,
-            }));
-
-            debugConsole.info(`🏁 Crossed finish line! Starting Lap ${recordingLapNumber} [${nextRunType.toUpperCase()}]`);
-          }
-        }
-
-        // Reset skip flag after processing
-        if (skipNextLapDetection) {
-          skipNextLapDetection = false;
-        }
-
-        // Update lastLap after finish line detection
-        lastLap = player.current_lap;
-
-        // Calculate lap progress (0-100%) - needed for backup detection
+        // Calculate lap progress
         const progress = data.track_length > 0
           ? (player.current_lap_distance / data.track_length) * 100
           : 0;
 
         setLapProgress(Math.min(100, Math.max(0, progress)));
 
-        // Detect backing up over finish line (progress goes from ~0% to ~100% while in reverse)
-        const prevProgress = lapProgress;
-        if (needsBackup && prevProgress < 10 && progress > 90 && data.gear < 0) {
-          setHasBackedUp(true);
-          setNeedsBackup(false);
-          debugConsole.success(`✅ Backed up! Ready to start ${nextRunType.toUpperCase()} run. Cross finish line when positioned.`);
-        }
-
         // Update telemetry display
         const throttlePct = Math.round(data.throttle * 100);
         const brakePct = Math.round(data.brake * 100);
 
         setTelemetry({
-          speed: Math.round(data.speed * 2.23694), // m/s to MPH
+          speed: Math.round(data.speed * 2.23694),
           position: formatPosition(player.world_position),
           lap: `${player.current_lap} / ${formatLapTime(data.current_time)}`,
           gear: data.gear,
@@ -317,41 +116,25 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
       }
     };
 
-    // Check for lost telemetry connection every 2 seconds
     const connectionCheckInterval = setInterval(() => {
       const timeSinceLastUpdate = Date.now() - lastUpdateTime;
       if (timeSinceLastUpdate > 2000 && !connectionLostWarned && !firstUpdate) {
-        debugConsole.warn(`⚠️ No telemetry updates for ${Math.round(timeSinceLastUpdate / 1000)}s`);
         connectionLostWarned = true;
         setIsConnected(false);
       }
     }, 2000);
 
-    const handleStarted = () => {
-      debugConsole.info("Telemetry service started");
-      debugConsole.info("Waiting for AMS2 connection...");
-    };
+    const handleStarted = () => {};
+    const handleConnected = () => {};
+    const handleError = () => {};
 
-    const handleConnected = (message: string) => {
-      debugConsole.success(message);
-    };
-
-    const handleError = (error: Error) => {
-      debugConsole.warn(error.message);
-    };
-
-    // Initial log
-    debugConsole.info("Initializing telemetry service...");
-
-    // Register event listeners BEFORE starting
     service.on("update", handleTelemetryUpdate);
     service.on("started", handleStarted);
     service.on("connected", handleConnected);
     service.on("error", handleError);
 
-    // Start telemetry polling at 60Hz
     service.start(16).catch((err) => {
-      debugConsole.error(`Failed to start telemetry: ${err.message}`);
+      console.error(`Failed to start telemetry: ${err.message}`);
     });
 
     return () => {
@@ -366,254 +149,107 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
 
   return (
     <div className="relative flex h-full w-full flex-col bg-green-bg dark group/design-root overflow-hidden">
-        {/* Full-screen backup warning overlay */}
-        {needsBackup && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-            <div className="flex flex-col items-center gap-6 p-12 bg-orange-600 rounded-2xl border-4 border-orange-400 shadow-2xl animate-pulse">
-              <div className="text-8xl">🔄</div>
-              <div className="text-4xl font-bold text-white text-center">
-                BACK UP OVER FINISH LINE
+      <div className="flex flex-col h-full">
+        <div className="flex flex-col flex-1">
+          {/* Header */}
+          <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-green-border px-10 py-3">
+            <div className="flex items-center gap-4 text-white">
+              <div className="size-4 text-primary">
+                <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    clipRule="evenodd"
+                    d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z"
+                    fill="currentColor"
+                    fillRule="evenodd"
+                  ></path>
+                  <path
+                    clipRule="evenodd"
+                    d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z"
+                    fill="currentColor"
+                    fillRule="evenodd"
+                  ></path>
+                </svg>
               </div>
-              <div className="text-2xl text-white/90 text-center">
-                Put car in reverse and cross finish line backwards
-              </div>
-              <div className="text-xl text-white/80 text-center">
-                to switch to <span className="font-bold uppercase">{nextRunType}</span> run
-              </div>
+              <h2 className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">
+                Telemetry Capture
+              </h2>
             </div>
-          </div>
-        )}
-
-        {/* Full-screen "Starting Run" overlay */}
-        {hasBackedUp && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-            <div className="flex flex-col items-center gap-6 p-12 bg-green-600 rounded-2xl border-4 border-green-400 shadow-2xl animate-pulse">
-              <div className="text-8xl">✅</div>
-              <div className="text-4xl font-bold text-white text-center">
-                READY TO START
-              </div>
-              <div className="text-3xl text-white font-bold text-center uppercase">
-                {nextRunType} RUN
-              </div>
-              <div className="text-xl text-white/90 text-center">
-                Cross finish line when positioned
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="flex flex-col h-full">
-          <div className="flex flex-col flex-1">
-            {/* Header */}
-            <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-green-border px-10 py-3">
-              <div className="flex items-center gap-4 text-white">
-                <div className="size-4 text-primary">
-                  <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      clipRule="evenodd"
-                      d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z"
-                      fill="currentColor"
-                      fillRule="evenodd"
-                    ></path>
-                    <path
-                      clipRule="evenodd"
-                      d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z"
-                      fill="currentColor"
-                      fillRule="evenodd"
-                    ></path>
-                  </svg>
+            <div className="flex flex-1 justify-end gap-6 items-center">
+              {/* Track Info */}
+              {trackInfo.location && (
+                <div className="flex flex-col items-end gap-0.5">
+                  <div className="text-white font-medium text-sm">
+                    {trackInfo.location} {trackInfo.variation && `- ${trackInfo.variation}`}
+                  </div>
+                  <div className="text-white/40 text-xs">Automobilista 2</div>
                 </div>
-                <h2 className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">
-                  Telemetry Capture
-                </h2>
-              </div>
-              <div className="flex flex-1 justify-end gap-6 items-center">
-                {/* Track Info */}
-                {trackInfo.location && (
-                  <div className="flex flex-col items-end gap-0.5">
-                    <div className="text-white font-medium text-sm">
-                      {trackInfo.location} {trackInfo.variation && `- ${trackInfo.variation}`}
-                    </div>
-                    <div className="text-white/40 text-xs">Automobilista 2</div>
-                  </div>
-                )}
+              )}
 
-                {/* Recording consistency indicator */}
-                {telemetryRate > 0 && (
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-green-bg/50 rounded border border-green-border">
-                    <span className="text-white/60 text-xs">Rate:</span>
-                    <span className={`text-xs font-bold ${
-                      telemetryRate >= 55 ? "text-green-400" :
+              {/* Recording consistency indicator */}
+              {telemetryRate > 0 && (
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-green-bg/50 rounded border border-green-border">
+                  <span className="text-white/60 text-xs">Rate:</span>
+                  <span className={`text-xs font-bold ${telemetryRate >= 55 ? "text-green-400" :
                       telemetryRate >= 45 ? "text-yellow-400" :
-                      "text-red-400"
+                        "text-red-400"
                     }`}>
-                      {telemetryRate} Hz
-                    </span>
-                  </div>
-                )}
+                    {telemetryRate} Hz
+                  </span>
+                </div>
+              )}
 
-                {isConnected && <StatusIndicator status="recording" label="Recording..." />}
-                <StatusIndicator
-                  status={isConnected ? "connected" : "disconnected"}
-                  label={isConnected ? "Connected" : "Waiting..."}
+              {isConnected && <StatusIndicator status="recording" label="Recording..." />}
+              <StatusIndicator
+                status={isConnected ? "connected" : "disconnected"}
+                label={isConnected ? "Connected" : "Waiting..."}
+              />
+            </div>
+          </header>
+
+          {/* Main Content */}
+          <main className="flex flex-col flex-1 p-4 gap-4">
+            {/* Progress Bar */}
+            <ProgressBar label="Lap Progress" value={lapProgress} />
+
+            {/* Track Map & Telemetry Cards */}
+            <div className="flex flex-1 gap-4 overflow-hidden">
+              {/* 3D Track Visualization */}
+              <div className="w-3/5 flex h-full">
+                <TrackVisualization
+                  telemetryPoints={allTelemetryPoints}
+                  currentRunType={null}
+                  className="w-full h-full rounded-lg border border-green-border overflow-hidden"
                 />
               </div>
-            </header>
 
-            {/* Run Type Selector & Status Bar */}
-            <div className="border-b border-green-border px-10 py-4 bg-green-bg/50">
-              <div className="flex items-center justify-center gap-3">
-                {(["outside", "inside", "racing"] as RunType[]).map((type) => {
-                  const isActive = currentRunType === type;
-                  const isNext = nextRunType === type;
-                  const count = runStats[type];
-
-                  // Show dotted border only when:
-                  // 1. No run has started yet (currentRunType === null) and this is the next type
-                  // 2. A run is active (currentRunType !== null) and this is the next type AND different from current
-                  const showNextBorder = isNext && (currentRunType === null || currentRunType !== nextRunType);
-
-                  return (
-                    <button
-                      key={type}
-                      onClick={() => setNextRunType(type)}
-                      className={`flex flex-col items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all ${
-                        isActive
-                          ? "bg-primary/30 text-primary shadow-lg scale-105"
-                          : "bg-green-border text-white/60 hover:bg-green-border/80 hover:text-white"
-                      } ${
-                        showNextBorder
-                          ? "border-2 border-dashed border-primary"
-                          : "border-2 border-transparent"
-                      }`}
-                    >
-                      <span className="uppercase">{type}</span>
-                      <span className="text-xs font-normal opacity-60">{count} laps</span>
-                    </button>
-                  );
-                })}
+              {/* Telemetry Cards */}
+              <div className="w-2/5 flex flex-col gap-4">
+                <div className="flex flex-wrap gap-4">
+                  <TelemetryCard label="Speed" value={`${telemetry.speed} MPH`} />
+                  <TelemetryCard label="Position" value={telemetry.position} />
+                  <TelemetryCard label="Lap" value={telemetry.lap} />
+                  <TelemetryCard label="Gear" value={telemetry.gear} />
+                </div>
+                <div className="flex flex-col gap-3">
+                  <ProgressBar label="Throttle" value={telemetry.throttle} />
+                  <ProgressBar label="Brake" value={telemetry.brake} />
+                </div>
               </div>
             </div>
 
-            {/* Recorded Laps Panel */}
-            {recordedLaps.length > 0 && (
-              <div className="border-b border-green-border px-10 py-4 bg-green-bg/30">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-white font-bold text-sm">Recorded Laps ({recordedLaps.length})</h3>
-                  <button
-                    onClick={() => {
-                      setRecordedLaps([]);
-                      setRunStats({ outside: 0, inside: 0, racing: 0 });
-                      debugConsole.info("🗑️ All laps cleared");
-                    }}
-                    className="px-3 py-1 text-xs bg-red-600/20 hover:bg-red-600/40 text-red-400 rounded border border-red-600/50 transition-colors"
-                  >
-                    Clear All
-                  </button>
-                </div>
-                <div className="flex flex-wrap gap-2 max-h-[120px] overflow-y-auto">
-                  {recordedLaps.map((lap) => (
-                    <div
-                      key={lap.id}
-                      className="flex items-center gap-3 px-3 py-2 bg-green-border/30 rounded border border-green-border group hover:border-green-border/80 transition-all"
-                    >
-                      <div className="flex flex-col">
-                        <div className="flex items-center gap-2">
-                          <span className="text-white/60 text-xs">Lap {lap.lapNumber}</span>
-                          <span className={`text-xs font-bold uppercase ${
-                            lap.runType === "outside" ? "text-blue-400" :
-                            lap.runType === "inside" ? "text-yellow-400" :
-                            "text-red-400"
-                          }`}>
-                            {lap.runType}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-white text-sm font-mono">{formatLapTime(lap.lapTime)}</span>
-                          <span className="text-white/40 text-xs">({lap.telemetryData.length} pts)</span>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => {
-                          setRecordedLaps(prev => prev.filter(l => l.id !== lap.id));
-                          setRunStats(prev => ({
-                            ...prev,
-                            [lap.runType]: Math.max(0, prev[lap.runType] - 1),
-                          }));
-                          debugConsole.info(`🗑️ Deleted Lap ${lap.lapNumber} [${lap.runType.toUpperCase()}]`);
-                        }}
-                        className="opacity-0 group-hover:opacity-100 p-1 text-red-400 hover:text-red-300 hover:bg-red-600/20 rounded transition-all"
-                        title="Delete lap"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Main Content */}
-            <main className="flex flex-col flex-1 p-4 gap-4">
-              {/* Progress Bar */}
-              <ProgressBar label="" value={lapProgress} subtitle="Lap 3" />
-
-              {/* Track Map & Telemetry Cards */}
-              <div className="flex flex-1 gap-4 overflow-hidden">
-                {/* 3D Track Visualization */}
-                <div className="w-3/5 flex h-full">
-                  <TrackVisualization
-                    telemetryPoints={currentLapTelemetry}
-                    currentRunType={currentRunType}
-                    className="w-full h-full rounded-lg border border-green-border overflow-hidden"
-                  />
-                </div>
-
-                {/* Telemetry Cards */}
-                <div className="w-2/5 flex flex-col gap-4">
-                  <div className="flex flex-wrap gap-4">
-                    <TelemetryCard label="Speed" value={`${telemetry.speed} MPH`} />
-                    <TelemetryCard label="Position" value={telemetry.position} />
-                    <TelemetryCard label="Lap" value={telemetry.lap} />
-                    <TelemetryCard label="Gear" value={telemetry.gear} />
-                  </div>
-                  {/* Throttle/Brake Progress Bars */}
-                  <div className="flex flex-col gap-3">
-                    <ProgressBar label="Throttle" value={telemetry.throttle} />
-                    <ProgressBar label="Brake" value={telemetry.brake} />
-                  </div>
-                </div>
-              </div>
-
-              {/* Stop Button */}
-              <div className="flex justify-end p-4">
-                <button
-                  className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-red-600 hover:bg-red-700 text-white text-base font-bold leading-normal tracking-[0.015em] gap-2"
-                  onClick={onStopRecording}
-                >
-                  <span className="material-symbols-outlined">stop_circle</span>
-                  <span className="truncate">Stop & Save Recording</span>
-                </button>
-              </div>
-            </main>
-          </div>
+            {/* Stop Button */}
+            <div className="flex justify-end p-4">
+              <button
+                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-red-600 hover:bg-red-700 text-white text-base font-bold leading-normal tracking-[0.015em] gap-2"
+                onClick={onStopRecording}
+              >
+                <span className="material-symbols-outlined">stop_circle</span>
+                <span className="truncate">Stop & Save Recording</span>
+              </button>
+            </div>
+          </main>
         </div>
-
-        <style>{`
-          .pulse-red {
-            animation: pulse-red 2s infinite;
-          }
-          @keyframes pulse-red {
-            0%, 100% {
-              opacity: 1;
-            }
-            50% {
-              opacity: 0.5;
-            }
-          }
-        `}</style>
+      </div>
     </div>
   );
 }

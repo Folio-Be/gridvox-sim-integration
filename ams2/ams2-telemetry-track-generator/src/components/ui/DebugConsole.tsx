@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface LogEntry {
   timestamp: string;
@@ -81,6 +81,7 @@ if (typeof window !== "undefined") {
 export default function DebugConsole({ entries: propEntries }: DebugConsoleProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [entries, setEntries] = useState<LogEntry[]>(propEntries || debugConsole.getEntries());
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Subscribe to console updates
@@ -90,6 +91,13 @@ export default function DebugConsole({ entries: propEntries }: DebugConsoleProps
 
     return unsubscribe;
   }, []);
+
+  // Auto-scroll to bottom when entries change
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [entries]);
 
   const getColorClass = (level: LogEntry["level"]) => {
     switch (level) {
@@ -140,7 +148,7 @@ export default function DebugConsole({ entries: propEntries }: DebugConsoleProps
       {/* Console Content */}
       {!isCollapsed && (
         <>
-          <div className="flex-1 overflow-y-auto p-2 font-mono text-xs">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-2 font-mono text-xs">
             {entries.length === 0 ? (
               <div className="text-[#6b7280] text-center py-4">No messages</div>
             ) : (
