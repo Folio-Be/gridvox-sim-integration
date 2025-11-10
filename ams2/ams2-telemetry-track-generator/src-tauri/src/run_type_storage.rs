@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use std::fs::{create_dir_all, File};
 use std::io::{Read, Write};
 use std::path::PathBuf;
+use tauri::Manager;
 
 const STORAGE_FILE_NAME: &str = "run_type_assignments.json";
 
@@ -34,8 +35,10 @@ pub struct StoredRunTypeAssignment {
 type RunTypeMap = HashMap<String, HashMap<String, StoredRunTypeAssignment>>;
 
 fn storage_path<R: tauri::Runtime>(app: &tauri::AppHandle<R>) -> Result<PathBuf, String> {
-    let mut base = tauri::api::path::app_data_dir(&app.config())
-        .ok_or_else(|| "Unable to resolve app data directory".to_string())?;
+    let mut base = app
+        .path()
+        .app_data_dir()
+        .map_err(|err| format!("Unable to resolve app data directory: {err}"))?;
     base.push("gridvox");
     if let Err(err) = create_dir_all(&base) {
         return Err(format!("Unable to create storage directory: {err}"));
@@ -91,4 +94,23 @@ pub fn save_run_type_assignment<R: tauri::Runtime>(
     let run_type_entry = all.entry(track_key).or_insert_with(HashMap::new);
     run_type_entry.insert(run_type, assignment);
     write_all(&app, &all)
+}
+
+#[tauri::command]
+pub fn clear_run_type_assignments<R: tauri::Runtime>(
+    app: tauri::AppHandle<R>,
+    track_key: String,
+) -> Result<(), String> {
+    if track_key.trim().is_empty() {
+        return Ok(());
+    }
+
+    let mut all = read_all(&app)?;
+    let removed = all.remove(&track_key).is_some();
+
+    if removed || all.is_empty() {
+        write_all(&app, &all)?;
+    }
+
+    Ok(())
 }

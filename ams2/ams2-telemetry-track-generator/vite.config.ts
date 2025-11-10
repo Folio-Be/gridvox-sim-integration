@@ -1,8 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
+// Allow per-app port overrides so multiple dev servers can coexist.
+// Fallback to Vite's default if no override is provided.
+const requestedPort = Number(process.env.VITE_DEV_PORT || process.env.PORT || 1430);
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
@@ -14,15 +16,15 @@ export default defineConfig(async () => ({
   clearScreen: false,
   // 2. tauri expects a fixed port, fail if that port is not available
   server: {
-    port: 1420,
+    port: requestedPort,
     strictPort: true,
     host: host || false,
     hmr: host
       ? {
-          protocol: "ws",
-          host,
-          port: 1421,
-        }
+        protocol: "ws",
+        host,
+        port: requestedPort + 1,
+      }
       : undefined,
     watch: {
       // 3. tell Vite to ignore watching `src-tauri`

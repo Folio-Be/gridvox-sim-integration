@@ -25,7 +25,7 @@ export default function TrackVisualization({
   const lineSegmentsRef = useRef<THREE.Line[]>([]);
   const pointsCloudsRef = useRef<THREE.Points[]>([]);
   const gridRef = useRef<THREE.GridHelper | null>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | null>(null);
 
   // Initialize Three.js scene
   useEffect(() => {
@@ -116,9 +116,12 @@ export default function TrackVisualization({
       return;
     }
 
+    const scene = sceneRef.current!;
+    const camera = cameraRef.current!;
+
     // Remove old line segments
     lineSegmentsRef.current.forEach(line => {
-      sceneRef.current.remove(line);
+      scene.remove(line);
       line.geometry.dispose();
       if (Array.isArray(line.material)) {
         line.material.forEach(m => m.dispose());
@@ -130,7 +133,7 @@ export default function TrackVisualization({
 
     // Remove old points clouds
     pointsCloudsRef.current.forEach(pointsCloud => {
-      sceneRef.current.remove(pointsCloud);
+      scene.remove(pointsCloud);
       pointsCloud.geometry.dispose();
       (pointsCloud.material as THREE.Material).dispose();
     });
@@ -138,7 +141,7 @@ export default function TrackVisualization({
 
     // Remove old grid
     if (gridRef.current) {
-      sceneRef.current.remove(gridRef.current);
+      scene.remove(gridRef.current);
       gridRef.current.geometry.dispose();
       (gridRef.current.material as THREE.Material).dispose();
     }
@@ -178,7 +181,7 @@ export default function TrackVisualization({
     const segments: PointSegment[] = [];
     let currentSegment: PointSegment | null = null;
 
-    telemetryPoints.forEach((point, index) => {
+  telemetryPoints.forEach((point) => {
       const vector = new THREE.Vector3(
         -(point.position[0] - centerX),  // Negate X to fix horizontal flip
         0,
@@ -214,13 +217,13 @@ export default function TrackVisualization({
       const color = getColorForRunType(segment.runType, segment.inPit);
       const material = new THREE.LineBasicMaterial({
         color,
-        linewidth: 1
+        linewidth: 0.4
       });
 
       const line = new THREE.Line(geometry, material);
       line.frustumCulled = false;
       line.renderOrder = 999;
-      sceneRef.current.add(line);
+  scene.add(line);
       lineSegmentsRef.current.push(line);
 
       // Collect all points for point cloud
@@ -233,16 +236,21 @@ export default function TrackVisualization({
 
       const pointsGeometry = new THREE.BufferGeometry().setFromPoints(segment.points);
       const color = getColorForRunType(segment.runType, segment.inPit);
-      const pointsMaterial = new THREE.PointsMaterial({ color, size: 5, sizeAttenuation: false });
+  const pointsMaterial = new THREE.PointsMaterial({ color, size: 2, sizeAttenuation: false });
       const pointsCloud = new THREE.Points(pointsGeometry, pointsMaterial);
-      sceneRef.current.add(pointsCloud);
+      scene.add(pointsCloud);
       pointsCloudsRef.current.push(pointsCloud);
     });
 
     // Update camera to frame track (now centered at origin)
     if (allPoints.length > 10 && maxRange > 0) {
       const padding = 10; // 10m padding on each side
-      const aspect = containerRef.current!.clientWidth / containerRef.current!.clientHeight;
+      const container = containerRef.current;
+      if (!container) {
+        return;
+      }
+
+      const aspect = container.clientWidth / container.clientHeight;
 
       // Calculate frustum size from actual track range plus padding
       const frustumWidth = (rangeX + padding * 2) / 2;
@@ -251,13 +259,13 @@ export default function TrackVisualization({
       // Use the larger dimension to ensure everything fits
       const frustumSize = Math.max(frustumWidth, frustumHeight);
 
-      cameraRef.current.left = -frustumSize * aspect;
-      cameraRef.current.right = frustumSize * aspect;
-      cameraRef.current.top = frustumSize;
-      cameraRef.current.bottom = -frustumSize;
-      cameraRef.current.position.set(0, 100, 0); // Camera stays at origin
-      cameraRef.current.lookAt(0, 0, 0);
-      cameraRef.current.updateProjectionMatrix();
+  camera.left = -frustumSize * aspect;
+  camera.right = frustumSize * aspect;
+  camera.top = frustumSize;
+  camera.bottom = -frustumSize;
+  camera.position.set(0, 100, 0); // Camera stays at origin
+  camera.lookAt(0, 0, 0);
+  camera.updateProjectionMatrix();
     }
 
     // Add dynamic grid sized to track (now at origin)
@@ -265,7 +273,7 @@ export default function TrackVisualization({
     const gridDivisions = Math.min(Math.ceil(gridSize / 20), 50);
     const grid = new THREE.GridHelper(gridSize, gridDivisions, 0x1a3d1a, 0x0d1f0d);
     grid.position.set(0, -0.5, 0); // Grid at origin
-    sceneRef.current.add(grid);
+  scene.add(grid);
     gridRef.current = grid;
   }, [telemetryPoints, currentRunType]);
 
