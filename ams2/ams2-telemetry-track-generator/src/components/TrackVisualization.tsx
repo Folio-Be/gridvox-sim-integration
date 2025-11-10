@@ -181,7 +181,7 @@ export default function TrackVisualization({
     const segments: PointSegment[] = [];
     let currentSegment: PointSegment | null = null;
 
-  telemetryPoints.forEach((point) => {
+    telemetryPoints.forEach((point) => {
       const vector = new THREE.Vector3(
         -(point.position[0] - centerX),  // Negate X to fix horizontal flip
         0,
@@ -223,7 +223,7 @@ export default function TrackVisualization({
       const line = new THREE.Line(geometry, material);
       line.frustumCulled = false;
       line.renderOrder = 999;
-  scene.add(line);
+      scene.add(line);
       lineSegmentsRef.current.push(line);
 
       // Collect all points for point cloud
@@ -236,7 +236,7 @@ export default function TrackVisualization({
 
       const pointsGeometry = new THREE.BufferGeometry().setFromPoints(segment.points);
       const color = getColorForRunType(segment.runType, segment.inPit);
-  const pointsMaterial = new THREE.PointsMaterial({ color, size: 2, sizeAttenuation: false });
+      const pointsMaterial = new THREE.PointsMaterial({ color, size: 2, sizeAttenuation: false });
       const pointsCloud = new THREE.Points(pointsGeometry, pointsMaterial);
       scene.add(pointsCloud);
       pointsCloudsRef.current.push(pointsCloud);
@@ -259,13 +259,13 @@ export default function TrackVisualization({
       // Use the larger dimension to ensure everything fits
       const frustumSize = Math.max(frustumWidth, frustumHeight);
 
-  camera.left = -frustumSize * aspect;
-  camera.right = frustumSize * aspect;
-  camera.top = frustumSize;
-  camera.bottom = -frustumSize;
-  camera.position.set(0, 100, 0); // Camera stays at origin
-  camera.lookAt(0, 0, 0);
-  camera.updateProjectionMatrix();
+      camera.left = -frustumSize * aspect;
+      camera.right = frustumSize * aspect;
+      camera.top = frustumSize;
+      camera.bottom = -frustumSize;
+      camera.position.set(0, 100, 0); // Camera stays at origin
+      camera.lookAt(0, 0, 0);
+      camera.updateProjectionMatrix();
     }
 
     // Add dynamic grid sized to track (now at origin)
@@ -273,7 +273,7 @@ export default function TrackVisualization({
     const gridDivisions = Math.min(Math.ceil(gridSize / 20), 50);
     const grid = new THREE.GridHelper(gridSize, gridDivisions, 0x1a3d1a, 0x0d1f0d);
     grid.position.set(0, -0.5, 0); // Grid at origin
-  scene.add(grid);
+    scene.add(grid);
     gridRef.current = grid;
   }, [telemetryPoints, currentRunType]);
 
