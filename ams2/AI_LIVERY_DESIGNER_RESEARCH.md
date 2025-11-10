@@ -1041,6 +1041,142 @@ For the **SAME processing pipeline** (single photo, 1024x1024, basic SDXL):
 - Not because cloud is "better at AI", but because it can afford to run **additional expensive operations**
 - Like comparing "good photo" vs "photo + professional editing"
 
+### ⚠️ Important Consideration: Proprietary Cloud Models
+
+**Valid Question: "Aren't cloud models better, like newer proprietary models?"**
+
+Yes, there ARE potentially better models available only in the cloud:
+
+#### Proprietary Model Comparison (2024-2025)
+
+| Model | Access | Quality for Textures | Cost per Image | Pros | Cons |
+|-------|--------|---------------------|----------------|------|------|
+| **SDXL (open)** | Local + Cloud | 85-90% | $0 local / $0.01 cloud | Free, controllable, proven | Not the absolute best |
+| **DALL-E 3** | Cloud only (OpenAI) | 90-95% | $0.04-0.08 | Best text understanding | Expensive, no ControlNet |
+| **Midjourney v6** | Cloud only (Discord) | 92-95% | $0.10-0.20 | Best artistic quality | Very expensive, no API, no ControlNet |
+| **Imagen 3** | Cloud only (Google) | 88-92% | $0.06-0.12 | Good balance | No public API yet |
+| **Flux.1** | Local + Cloud | 88-92% | $0.02 cloud | Better than SDXL | Newer, less tested |
+
+**Key Insight:** Proprietary models ARE better, but:
+1. **They lack ControlNet support** - Can't condition on UV maps/depth
+2. **Much more expensive** ($0.10 vs $0.01 per generation)
+3. **No local option** - Forces cloud dependency
+4. **Harder to control** - Less technical control over output
+
+#### Should We Use Proprietary Models for Premium Tier?
+
+**Option A: Keep SDXL for Everything (Recommended for MVP)**
+
+Pros:
+- ✅ Consistent experience (local = cloud base quality)
+- ✅ Full ControlNet support (critical for UV mapping)
+- ✅ Much cheaper cloud tier ($0.01 vs $0.10 per gen)
+- ✅ Well-tested for texture generation
+- ✅ Fast iteration (proven pipeline)
+
+Cons:
+- ❌ Not the absolute best quality available
+- ❌ Missing out on latest model improvements
+
+**Option B: Proprietary Models for Ultra-Premium Tier**
+
+```
+Free (Local - SDXL):
+- 85-90% quality
+- $0 cost
+- Unlimited
+
+Premium (Cloud - SDXL enhanced):
+- 92-95% quality (multi-photo, de-lighting, 4K)
+- $1.99/livery or $9.99/month
+- Advanced features
+
+Ultra (Cloud - DALL-E 3 / Midjourney):
+- 95-98% quality
+- $4.99/livery or $29.99/month
+- Cutting-edge AI models
+- Professional championship-grade
+```
+
+Pros:
+- ✅ Offers absolute best quality for those who need it
+- ✅ Revenue opportunity from pro users
+- ✅ Marketing: "We use the best AI available"
+- ✅ Competitive differentiation
+
+Cons:
+- ❌ Complex three-tier system
+- ❌ Proprietary models don't support ControlNet (harder to control)
+- ❌ Much higher cloud costs (10x per generation)
+- ❌ May not actually be better for UV texture generation (untested)
+- ❌ Dependency on third-party APIs (OpenAI, Midjourney)
+
+#### Technical Reality: Why SDXL May Actually Be Better for This Use Case
+
+**SDXL has critical advantages for texture generation:**
+
+1. **ControlNet Support** ⭐⭐⭐⭐⭐
+   - Can condition on depth maps, normal maps, UV layouts
+   - Essential for geometric accuracy
+   - Proprietary models don't have this
+
+2. **IPAdapter Support** ⭐⭐⭐⭐⭐
+   - Reference image style transfer
+   - Critical for matching real car photos
+   - DALL-E 3 doesn't support this
+
+3. **Inpainting Control** ⭐⭐⭐⭐
+   - Precise UV island filling
+   - SDXL has proven inpainting models
+   - Midjourney doesn't expose this control
+
+4. **Open Source Ecosystem** ⭐⭐⭐⭐⭐
+   - Extensive community tools
+   - Custom training possible
+   - No API rate limits or costs for local
+
+**Reality Check:**
+
+For **general image generation** (photos, art), proprietary models ARE better.
+
+For **controlled texture generation with geometric constraints**, SDXL + ControlNet + IPAdapter is likely BETTER because:
+- It respects 3D geometry
+- It follows UV layout constraints
+- It processes reference images correctly
+- It's been proven for texture work (Ready Player Me uses SDXL, not DALL-E 3)
+
+#### Recommended Strategy: SDXL with Future Proprietary Option
+
+**Phase 1-2 (MVP): SDXL Only**
+- Proven technology
+- Local + cloud parity
+- Lower risk, faster development
+
+**Phase 3+ (If demand exists): Add Proprietary Ultra Tier**
+- Test DALL-E 3 / Flux.1 for texture quality
+- Offer as experimental "Ultra" tier
+- Price at $4.99/livery (covers higher API costs + margin)
+- Market as "Cutting-edge AI for championship liveries"
+
+**Expected Adoption:**
+- 80% Free (local SDXL)
+- 15% Premium (cloud SDXL enhanced)
+- 4% Ultra (proprietary models) ← If we add this
+- 1% Professional designers (still manual)
+
+**Cost Analysis (5,000 users with Ultra tier):**
+
+Without Ultra tier:
+- Revenue: $6,250/month (from Premium)
+- Cloud costs: $1,500/month
+- Profit: $4,750/month
+
+With Ultra tier:
+- Revenue: $6,250 (Premium) + $1,000 (Ultra) = $7,250/month
+- Cloud costs: $1,500 (Premium) + $800 (Ultra DALL-E 3) = $2,300/month
+- Profit: $4,950/month
+- Extra profit: Only $200/month (not worth complexity?)
+
 **Marketing message (revised for accuracy):**
 
 "GridVox AI Livery Designer
