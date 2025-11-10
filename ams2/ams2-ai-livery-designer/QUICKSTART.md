@@ -11,21 +11,30 @@ cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-ai-livery-designer
 # Install Node.js dependencies
 pnpm install
 
-# Verify Rust installation
+# Verify Rust installation (should already be installed)
 rustc --version
-# If not installed: Download from https://rustup.rs/
+
+# Set up Python backend (automated)
+cd python-backend
+.\install.bat
+# This creates venv, installs packages, and checks GPU
 
 # Verify Python installation
 python --version
 # Should be 3.10 or higher
 ```
 
-### 2. Run the Application (1 minute)
+### 2. Run the Application (2 terminals)
 
 ```powershell
-# Start the Tauri development server
-pnpm tauri dev
+# Terminal 1: Start Python backend
+cd python-backend
+.\start.bat
+# Server will start on http://127.0.0.1:8002
 
+# Terminal 2: Start Tauri app
+cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-ai-livery-designer
+pnpm tauri dev
 # This will:
 # - Start Vite dev server on http://localhost:1430
 # - Compile Rust backend
@@ -52,27 +61,34 @@ pnpm tauri dev
 - ✅ Multi-file selection
 - ✅ Angle tagging for photos
 - ✅ Car selection (3 GT3 test cars)
-- ✅ Project structure complete
+- ✅ Complete project structure
+- ✅ Standalone Python backend
+- ✅ GPU detection endpoint
+- ✅ Service stubs for Week 5-6
 
 ## What's Coming Next (Week 1-2)
 
-### Option A: Continue Environment Setup
+### Option A: Download AI Models (Week 2)
 
 ```powershell
-# Install CUDA Toolkit (for GPU acceleration)
-# Download from: https://developer.nvidia.com/cuda-downloads
-
-# Set up Python virtual environment
+# Activate Python environment
 cd python-backend
-python -m venv venv
-.\venv\Scripts\activate
+venv\Scripts\activate
 
-# Install Python dependencies
-pip install -r requirements.txt
+# Install PyTorch with CUDA (reusing POC-08's CUDA setup)
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
-# Run Python backend (placeholder)
-python main.py
-# Should start on http://localhost:8002
+# Install Hugging Face CLI
+pip install huggingface_hub
+
+# Login to Hugging Face (for model downloads)
+huggingface-cli login
+
+# Download SDXL model (~6.9GB - will implement in Week 2)
+# python -c "from diffusers import StableDiffusionXLPipeline; StableDiffusionXLPipeline.from_pretrained('stabilityai/stable-diffusion-xl-base-1.0')"
+
+# Test GPU
+python -c "import torch; print(f'CUDA Available: {torch.cuda.is_available()}'); print(f'GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"N/A\"}')"
 ```
 
 ### Option B: Start Asset Extraction (Week 3)

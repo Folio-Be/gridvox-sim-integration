@@ -5,21 +5,13 @@
   "identifier": "com.gridvox.ams2-overlay-poc",
   "build": {
     "beforeDevCommand": "npm run dev",
-<<<<<<< HEAD
     "devUrl": "http://localhost:1421",
-=======
-  "devUrl": "http://localhost:1421",
->>>>>>> 1761a8852d46747e3d9163f45ed89c3c4dc15e71
     "beforeBuildCommand": "npm run build",
     "frontendDist": "../dist"
   },
   "bundle": {
     "active": true,
-<<<<<<< HEAD
     "targets": "all",
-=======
-  "targets": "all",
->>>>>>> 1761a8852d46747e3d9163f45ed89c3c4dc15e71
     "icon": [
       "icons/icon.ico"
     ]
@@ -54,8 +46,4 @@
       "csp": null
     }
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 1761a8852d46747e3d9163f45ed89c3c4dc15e71

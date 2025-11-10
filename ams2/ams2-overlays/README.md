@@ -11,7 +11,10 @@ This POC demonstrates transparent window overlay functionality for displaying st
 - ✅ **Transparent borderless window** overlay
 - ✅ **Multi-window architecture** (main control + overlay)
 - ✅ **Always-on-top** positioning
-- ✅ **Event-driven** video playback
+- ✅ **Video playback** with HTML5 player
+- ✅ **Auto-hide** when video ends
+- ✅ **ESC to skip** cutscenes
+- ✅ **Event-driven** video triggering
 - ✅ **Cross-platform** (Windows, macOS, Linux)
 
 ## Architecture
@@ -54,41 +57,56 @@ npm install -g @tauri-apps/cli
 ## Development
 
 ```bash
-# Run in development mode
+# Run in development mode (already running in background)
 npm run tauri dev
 ```
 
 This will:
-1. Start Vite dev server (port 1420)
+1. Start Vite dev server (port 1421)
 2. Launch Tauri app with hot-reload
 3. Open main control window
 4. Overlay window is hidden by default
 
-## Testing
+## Testing the Overlay
 
+### Basic Overlay Test
 1. Click **"Show Overlay"** button in main window
 2. Overlay window appears as transparent window on top
 3. Click **"Hide Overlay"** to dismiss
 
+### Video Playback Test
+1. Click **"▶ Play Test Video"** button (green)
+2. Overlay appears with video playing
+3. Press **ESC** to skip the video
+4. Video auto-hides when finished
+
+**Test Video:** A sample video (`test-cutscene.mp4`) is already downloaded in `public/videos/stories/`
+
+**Note:** The current test video is 9 minutes long (placeholder), so use ESC to skip quickly. Replace with shorter racing videos for better testing (see `public/videos/stories/VIDEO-STATUS.md`).
+
 ## Current Status
 
-**Phase 1: Transparent Window POC** ✅ (Week 1)
+**Phase 1: Transparent Window POC** ✅ COMPLETE
 - [x] Multi-window setup
 - [x] Transparent overlay window
 - [x] Show/hide commands
 - [x] Event system
 - [x] Test UI
 
-**Phase 2: Video Playback** 🔄 (Next)
-- [ ] HTML5 video player component
-- [ ] Video playback commands
-- [ ] Auto-hide on video end
-- [ ] Test video assets
+**Phase 2: Video Playback** ✅ COMPLETE (Testing)
+- [x] HTML5 video player component
+- [x] Video playback via events
+- [x] Auto-hide on video end
+- [x] ESC to skip functionality
+- [x] Test video downloaded
+- [ ] Performance profiling (pending)
 
-**Phase 3: Telemetry Integration** 📅 (Future)
-- [ ] AMS2 shared memory reader
-- [ ] Event detection
+**Phase 3: Telemetry Integration** � PLANNED
+- [ ] Telemetry bridge (stub created)
+- [ ] AMS2 shared memory reader integration
+- [ ] Event detection (lap complete, race finish, etc.)
 - [ ] Automatic triggering
+- [ ] Story configuration system
 
 ## File Structure
 

@@ -28,21 +28,12 @@ function App() {
     try {
       // Show overlay first
       await invoke("show_overlay");
-<<<<<<< HEAD
-
-      // Emit event to play video (replace with actual video path)
-      await emit("play-overlay-video", {
-        src: "/videos/stories/test-cutscene.mp4"
-      });
-
-=======
       
       // Emit event to play video (replace with actual video path)
       await emit("play-overlay-video", { 
         src: "/videos/stories/test-cutscene.mp4" 
       });
       
->>>>>>> 1761a8852d46747e3d9163f45ed89c3c4dc15e71
       setMessage("Playing test video...");
     } catch (error) {
       setMessage(`Error: ${error}`);
@@ -73,11 +64,7 @@ function App() {
           <li>Press ESC while video is playing to skip</li>
           <li>The overlay will appear as a transparent window over AMS2</li>
         </ul>
-<<<<<<< HEAD
-
-=======
         
->>>>>>> 1761a8852d46747e3d9163f45ed89c3c4dc15e71
         <h3>Test Video Setup:</h3>
         <p>Place test videos in: <code>public/videos/stories/</code></p>
         <p>Example: <code>test-cutscene.mp4</code></p>

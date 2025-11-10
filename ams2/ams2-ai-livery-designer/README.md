@@ -24,13 +24,17 @@ ams2-ai-livery-designer/
 │   │   └── lib.rs         # Commands
 │   ├── Cargo.toml
 │   └── tauri.conf.json
-├── python-backend/        # AI processing (coming soon)
-│   ├── main.py            # FastAPI server
-│   ├── services/
-│   │   ├── image_processor.py
-│   │   ├── ai_generator.py
-│   │   └── dds_exporter.py
-│   └── requirements.txt
+├── python-backend/        # AI processing (standalone)
+│   ├── main.py            # FastAPI server (port 8002)
+│   ├── setup.py           # Environment setup script
+│   ├── install.bat        # Automated installer
+│   ├── start.bat          # Server startup script
+│   ├── requirements.txt   # Python dependencies
+│   └── services/
+│       ├── __init__.py
+│       ├── image_processor.py  # Photo preprocessing, SAM
+│       ├── ai_generator.py     # SDXL + ControlNet
+│       └── dds_exporter.py     # DDS file export
 ├── assets/                # UV templates & reference data
 │   ├── uv-templates/
 │   ├── test-photos/
@@ -70,21 +74,74 @@ ams2-ai-livery-designer/
 1. **Node.js 18+** and **pnpm**
 2. **Rust** (latest stable) - [rustup.rs](https://rustup.rs/)
 3. **Python 3.10+**
-4. **CUDA Toolkit** (for GPU acceleration)
+4. **CUDA Toolkit** (already installed from POC-08)
 5. **AMS2 Installation** (for extracting UV templates)
 
-### Install Dependencies
+### Quick Start
+
+#### 1. Install Frontend Dependencies
 
 ```powershell
-# Install frontend dependencies
+# Navigate to project root
+cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-ai-livery-designer
+
+# Install Node.js dependencies
 pnpm install
 
 # Install Tauri CLI (if not already installed)
 cargo install tauri-cli
+```
 
-# Install Python dependencies (AI backend - coming soon)
+#### 2. Set Up Python Backend
+
+```powershell
+# Navigate to Python backend
 cd python-backend
+
+# Run automated setup (creates venv, installs dependencies)
+.\install.bat
+
+# This will:
+# - Create a virtual environment
+# - Install all Python packages
+# - Set up directory structure
+# - Check GPU availability
+```
+
+#### 3. Test the Setup
+
+```powershell
+# Terminal 1: Start Python backend
+cd python-backend
+.\start.bat
+# Should start on http://127.0.0.1:8002
+
+# Terminal 2: Start Tauri app
+cd ..
+pnpm tauri dev
+```
+
+### Manual Python Setup (Alternative)
+
+If you prefer manual setup:
+
+```powershell
+cd python-backend
+
+# Create virtual environment
+python -m venv venv
+
+# Activate it
+venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Run setup check
+python setup.py
+
+# Start server
+python main.py
 ```
 
 ### Development
@@ -118,10 +175,12 @@ pnpm tauri build
 - [x] Car selection (3 GT3 test cars)
 - [x] Drag & drop functionality
 - [x] Multi-angle photo tagging
-- [ ] Rust toolchain installation
-- [ ] Python environment setup
-- [ ] CUDA toolkit installation
-- [ ] SDXL model download
+- [x] Python backend structure (standalone)
+- [x] Service stubs (image processor, AI generator, DDS exporter)
+- [x] Automated setup scripts
+- [ ] Install Python dependencies
+- [ ] Test GPU availability
+- [ ] Download SDXL models
 
 ### ⏳ Week 3-4: Asset Extraction (NEXT)
 

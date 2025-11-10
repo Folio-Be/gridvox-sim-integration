@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ProgressBar from "../ui/ProgressBar";
 import TelemetryCard from "../ui/TelemetryCard";
 import StatusIndicator from "../ui/StatusIndicator";
@@ -58,7 +58,9 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
 
   // Run type management
   const [currentRunType, setCurrentRunType] = useState<RunType | null>(null); // null = not started yet
+  const currentRunTypeRef = useRef<RunType | null>(null); // Ref for event handlers
   const [nextRunType, setNextRunType] = useState<RunType>("outside");
+  const [hasAutoStarted, setHasAutoStarted] = useState(false);
   const [recordedLaps, setRecordedLaps] = useState<LapData[]>([]);
   const [runStats, setRunStats] = useState<RunStats>({
     outside: 0,
@@ -73,6 +75,20 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
   const [needsBackup, setNeedsBackup] = useState(false);
   const [hasBackedUp, setHasBackedUp] = useState(false);
   const [isInitialMount, setIsInitialMount] = useState(true);
+
+  // Sync ref with state
+  useEffect(() => {
+    currentRunTypeRef.current = currentRunType;
+  }, [currentRunType]);
+
+  // Auto-start recording when telemetry connects
+  useEffect(() => {
+    if (isConnected && !hasAutoStarted && currentRunType === null) {
+      setCurrentRunType(nextRunType);
+      setHasAutoStarted(true);
+      debugConsole.info(`🎬 Started recording [${nextRunType.toUpperCase()}]`);
+    }
+  }, [isConnected, hasAutoStarted, currentRunType, nextRunType]);
 
   // Auto-advance next run type (only when a run is active)
   useEffect(() => {
@@ -166,8 +182,8 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
           lastLap = 0;
         }
 
-        // Only collect telemetry if we have an active run type (after crossing start line)
-        if (currentRunType !== null) {
+        // Only collect telemetry if we have an active run type (use ref for current value)
+        if (currentRunTypeRef.current !== null) {
           setCurrentLapTelemetry(prev => [...prev, telemetryPoint]);
         }
 

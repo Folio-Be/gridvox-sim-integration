@@ -32,10 +32,7 @@ export default function TrackVisualization({
     const width = containerRef.current.clientWidth;
     const height = containerRef.current.clientHeight;
 
-    console.log('TrackVisualization: Initializing with dimensions', width, 'x', height);
-
     if (width === 0 || height === 0) {
-      console.warn('TrackVisualization: Container has zero dimensions, cannot initialize');
       return;
     }
 
@@ -109,20 +106,9 @@ export default function TrackVisualization({
 
   // Update track path when telemetry points change
   useEffect(() => {
-    console.log('TrackVisualization: Effect triggered. Points:', telemetryPoints.length, 'Scene:', !!sceneRef.current, 'Camera:', !!cameraRef.current, 'Renderer:', !!rendererRef.current);
-
     if (!sceneRef.current || !cameraRef.current || !rendererRef.current || telemetryPoints.length === 0) {
-      if (telemetryPoints.length > 0) {
-        console.warn('TrackVisualization: Have points but missing refs!', {
-          scene: !!sceneRef.current,
-          camera: !!cameraRef.current,
-          renderer: !!rendererRef.current
-        });
-      }
       return;
     }
-
-    console.log('TrackVisualization: Rendering', telemetryPoints.length, 'points');
 
     // Remove old path
     if (pathLineRef.current) {
@@ -162,9 +148,6 @@ export default function TrackVisualization({
     const rangeZ = maxZ - minZ;
     const maxRange = Math.max(rangeX, rangeZ);
 
-    console.log('World bounds: minX:', minX.toFixed(2), 'maxX:', maxX.toFixed(2), 'minZ:', minZ.toFixed(2), 'maxZ:', maxZ.toFixed(2));
-    console.log('World center:', centerX.toFixed(2), centerZ.toFixed(2), 'Range:', maxRange.toFixed(2));
-
     // Translate points to origin (subtract center) for easier camera framing
     // Negate X to fix horizontal flip
     const points: THREE.Vector3[] = telemetryPoints.map(point =>
@@ -174,8 +157,6 @@ export default function TrackVisualization({
         point.position[2] - centerZ      // Translate to origin
       )
     );
-
-    console.log('Translated track to origin. Points now centered at (0, 0)');
 
     // Create line geometry
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
@@ -206,10 +187,6 @@ export default function TrackVisualization({
     sceneRef.current.add(pointsCloud);
     pointsCloudRef.current = pointsCloud;
 
-    console.log('Points cloud added. Total scene children:', sceneRef.current.children.length);
-
-    console.log('Line created. Points:', geometry.attributes.position.count, 'Color:', color.toString(16), 'Visible:', line.visible);
-
     // Update camera to frame track (now centered at origin)
     if (points.length > 10 && maxRange > 0) {
       const padding = 10; // 10m padding on each side
@@ -229,8 +206,6 @@ export default function TrackVisualization({
       cameraRef.current.position.set(0, 100, 0); // Camera stays at origin
       cameraRef.current.lookAt(0, 0, 0);
       cameraRef.current.updateProjectionMatrix();
-
-      console.log('Camera frustum size:', frustumSize.toFixed(2), 'Track range:', rangeX.toFixed(2), 'x', rangeZ.toFixed(2));
     }
 
     // Add dynamic grid sized to track (now at origin)
@@ -240,9 +215,6 @@ export default function TrackVisualization({
     grid.position.set(0, -0.5, 0); // Grid at origin
     sceneRef.current.add(grid);
     gridRef.current = grid;
-
-    console.log('Grid created. Size:', gridSize, 'Position:', centerX.toFixed(2), centerZ.toFixed(2));
-    console.log('Camera frustum:', cameraRef.current.left.toFixed(2), cameraRef.current.right.toFixed(2), cameraRef.current.top.toFixed(2), cameraRef.current.bottom.toFixed(2));
   }, [telemetryPoints, currentRunType]);
 
   return (
