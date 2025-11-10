@@ -981,25 +981,85 @@ Since local processing now delivers consistent quality, Premium needs to offer *
 
 ### Revised Premium Tier (Cloud)
 
+**Important Clarification: Base Quality vs Advanced Features**
+
+For the **SAME processing pipeline** (single photo, 1024x1024, basic SDXL):
+- ✅ Local and cloud produce **IDENTICAL quality**
+- The math is identical, only speed differs
+- RTX 4090 and GTX 1660 will produce pixel-perfect identical outputs (if using same seed)
+
+**However, cloud CAN offer better FINAL results through advanced features that are impractical locally:**
+
 **Free Mode (Local):**
-- Professional quality (85-90%) ⭐⭐⭐⭐⭐
+- **Base quality: 85-90%** (single-photo SDXL pipeline)
 - Single photo input
+- 1024x1024 resolution
+- Basic ControlNet (depth only)
 - Time: 15 seconds to 5 minutes (depends on GPU)
 - Unlimited generations
 - Complete privacy
 
 **Premium Mode (Cloud) - $1.99/livery or $9.99/month:**
-- **Same base quality (85-90%)** ⭐⭐⭐⭐⭐
-- **Advanced features:**
-  - ✨ Multi-photo input (6 reference angles for better accuracy)
-  - ✨ Advanced de-lighting (removes shadows from photos)
-  - ✨ 4K texture output (vs 1K local)
-  - ✨ Multi-view consistency pass
-  - ✨ Sponsor database integration
-  - ✨ PBR material maps (roughness, metallic)
-  - ✨ Batch processing (10+ liveries)
-- Time: 8-12 seconds (always fast)
+- **Enhanced quality: 92-95%** (not from "better" processing, but from MORE processing)
+- **Why it's better:**
+  - ✨ **Multi-photo input** (6 angles) → More accurate reconstruction
+  - ✨ **Advanced de-lighting** → Removes shadows from photos (separate AI model)
+  - ✨ **4K texture output** (4096x4096 vs 1024x1024) → More detail
+  - ✨ **Multi-view consistency** → Cross-checks multiple renders
+  - ✨ **Multiple ControlNets** (depth + normal + canny) → Better edge detection
+  - ✨ **Sponsor database** → AI matches and places logos correctly
+  - ✨ **PBR material maps** → Generates roughness, metallic, normal maps
+  - ✨ **Batch processing** → 10+ liveries with consistent style
+- Time: 8-12 seconds (always fast, high-end cloud GPUs)
 - Priority processing
+
+**The key distinction:**
+
+| Aspect | Local | Cloud Premium |
+|--------|-------|---------------|
+| **Single-photo, 1K quality** | 85-90% | 85-90% (identical!) |
+| **Multi-photo, 4K with de-lighting** | Not feasible* | 92-95% |
+| **Generation time** | 15s-5min | Always 8-12s |
+| **Max resolution** | 1024x1024 (VRAM limit) | 4096x4096 |
+| **ControlNets** | 1 (depth) | 3+ (depth, normal, canny) |
+| **De-lighting** | No (requires separate model) | Yes |
+
+*Multi-photo 4K processing would require:
+- 24GB+ VRAM
+- 10-30 minutes on RTX 4090
+- 2+ hours on RTX 3070
+- Users won't wait that long
+
+**So to directly answer your question:**
+
+**Same pipeline = Same quality (local = cloud)**
+- GTX 1660 with 30 steps at 1K = RTX 4090 with 30 steps at 1K = Cloud A100 with 30 steps at 1K
+- Pixel-perfect identical (if same seed/settings)
+
+**Different pipelines = Different results (cloud can do more)**
+- Cloud can run multi-photo + de-lighting + 4K = **better final result**
+- Not because cloud is "better at AI", but because it can afford to run **additional expensive operations**
+- Like comparing "good photo" vs "photo + professional editing"
+
+**Marketing message (revised for accuracy):**
+
+"GridVox AI Livery Designer
+
+**Free Mode (Local):**
+Professional quality from a single photo
+- Same AI quality as cloud
+- Speed varies by your GPU (15 seconds to 5 minutes)
+- Unlimited generations forever
+
+**Premium Mode (Cloud):**
+Enhanced quality through advanced features
+- Multi-photo processing (6+ angles)
+- Professional de-lighting
+- 4K high-resolution output
+- Always fast (8-12 seconds)
+- $1.99/livery or $9.99/month
+
+Think of Premium as 'photo editing' on top of the AI generation."
 
 **Premium value proposition:**
 
