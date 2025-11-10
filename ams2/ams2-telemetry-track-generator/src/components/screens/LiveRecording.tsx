@@ -1,10 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ProgressBar from "../ui/ProgressBar";
 import TelemetryCard from "../ui/TelemetryCard";
 import StatusIndicator from "../ui/StatusIndicator";
 import TrackVisualization from "../TrackVisualization";
 import { getTelemetryService, TelemetryData } from "../../lib/telemetry-service";
 import { debugConsole } from "../ui/DebugConsole";
+
+type LapRecord = {
+  lap: number;
+  startedAt: number;
+  durationSeconds?: number;
+  distanceMeters?: number;
+  isActive: boolean;
+};
 
 interface LiveRecordingProps {
   onStopRecording: () => void;
@@ -18,6 +26,16 @@ function formatLapTime(currentTime: number): string {
   const minutes = Math.floor(currentTime / 60);
   const seconds = currentTime % 60;
   return `${minutes}:${seconds.toFixed(3).padStart(6, "0")}`;
+}
+
+function formatDistance(distanceMeters: number): string {
+  if (!Number.isFinite(distanceMeters) || distanceMeters < 0) {
+    return "--";
+  }
+  if (distanceMeters >= 1000) {
+    return `${(distanceMeters / 1000).toFixed(2)} km`;
+  }
+  return `${distanceMeters.toFixed(0)} m`;
 }
 
 export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
@@ -37,6 +55,13 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
   const [allTelemetryPoints, setAllTelemetryPoints] = useState<any[]>([]);
   const [trackInfo, setTrackInfo] = useState({ location: "", variation: "" });
   const [telemetryRate, setTelemetryRate] = useState(0);
+  const [laps, setLaps] = useState<LapRecord[]>([]);
+  const [currentLapMetrics, setCurrentLapMetrics] = useState({ timeSeconds: 0, distanceMeters: 0 });
+  const lapsRef = useRef<LapRecord[]>([]);
+  const previousLapDistanceRef = useRef<number | null>(null);
+  const previousLapTimeRef = useRef<number | null>(null);
+  const hasActiveLapRef = useRef(false);
+  const currentLapNumberRef = useRef(0);
 
   useEffect(() => {
     const service = getTelemetryService();
@@ -45,7 +70,8 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
     let connectionLostWarned = false;
     let updateCount = 0;
     let rateCheckStart = Date.now();
-
+    // Small buffer (meters) that prevents noise from triggering false lap resets.
+    const LAP_RESET_TOLERANCE = 5;
     const handleTelemetryUpdate = (data: TelemetryData) => {
       setIsConnected(true);
       const now = Date.now();
@@ -92,6 +118,61 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
 
         setAllTelemetryPoints(prev => [...prev, telemetryPoint]);
 
+        const lapDistance = typeof player.current_lap_distance === "number"
+          ? Math.max(player.current_lap_distance, 0)
+          : 0;
+
+        const commitLaps = (nextLaps: LapRecord[]) => {
+          lapsRef.current = nextLaps;
+          setLaps(nextLaps);
+        };
+
+        if (!hasActiveLapRef.current && lapDistance > 0) {
+          hasActiveLapRef.current = true;
+          currentLapNumberRef.current += 1;
+          const lapNumber = currentLapNumberRef.current;
+          const nextLaps = [...lapsRef.current, {
+            lap: lapNumber,
+            startedAt: now,
+            isActive: true,
+          }];
+          commitLaps(nextLaps);
+          debugConsole.success(`Lap ${lapNumber} start detected (distance ${lapDistance.toFixed(1)}m).`);
+        } else if (
+          hasActiveLapRef.current &&
+          previousLapDistanceRef.current !== null &&
+          lapDistance + LAP_RESET_TOLERANCE < previousLapDistanceRef.current
+        ) {
+          const updatedLaps = [...lapsRef.current];
+          if (updatedLaps.length > 0) {
+            const lastIndex = updatedLaps.length - 1;
+            const lastLap = updatedLaps[lastIndex];
+            updatedLaps[lastIndex] = {
+              ...lastLap,
+              durationSeconds: previousLapTimeRef.current ?? lastLap.durationSeconds,
+              distanceMeters: data.track_length > 0
+                ? data.track_length
+                : previousLapDistanceRef.current ?? lastLap.distanceMeters,
+              isActive: false,
+            };
+          }
+          currentLapNumberRef.current += 1;
+          const lapNumber = currentLapNumberRef.current;
+          updatedLaps.push({
+            lap: lapNumber,
+            startedAt: now,
+            isActive: true,
+          });
+          commitLaps(updatedLaps);
+          debugConsole.info(
+            `Lap ${lapNumber} start detected (distance reset from ${previousLapDistanceRef.current.toFixed(1)}m).`
+          );
+        }
+
+        previousLapDistanceRef.current = lapDistance;
+        previousLapTimeRef.current = data.current_time;
+        setCurrentLapMetrics({ timeSeconds: data.current_time, distanceMeters: lapDistance });
+
         // Calculate lap progress
         const progress = data.track_length > 0
           ? (player.current_lap_distance / data.track_length) * 100
@@ -124,9 +205,9 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
       }
     }, 2000);
 
-    const handleStarted = () => {};
-    const handleConnected = () => {};
-    const handleError = () => {};
+    const handleStarted = () => { };
+    const handleConnected = () => { };
+    const handleError = () => { };
 
     service.on("update", handleTelemetryUpdate);
     service.on("started", handleStarted);
@@ -146,6 +227,19 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
       service.stop();
     };
   }, []);
+
+  const handleClearLaps = () => {
+    lapsRef.current = [];
+    previousLapDistanceRef.current = null;
+    previousLapTimeRef.current = null;
+    hasActiveLapRef.current = false;
+    currentLapNumberRef.current = 0;
+    setAllTelemetryPoints([]);
+    setLapProgress(0);
+    setLaps([]);
+    setCurrentLapMetrics({ timeSeconds: 0, distanceMeters: 0 });
+    debugConsole.warn("Lap history cleared.");
+  };
 
   return (
     <div className="relative flex h-full w-full flex-col bg-green-bg dark group/design-root overflow-hidden">
@@ -190,8 +284,8 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                 <div className="flex items-center gap-2 px-3 py-1.5 bg-green-bg/50 rounded border border-green-border">
                   <span className="text-white/60 text-xs">Rate:</span>
                   <span className={`text-xs font-bold ${telemetryRate >= 55 ? "text-green-400" :
-                      telemetryRate >= 45 ? "text-yellow-400" :
-                        "text-red-400"
+                    telemetryRate >= 45 ? "text-yellow-400" :
+                      "text-red-400"
                     }`}>
                     {telemetryRate} Hz
                   </span>
@@ -213,32 +307,87 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
 
             {/* Track Map & Telemetry Cards */}
             <div className="flex flex-1 gap-4 overflow-hidden">
-              {/* 3D Track Visualization */}
-              <div className="w-3/5 flex h-full">
-                <TrackVisualization
-                  telemetryPoints={allTelemetryPoints}
-                  currentRunType={null}
-                  className="w-full h-full rounded-lg border border-green-border overflow-hidden"
-                />
+              {/* 3D Track Visualization & Telemetry Snapshot */}
+              <div className="w-3/5 flex flex-col gap-4 h-full">
+                <div className="flex-1">
+                  <TrackVisualization
+                    telemetryPoints={allTelemetryPoints}
+                    currentRunType={null}
+                    className="w-full h-full rounded-lg border border-green-border overflow-hidden"
+                  />
+                </div>
+                <div className="flex flex-col gap-4 rounded-lg border border-green-border bg-green-bg/30 p-4">
+                  <div className="flex flex-wrap gap-4">
+                    <TelemetryCard label="Speed" value={`${telemetry.speed} MPH`} />
+                    <TelemetryCard label="Position" value={telemetry.position} />
+                    <TelemetryCard label="Lap" value={telemetry.lap} />
+                    <TelemetryCard label="Gear" value={telemetry.gear} />
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    <ProgressBar label="Throttle" value={telemetry.throttle} />
+                    <ProgressBar label="Brake" value={telemetry.brake} />
+                  </div>
+                </div>
               </div>
 
-              {/* Telemetry Cards */}
-              <div className="w-2/5 flex flex-col gap-4">
-                <div className="flex flex-wrap gap-4">
-                  <TelemetryCard label="Speed" value={`${telemetry.speed} MPH`} />
-                  <TelemetryCard label="Position" value={telemetry.position} />
-                  <TelemetryCard label="Lap" value={telemetry.lap} />
-                  <TelemetryCard label="Gear" value={telemetry.gear} />
+              {/* Lap History */}
+              <div className="w-2/5 flex flex-col rounded-lg border border-green-border bg-green-bg/30">
+                <div className="flex items-center justify-between border-b border-green-border px-4 py-3">
+                  <h3 className="text-white text-sm font-bold uppercase tracking-wide">Lap History</h3>
+                  <span className="text-xs text-white/60">{laps.length} recorded</span>
                 </div>
-                <div className="flex flex-col gap-3">
-                  <ProgressBar label="Throttle" value={telemetry.throttle} />
-                  <ProgressBar label="Brake" value={telemetry.brake} />
+                <div className="flex-1 overflow-y-auto">
+                  {laps.length === 0 ? (
+                    <div className="flex h-full items-center justify-center px-4 text-xs text-white/40">
+                      No laps recorded yet
+                    </div>
+                  ) : (
+                    <ul className="divide-y divide-green-border/40">
+                      {laps.map((lap) => {
+                        const isActive = lap.isActive;
+                        const timeValue = lap.durationSeconds ?? (isActive ? currentLapMetrics.timeSeconds : undefined);
+                        const distanceValue = lap.distanceMeters ?? (isActive ? currentLapMetrics.distanceMeters : undefined);
+                        return (
+                          <li
+                            key={`lap-${lap.startedAt}`}
+                            className={`px-4 py-3 text-xs text-white/80 ${isActive ? "bg-green-bg/40" : ""}`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="font-semibold text-white">Lap {lap.lap}</span>
+                              <span className="text-white/50">{isActive ? "In Progress" : "Completed"}</span>
+                            </div>
+                            <div className="mt-2 grid grid-cols-2 gap-2 text-white/80">
+                              <div>
+                                <div className="text-white/50 uppercase tracking-wide">Time</div>
+                                <div className="font-mono text-sm">
+                                  {typeof timeValue === "number" ? formatLapTime(timeValue) : "--:--"}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-white/50 uppercase tracking-wide">Distance</div>
+                                <div className="font-mono text-sm">
+                                  {typeof distanceValue === "number" ? formatDistance(distanceValue) : "--"}
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
                 </div>
               </div>
             </div>
 
             {/* Stop Button */}
-            <div className="flex justify-end p-4">
+            <div className="flex justify-end p-4 gap-3">
+              <button
+                className="flex min-w-[84px] max-w-[240px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 border border-green-border bg-transparent text-white text-sm font-semibold leading-normal tracking-[0.015em] gap-2 hover:bg-green-bg/40"
+                onClick={handleClearLaps}
+              >
+                <span className="material-symbols-outlined">restart_alt</span>
+                <span className="truncate">Clear Laps</span>
+              </button>
               <button
                 className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-red-600 hover:bg-red-700 text-white text-base font-bold leading-normal tracking-[0.015em] gap-2"
                 onClick={onStopRecording}
