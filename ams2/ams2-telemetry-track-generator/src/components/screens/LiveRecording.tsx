@@ -60,7 +60,6 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
   const [currentRunType, setCurrentRunType] = useState<RunType | null>(null); // null = not started yet
   const currentRunTypeRef = useRef<RunType | null>(null); // Ref for event handlers
   const [nextRunType, setNextRunType] = useState<RunType>("outside");
-  const [hasAutoStarted, setHasAutoStarted] = useState(false);
   const [recordedLaps, setRecordedLaps] = useState<LapData[]>([]);
   const [runStats, setRunStats] = useState<RunStats>({
     outside: 0,
@@ -81,14 +80,8 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
     currentRunTypeRef.current = currentRunType;
   }, [currentRunType]);
 
-  // Auto-start recording when telemetry connects
-  useEffect(() => {
-    if (isConnected && !hasAutoStarted && currentRunType === null) {
-      setCurrentRunType(nextRunType);
-      setHasAutoStarted(true);
-      debugConsole.info(`🎬 Started recording [${nextRunType.toUpperCase()}]`);
-    }
-  }, [isConnected, hasAutoStarted, currentRunType, nextRunType]);
+  // Recording now starts on first starting line crossing, not on connection
+  // (removed auto-start effect)
 
   // Auto-advance next run type (only when a run is active)
   useEffect(() => {
@@ -120,12 +113,15 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
   useEffect(() => {
     const service = getTelemetryService();
     let firstUpdate = true;
-    let lastLap = 0;
+    let lastLap = -1; // -1 means not initialized yet
     let lastSector = -1;
     let lastUpdateTime = Date.now();
     let connectionLostWarned = false;
     let updateCount = 0;
     let rateCheckStart = Date.now();
+    let localTelemetryCount = 0; // Track telemetry count locally instead of relying on state
+    let recordingLapNumber = 0; // Track lap numbers for recording (starts at 1 on first start line crossing)
+    let lastLapDistance = 0; // Track lap distance to detect start line crossing via wrap-around
 
     const handleTelemetryUpdate = (data: TelemetryData) => {
       setIsConnected(true);
@@ -162,7 +158,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
       const player = data.participants[playerIndex];
 
       if (player) {
-        // Collect telemetry point for current lap
+        // Collect telemetry point for current lap (store run type with each point)
         const telemetryPoint = {
           timestamp: now,
           speed: data.speed,
@@ -172,75 +168,101 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
           gear: data.gear,
           rpm: data.rpm,
           lapDistance: player.current_lap_distance,
+          runType: currentRunTypeRef.current, // Store current run type (null for white, 'outside' for blue, etc.)
         };
+
+        // Initialize lastLap on first telemetry update
+        if (lastLap === -1) {
+          lastLap = player.current_lap;
+          debugConsole.info(`🏁 Initial lap: ${lastLap}`);
+        }
 
         // Detect race restart (lap number decreased)
         if (player.current_lap < lastLap) {
           debugConsole.info(`🔄 Race restarted. Clearing telemetry buffer.`);
           setCurrentLapTelemetry([]);
           setCurrentRunType(null);
-          lastLap = 0;
+          lastLap = player.current_lap; // Reset to current lap
+          localTelemetryCount = 0;
+          recordingLapNumber = 0; // Reset recording lap counter
+          skipNextLapDetection = true; // Don't trigger finish line detection on this frame
         }
 
-        // Only collect telemetry if we have an active run type (use ref for current value)
-        if (currentRunTypeRef.current !== null) {
-          setCurrentLapTelemetry(prev => [...prev, telemetryPoint]);
+        // Always collect telemetry (needed for start line detection and white line visualization)
+        setCurrentLapTelemetry(prev => [...prev, telemetryPoint]);
+        localTelemetryCount++;
+
+        // Debug: Periodically log to see telemetry state
+        if (Math.random() < 0.01) { // ~1% = roughly once per second at 60Hz
+          debugConsole.info(`📊 DEBUG: lap=${player.current_lap}, lap_distance=${player.current_lap_distance.toFixed(1)}m, lastDist=${lastLapDistance.toFixed(1)}m, points=${localTelemetryCount}`);
         }
 
-        // Detect lap completion (lap number increased)
-        if (player.current_lap > lastLap && lastLap > 0 && currentRunType !== null) {
-          const lapTime = data.current_time;
-          const lapTimeFormatted = formatLapTime(lapTime);
+        // Detect start line crossing: Use lap distance wrap-around
+        // When lap_distance goes from high value (>50% track) back to low value (<20% track), that's a start line crossing
+        const currentLapDistance = player.current_lap_distance;
+        const trackLength = data.track_length;
 
-          // Save completed lap with telemetry data
-          const completedLap: LapData = {
-            id: `${Date.now()}-${lastLap}`,
-            runType: currentRunType,
-            lapNumber: lastLap,
-            lapTime: lapTime,
-            timestamp: now,
-            telemetryData: currentLapTelemetry,
-          };
+        // Detect wrap-around: was in second half of track, now in first 20%
+        const wasInSecondHalf = lastLapDistance > trackLength * 0.5;
+        const nowInFirstPart = currentLapDistance < trackLength * 0.2;
+        const isStartLineCrossing = wasInSecondHalf && nowInFirstPart;
 
-          setRecordedLaps(prev => [...prev, completedLap]);
+        // Ensure player has actually driven (not just race countdown/session load)
+        const hasActuallyDriven = localTelemetryCount > 100; // At least 100 points (~1.5 seconds at 60Hz)
 
-          // Clear telemetry buffer for next lap
-          setCurrentLapTelemetry([]);
+        if (isStartLineCrossing && !skipNextLapDetection) {
+          debugConsole.info(`🏁 Start line crossed! lap_distance: ${lastLapDistance.toFixed(1)}m → ${currentLapDistance.toFixed(1)}m, driven: ${hasActuallyDriven}, points: ${localTelemetryCount}`);
 
-          debugConsole.success(`🏁 Lap ${lastLap} completed! Time: ${lapTimeFormatted} [${currentRunType.toUpperCase()}] (${currentLapTelemetry.length} telemetry points)`);
-        }
-        lastLap = player.current_lap;
+          // Save completed lap if we were recording
+          if (recordingLapNumber > 0 && currentRunTypeRef.current !== null && currentLapTelemetry.length > 0) {
+            const lapTime = data.current_time;
+            const lapTimeFormatted = formatLapTime(lapTime);
 
-        // Detect sector changes (requires current_sector field from participant)
-        // Note: current_sector is in ParticipantInfo but not exposed in our Participant struct yet
+            const completedLap: LapData = {
+              id: `${Date.now()}-${recordingLapNumber}`,
+              runType: currentRunTypeRef.current,
+              lapNumber: recordingLapNumber,
+              lapTime: lapTime,
+              timestamp: now,
+              telemetryData: currentLapTelemetry,
+            };
 
-        // Calculate lap progress (0-100%)
-        const progress = data.track_length > 0
-          ? (player.current_lap_distance / data.track_length) * 100
-          : 0;
+            setRecordedLaps(prev => [...prev, completedLap]);
+            debugConsole.success(`🏁 Lap ${recordingLapNumber} completed! Time: ${lapTimeFormatted} [${currentRunTypeRef.current.toUpperCase()}] (${localTelemetryCount} telemetry points)`);
 
-        setLapProgress(Math.min(100, Math.max(0, progress)));
+            // Clear telemetry buffer for next lap
+            setCurrentLapTelemetry([]);
+            localTelemetryCount = 0;
 
-        // Detect crossing start/finish line (lap progress wraps from ~100% to ~0%)
-        const prevProgress = lapProgress;
-        if (prevProgress > 90 && progress < 10) {
-          // First lap: always start immediately with selected run type
-          if (currentRunType === null) {
+            // Increment lap number for next lap
+            recordingLapNumber++;
+          }
+
+          // Start new recording if none active (triggers on first finish line crossing)
+          // ONLY start if player has actually driven to the line (not just session load)
+          if (currentRunTypeRef.current === null && hasActuallyDriven) {
+            recordingLapNumber = 1; // Start with lap 1
             setCurrentRunType(nextRunType);
             setRunStats(prev => ({
               ...prev,
               [nextRunType]: prev[nextRunType] + 1,
             }));
-            debugConsole.info(`🏁 Crossed finish line! Starting Lap ${player.current_lap} [${nextRunType.toUpperCase()}]`);
+            debugConsole.success(`🏁 Finish line crossed! Starting Lap ${recordingLapNumber} [${nextRunType.toUpperCase()}]`);
+
+            // Clear telemetry buffer to start fresh (white lines before this point)
+            setCurrentLapTelemetry([]);
+            localTelemetryCount = 0;
+          } else if (currentRunTypeRef.current === null && !hasActuallyDriven) {
+            debugConsole.warn(`⏸️ Lap change ignored - player hasn't driven yet (${localTelemetryCount} points)`);
           }
-          // Subsequent laps: require backup if switching run types
-          else if (currentRunType !== nextRunType && !hasBackedUp) {
+          // Handle run type switching with backup requirement
+          else if (currentRunTypeRef.current !== nextRunType && !hasBackedUp) {
             setNeedsBackup(true);
             debugConsole.warn(`⚠️ Please back up over the finish line before starting ${nextRunType.toUpperCase()} run`);
-            // Don't switch yet, clear telemetry buffer
             setCurrentLapTelemetry([]);
-          } else {
-            // Switch to next run type
+            localTelemetryCount = 0;
+          } else if (hasBackedUp || currentRunTypeRef.current === nextRunType) {
+            // Switch to next run type or continue current
             setCurrentRunType(nextRunType);
             setNeedsBackup(false);
             setHasBackedUp(false);
@@ -251,11 +273,27 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
               [nextRunType]: prev[nextRunType] + 1,
             }));
 
-            debugConsole.info(`🏁 Crossed finish line! Starting Lap ${player.current_lap} [${nextRunType.toUpperCase()}]`);
+            debugConsole.info(`🏁 Crossed finish line! Starting Lap ${recordingLapNumber} [${nextRunType.toUpperCase()}]`);
           }
         }
 
+        // Reset skip flag after processing
+        if (skipNextLapDetection) {
+          skipNextLapDetection = false;
+        }
+
+        // Update lastLap after finish line detection
+        lastLap = player.current_lap;
+
+        // Calculate lap progress (0-100%) - needed for backup detection
+        const progress = data.track_length > 0
+          ? (player.current_lap_distance / data.track_length) * 100
+          : 0;
+
+        setLapProgress(Math.min(100, Math.max(0, progress)));
+
         // Detect backing up over finish line (progress goes from ~0% to ~100% while in reverse)
+        const prevProgress = lapProgress;
         if (needsBackup && prevProgress < 10 && progress > 90 && data.gear < 0) {
           setHasBackedUp(true);
           setNeedsBackup(false);
@@ -265,11 +303,6 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
         // Update telemetry display
         const throttlePct = Math.round(data.throttle * 100);
         const brakePct = Math.round(data.brake * 100);
-
-        // Debug log throttle/brake values
-        if (throttlePct > 0 || brakePct > 0) {
-          console.log(`🎮 Throttle: ${throttlePct}%, Brake: ${brakePct}%`);
-        }
 
         setTelemetry({
           speed: Math.round(data.speed * 2.23694), // m/s to MPH

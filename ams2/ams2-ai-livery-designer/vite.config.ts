@@ -6,32 +6,6 @@ const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
-<<<<<<< HEAD
-    plugins: [react()],
-
-    // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
-    //
-    // 1. prevent Vite from obscuring rust errors
-    clearScreen: false,
-    // 2. tauri expects a fixed port, fail if that port is not available
-    // Using port 1430/1431 to avoid conflicts with other POCs (POC-08 uses 1420/1421)
-    server: {
-        port: 1430,
-        strictPort: true,
-        host: host || false,
-        hmr: host
-            ? {
-                protocol: "ws",
-                host,
-                port: 1431,
-            }
-            : undefined,
-        watch: {
-            // 3. tell Vite to ignore watching `src-tauri`
-            ignored: ["**/src-tauri/**", "**/python-backend/**"],
-        },
-    },
-=======
   plugins: [react()],
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
@@ -46,15 +20,14 @@ export default defineConfig(async () => ({
     host: host || false,
     hmr: host
       ? {
-          protocol: "ws",
-          host,
-          port: 1431,
-        }
+        protocol: "ws",
+        host,
+        port: 1431,
+      }
       : undefined,
     watch: {
       // 3. tell Vite to ignore watching `src-tauri`
       ignored: ["**/src-tauri/**", "**/python-backend/**"],
     },
   },
->>>>>>> 1761a8852d46747e3d9163f45ed89c3c4dc15e71
 }));

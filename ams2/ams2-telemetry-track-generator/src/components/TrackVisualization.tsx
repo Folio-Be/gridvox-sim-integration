@@ -1,8 +1,14 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
+interface TelemetryPoint {
+  position: [number, number, number];
+  runType: 'outside' | 'inside' | 'racing' | null;
+  [key: string]: any;
+}
+
 interface TrackVisualizationProps {
-  telemetryPoints: any[];
+  telemetryPoints: TelemetryPoint[];
   currentRunType: 'outside' | 'inside' | 'racing' | null;
   className?: string;
 }
@@ -16,8 +22,8 @@ export default function TrackVisualization({
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const pathLineRef = useRef<THREE.Line | null>(null);
-  const pointsCloudRef = useRef<THREE.Points | null>(null);
+  const lineSegmentsRef = useRef<THREE.Line[]>([]);
+  const pointsCloudsRef = useRef<THREE.Points[]>([]);
   const gridRef = useRef<THREE.GridHelper | null>(null);
   const animationFrameRef = useRef<number>();
 
@@ -110,23 +116,25 @@ export default function TrackVisualization({
       return;
     }
 
-    // Remove old path
-    if (pathLineRef.current) {
-      sceneRef.current.remove(pathLineRef.current);
-      pathLineRef.current.geometry.dispose();
-      if (Array.isArray(pathLineRef.current.material)) {
-        pathLineRef.current.material.forEach(m => m.dispose());
+    // Remove old line segments
+    lineSegmentsRef.current.forEach(line => {
+      sceneRef.current.remove(line);
+      line.geometry.dispose();
+      if (Array.isArray(line.material)) {
+        line.material.forEach(m => m.dispose());
       } else {
-        pathLineRef.current.material.dispose();
+        line.material.dispose();
       }
-    }
+    });
+    lineSegmentsRef.current = [];
 
-    // Remove old points cloud
-    if (pointsCloudRef.current) {
-      sceneRef.current.remove(pointsCloudRef.current);
-      pointsCloudRef.current.geometry.dispose();
-      (pointsCloudRef.current.material as THREE.Material).dispose();
-    }
+    // Remove old points clouds
+    pointsCloudsRef.current.forEach(pointsCloud => {
+      sceneRef.current.remove(pointsCloud);
+      pointsCloud.geometry.dispose();
+      (pointsCloud.material as THREE.Material).dispose();
+    });
+    pointsCloudsRef.current = [];
 
     // Remove old grid
     if (gridRef.current) {
@@ -148,47 +156,86 @@ export default function TrackVisualization({
     const rangeZ = maxZ - minZ;
     const maxRange = Math.max(rangeX, rangeZ);
 
-    // Translate points to origin (subtract center) for easier camera framing
-    // Negate X to fix horizontal flip
-    const points: THREE.Vector3[] = telemetryPoints.map(point =>
-      new THREE.Vector3(
+    // Helper function to get color for run type
+    const getColorForRunType = (runType: 'outside' | 'inside' | 'racing' | null): number => {
+      switch (runType) {
+        case 'outside': return 0x4a9eff;  // Blue
+        case 'inside': return 0xffca28;   // Yellow
+        case 'racing': return 0xff5252;   // Red
+        default: return 0xffffff;         // White (null = not recording yet)
+      }
+    };
+
+    // Translate points to origin and group by run type
+    // Group consecutive points with the same runType to create colored segments
+    interface PointSegment {
+      runType: 'outside' | 'inside' | 'racing' | null;
+      points: THREE.Vector3[];
+    }
+
+    const segments: PointSegment[] = [];
+    let currentSegment: PointSegment | null = null;
+
+    telemetryPoints.forEach((point, index) => {
+      const vector = new THREE.Vector3(
         -(point.position[0] - centerX),  // Negate X to fix horizontal flip
         0,
         point.position[2] - centerZ      // Translate to origin
-      )
-    );
+      );
 
-    // Create line geometry
-    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      // Start new segment if runType changes
+      if (!currentSegment || currentSegment.runType !== point.runType) {
+        // If there's a previous segment, add the current point to it for continuity
+        if (currentSegment && currentSegment.points.length > 0) {
+          currentSegment.points.push(vector);
+        }
 
-    // Color based on run type
-    const color = currentRunType === 'outside' ? 0x4a9eff :
-                  currentRunType === 'inside' ? 0xffca28 :
-                  currentRunType === 'racing' ? 0xff5252 :
-                  0x4ade80;
-
-    // Use LineBasicMaterial
-    const material = new THREE.LineBasicMaterial({
-      color,
-      linewidth: 1
+        currentSegment = {
+          runType: point.runType,
+          points: [vector]
+        };
+        segments.push(currentSegment);
+      } else {
+        currentSegment.points.push(vector);
+      }
     });
 
-    // Use LineLoop to close the path and make it more visible
-    const line = new THREE.Line(geometry, material);
-    line.frustumCulled = false;
-    line.renderOrder = 999;
-    sceneRef.current.add(line);
-    pathLineRef.current = line;
+    // Create line segments for each group
+    const allPoints: THREE.Vector3[] = [];
+    segments.forEach(segment => {
+      if (segment.points.length < 2) return; // Need at least 2 points for a line
 
-    // Add point markers for debugging visibility
-    const pointsGeometry = new THREE.BufferGeometry().setFromPoints(points);
-    const pointsMaterial = new THREE.PointsMaterial({ color, size: 5, sizeAttenuation: false });
-    const pointsCloud = new THREE.Points(pointsGeometry, pointsMaterial);
-    sceneRef.current.add(pointsCloud);
-    pointsCloudRef.current = pointsCloud;
+      const geometry = new THREE.BufferGeometry().setFromPoints(segment.points);
+      const color = getColorForRunType(segment.runType);
+      const material = new THREE.LineBasicMaterial({
+        color,
+        linewidth: 1
+      });
+
+      const line = new THREE.Line(geometry, material);
+      line.frustumCulled = false;
+      line.renderOrder = 999;
+      sceneRef.current.add(line);
+      lineSegmentsRef.current.push(line);
+
+      // Collect all points for point cloud
+      allPoints.push(...segment.points);
+    });
+
+    // Add point markers for all points (colored by segment)
+    segments.forEach(segment => {
+      if (segment.points.length === 0) return;
+
+      const pointsGeometry = new THREE.BufferGeometry().setFromPoints(segment.points);
+      const color = getColorForRunType(segment.runType);
+      const pointsMaterial = new THREE.PointsMaterial({ color, size: 5, sizeAttenuation: false });
+      const pointsCloud = new THREE.Points(pointsGeometry, pointsMaterial);
+      sceneRef.current.add(pointsCloud);
+      pointsCloudsRef.current.push(pointsCloud);
+    });
 
     // Update camera to frame track (now centered at origin)
-    if (points.length > 10 && maxRange > 0) {
+    if (allPoints.length > 10 && maxRange > 0) {
       const padding = 10; // 10m padding on each side
       const aspect = containerRef.current!.clientWidth / containerRef.current!.clientHeight;
 

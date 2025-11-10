@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { listen } from "@tauri-apps/api/event";
+import { listen, emit } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
 
 export const OverlayPage = () => {
@@ -44,9 +44,48 @@ export const OverlayPage = () => {
     handleVideoEnd();
   };
 
+  const handleButtonClick = async () => {
+    console.log("Button clicked in overlay - sending message to main window");
+    try {
+      await emit("overlay-button-clicked", {
+        message: "Hello from overlay!",
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error("Failed to emit event:", error);
+    }
+  };
+
   if (!videoSrc) {
-    // Fully transparent when no video
-    return null;
+    // Show test button when no video is playing
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "transparent",
+        }}
+      >
+        <button
+          onClick={handleButtonClick}
+          style={{
+            padding: "20px 40px",
+            fontSize: "18px",
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
+          }}
+        >
+          Click to Send Message to Main Window
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -54,7 +93,7 @@ export const OverlayPage = () => {
       style={{
         width: "100vw",
         height: "100vh",
-        backgroundColor: "rgba(0, 0, 0, 0.3)", // Subtle dark overlay
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -67,13 +106,14 @@ export const OverlayPage = () => {
         onEnded={handleVideoEnd}
         onError={handleVideoError}
         style={{
-          maxWidth: "90vw",
-          maxHeight: "90vh",
+          width: "90%",
+          height: "90%",
+          objectFit: "contain",
           borderRadius: "10px",
           boxShadow: "0 10px 40px rgba(0, 0, 0, 0.8)",
         }}
       />
-      
+
       {/* Skip instruction overlay */}
       <div
         style={{
