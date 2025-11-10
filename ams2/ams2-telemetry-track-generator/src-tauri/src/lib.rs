@@ -1,4 +1,5 @@
 mod audio;
+mod run_type_storage;
 mod telemetry;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -27,7 +28,9 @@ pub fn run() {
             stop_native_recording,
             telemetry::start_telemetry,
             telemetry::stop_telemetry,
-            telemetry::is_telemetry_running
+            telemetry::is_telemetry_running,
+            run_type_storage::load_run_type_assignments,
+            run_type_storage::save_run_type_assignment
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

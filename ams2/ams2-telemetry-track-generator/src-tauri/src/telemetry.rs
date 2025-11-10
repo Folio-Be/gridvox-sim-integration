@@ -203,6 +203,7 @@ pub struct TelemetryData {
     pub track_location: String,
     pub track_variation: String,
     pub track_length: f32,
+    pub lap_invalidated: bool,
 
     pub current_time: f32,
     pub event_time_remaining: f32,
@@ -328,6 +329,7 @@ impl SharedMemoryReader {
                 track_location,
                 track_variation,
                 track_length: data.track_length,
+                lap_invalidated: data.lap_invalidated,
                 current_time: data.current_time,
                 event_time_remaining: data.event_time_remaining,
                 split_time_ahead: data.split_time_ahead,

@@ -1,17 +1,82 @@
 import { useState, useEffect, useRef } from "react";
 import ProgressBar from "../ui/ProgressBar";
 import TelemetryCard from "../ui/TelemetryCard";
-import StatusIndicator from "../ui/StatusIndicator";
+import StatusIndicator, { StatusIndicatorStatus } from "../ui/StatusIndicator";
 import TrackVisualization from "../TrackVisualization";
 import { getTelemetryService, TelemetryData } from "../../lib/telemetry-service";
 import { debugConsole } from "../ui/DebugConsole";
+import {
+  loadRunTypeAssignments,
+  saveRunTypeAssignment,
+  RunTypeAssignmentPayload,
+  RunTypeName,
+} from "../../lib/run-type-storage";
+
+const GAME_STATES = {
+  EXITED: 0,
+  FRONT_END: 1,
+  IN_GAME_PLAYING: 2,
+  IN_GAME_PAUSED: 3,
+  IN_GAME_RESTARTING: 4,
+  IN_GAME_REPLAY: 5,
+  IN_GAME_FRONT_END: 6,
+  IN_GAME_TIME_PROGRESSING: 7,
+} as const;
+
+const GAME_STATE_LABELS: Record<number, string> = {
+  [GAME_STATES.EXITED]: "Exited",
+  [GAME_STATES.FRONT_END]: "Front End",
+  [GAME_STATES.IN_GAME_PLAYING]: "In-Game (Playing)",
+  [GAME_STATES.IN_GAME_PAUSED]: "In-Game (Paused)",
+  [GAME_STATES.IN_GAME_RESTARTING]: "In-Game (Restarting)",
+  [GAME_STATES.IN_GAME_REPLAY]: "In-Game (Replay)",
+  [GAME_STATES.IN_GAME_FRONT_END]: "In-Game (Front End)",
+  [GAME_STATES.IN_GAME_TIME_PROGRESSING]: "In-Game (Time Progressing)",
+};
 
 type LapRecord = {
+  id: number;
   lap: number;
   startedAt: number;
   durationSeconds?: number;
   distanceMeters?: number;
   isActive: boolean;
+  validity: "pending" | "valid" | "invalid";
+  hadInvalidation?: boolean;
+};
+
+type RunType = RunTypeName;
+
+type RunTypeAssignmentState = {
+  runType: RunType;
+  lapId: number;
+  lapNumber: number;
+  assignedAt: number;
+  validity: "pending" | "valid" | "invalid";
+  timeSeconds?: number;
+  distanceMeters?: number;
+};
+
+type RunTypeAssignmentsState = Record<RunType, RunTypeAssignmentState | null>;
+
+const RUN_TYPES: RunType[] = ["outside", "inside", "racing"];
+
+const RUN_TYPE_LABELS: Record<RunType, string> = {
+  outside: "Outside",
+  inside: "Inside",
+  racing: "Racing",
+};
+
+const RUN_TYPE_BUTTON_COLORS: Record<RunType, string> = {
+  outside: "bg-blue-600 hover:bg-blue-500 focus-visible:ring-blue-300 text-white",
+  inside: "bg-green-600 hover:bg-green-500 focus-visible:ring-green-300 text-white",
+  racing: "bg-red-600 hover:bg-red-500 focus-visible:ring-red-300 text-white",
+};
+
+const RUN_TYPE_OUTLINE_COLORS: Record<RunType, string> = {
+  outside: "border-blue-400 text-blue-200",
+  inside: "border-green-400 text-green-200",
+  racing: "border-red-400 text-red-200",
 };
 
 interface LiveRecordingProps {
@@ -52,16 +117,118 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
     maxRpm: 0,
   });
 
-  const [allTelemetryPoints, setAllTelemetryPoints] = useState<any[]>([]);
+  const [displayedTelemetryPoints, setDisplayedTelemetryPoints] = useState<any[]>([]);
   const [trackInfo, setTrackInfo] = useState({ location: "", variation: "" });
   const [telemetryRate, setTelemetryRate] = useState(0);
   const [laps, setLaps] = useState<LapRecord[]>([]);
   const [currentLapMetrics, setCurrentLapMetrics] = useState({ timeSeconds: 0, distanceMeters: 0 });
+  const [selectedLapId, setSelectedLapId] = useState<number | null>(null);
+  const [recordingIndicator, setRecordingIndicator] = useState<{ status: StatusIndicatorStatus; label: string }>(
+    { status: "idle", label: "Waiting for telemetry" }
+  );
+  const [runTypeAssignments, setRunTypeAssignments] = useState<RunTypeAssignmentsState>({
+    outside: null,
+    inside: null,
+    racing: null,
+  });
+  const [selectedRunType, setSelectedRunType] = useState<RunType | null>(null);
   const lapsRef = useRef<LapRecord[]>([]);
   const previousLapDistanceRef = useRef<number | null>(null);
-  const previousLapTimeRef = useRef<number | null>(null);
   const hasActiveLapRef = useRef(false);
   const currentLapNumberRef = useRef(0);
+  const lapTelemetryRef = useRef<Record<number, any[]>>({});
+  const lapValidityRef = useRef<Record<number, "pending" | "flagged" | "valid" | "invalid">>({});
+  const runTypeTelemetryRef = useRef<Record<RunType, RunTypeAssignmentPayload["telemetryPoints"]>>({
+    outside: [],
+    inside: [],
+    racing: [],
+  });
+  const currentLapIdRef = useRef<number | null>(null);
+  const selectedLapIdRef = useRef<number | null>(null);
+  const lastGameStateRef = useRef<number | null>(null);
+  const selectedRunTypeRef = useRef<RunType | null>(null);
+  const trackKeyRef = useRef<string | null>(null);
+  const runTypeAssignmentsRef = useRef<RunTypeAssignmentsState>({
+    outside: null,
+    inside: null,
+    racing: null,
+  });
+
+  useEffect(() => {
+    selectedLapIdRef.current = selectedLapId;
+  }, [selectedLapId]);
+
+  useEffect(() => {
+    selectedRunTypeRef.current = selectedRunType;
+  }, [selectedRunType]);
+
+  useEffect(() => {
+    runTypeAssignmentsRef.current = runTypeAssignments;
+  }, [runTypeAssignments]);
+
+  useEffect(() => {
+    if (!trackInfo.location) {
+      return;
+    }
+    const key = `${trackInfo.location}|||${trackInfo.variation ?? ""}`;
+    trackKeyRef.current = key;
+    let cancelled = false;
+
+    loadRunTypeAssignments(key)
+      .then((response) => {
+        if (cancelled) {
+          return;
+        }
+        const nextAssignments: RunTypeAssignmentsState = {
+          outside: null,
+          inside: null,
+          racing: null,
+        };
+        RUN_TYPES.forEach((runType) => {
+          const stored = response?.[runType];
+          if (stored) {
+            nextAssignments[runType] = {
+              runType,
+              lapId: stored.lapId,
+              lapNumber: stored.lapNumber,
+              assignedAt: stored.assignedAt,
+              validity: stored.validity,
+              timeSeconds: stored.timeSeconds,
+              distanceMeters: stored.distanceMeters,
+            };
+            runTypeTelemetryRef.current[runType] = stored.telemetryPoints ?? [];
+          } else {
+            runTypeTelemetryRef.current[runType] = [];
+          }
+        });
+  runTypeAssignmentsRef.current = nextAssignments;
+        setRunTypeAssignments(nextAssignments);
+
+        const activeRunType = selectedRunTypeRef.current;
+        if (activeRunType) {
+          const stored = response?.[activeRunType];
+          if (stored) {
+            setDisplayedTelemetryPoints([...runTypeTelemetryRef.current[activeRunType]]);
+          }
+        }
+      })
+      .catch((error) => {
+        debugConsole.error(`Failed to load run type assignments: ${String(error)}`);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [trackInfo.location, trackInfo.variation]);
+
+  const updateRecordingIndicator = (status: StatusIndicatorStatus, label: string) => {
+    setRecordingIndicator((prev) => {
+      if (prev.status === status && prev.label === label) {
+        return prev;
+      }
+      return { status, label };
+    });
+  };
 
   useEffect(() => {
     const service = getTelemetryService();
@@ -80,6 +247,39 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
         connectionLostWarned = false;
       }
       lastUpdateTime = now;
+
+      const gameState = data.game_state;
+      const lastGameState = lastGameStateRef.current;
+      if (lastGameState === null || lastGameState !== gameState) {
+        if (gameState === GAME_STATES.IN_GAME_PAUSED) {
+          debugConsole.warn(`Pause menu detected (gameState=${gameState}).`);
+          updateRecordingIndicator("paused", "Paused");
+        } else if (
+          lastGameState === GAME_STATES.IN_GAME_PAUSED &&
+          gameState === GAME_STATES.IN_GAME_PLAYING
+        ) {
+          debugConsole.success("Resumed driving after pause.");
+          updateRecordingIndicator("recording", "Recording");
+        } else if (gameState === GAME_STATES.IN_GAME_RESTARTING) {
+          debugConsole.warn("Race restart requested from pause menu.");
+          updateRecordingIndicator("restarting", "Restarting race...");
+        } else if (
+          lastGameState === GAME_STATES.IN_GAME_RESTARTING &&
+          gameState === GAME_STATES.IN_GAME_PLAYING
+        ) {
+          debugConsole.success("Race restart complete; live telemetry resumed.");
+          updateRecordingIndicator("recording", "Recording");
+        } else if (gameState === GAME_STATES.FRONT_END || gameState === GAME_STATES.EXITED) {
+          updateRecordingIndicator("idle", "In menus");
+        } else if (lastGameState !== null) {
+          const label = GAME_STATE_LABELS[gameState] ?? `Unknown (${gameState})`;
+          debugConsole.info(`Game state changed: ${label}`);
+          if (gameState === GAME_STATES.IN_GAME_PLAYING) {
+            updateRecordingIndicator("recording", "Recording");
+          }
+        }
+        lastGameStateRef.current = gameState;
+      }
 
       // Calculate telemetry rate (Hz)
       updateCount++;
@@ -116,8 +316,6 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
           inPit: data.game_state === 3,
         };
 
-        setAllTelemetryPoints(prev => [...prev, telemetryPoint]);
-
         const lapDistance = typeof player.current_lap_distance === "number"
           ? Math.max(player.current_lap_distance, 0)
           : 0;
@@ -131,47 +329,151 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
           hasActiveLapRef.current = true;
           currentLapNumberRef.current += 1;
           const lapNumber = currentLapNumberRef.current;
+          const lapId = now;
+          currentLapIdRef.current = lapId;
+          lapTelemetryRef.current[lapId] = [];
+          lapValidityRef.current[lapId] = "pending";
           const nextLaps = [...lapsRef.current, {
+            id: lapId,
             lap: lapNumber,
             startedAt: now,
             isActive: true,
+            validity: "pending" as const,
+            hadInvalidation: false,
           }];
           commitLaps(nextLaps);
+          if (selectedRunTypeRef.current === null) {
+            selectedLapIdRef.current = lapId;
+            setSelectedLapId(lapId);
+            setDisplayedTelemetryPoints([]);
+          }
           debugConsole.success(`Lap ${lapNumber} start detected (distance ${lapDistance.toFixed(1)}m).`);
         } else if (
           hasActiveLapRef.current &&
           previousLapDistanceRef.current !== null &&
           lapDistance + LAP_RESET_TOLERANCE < previousLapDistanceRef.current
         ) {
+          const previousLapId = currentLapIdRef.current;
           const updatedLaps = [...lapsRef.current];
-          if (updatedLaps.length > 0) {
-            const lastIndex = updatedLaps.length - 1;
-            const lastLap = updatedLaps[lastIndex];
-            updatedLaps[lastIndex] = {
-              ...lastLap,
-              durationSeconds: previousLapTimeRef.current ?? lastLap.durationSeconds,
-              distanceMeters: data.track_length > 0
-                ? data.track_length
-                : previousLapDistanceRef.current ?? lastLap.distanceMeters,
-              isActive: false,
-            };
+          if (previousLapId !== null) {
+            const previousIndex = updatedLaps.findIndex((lap) => lap.id === previousLapId);
+            if (previousIndex !== -1) {
+              const previousLapRecord = updatedLaps[previousIndex];
+              const previousLapPoints = lapTelemetryRef.current[previousLapId] || [];
+              const previousLastPoint = previousLapPoints[previousLapPoints.length - 1];
+              const completedDuration = previousLastPoint
+                ? Math.max((previousLastPoint.timestamp - previousLapRecord.startedAt) / 1000, 0)
+                : previousLapRecord.durationSeconds;
+              const completedDistance = previousLastPoint?.lapDistance
+                ?? previousLapDistanceRef.current
+                ?? previousLapRecord.distanceMeters;
+              const validityState = lapValidityRef.current[previousLapId];
+              const finalizedValidity = validityState === "flagged" || validityState === "invalid"
+                ? "invalid"
+                : "valid";
+              lapValidityRef.current[previousLapId] = finalizedValidity;
+              updatedLaps[previousIndex] = {
+                ...previousLapRecord,
+                durationSeconds: completedDuration,
+                distanceMeters: completedDistance,
+                isActive: false,
+                validity: finalizedValidity,
+                hadInvalidation: finalizedValidity === "invalid",
+              };
+              RUN_TYPES.forEach((runType) => {
+                const assignment = runTypeAssignmentsRef.current[runType];
+                if (assignment && assignment.lapId === previousLapId) {
+                  const updatedAssignment: RunTypeAssignmentState = {
+                    ...assignment,
+                    validity: finalizedValidity,
+                    timeSeconds: completedDuration,
+                    distanceMeters: completedDistance,
+                  };
+                  runTypeAssignmentsRef.current = {
+                    ...runTypeAssignmentsRef.current,
+                    [runType]: updatedAssignment,
+                  };
+                  setRunTypeAssignments((prev) => ({
+                    ...prev,
+                    [runType]: updatedAssignment,
+                  }));
+
+                  const trackKey = trackKeyRef.current;
+                  if (trackKey) {
+                    const telemetryPoints = runTypeTelemetryRef.current[runType] ?? [];
+                    const payload: RunTypeAssignmentPayload = {
+                      lapId: updatedAssignment.lapId,
+                      lapNumber: updatedAssignment.lapNumber,
+                      assignedAt: updatedAssignment.assignedAt,
+                      validity: updatedAssignment.validity,
+                      timeSeconds: updatedAssignment.timeSeconds,
+                      distanceMeters: updatedAssignment.distanceMeters,
+                      telemetryPoints,
+                    };
+                    void saveRunTypeAssignment(trackKey, runType, payload).catch((error) => {
+                      debugConsole.error(`Failed to refresh ${RUN_TYPE_LABELS[runType]} assignment: ${String(error)}`);
+                    });
+                  }
+                }
+              });
+            }
           }
           currentLapNumberRef.current += 1;
           const lapNumber = currentLapNumberRef.current;
+          const newLapId = now;
+          currentLapIdRef.current = newLapId;
+          lapTelemetryRef.current[newLapId] = [];
+          lapValidityRef.current[newLapId] = "pending";
           updatedLaps.push({
+            id: newLapId,
             lap: lapNumber,
             startedAt: now,
             isActive: true,
+            validity: "pending" as const,
+            hadInvalidation: false,
           });
           commitLaps(updatedLaps);
+          const selectedId = selectedLapIdRef.current;
+          if (selectedRunTypeRef.current === null && (selectedId === null || selectedId === previousLapId || selectedId === newLapId)) {
+            selectedLapIdRef.current = newLapId;
+            setSelectedLapId(newLapId);
+            setDisplayedTelemetryPoints([]);
+          }
           debugConsole.info(
             `Lap ${lapNumber} start detected (distance reset from ${previousLapDistanceRef.current.toFixed(1)}m).`
           );
         }
 
+        const activeLapId = currentLapIdRef.current;
+        if (activeLapId !== null) {
+          const existingPoints = lapTelemetryRef.current[activeLapId] || [];
+          const updatedPoints = [...existingPoints, telemetryPoint];
+          lapTelemetryRef.current[activeLapId] = updatedPoints;
+          if (selectedRunTypeRef.current === null && selectedLapIdRef.current === activeLapId) {
+            setDisplayedTelemetryPoints(updatedPoints);
+          }
+          const activeLapRecord = lapsRef.current.find((lap) => lap.id === activeLapId);
+          if (activeLapRecord) {
+            const elapsedSeconds = Math.max((telemetryPoint.timestamp - activeLapRecord.startedAt) / 1000, 0);
+            setCurrentLapMetrics({ timeSeconds: elapsedSeconds, distanceMeters: lapDistance });
+            if (data.lap_invalidated && lapValidityRef.current[activeLapId] === "pending") {
+              lapValidityRef.current[activeLapId] = "flagged";
+              const nextLaps = lapsRef.current.map((lap) =>
+                lap.id === activeLapId ? { ...lap, hadInvalidation: true } : lap
+              );
+              commitLaps(nextLaps);
+              debugConsole.warn(`Lap ${activeLapRecord.lap} flagged for validation by simulator.`);
+            }
+            if (gameState === GAME_STATES.IN_GAME_PLAYING) {
+              const lapLabel = `Recording Lap ${Math.max(1, activeLapRecord.lap || 1)}`;
+              updateRecordingIndicator("recording", lapLabel);
+            }
+          }
+        } else {
+          setCurrentLapMetrics({ timeSeconds: 0, distanceMeters: 0 });
+        }
+
         previousLapDistanceRef.current = lapDistance;
-        previousLapTimeRef.current = data.current_time;
-        setCurrentLapMetrics({ timeSeconds: data.current_time, distanceMeters: lapDistance });
 
         // Calculate lap progress
         const progress = data.track_length > 0
@@ -202,6 +504,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
       if (timeSinceLastUpdate > 2000 && !connectionLostWarned && !firstUpdate) {
         connectionLostWarned = true;
         setIsConnected(false);
+        updateRecordingIndicator("idle", "Waiting for telemetry");
       }
     }, 2000);
 
@@ -231,14 +534,137 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
   const handleClearLaps = () => {
     lapsRef.current = [];
     previousLapDistanceRef.current = null;
-    previousLapTimeRef.current = null;
     hasActiveLapRef.current = false;
     currentLapNumberRef.current = 0;
-    setAllTelemetryPoints([]);
+    lapTelemetryRef.current = {};
+  lapValidityRef.current = {};
+    currentLapIdRef.current = null;
+    selectedLapIdRef.current = null;
+    lastGameStateRef.current = null;
+    setSelectedLapId(null);
     setLapProgress(0);
     setLaps([]);
     setCurrentLapMetrics({ timeSeconds: 0, distanceMeters: 0 });
+    updateRecordingIndicator("idle", "Waiting for telemetry");
     debugConsole.warn("Lap history cleared.");
+
+    const activeRunType = selectedRunTypeRef.current;
+    if (activeRunType) {
+      const telemetryPoints = runTypeTelemetryRef.current[activeRunType];
+      setDisplayedTelemetryPoints([...telemetryPoints]);
+    } else {
+      setDisplayedTelemetryPoints([]);
+    }
+  };
+
+  const assignRunType = async (runType: RunType, lap: LapRecord) => {
+    if (lap.isActive) {
+      debugConsole.warn(`Lap ${lap.lap} is still in progress. Finish the lap before assigning a run type.`);
+      return;
+    }
+    if (lap.validity === "invalid") {
+      debugConsole.warn(`Lap ${lap.lap} was invalidated and cannot be used for a run type.`);
+      return;
+    }
+    const trackKey = trackKeyRef.current;
+    if (!trackKey) {
+      debugConsole.error("Track information is unavailable; cannot persist run type assignment.");
+      return;
+    }
+
+    const telemetryPoints = lapTelemetryRef.current[lap.id] ?? [];
+    if (telemetryPoints.length === 0) {
+      debugConsole.warn(`No telemetry data captured for Lap ${lap.lap}; unable to assign.`);
+      return;
+    }
+
+    const lastPoint = telemetryPoints[telemetryPoints.length - 1];
+    const durationSeconds = typeof lap.durationSeconds === "number"
+      ? lap.durationSeconds
+      : lastPoint
+        ? Math.max((lastPoint.timestamp - lap.startedAt) / 1000, 0)
+        : undefined;
+    const distanceMeters = typeof lap.distanceMeters === "number"
+      ? lap.distanceMeters
+      : lastPoint?.lapDistance;
+
+    const sanitizedTelemetry = telemetryPoints.map((point) => {
+      const positionSource = Array.isArray(point.position) ? point.position : [0, 0, 0];
+      const position: [number, number, number] = [
+        Number(positionSource[0] ?? 0),
+        Number(positionSource[1] ?? 0),
+        Number(positionSource[2] ?? 0),
+      ];
+      return {
+        timestamp: Number(point.timestamp ?? Date.now()),
+        speed: Number(point.speed ?? 0),
+        position,
+        throttle: Number(point.throttle ?? 0),
+        brake: Number(point.brake ?? 0),
+        gear: Number(point.gear ?? 0),
+        rpm: Number(point.rpm ?? 0),
+        lapDistance: Number(point.lapDistance ?? 0),
+      };
+    });
+
+    const nextAssignment: RunTypeAssignmentState = {
+      runType,
+      lapId: lap.id,
+      lapNumber: lap.lap,
+      assignedAt: Date.now(),
+      validity: lap.validity,
+      timeSeconds: durationSeconds,
+      distanceMeters,
+    };
+
+    const payload: RunTypeAssignmentPayload = {
+      lapId: lap.id,
+      lapNumber: lap.lap,
+      assignedAt: nextAssignment.assignedAt,
+      validity: lap.validity,
+      timeSeconds: durationSeconds,
+      distanceMeters,
+      telemetryPoints: sanitizedTelemetry,
+    };
+
+    runTypeTelemetryRef.current[runType] = sanitizedTelemetry;
+    runTypeAssignmentsRef.current = {
+      ...runTypeAssignmentsRef.current,
+      [runType]: nextAssignment,
+    };
+    setRunTypeAssignments((prev) => ({ ...prev, [runType]: nextAssignment }));
+    setSelectedRunType(runType);
+    selectedLapIdRef.current = lap.id;
+    setSelectedLapId(lap.id);
+    setDisplayedTelemetryPoints([...sanitizedTelemetry]);
+
+    try {
+      await saveRunTypeAssignment(trackKey, runType, payload);
+      debugConsole.success(`Assigned Lap ${lap.lap} to the ${RUN_TYPE_LABELS[runType]} line.`);
+    } catch (error) {
+      debugConsole.error(`Failed to persist ${RUN_TYPE_LABELS[runType]} assignment: ${String(error)}`);
+    }
+  };
+
+  const handleRunTypeSelect = (runType: RunType) => {
+    const assignment = runTypeAssignments[runType];
+    if (!assignment) {
+      debugConsole.info(`No lap assigned to the ${RUN_TYPE_LABELS[runType]} line yet.`);
+      return;
+    }
+    const telemetryPoints = runTypeTelemetryRef.current[runType];
+    setSelectedRunType(runType);
+    selectedLapIdRef.current = assignment.lapId;
+    setSelectedLapId(assignment.lapId);
+    setDisplayedTelemetryPoints([...telemetryPoints]);
+  };
+
+  const handleLapClick = (lap: LapRecord) => {
+    const lapPoints = lapTelemetryRef.current[lap.id] || [];
+    setSelectedRunType(null);
+    selectedLapIdRef.current = lap.id;
+    setSelectedLapId(lap.id);
+    setDisplayedTelemetryPoints([...lapPoints]);
   };
 
   return (
@@ -292,7 +718,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                 </div>
               )}
 
-              {isConnected && <StatusIndicator status="recording" label="Recording..." />}
+              <StatusIndicator status={recordingIndicator.status} label={recordingIndicator.label} />
               <StatusIndicator
                 status={isConnected ? "connected" : "disconnected"}
                 label={isConnected ? "Connected" : "Waiting..."}
@@ -302,19 +728,19 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
 
           {/* Main Content */}
           <main className="flex flex-col flex-1 p-4 gap-4">
-            {/* Progress Bar */}
-            <ProgressBar label="Lap Progress" value={lapProgress} />
-
             {/* Track Map & Telemetry Cards */}
             <div className="flex flex-1 gap-4 overflow-hidden">
               {/* 3D Track Visualization & Telemetry Snapshot */}
               <div className="w-3/5 flex flex-col gap-4 h-full">
-                <div className="flex-1">
+                <div className="flex-1 rounded-lg border border-green-border overflow-hidden">
                   <TrackVisualization
-                    telemetryPoints={allTelemetryPoints}
+                    telemetryPoints={displayedTelemetryPoints}
                     currentRunType={null}
-                    className="w-full h-full rounded-lg border border-green-border overflow-hidden"
+                    className="w-full h-full"
                   />
+                </div>
+                <div className="rounded-lg border border-green-border bg-green-bg/30">
+                  <ProgressBar label="Lap Progress" value={lapProgress} />
                 </div>
                 <div className="flex flex-col gap-4 rounded-lg border border-green-border bg-green-bg/30 p-4">
                   <div className="flex flex-wrap gap-4">
@@ -345,29 +771,87 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                     <ul className="divide-y divide-green-border/40">
                       {laps.map((lap) => {
                         const isActive = lap.isActive;
+                        const isSelected = selectedLapId === lap.id;
                         const timeValue = lap.durationSeconds ?? (isActive ? currentLapMetrics.timeSeconds : undefined);
                         const distanceValue = lap.distanceMeters ?? (isActive ? currentLapMetrics.distanceMeters : undefined);
+                        let statusLabel = "Pending";
+                        let statusTextClass = "text-white/50";
+                        let lapTitleClass = "text-white";
+
+                        if (isActive) {
+                          if (lap.hadInvalidation) {
+                            statusLabel = "Validating";
+                            statusTextClass = "text-orange-400";
+                            lapTitleClass = "text-orange-200";
+                          } else {
+                            statusLabel = "In Progress";
+                          }
+                        } else {
+                          if (lap.validity === "invalid") {
+                            statusLabel = "Invalid";
+                            statusTextClass = "text-red-400";
+                            lapTitleClass = "text-red-300";
+                          } else if (lap.validity === "valid") {
+                            statusLabel = "Completed";
+                          }
+                        }
+
+                        const isAssignedRunType = (runType: RunType) => runTypeAssignments[runType]?.lapId === lap.id;
                         return (
                           <li
                             key={`lap-${lap.startedAt}`}
-                            className={`px-4 py-3 text-xs text-white/80 ${isActive ? "bg-green-bg/40" : ""}`}
+                            className={`${isSelected ? "bg-green-bg/70" : isActive ? "bg-green-bg/40" : ""}`}
                           >
-                            <div className="flex items-center justify-between">
-                              <span className="font-semibold text-white">Lap {lap.lap}</span>
-                              <span className="text-white/50">{isActive ? "In Progress" : "Completed"}</span>
-                            </div>
-                            <div className="mt-2 grid grid-cols-2 gap-2 text-white/80">
-                              <div>
-                                <div className="text-white/50 uppercase tracking-wide">Time</div>
-                                <div className="font-mono text-sm">
-                                  {typeof timeValue === "number" ? formatLapTime(timeValue) : "--:--"}
+                            <div className="px-4 py-3">
+                              <button
+                                type="button"
+                                className="w-full text-left text-xs text-white/80 transition-colors hover:bg-green-bg/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-md px-2 py-2"
+                                onClick={() => handleLapClick(lap)}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className={`font-semibold ${lapTitleClass}`}>Lap {lap.lap}</span>
+                                  <span className={`${statusTextClass}`}>{statusLabel}</span>
                                 </div>
-                              </div>
-                              <div>
-                                <div className="text-white/50 uppercase tracking-wide">Distance</div>
-                                <div className="font-mono text-sm">
-                                  {typeof distanceValue === "number" ? formatDistance(distanceValue) : "--"}
+                                <div className="mt-2 grid grid-cols-2 gap-2 text-white/80">
+                                  <div>
+                                    <div className="text-white/50 uppercase tracking-wide">Time</div>
+                                    <div className="font-mono text-sm">
+                                      {typeof timeValue === "number" ? formatLapTime(timeValue) : "--:--"}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className="text-white/50 uppercase tracking-wide">Distance</div>
+                                    <div className="font-mono text-sm">
+                                      {typeof distanceValue === "number" ? formatDistance(distanceValue) : "--"}
+                                    </div>
+                                  </div>
                                 </div>
+                              </button>
+                              <div className="mt-3 flex flex-wrap gap-2">
+                                {RUN_TYPES.map((runType) => {
+                                  const assigned = isAssignedRunType(runType);
+                                  return (
+                                    <button
+                                      key={`${lap.id}-${runType}`}
+                                      type="button"
+                                      className={`flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] uppercase tracking-wide transition-colors focus:outline-none focus-visible:ring-2 ${assigned
+                                        ? RUN_TYPE_BUTTON_COLORS[runType]
+                                        : `${RUN_TYPE_OUTLINE_COLORS[runType]} bg-transparent hover:bg-green-bg/40 focus-visible:ring-primary/40`
+                                      } ${lap.validity === "invalid" ? "opacity-40 cursor-not-allowed" : ""}`}
+                                      onClick={(event) => {
+                                        event.stopPropagation();
+                                        if (lap.validity === "invalid") {
+                                          debugConsole.warn("Cannot assign an invalid lap to a run type.");
+                                          return;
+                                        }
+                                        void assignRunType(runType, lap);
+                                      }}
+                                      disabled={lap.validity === "invalid"}
+                                    >
+                                      {RUN_TYPE_LABELS[runType]}
+                                    </button>
+                                  );
+                                })}
                               </div>
                             </div>
                           </li>
@@ -376,6 +860,85 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                     </ul>
                   )}
                 </div>
+              </div>
+              <div className="border-t border-green-border/60 bg-green-bg/20 px-4 py-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-white text-sm font-bold uppercase tracking-wide">Run Type Laps</h4>
+                  <span className="text-[11px] uppercase text-white/50">Outside / Inside / Racing</span>
+                </div>
+                <ul className="mt-3 flex flex-col gap-2">
+                  {RUN_TYPES.map((runType) => {
+                    const assignment = runTypeAssignments[runType];
+                    const telemetryAvailable = runTypeTelemetryRef.current[runType]?.length > 0;
+                    const isSelectedRunType = selectedRunType === runType;
+                    const validityLabel = assignment?.validity === "valid"
+                      ? "Valid"
+                      : assignment?.validity === "invalid"
+                        ? "Invalid"
+                        : assignment
+                          ? "Pending"
+                          : "Unassigned";
+                    const statusClass = assignment?.validity === "invalid"
+                      ? "text-red-300"
+                      : assignment?.validity === "valid"
+                        ? "text-green-300"
+                        : "text-white/60";
+
+                    if (assignment && telemetryAvailable) {
+                      return (
+                        <li key={`run-${runType}`}>
+                          <button
+                            type="button"
+                            className={`w-full rounded-lg border px-3 py-3 text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${isSelectedRunType ? "border-primary/60 bg-green-bg/60" : "border-green-border/70 bg-green-bg/40 hover:bg-green-bg/50"}`}
+                            onClick={() => handleRunTypeSelect(runType)}
+                          >
+                            <div className="flex items-center justify-between text-xs text-white/70">
+                              <span className="font-semibold text-white">{RUN_TYPE_LABELS[runType]} Line</span>
+                              <span className="font-mono">Lap {assignment.lapNumber}</span>
+                            </div>
+                            <div className="mt-2 grid grid-cols-2 gap-2 text-[11px] text-white/60">
+                              <div>
+                                <div className="uppercase tracking-wide">Time</div>
+                                <div className="font-mono text-sm text-white">
+                                  {typeof assignment.timeSeconds === "number"
+                                    ? formatLapTime(assignment.timeSeconds)
+                                    : "--:--"}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="uppercase tracking-wide">Distance</div>
+                                <div className="font-mono text-sm text-white">
+                                  {typeof assignment.distanceMeters === "number"
+                                    ? formatDistance(assignment.distanceMeters)
+                                    : "--"}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="mt-3 flex items-center justify-between text-[11px]">
+                              <span className={`uppercase tracking-wide ${statusClass}`}>{validityLabel}</span>
+                              <span className="text-white/40">Tap to view</span>
+                            </div>
+                          </button>
+                        </li>
+                      );
+                    }
+
+                    return (
+                      <li
+                        key={`run-${runType}`}
+                        className="rounded-lg border border-dashed border-green-border/60 bg-green-bg/30 px-3 py-3 text-left"
+                      >
+                        <div className="flex items-center justify-between text-xs text-white/60">
+                          <span className="font-semibold text-white/80">{RUN_TYPE_LABELS[runType]} Line</span>
+                          <span className="uppercase">Unassigned</span>
+                        </div>
+                        <div className="mt-2 text-[11px] text-white/40">
+                          Assign a recorded lap via the buttons above.
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
             </div>
 
