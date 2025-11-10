@@ -477,7 +477,334 @@ Based on research findings from Paint3D, DreamFusion, and texture generation pap
 
 ---
 
-## 6. Implementation Roadmap
+## 6. Deployment Options: Local vs Cloud
+
+### 6.1 Overview
+
+A critical decision for the AI livery designer is whether to deploy on **local hardware** (user's GPU or dedicated workstation) or **cloud infrastructure** (GPU rental services). This section provides comprehensive analysis of both approaches.
+
+### 6.2 Local GPU Options - Hardware Specifications
+
+#### Consumer GPU Comparison Table
+
+| GPU Model | VRAM | CUDA Cores | Price (New) | Price (Used) | Power Draw | SDXL Speed (1024x1024) | Best For |
+|-----------|------|------------|-------------|--------------|------------|------------------------|----------|
+| **RTX 4090** | 24GB | 16,384 | $3,049 | $2,199 | 450W | ~3-4 sec | Professional / Multi-user |
+| **RTX 4080 Super** | 16GB | 9,728 | $1,000-1,200 | ~$900 | 320W | ~5-6 sec | Enthusiast / Small studio |
+| **RTX 4070 Ti** | 12GB | 7,680 | $799 | ~$650 | 285W | ~8-10 sec | Budget-conscious users |
+| **RTX 3090** | 24GB | 10,496 | $1,488 | $699 | 350W | ~6-8 sec | Best value for 24GB VRAM |
+| **RTX 3080 Ti** | 12GB | 10,240 | $799 | $550 | 350W | ~8-10 sec | Older generation value |
+| **RTX 3060 Ti** | 8GB | 4,864 | $399 | $250 | 200W | ~15-20 sec | Entry-level (SD 1.5 only) |
+
+**Notes:**
+- Prices as of November 2025 (subject to market fluctuations)
+- SDXL speeds are approximate for 1024x1024, 20 steps, no ControlNet
+- With ControlNet + IPAdapter: Add 30-50% to generation time
+- With multi-view consistency (MV-Adapter): Add 100-150% to time
+
+#### VRAM Requirements by Workload
+
+| Task | Minimum VRAM | Recommended VRAM | Why |
+|------|-------------|------------------|-----|
+| **SDXL Base** | 8GB | 12GB+ | Base model alone |
+| **SDXL + ControlNet (single)** | 10GB | 16GB+ | +2-3GB for depth/normal maps |
+| **SDXL + ControlNet + IPAdapter** | 12GB | 16GB+ | +1-2GB for image conditioning |
+| **Multi-view generation (MV-Adapter)** | 16GB | 24GB+ | Multiple views processed simultaneously |
+| **Full livery pipeline** | 16GB | 24GB+ | All models + UV inpainting + de-lighting |
+| **Batch processing (5+ liveries)** | 24GB | 24GB+ | Keep models loaded between generations |
+
+**Recommendation:** **24GB VRAM** (RTX 4090 or RTX 3090) for optimal performance. 16GB acceptable for single-livery workflow.
+
+### 6.3 Local Workstation Build Costs
+
+#### Budget AI Livery Workstation ($2,500-3,500)
+
+| Component | Specification | Price | Notes |
+|-----------|---------------|-------|-------|
+| **GPU** | RTX 3090 (used) | $699 | 24GB VRAM - best value |
+| **CPU** | AMD Ryzen 7 5800X3D | $299 | Good for AI workloads |
+| **Motherboard** | B550 ATX | $150 | PCIe 4.0 support |
+| **RAM** | 32GB DDR4-3600 | $120 | Minimum for SDXL + system |
+| **Storage** | 2TB NVMe SSD | $150 | Fast model/texture loading |
+| **PSU** | 850W 80+ Gold | $130 | RTX 3090 power needs |
+| **Case** | ATX Mid Tower | $100 | Good airflow essential |
+| **Cooling** | Tower air cooler | $50 | Adequate for 5800X3D |
+| **Misc** | Cables, fans, etc. | $80 | - |
+| **OS** | Windows 11 Pro | $140 | Or Linux (free) |
+| **TOTAL** | - | **$1,918** | Excludes monitor/peripherals |
+
+**With new RTX 4080:** Replace GPU → **$2,419 total**
+
+#### Professional AI Livery Workstation ($4,500-6,500)
+
+| Component | Specification | Price | Notes |
+|-----------|---------------|-------|-------|
+| **GPU** | RTX 4090 | $3,049 | Maximum performance |
+| **CPU** | AMD Ryzen 9 7950X | $549 | 16-core for parallel tasks |
+| **Motherboard** | X670E ATX | $350 | PCIe 5.0, future-proof |
+| **RAM** | 64GB DDR5-6000 | $280 | Extra headroom for large batches |
+| **Storage (primary)** | 2TB NVMe Gen4 | $200 | OS + models |
+| **Storage (secondary)** | 4TB SSD | $280 | Output storage |
+| **PSU** | 1200W 80+ Platinum | $250 | RTX 4090 requires quality PSU |
+| **Case** | Full Tower | $200 | Future dual-GPU expansion |
+| **Cooling (CPU)** | 360mm AIO | $180 | 7950X runs hot |
+| **Cooling (case fans)** | 5× 140mm RGB | $100 | Positive pressure cooling |
+| **UPS** | 1500VA | $200 | Protect against power loss |
+| **OS** | Windows 11 Pro | $140 | - |
+| **TOTAL** | - | **$5,778** | Production-ready |
+
+**Additional Costs:**
+- **Electricity:** ~$50-100/month (assuming 8hr/day usage, $0.12/kWh)
+- **Maintenance:** ~$200/year (thermal paste, cleaning, fans)
+- **Depreciation:** ~20-30% per year for GPU
+
+### 6.4 Cloud GPU Options - Provider Comparison
+
+#### Cloud GPU Pricing Matrix (Per Hour)
+
+| Provider | GPU Type | VRAM | Price/Hour | Spot/Preemptible | Storage Cost | Network Cost |
+|----------|----------|------|------------|------------------|--------------|--------------|
+| **RunPod (Community)** | RTX 4090 | 24GB | $0.69 | $0.44 | $0.10/GB/mo | Free egress |
+| **RunPod (Secure)** | RTX 4090 | 24GB | $1.14 | $0.89 | $0.15/GB/mo | Free egress |
+| **Vast.ai** | RTX 4090 | 24GB | $0.49-0.79 | Market-based | $0.10/GB/mo | Varies |
+| **Lambda Labs** | A100 (40GB) | 40GB | $1.29 | N/A | $0.20/GB/mo | Free egress |
+| **TensorDock** | RTX 4090 | 24GB | $0.59 | $0.39 | $0.08/GB/mo | $0.01/GB |
+| **AWS SageMaker** | A100 (40GB) | 40GB | $6.88 | N/A (reserved) | $0.08/GB/mo | $0.09/GB |
+| **GCP Vertex AI** | A100 (40GB) | 40GB | $11.06 | ~50% discount | $0.04/GB/mo | $0.12/GB |
+| **Azure ML** | A100 (40GB) | 40GB | $3.67 | ~60% discount | $0.05/GB/mo | $0.08/GB |
+| **Thunder Compute** | A100 (80GB) | 80GB | $0.78 | N/A | $0.12/GB/mo | Free egress |
+| **Paperspace** | RTX 4000 | 8GB | $0.51 | N/A | $0.07/GB/mo | Free egress |
+
+**Notes:**
+- Prices as of November 2025 (volatile market)
+- Spot/preemptible instances can be interrupted
+- Storage costs are for persistent volumes
+- Network costs apply when downloading generated textures
+
+#### Cloud Provider Feature Comparison
+
+| Feature | RunPod | Vast.ai | Lambda | AWS/GCP/Azure | Verdict |
+|---------|--------|---------|--------|---------------|---------|
+| **Ease of Setup** | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐ | Lambda easiest |
+| **GPU Availability** | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | AWS always available |
+| **Performance Consistency** | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Hyperscalers win |
+| **Cost (On-Demand)** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ | Vast.ai cheapest |
+| **Reliability** | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | AWS/GCP/Azure best SLA |
+| **Support** | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Enterprise support on hyperscalers |
+| **Custom Images** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | RunPod & AWS flexible |
+| **API Integration** | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Hyperscalers most mature |
+
+### 6.5 Performance Benchmarks
+
+#### Generation Speed Comparison (Single 1024x1024 Livery)
+
+| Configuration | Hardware | SDXL Base | + ControlNet | + IPAdapter | + UV Inpainting | **Total Time** |
+|---------------|----------|-----------|--------------|-------------|-----------------|----------------|
+| **RTX 4090 (local)** | 24GB | 3.5 sec | +1.5 sec | +1.0 sec | +4.0 sec | **10 sec** |
+| **RTX 4080 (local)** | 16GB | 5.0 sec | +2.0 sec | +1.5 sec | +5.5 sec | **14 sec** |
+| **RTX 3090 (local)** | 24GB | 6.5 sec | +2.5 sec | +1.5 sec | +6.0 sec | **16.5 sec** |
+| **RTX 3080 (local)** | 10GB | 8.0 sec | +3.0 sec | +2.0 sec | OOM error | **N/A** |
+| **A100 40GB (cloud)** | 40GB | 3.0 sec | +1.2 sec | +0.8 sec | +3.5 sec | **8.5 sec** |
+| **A100 80GB (cloud)** | 80GB | 2.8 sec | +1.0 sec | +0.7 sec | +3.0 sec | **7.5 sec** |
+
+**Notes:**
+- Times include model loading (amortized over 10 runs)
+- Network latency NOT included for cloud (add 200-500ms per API call)
+- Multi-view generation: Multiply times by number of views (typically 4-6)
+
+#### Throughput: Liveries per Hour
+
+| Configuration | Single Livery | Batch (10 liveries) | Cost per Livery (Cloud) |
+|---------------|---------------|---------------------|-------------------------|
+| **RTX 4090 (local)** | 360 | 420 | $0 (electricity ~$0.05) |
+| **RTX 3090 (local)** | 218 | 260 | $0 (electricity ~$0.04) |
+| **A100 40GB (Lambda)** | 424 | 480 | $1.29 (full hour) |
+| **RTX 4090 (RunPod)** | 360 | 420 | $0.69 (full hour) |
+| **RTX 4090 (Vast.ai)** | 360 | 420 | $0.49-0.79 (varies) |
+
+**Key Insight:** For batch processing, local GPUs become efficient. For sporadic single-livery generation, cloud is cost-effective.
+
+### 6.6 Total Cost of Ownership (TCO) Analysis
+
+#### Scenario 1: Hobbyist (5 liveries/week)
+
+**Usage:** 20 liveries/month × 15 seconds/livery = 5 minutes GPU time/month
+
+| Deployment | Monthly Cost | Annual Cost | 3-Year TCO |
+|------------|--------------|-------------|------------|
+| **Local RTX 3090** | $8 (electricity) | $96 | $2,014 (includes $1,918 build) |
+| **Local RTX 4090** | $10 (electricity) | $120 | $5,898 (includes $5,778 build) |
+| **RunPod RTX 4090** | $0.06 (spot) | $0.72 | $2.16 |
+| **Lambda A100** | $0.11 | $1.32 | $3.96 |
+| **AWS SageMaker** | $0.57 | $6.84 | $20.52 |
+
+**Winner: Cloud (RunPod/Lambda)** - Local doesn't make sense at this low usage.
+
+#### Scenario 2: Small Studio (50 liveries/week)
+
+**Usage:** 200 liveries/month × 15 seconds/livery = 50 minutes GPU time/month
+
+| Deployment | Monthly Cost | Annual Cost | 3-Year TCO |
+|------------|--------------|-------------|------------|
+| **Local RTX 3090** | $15 (electricity) | $180 | $2,098 |
+| **Local RTX 4090** | $20 (electricity) | $240 | $5,998 |
+| **RunPod RTX 4090** | $0.58 | $6.96 | $20.88 |
+| **Lambda A100** | $1.08 | $12.96 | $38.88 |
+| **AWS SageMaker** | $5.73 | $68.76 | $206.28 |
+
+**Winner: Still Cloud** - But local break-even approaching at year 3-4.
+
+#### Scenario 3: Production Service (500 liveries/week)
+
+**Usage:** 2,000 liveries/month × 15 seconds/livery = 8.3 hours GPU time/month
+
+| Deployment | Monthly Cost | Annual Cost | 3-Year TCO |
+|------------|--------------|-------------|------------|
+| **Local RTX 3090** | $50 (electricity) | $600 | $2,518 |
+| **Local RTX 4090** | $65 (electricity) | $780 | $6,558 |
+| **RunPod RTX 4090** | $5.73 | $68.76 | $206.28 |
+| **Lambda A100** | $10.71 | $128.52 | $385.56 |
+| **AWS SageMaker** | $57.30 | $687.60 | $2,062.80 |
+
+**Winner: Local RTX 3090** - Break-even at month 33. Local RTX 4090 breaks even at month 70.
+
+#### Scenario 4: High-Volume Production (5,000 liveries/week)
+
+**Usage:** 20,000 liveries/month × 15 seconds/livery = 83 hours GPU time/month
+
+| Deployment | Monthly Cost | Annual Cost | 3-Year TCO |
+|------------|--------------|-------------|------------|
+| **Local RTX 3090** | $200 (electricity) | $2,400 | $4,318 |
+| **Local RTX 4090** | $250 (electricity) | $3,000 | $8,778 |
+| **RunPod RTX 4090** | $57.27 | $687.24 | $2,061.72 |
+| **Lambda A100** | $107.07 | $1,284.84 | $3,854.52 |
+| **AWS SageMaker** | $573.00 | $6,876.00 | $20,628.00 |
+
+**Winner: Local RTX 3090** - Break-even at month 4. Local RTX 4090 breaks even at month 10.
+
+### 6.7 Break-Even Analysis
+
+#### When Does Local Beat Cloud?
+
+| GPU | Break-Even vs RunPod | Break-Even vs Lambda | Break-Even vs AWS |
+|-----|----------------------|----------------------|-------------------|
+| **RTX 3090 ($1,918 build)** | 33 months @ 8hr/mo | 18 months @ 8hr/mo | 3 months @ 8hr/mo |
+| **RTX 4090 ($5,778 build)** | 70 months @ 8hr/mo | 38 months @ 8hr/mo | 7 months @ 8hr/mo |
+
+**Critical Usage Threshold:**
+- **< 5 hours/month:** Cloud always cheaper
+- **5-20 hours/month:** Cloud cheaper for 1-2 years, then local wins
+- **20-50 hours/month:** Local RTX 3090 breaks even in year 1
+- **> 50 hours/month:** Local wins immediately (< 6 months ROI)
+
+### 6.8 Hybrid Deployment Strategy
+
+#### Best of Both Worlds
+
+For an AI livery designer service, a **hybrid approach** offers optimal cost/performance:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ DEVELOPMENT & TESTING                                   │
+│ → Local RTX 3090 ($1,918)                               │
+│ → Fast iteration, no cloud costs during dev             │
+└─────────────────────────────────────────────────────────┘
+              ↓
+┌─────────────────────────────────────────────────────────┐
+│ MVP LAUNCH (Months 1-6)                                 │
+│ → Cloud (RunPod Spot @ $0.44/hr)                        │
+│ → Scale on demand, no upfront investment                │
+│ → Expected: 100-500 liveries/month = $2-10/mo           │
+└─────────────────────────────────────────────────────────┘
+              ↓
+┌─────────────────────────────────────────────────────────┐
+│ GROWTH PHASE (Months 6-12)                              │
+│ → Hybrid: Local RTX 3090 for base load                  │
+│ → Cloud (RunPod) for burst traffic                      │
+│ → Expected: 1,000-5,000 liveries/month                  │
+│ → Cost: $50 local + $20-50 cloud = $70-100/mo           │
+└─────────────────────────────────────────────────────────┘
+              ↓
+┌─────────────────────────────────────────────────────────┐
+│ PRODUCTION (Year 2+)                                    │
+│ → Primary: 2-3x Local RTX 3090 ($4K-6K investment)      │
+│ → Failover: Cloud (Lambda/RunPod for redundancy)        │
+│ → Expected: 10,000+ liveries/month                      │
+│ → Cost: $400 local + $50 cloud = $450/mo                │
+│ → vs Cloud-only: $2,800/mo                              │
+│ → Savings: $2,350/mo ($28,200/year)                     │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 6.9 Decision Matrix
+
+#### Choose LOCAL if:
+✅ Processing > 50 hours/month consistently
+✅ Predictable workload (not bursty)
+✅ Budget for $2K-6K upfront investment
+✅ In-house technical team for maintenance
+✅ Multi-year commitment to the project
+✅ Data privacy concerns (textures stay on-premises)
+✅ Low-latency requirements (< 100ms)
+
+#### Choose CLOUD if:
+✅ Processing < 20 hours/month
+✅ Highly variable workload (peaks and valleys)
+✅ Limited upfront capital
+✅ Want to avoid hardware management
+✅ MVP/testing phase (uncertain demand)
+✅ Need geographic distribution
+✅ Prefer OpEx over CapEx
+
+#### Choose HYBRID if:
+✅ Processing 20-100 hours/month
+✅ Growing user base (uncertain future scale)
+✅ Want cost optimization + redundancy
+✅ Have technical team + some capital
+✅ Long-term project with scaling potential
+
+### 6.10 Recommended Deployment Plan for AI Livery Designer
+
+Based on the analysis, here's the **recommended phased approach**:
+
+#### Phase 1: POC (Months 1-2)
+- **Deploy on:** Developer's local GPU (RTX 3080/3090) or RunPod ($20-50 budget)
+- **Rationale:** Minimize costs during validation phase
+- **Expected usage:** 50-200 test generations
+- **Cost:** $0-50 total
+
+#### Phase 2: MVP (Months 3-6)
+- **Deploy on:** RunPod Community Spot Instances (RTX 4090 @ $0.44/hr)
+- **Rationale:** Scale on demand without upfront investment
+- **Expected usage:** 500-2,000 liveries/month (5-20 hours GPU time)
+- **Cost:** $2-10/month
+- **Contingency:** Lambda Labs for overflow ($1.29/hr A100)
+
+#### Phase 3: Growth (Months 7-12)
+- **Deploy on:** Dedicated RTX 3090 workstation ($1,918) + RunPod for bursts
+- **Rationale:** Base load cheaper on local, burst traffic on cloud
+- **Expected usage:** 5,000-10,000 liveries/month (50-100 hours GPU time)
+- **Cost:** $200/month local + $50/month cloud = $250/month
+- **Break-even:** Month 10-12 vs cloud-only
+
+#### Phase 4: Production (Year 2+)
+- **Deploy on:** 2x RTX 3090 workstations ($3,836) + cloud failover
+- **Rationale:** Maximum cost efficiency at scale
+- **Expected usage:** 20,000+ liveries/month (200+ hours GPU time)
+- **Cost:** $400/month local + $100/month cloud = $500/month
+- **vs Cloud-only:** $3,000+/month → **Savings: $2,500/month**
+
+**Total Investment Timeline:**
+- POC: $0-50
+- MVP: $50-250 (6 months)
+- Growth: $1,918 + $300 cloud = $2,218
+- Production: +$1,918 (2nd workstation) = $4,136 total capital
+- **3-Year TCO:** $4,136 + $14,400 (opex) = **$18,536**
+- **vs Cloud-only:** ~$60,000-80,000 → **Savings: $40K-60K**
+
+---
+
+## 7. Implementation Roadmap
 
 ### Phase 1: Proof of Concept (6-8 weeks)
 
@@ -541,9 +868,9 @@ Based on research findings from Paint3D, DreamFusion, and texture generation pap
 
 ---
 
-## 7. Challenges & Risks
+## 8. Challenges & Risks
 
-### 7.1 Technical Challenges
+### 8.1 Technical Challenges
 
 #### **Challenge 1: AMS2 File Format Reverse Engineering**
 - **Risk Level:** Medium
@@ -581,7 +908,7 @@ Based on research findings from Paint3D, DreamFusion, and texture generation pap
   - Use GraphSeam for better UV layouts (future)
 - **Backup Plan:** User guidance on manual seam fixes
 
-### 7.2 Legal & Ethical Considerations
+### 8.2 Legal & Ethical Considerations
 
 #### **Intellectual Property**
 - **Issue:** Using real-world team liveries may violate trademarks
@@ -609,7 +936,7 @@ Based on research findings from Paint3D, DreamFusion, and texture generation pap
   - Review IPAdapter and ControlNet licenses
   - Train custom models if necessary for commercial use
 
-### 7.3 User Experience Risks
+### 8.3 User Experience Risks
 
 #### **Risk: User Expectations Too High**
 - **Problem:** Users expect 100% accuracy like a human designer
@@ -631,9 +958,9 @@ Based on research findings from Paint3D, DreamFusion, and texture generation pap
 
 ---
 
-## 8. Case Studies & Precedents
+## 9. Case Studies & Precedents
 
-### 8.1 Ready Player Me - Avatar Outfit Texturing
+### 9.1 Ready Player Me - Avatar Outfit Texturing
 
 **Company:** Ready Player Me (VR/metaverse avatars)
 **Challenge:** Generate outfit textures from user-provided images
@@ -650,7 +977,7 @@ Based on research findings from Paint3D, DreamFusion, and texture generation pap
 - IPAdapter effective for style transfer
 - Production-ready with proper engineering
 
-### 8.2 KIRI Engine - Photogrammetry to Game Assets
+### 9.2 KIRI Engine - Photogrammetry to Game Assets
 
 **Company:** KIRI Engine
 **Use Case:** Convert photogrammetry scans to game-ready PBR textures
@@ -665,7 +992,7 @@ Based on research findings from Paint3D, DreamFusion, and texture generation pap
 - AI can match manual artist quality for certain tasks
 - Users accept AI artifacts if overall quality is high
 
-### 8.3 Assetto Corsa Modding Community
+### 9.3 Assetto Corsa Modding Community
 
 **Community:** 10,000+ active modders
 **Current Pain Point:** Livery creation requires Photoshop expertise
@@ -681,9 +1008,9 @@ Based on research findings from Paint3D, DreamFusion, and texture generation pap
 
 ---
 
-## 9. Recommendations
+## 10. Recommendations
 
-### 9.1 Should This Be Built?
+### 10.1 Should This Be Built?
 
 **YES - Conditionally Recommended**
 
@@ -701,7 +1028,7 @@ Based on research findings from Paint3D, DreamFusion, and texture generation pap
 4. ⚠️ **Legal Clearance:** Verify AMS2 EULA compliance, contact Reiza Studios
 5. ⚠️ **GPU Budget:** Secure cloud GPU resources or on-prem hardware
 
-### 9.2 Recommended Development Path
+### 10.2 Recommended Development Path
 
 #### **STAGE 1: Research POC (2 months, $5-10K)**
 - Budget: $5-10K (GPU compute + 1 developer)
@@ -721,7 +1048,7 @@ Based on research findings from Paint3D, DreamFusion, and texture generation pap
 **Total Investment:** $95-160K for full development
 **Break-even:** ~1,000 paying users at $10/mo (achievable in 6-12 months)
 
-### 9.3 Alternative: Lower-Risk Approach
+### 10.3 Alternative: Lower-Risk Approach
 
 If full AI pipeline is too risky, consider **phased features:**
 
@@ -744,7 +1071,7 @@ If full AI pipeline is too risky, consider **phased features:**
 
 ---
 
-## 10. Conclusion
+## 11. Conclusion
 
 ### Summary
 
