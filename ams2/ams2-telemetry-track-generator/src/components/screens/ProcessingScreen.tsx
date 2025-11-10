@@ -8,6 +8,7 @@ interface ProcessingScreenProps {
 
 export default function ProcessingScreen({ onComplete, onCancel }: ProcessingScreenProps) {
   const [progress, setProgress] = useState(75);
+  const [hasCompleted, setHasCompleted] = useState(false);
   const [logEntries] = useState([
     { level: "INFO", timestamp: "14:32:01", message: "Found 5 valid laps." },
     { level: "INFO", timestamp: "14:32:02", message: "Ingesting telemetry data from silverstone_lap3.csv" },
@@ -25,55 +26,15 @@ export default function ProcessingScreen({ onComplete, onCancel }: ProcessingScr
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (progress >= 100 && !hasCompleted) {
+      setHasCompleted(true);
+      onComplete();
+    }
+  }, [progress, hasCompleted, onComplete]);
+
   return (
     <div className="flex h-screen w-full">
-      {/* SideNavBar */}
-      <aside className="flex w-64 flex-col justify-between border-r border-white/10 bg-background-dark p-4">
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-3">
-            <div
-              className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
-              style={{
-                backgroundImage:
-                  'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBUaZNg7l3dMXy_8sLkbG9l6VMpWYeuTIjTnfVandQuPfP83Hk4bTSQVCUdqqnDV7u2msf8MvXRW9OV1_6J0pqQfXlf6vvaK8VFEsA_q-WVSsGtfNAQ6NfHU2m_x-4AkSwCWtjGu7WOv5mSRrfCu5UicWqy62DApcg7mDua2_rGWxbkT94Q1YaWOi0Ns0ioJkd1-cLmeFTf2sMeOsxLbxoV17tQxagYdFeHzVzdR0iqQptBJegbAdySRPEvwpSM8TVxDUA1-cfBF8c")',
-              }}
-            ></div>
-            <div className="flex flex-col">
-              <h1 className="text-white text-base font-medium leading-normal">SimTelemetry</h1>
-              <p className="text-[#9ac1a0] text-sm font-normal leading-normal">Pro Version</p>
-            </div>
-          </div>
-          <nav className="mt-4 flex flex-col gap-2">
-            <a className="flex items-center gap-3 rounded-lg px-3 py-2 text-white hover:bg-[#1a281c] transition-colors">
-              <span className="material-symbols-outlined">dashboard</span>
-              <p className="text-sm font-medium leading-normal">Dashboard</p>
-            </a>
-            <a className="flex items-center gap-3 rounded-lg px-3 py-2 text-white bg-primary/20">
-              <span className="material-symbols-outlined">radio_button_checked</span>
-              <p className="text-sm font-medium leading-normal">Record</p>
-            </a>
-            <a className="flex items-center gap-3 rounded-lg px-3 py-2 text-white hover:bg-[#1a281c] transition-colors">
-              <span className="material-symbols-outlined">folder</span>
-              <p className="text-sm font-medium leading-normal">Projects</p>
-            </a>
-            <a className="flex items-center gap-3 rounded-lg px-3 py-2 text-white hover:bg-[#1a281c] transition-colors">
-              <span className="material-symbols-outlined">settings</span>
-              <p className="text-sm font-medium leading-normal">Settings</p>
-            </a>
-          </nav>
-        </div>
-        <div className="flex flex-col gap-1">
-          <a className="flex items-center gap-3 rounded-lg px-3 py-2 text-white hover:bg-[#1a281c] transition-colors">
-            <span className="material-symbols-outlined">help</span>
-            <p className="text-sm font-medium leading-normal">Help</p>
-          </a>
-          <a className="flex items-center gap-3 rounded-lg px-3 py-2 text-white hover:bg-[#1a281c] transition-colors">
-            <span className="material-symbols-outlined">logout</span>
-            <p className="text-sm font-medium leading-normal">Logout</p>
-          </a>
-        </div>
-      </aside>
-
       {/* Main Content */}
       <main className="flex flex-1 flex-col">
         <div className="flex h-full w-full p-6 lg:p-8">

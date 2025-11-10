@@ -180,6 +180,31 @@ function formatDistance(distanceMeters: number): string {
   return `${distanceMeters.toFixed(0)} m`;
 }
 
+// AMS2 terrain codes that represent rumble strips/curbs (TerrainMaterials enum).
+const CURB_SURFACE_CODES = new Set<number>([10, 25, 40, 41]);
+
+function CurbDetectionIndicator({ active }: { active: boolean }) {
+  const stateLabel = active ? "Active" : "Idle";
+  const boxClasses = active
+    ? "border-yellow-300/70 bg-yellow-400/10 text-yellow-100"
+    : "border-white/10 text-white/50";
+  const dotClasses = active
+    ? "bg-yellow-300 shadow-[0_0_6px_rgba(250,204,21,0.45)]"
+    : "bg-white/40";
+
+  return (
+    <div
+      className={`flex min-w-[128px] flex-col items-center justify-center gap-1 border-l border-green-border/60 px-4 py-3 transition-colors duration-150 ${boxClasses}`}
+      aria-live="polite"
+      aria-label={`Curb detection ${stateLabel}`}
+    >
+      <div className={`h-2 w-2 rounded-full transition-all duration-150 ${dotClasses}`}></div>
+      <span className="text-[10px] uppercase tracking-[0.2em] text-white/60">Curb Detection</span>
+      <span className="text-xs font-semibold leading-none">{stateLabel}</span>
+    </div>
+  );
+}
+
 export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
   const [isConnected, setIsConnected] = useState(false);
   const [lapProgress, setLapProgress] = useState(0);
@@ -193,6 +218,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
     rpm: 0,
     maxRpm: 0,
   });
+  const [isCurbDetected, setIsCurbDetected] = useState(false);
 
   const [displayedTelemetryPoints, setDisplayedTelemetryPoints] = useState<VisualizerTelemetryPoint[]>([]);
   const [trackInfo, setTrackInfo] = useState({ location: "", variation: "" });
@@ -242,6 +268,10 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
   const overlayTelemetryRef = useRef<VisualizerTelemetryPoint[] | null>(null);
   const overlayRunTypeRef = useRef<RunType | null>(null);
   const trackInfoRef = useRef(trackInfo);
+  const curbDetectionPrevRef = useRef(false);
+  const [showAssignmentWarning, setShowAssignmentWarning] = useState(false);
+
+  const allRunTypesAssigned = RUN_TYPES.every((runType) => runTypeAssignments[runType] !== null);
 
   const clearRunTypeAssignment = (
     runType: RunType,
@@ -904,6 +934,9 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
           rpm: Math.round(data.rpm),
           maxRpm: Math.round(data.max_rpm),
         });
+
+  const curbActive = (data.tyre_terrain?.some((terrainCode) => CURB_SURFACE_CODES.has(terrainCode))) ?? false;
+        setIsCurbDetected(curbActive);
       }
     };
 
@@ -913,6 +946,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
         connectionLostWarned = true;
         setIsConnected(false);
         updateRecordingIndicator("idle", "Waiting for telemetry");
+        setIsCurbDetected(false);
       }
     }, 2000);
 
@@ -938,6 +972,18 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
       service.stop();
     };
   }, []);
+
+  useEffect(() => {
+    if (curbDetectionPrevRef.current !== isCurbDetected) {
+      curbDetectionPrevRef.current = isCurbDetected;
+      const terrainCodes = Array.from(CURB_SURFACE_CODES).join(", ");
+      if (isCurbDetected) {
+        debugConsole.success(`Curb detection active (terrain codes: [${terrainCodes}]).`);
+      } else {
+        debugConsole.info("Curb detection cleared.");
+      }
+    }
+  }, [isCurbDetected]);
 
   const handleClearLaps = () => {
     if (lapsRef.current.length === 0) {
@@ -966,6 +1012,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
     setLapProgress(0);
     setLaps([]);
     setCurrentLapMetrics({ timeSeconds: 0, distanceMeters: 0 });
+  setIsCurbDetected(false);
     updateRecordingIndicator("idle", "Waiting for telemetry");
     debugConsole.warn("Lap history cleared.");
 
@@ -1224,8 +1271,13 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
                     className="w-full h-full"
                   />
                 </div>
-                <div className="rounded-lg border border-green-border/80 bg-green-bg/40">
-                  <ProgressBar label="Lap Progress" value={lapProgress} compact />
+                <div className="rounded-lg border border-green-border/80 bg-green-bg/40 overflow-hidden">
+                  <div className="flex items-stretch">
+                    <div className="flex-1">
+                      <ProgressBar label="Lap Progress" value={lapProgress} compact />
+                    </div>
+                    <CurbDetectionIndicator active={isCurbDetected} />
+                  </div>
                 </div>
                 <div className="flex flex-col gap-3 rounded-lg border border-green-border/80 bg-green-bg/40 p-3">
                   <div className="flex flex-wrap gap-3">
@@ -1510,10 +1562,27 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
             </div>
 
             {/* Stop Button */}
-            <div className="flex justify-end p-4">
+            <div className="flex items-center justify-end gap-4 p-4">
+              {showAssignmentWarning && !allRunTypesAssigned && (
+                <div className="mr-auto rounded border border-yellow-500/40 bg-yellow-900/20 px-3 py-2 text-xs text-yellow-200/90">
+                  Assign Outside, Inside, and Racing laps before exporting.
+                </div>
+              )}
               <button
-                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-red-600 hover:bg-red-700 text-white text-base font-bold leading-normal tracking-[0.015em] gap-2"
-                onClick={onStopRecording}
+                type="button"
+                className={`flex min-w-[84px] max-w-[480px] items-center justify-center overflow-hidden rounded-lg h-12 px-6 text-base font-bold leading-normal tracking-[0.015em] gap-2 transition-colors ${
+                  allRunTypesAssigned
+                    ? "cursor-pointer bg-red-600 hover:bg-red-700 text-white"
+                    : "cursor-not-allowed bg-red-600/30 text-white/40"
+                }`}
+                disabled={!allRunTypesAssigned}
+                onClick={() => {
+                  if (!allRunTypesAssigned) {
+                    setShowAssignmentWarning(true);
+                    return;
+                  }
+                  onStopRecording();
+                }}
               >
                 <span className="material-symbols-outlined">stop_circle</span>
                 <span className="truncate">Stop & Save Recording</span>

@@ -1,23 +1,27 @@
-# POC 05 Progress Notes (2025-11-10)
+# POC 05 Progress Notes (2025-11-11)
 
-## Completed Today
+## Completed
 - Added configurable loss-weight CLI flags (`--w-cycle`, `--w-uv`, `--w-direct`, `--w-cross`) with optional end-epoch values to interpolate weights over training.
 - Introduced cosine LR scheduler support (`--lr-scheduler cosine`, `--lr-scheduler-tmax`), plus epoch-weight interpolation helper.
 - Enabled named checkpoints and periodic snapshots (`--checkpoint-name`, `--checkpoint-every`).
-- Verified script integrity with a 1-epoch smoke test after the changes.
+- Ran 1-epoch smoke test to confirm the refactor.
+- Re-ran baseline training (40 epochs, default weights) producing `poc_results/poc_05_best_model_orig.pt` with Val metrics: `total=0.285`, `SSIM(UV)=0.234`, `SSIM(View)=0.559`, `LPIPS(View)=0.413`.
+- Captured periodic checkpoints at epochs 10/20/30/40 for regression tracking.
+- Patched visualization loader (`torch.load(..., weights_only=False)`) and regenerated `poc_results/poc_05_visualizations/sample_000-011.png` from the new baseline checkpoint.
 
 ## Outstanding Tasks
-1. Re-run the 40-epoch baseline using original weights:
-   - Command suggestion: `./venv/Scripts/python.exe poc_05_training_multiview.py --dataset poc_results/augmented_dataset_ginetta --epochs 40 --batch-size 4 --image-size 256 --val-split 0.1 --checkpoint-name poc_05_best_model_orig.pt --checkpoint-every 10`
-   - Goal: restore the strong UV checkpoint (target SSIM(UV) ≈ 0.257) without overwriting other runs.
-2. Explore training schedules to push SSIM(UV) ≥ 0.30:
-   - Sweep UV-heavy → balanced weight curves using the new `--w-*-end` flags (e.g., start UV-heavy, fade toward original mix).
-   - Optional: pair with cosine LR (`--lr-scheduler cosine`) and capture runs with descriptive checkpoint names.
-3. After promising runs:
-   - Regenerate visual grids via `poc_05_visualize_predictions.py` for each checkpoint.
-   - Compare metrics/visuals and archive notable checkpoints (consider separate folder).
+1. Push beyond SSIM(UV) ≈ 0.234:
+   - Experiment with UV-heavy → balanced weight curves using `--w-*-end`.
+   - Optionally combine with cosine LR (`--lr-scheduler cosine`) and document outcomes.
+   - Save each run with descriptive `--checkpoint-name` to avoid overwrites.
+2. Qualitative analysis:
+   - Review latest grids for artifacts (mask bleed, panel seams).
+   - Compare against earlier checkpoints to confirm any regression vs. prior 0.257 SSIM(UV) run.
+3. Housekeeping:
+   - Archive `poc_05_best_model_orig_epoch*.pt` snapshots if useful; otherwise prune to save disk.
+   - Consider adding script to batch-compare metrics across checkpoints.
 
 ## Notes
-- Latest checkpoint from the 1-epoch smoke test now lives at `poc_results/poc_05_best_model.pt` (metrics: SSIM(UV) ≈ 0.042). Re-run baseline ASAP to replace with a meaningful model.
-- Periodic checkpoints land alongside the named best model (`poc_results/`). Use the stem + `_epochXXX.pt` convention for clarity.
-- Remember to keep CUDA context warm and ensure LPIPS weights are cached before long runs to avoid first-epoch hiccups.
+- Baseline SSIM(UV) dipped slightly vs. earlier UV-visibility run (0.234 vs. 0.257); investigate whether weight tweaks or longer training can recover the gap.
+- Visualization script now requires trusted checkpoints; keep use of `weights_only=False` limited to internal files.
+- LPIPS still emits pretrained warnings; benign but note for future dependency updates.

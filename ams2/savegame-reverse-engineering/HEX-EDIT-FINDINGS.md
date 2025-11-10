@@ -273,4 +273,31 @@ strings "C:\Users\tomat\OneDrive\Documents\Automobilista 2\savegame\default.sav"
 
 ---
 
-**Status:** Awaiting clean test data to determine if hex editing is viable.
+## November 11, 2025 Update – Championship Save Encryption Research
+
+### Observations from Latest Tests
+- `default.championshipeditor.v1.00.sav` consistently shows ~7.98 bits/byte entropy (measured with the existing entropy helper), which aligns with encrypted data.
+- All compression probes (`gzip`, `zlib`, `brotli`, and raw `deflate`) fail with "unknown compression" errors, pointing away from standard compression formats.
+- Byte diffs between multiple championship snapshots are identical despite in-game tweaks, suggesting the game buffers edits elsewhere and only writes once validation succeeds.
+- ASCII scans return only short, high-entropy fragments; no human-readable strings surfaced.
+
+### Recon on Existing Tooling (PCarsTools)
+- `BPakFileEncryption` holds three 32-slot key tables (PC1, PC2+, Test Drive FRL) that are XOR-scrambled with `[0xAC,0xC7,0x91]` before being fed into RC4 or TwoFish routines.
+- `BConfig` decrypts `Languages/languages.bml` via TwoFish to map filenames to key indices and brute-forces the remaining slots by testing TOC headers.
+- Extended TOC metadata relies on an RC5/RC6-style `ScribeDecrypt` round function, with a fallback to RC4 slot 0 for legacy titles.
+- Takeaway: Slightly Mad stores key material in the executable, lightly obfuscated, and recovers it at runtime—likely the same pattern for profile saves.
+
+### Implications for Championship Editing
+- High entropy plus failed compression means naïve hex edits will corrupt the file; we must decrypt or intercept the plaintext.
+- Expect per-chunk checksums or custom ciphers invoked just before disk writes; key schedules should be discoverable in RAM during serialization.
+- Existing tooling targets archives, but the decryption workflow offers a template for building a save decryptor once the relevant routines are found.
+
+### Next Actions
+1. Capture fresh championship snapshots where only one field changes (e.g., rename a championship) to confirm whether any plaintext ever leaks.
+2. Statical reconnaissance: scan the AMS2 executable for `championshipeditor` strings, XOR key tables, or TwoFish/RC4 implementations.
+3. Dynamic tracing: break on `CreateFileW`/`WriteFile` while monitoring buffers for plaintext prior to encryption; log calls around suspected crypto loops.
+4. If a custom cipher is identified, mirror the `BPakFileEncryption` pattern—extract the key schedule, implement decrypt/encrypt helpers, and validate with a round-trip edit.
+
+---
+
+**Status:** Championship save likely encrypted; pursuing runtime capture of plaintext buffers.

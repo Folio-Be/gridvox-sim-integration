@@ -61,7 +61,7 @@ def build_grid(images: List[Image.Image], labels: List[str], size: int) -> Image
 def main() -> None:
     args = parse_args()
 
-    checkpoint = torch.load(args.checkpoint, map_location=args.device)
+    checkpoint = torch.load(args.checkpoint, map_location=args.device, weights_only=False)
 
     model_uv = UVPredictor().to(args.device)
     model_renderer = Renderer().to(args.device)

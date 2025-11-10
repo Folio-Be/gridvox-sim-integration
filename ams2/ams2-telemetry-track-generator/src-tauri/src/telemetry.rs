@@ -221,6 +221,9 @@ pub struct TelemetryData {
 
     pub sequence_number: u32,
     pub timestamp: u64,
+
+    pub tyre_flags: [u32; 4],
+    pub tyre_terrain: [u32; 4],
 }
 
 #[cfg(target_os = "windows")]
@@ -344,6 +347,8 @@ impl SharedMemoryReader {
                     .duration_since(std::time::UNIX_EPOCH)
                     .unwrap()
                     .as_millis() as u64,
+                tyre_flags: data.tyre_flags,
+                tyre_terrain: data.terrain,
             })
         }
     }
