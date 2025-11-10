@@ -158,7 +158,18 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
           lapDistance: player.current_lap_distance,
         };
 
-        setCurrentLapTelemetry(prev => [...prev, telemetryPoint]);
+        // Detect race restart (lap number decreased)
+        if (player.current_lap < lastLap) {
+          debugConsole.info(`🔄 Race restarted. Clearing telemetry buffer.`);
+          setCurrentLapTelemetry([]);
+          setCurrentRunType(null);
+          lastLap = 0;
+        }
+
+        // Only collect telemetry if we have an active run type (after crossing start line)
+        if (currentRunType !== null) {
+          setCurrentLapTelemetry(prev => [...prev, telemetryPoint]);
+        }
 
         // Detect lap completion (lap number increased)
         if (player.current_lap > lastLap && lastLap > 0 && currentRunType !== null) {
