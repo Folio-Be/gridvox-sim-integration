@@ -7,12 +7,12 @@ import ProcessingScreen from "./components/screens/ProcessingScreen";
 import PreviewScreen from "./components/screens/PreviewScreen";
 import DebugConsole from "./components/ui/DebugConsole";
 import { ProcessingResult, StopRecordingPayload } from "./lib/processing-types";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 
 type Screen = "welcome" | "setup" | "instructions" | "recording" | "processing" | "preview" | "export";
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<Screen>("recording");
+  const [currentScreen, setCurrentScreen] = useState<Screen>("processing");
   const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);
   const [processingResult, setProcessingResult] = useState<ProcessingResult | null>(null);
 
@@ -31,7 +31,11 @@ function App() {
   };
 
   const handleStopRecording = useCallback((payload: StopRecordingPayload | null) => {
-    setProcessingResult(payload ? { alignment: null, request: payload } : { alignment: null, request: null });
+    setProcessingResult(
+      payload
+        ? { alignment: null, request: payload, output: null, error: null }
+        : { alignment: null, request: null, output: null, error: null }
+    );
     setCurrentScreen("processing");
   }, []);
 
@@ -44,10 +48,6 @@ function App() {
     setProcessingResult(null);
     setCurrentScreen("welcome");
   }, []);
-
-  const previewProps = useMemo(() => {
-    return processingResult ?? { alignment: null, request: null };
-  }, [processingResult]);
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -76,11 +76,9 @@ function App() {
       case "preview":
         return (
           <PreviewScreen
-            alignment={previewProps.alignment}
-            exportedFiles={previewProps.request?.exportedFiles ?? []}
-            runAssignments={previewProps.request?.assignments ?? null}
-            onExport={() => {
-              console.log("Export track");
+            result={processingResult}
+            onExport={(summary) => {
+              console.log("Export track", summary);
               // TODO: Implement export functionality
             }}
             onReprocess={() => setCurrentScreen("processing")}

@@ -23,6 +23,8 @@ fn stop_native_recording() -> Result<String, String> {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_fs::init())
         .invoke_handler(tauri::generate_handler![
             greet,
             start_native_recording,
@@ -30,7 +32,7 @@ pub fn run() {
             telemetry::start_telemetry,
             telemetry::stop_telemetry,
             telemetry::is_telemetry_running,
-            processing::start_processing,
+            processing::generate_track,
             processing::cancel_processing,
             processing::processing_status,
             run_type_storage::load_run_type_assignments,

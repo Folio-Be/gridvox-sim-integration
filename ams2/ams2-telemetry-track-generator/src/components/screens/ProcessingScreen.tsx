@@ -1,10 +1,19 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { open } from "@tauri-apps/plugin-dialog";
+import { readTextFile } from "@tauri-apps/plugin-fs";
 import ProcessingPhaseItem from "../ui/ProcessingPhaseItem";
 import {
   getProcessingService,
   ProcessingLogEvent,
   ProcessingProgressEvent,
+  ProcessingCompleteEvent,
 } from "../../lib/processing-service";
+import { ProcessingResult, StopRecordingPayload } from "../../lib/processing-types";
+import {
+  RunTypeAssignmentPayload,
+  RunTypeName,
+  StoredTelemetryPoint,
+} from "../../lib/run-type-storage";
 
 type PhaseStatus = {
   title: string;
@@ -50,12 +59,14 @@ function formatLogTimestamp(timestamp: string): string {
 }
 
 interface ProcessingScreenProps {
-  onComplete: () => void;
+  initialPayload: StopRecordingPayload | null;
+  onComplete: (result: ProcessingResult) => void;
   onCancel: () => void;
 }
 
-export default function ProcessingScreen({ onComplete, onCancel }: ProcessingScreenProps) {
+export default function ProcessingScreen({ initialPayload, onComplete, onCancel }: ProcessingScreenProps) {
   const processingService = useMemo(() => getProcessingService(), []);
+  const [activePayload, setActivePayload] = useState<StopRecordingPayload | null>(initialPayload);
   const [phases, setPhases] = useState<PhaseStatus[]>(() =>
     PROCESSING_PHASES.map((phase, index) => ({
       ...phase,
@@ -70,7 +81,19 @@ export default function ProcessingScreen({ onComplete, onCancel }: ProcessingScr
   const [isCancelling, setIsCancelling] = useState(false);
   const [isRestarting, setIsRestarting] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
+  const [isLoadingManualPayload, setIsLoadingManualPayload] = useState(false);
+  const [manualLoadError, setManualLoadError] = useState<string | null>(null);
   const logListRef = useRef<HTMLDivElement | null>(null);
+
+  const payloadRef = useRef<StopRecordingPayload | null>(initialPayload);
+
+  useEffect(() => {
+    setActivePayload(initialPayload);
+  }, [initialPayload]);
+
+  useEffect(() => {
+    payloadRef.current = activePayload;
+  }, [activePayload]);
 
   const resetPhases = useCallback(() => {
     setPhases(
@@ -90,14 +113,144 @@ export default function ProcessingScreen({ onComplete, onCancel }: ProcessingScr
     setLogEntries([]);
   }, [resetPhases]);
 
-  const beginProcessing = useCallback(async () => {
+  const beginProcessing = useCallback(async (payloadOverride?: StopRecordingPayload | null) => {
     resetRun();
+    const payload = payloadOverride ?? payloadRef.current;
+    if (!payload) {
+      setIsRunning(false);
+      setProcessingError("No telemetry session is loaded yet. Record runs before starting processing.");
+      return;
+    }
     try {
-      await processingService.start();
+      await processingService.start({
+        request: payload,
+      });
     } catch (error) {
       setProcessingError(String(error));
     }
   }, [processingService, resetRun]);
+
+  const loadTelemetryExports = useCallback(
+    async (filePaths: string[]): Promise<StopRecordingPayload> => {
+      type ExportFilePayload = {
+        track_key: string;
+        track: {
+          location: string;
+          variation: string;
+        };
+        run_type: string;
+        exported_at: string;
+        lap: {
+          id: number;
+          number: number;
+          validity: string;
+          time_seconds?: number;
+          distance_meters?: number;
+          assigned_at: number;
+        };
+        telemetry: StoredTelemetryPoint[];
+      };
+
+      const acceptableRunTypes: RunTypeName[] = ["outside", "inside", "racing"];
+      const assignmentMap: Partial<Record<RunTypeName, { assignment: RunTypeAssignmentPayload; filePath: string }>> = {};
+
+      let trackKey: string | null = null;
+      let trackLocation: string | null = null;
+      let trackVariation: string | undefined;
+
+      for (const filePath of filePaths) {
+        const raw = await readTextFile(filePath);
+        const parsed = JSON.parse(raw) as ExportFilePayload;
+        const runType = parsed.run_type as RunTypeName;
+
+        if (!acceptableRunTypes.includes(runType)) {
+          continue;
+        }
+
+        const assignment: RunTypeAssignmentPayload = {
+          lapId: parsed.lap.id,
+          lapNumber: parsed.lap.number,
+          assignedAt: parsed.lap.assigned_at,
+          validity: parsed.lap.validity as RunTypeAssignmentPayload["validity"],
+          timeSeconds: parsed.lap.time_seconds,
+          distanceMeters: parsed.lap.distance_meters,
+          telemetryPoints: parsed.telemetry as StoredTelemetryPoint[],
+        };
+
+        assignmentMap[runType] = {
+          assignment,
+          filePath,
+        };
+
+        trackKey = trackKey ?? parsed.track_key;
+        trackLocation = trackLocation ?? parsed.track.location;
+        trackVariation = trackVariation ?? (parsed.track.variation || undefined);
+      }
+
+      const missingRunTypes = acceptableRunTypes.filter((type) => !assignmentMap[type]);
+      if (missingRunTypes.length > 0) {
+        throw new Error(
+          `Missing telemetry exports for: ${missingRunTypes
+            .map((type) => type.charAt(0).toUpperCase() + type.slice(1))
+            .join(", ")}.`
+        );
+      }
+
+      if (!trackKey || !trackLocation) {
+        throw new Error("Telemetry exports are missing track metadata.");
+      }
+
+      return {
+        trackKey,
+        trackLocation,
+        trackVariation,
+        assignments: {
+          outside: assignmentMap.outside!.assignment,
+          inside: assignmentMap.inside!.assignment,
+          racing: assignmentMap.racing!.assignment,
+        },
+        exportedFiles: acceptableRunTypes.map((runType) => ({
+          runType,
+          filePath: assignmentMap[runType]!.filePath,
+        })),
+      };
+    },
+    []
+  );
+
+  const handleLoadManualPayload = useCallback(async () => {
+    setManualLoadError(null);
+    try {
+      const selection = await open({
+        multiple: true,
+        filters: [{ name: "Telemetry Exports", extensions: ["json"] }],
+      });
+
+      const files = Array.isArray(selection)
+        ? selection
+        : typeof selection === "string"
+          ? [selection]
+          : [];
+
+      if (files.length === 0) {
+        return;
+      }
+
+      setIsLoadingManualPayload(true);
+      const payload = await loadTelemetryExports(files);
+      setActivePayload(payload);
+      payloadRef.current = payload;
+      await beginProcessing(payload);
+    } catch (error) {
+      if (error instanceof Error) {
+        setManualLoadError(error.message);
+      } else if (error !== null) {
+        setManualLoadError(String(error));
+      }
+    } finally {
+      setIsLoadingManualPayload(false);
+    }
+  }, [beginProcessing, loadTelemetryExports]);
 
   useEffect(() => {
     const handleProgress = (event: ProcessingProgressEvent) => {
@@ -130,14 +283,20 @@ export default function ProcessingScreen({ onComplete, onCancel }: ProcessingScr
       setIsCancelling(false);
     };
 
-    const handleComplete = () => {
+    const handleComplete = (event: ProcessingCompleteEvent) => {
       setIsRunning(false);
       setIsCancelling(false);
       setOverallProgress(100);
       setEtaSeconds(0);
       setPhases((prev) => prev.map((phase) => ({ ...phase, status: "completed", progress: 100 })));
       setProcessingError(null);
-      onComplete();
+      const resultPayload: ProcessingResult = {
+        alignment: null,
+        request: payloadRef.current,
+        output: event.result ?? null,
+        error: null,
+      };
+      onComplete(resultPayload);
     };
 
     const handleError = (event: { message: string }) => {
@@ -252,6 +411,27 @@ export default function ProcessingScreen({ onComplete, onCancel }: ProcessingScr
               </p>
               <p className="text-[#9ac1a0] text-sm font-normal leading-normal">{headerSubtitle}</p>
             </header>
+
+            {!activePayload && (
+              <div className="rounded-lg border border-dashed border-white/20 bg-[#1a281c]/60 p-4 text-sm text-[#9ac1a0]">
+                <p className="font-medium text-white">No telemetry exports detected.</p>
+                <p className="mt-1 leading-relaxed">
+                  Select the three exported JSON files (outside, inside, racing) to process an existing recording without
+                  rerunning the capture flow.
+                </p>
+                <div className="mt-3 flex flex-wrap items-center gap-3">
+                  <button
+                    className="rounded-lg border border-white/20 bg-transparent px-4 py-2 font-semibold text-white transition-colors hover:border-white/40 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60"
+                    onClick={handleLoadManualPayload}
+                    type="button"
+                    disabled={isLoadingManualPayload}
+                  >
+                    {isLoadingManualPayload ? "Loading exports..." : "Select telemetry exports"}
+                  </button>
+                  {manualLoadError && <span className="text-xs text-[#ff8a80]">{manualLoadError}</span>}
+                </div>
+              </div>
+            )}
 
             {processingError && (
               <div className="rounded-lg border border-[#F44336]/40 bg-[#2b1a1a] p-4 text-sm text-[#ffcdd2]">

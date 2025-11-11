@@ -1,58 +1,45 @@
 use once_cell::sync::Lazy;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
+use std::collections::HashMap;
+use std::env;
+use std::fs;
+use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 use tauri::async_runtime::{self, JoinHandle};
-use tauri::{AppHandle, Emitter};
-use tokio::time::sleep;
+use tauri::{AppHandle, Emitter, Manager};
+use tokio::io::{AsyncBufReadExt, BufReader};
+use tokio::process::{Child, Command};
+use tokio::sync::Mutex as AsyncMutex;
+use tokio::time::{sleep, Duration};
 
-const PROGRESS_SLEEP_MS: u64 = 450;
-
-#[derive(Clone, Copy)]
-struct PhaseStep {
-    level: &'static str,
-    message: &'static str,
-}
-
-#[derive(Clone, Copy)]
-struct Phase {
-    name: &'static str,
-    weight: u32,
-    steps: &'static [PhaseStep],
-}
-
-const PHASE_1_STEPS: &[PhaseStep] = &[
-    PhaseStep { level: "INFO", message: "Loading telemetry capture into workspace" },
-    PhaseStep { level: "INFO", message: "Parsing lap boundaries and validating coverage" },
-    PhaseStep { level: "INFO", message: "Normalizing telemetry signals" },
-    PhaseStep { level: "INFO", message: "Data ingestion complete" },
-];
-
-const PHASE_2_STEPS: &[PhaseStep] = &[
-    PhaseStep { level: "INFO", message: "Generating 3D point cloud" },
-    PhaseStep { level: "INFO", message: "Aligning GPS coordinates" },
-    PhaseStep { level: "WARN", message: "Smoothing G-force spikes" },
-    PhaseStep { level: "INFO", message: "Interpolating missing frames" },
-    PhaseStep { level: "INFO", message: "Point cloud normalization complete" },
-];
-
-const PHASE_3_STEPS: &[PhaseStep] = &[
-    PhaseStep { level: "INFO", message: "Meshing track surface" },
-    PhaseStep { level: "INFO", message: "Projecting rumble strips" },
-    PhaseStep { level: "INFO", message: "Baking visual overlays" },
-    PhaseStep { level: "INFO", message: "Track model finalized" },
-];
-
-const PHASES: &[Phase] = &[
-    Phase { name: "Phase 1: Data Ingestion", weight: 35, steps: PHASE_1_STEPS },
-    Phase { name: "Phase 2: Point Cloud Generation", weight: 45, steps: PHASE_2_STEPS },
-    Phase { name: "Phase 3: Model Finalization", weight: 20, steps: PHASE_3_STEPS },
-];
-
-#[derive(Clone, Copy, Default, serde::Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct StartProcessingOptions {
-    pub simulate_failure: Option<bool>,
+pub struct StartProcessingPayload {
+    pub request: Option<TrackGenerationRequest>,
+    #[serde(default)]
+    pub simulate_failure: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TrackGenerationRequest {
+    pub track_key: String,
+    pub track_location: String,
+    #[serde(default)]
+    pub track_variation: Option<String>,
+    #[serde(default)]
+    pub exported_files: Vec<ExportedRunFile>,
+    #[serde(default)]
+    pub assignments: Option<Value>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ExportedRunFile {
+    pub run_type: String,
+    pub file_path: String,
 }
 
 #[derive(Clone, Serialize)]
@@ -61,7 +48,7 @@ struct ProcessingProgressPayload {
     phase_progress: u8,
     phase_index: usize,
     total_phases: usize,
-    phase_name: &'static str,
+    phase_name: String,
     message: String,
     eta_seconds: u64,
 }
@@ -74,9 +61,22 @@ struct ProcessingLogPayload {
 }
 
 #[derive(Clone, Serialize)]
+struct ProcessingSuccessPayload {
+    #[serde(rename = "glbPath")]
+    glb_path: String,
+    #[serde(rename = "metadataPath")]
+    metadata_path: String,
+    #[serde(rename = "outputDir")]
+    output_dir: String,
+    track: ScriptTrackSummary,
+    alignment: ScriptAlignmentSummary,
+}
+
+#[derive(Clone, Serialize)]
 struct ProcessingCompletePayload {
     success: bool,
     message: Option<String>,
+    result: Option<ProcessingSuccessPayload>,
 }
 
 #[derive(Clone, Serialize)]
@@ -86,6 +86,7 @@ struct ProcessingErrorPayload {
 
 struct ProcessingTask {
     cancel_flag: Arc<AtomicBool>,
+    child: Arc<AsyncMutex<Option<Child>>>,
     handle: JoinHandle<()>,
 }
 
@@ -95,10 +96,12 @@ struct ProcessingManager {
 
 impl ProcessingManager {
     const fn new() -> Self {
-        Self { task: Mutex::new(None) }
+        Self {
+            task: Mutex::new(None),
+        }
     }
 
-    fn start(&self, app_handle: AppHandle, options: StartProcessingOptions) -> Result<(), String> {
+    fn start(&self, app_handle: AppHandle, payload: StartProcessingPayload) -> Result<(), String> {
         let mut guard = self
             .task
             .lock()
@@ -108,20 +111,34 @@ impl ProcessingManager {
             return Err("Processing is already running".into());
         }
 
+        let request = payload
+            .request
+            .ok_or_else(|| "Processing payload is missing run data.".to_string())?;
+
         let cancel_flag = Arc::new(AtomicBool::new(false));
         let cancel_clone = cancel_flag.clone();
-        let simulate_failure = options.simulate_failure.unwrap_or(false);
+        let child_ref = Arc::new(AsyncMutex::new(None));
+        let child_clone = child_ref.clone();
+        let simulate_failure = payload.simulate_failure;
 
         let handle = async_runtime::spawn(async move {
-            let outcome = processing_worker(app_handle.clone(), cancel_clone, simulate_failure).await;
+            let outcome = processing_worker(
+                app_handle.clone(),
+                cancel_clone,
+                child_clone,
+                request,
+                simulate_failure,
+            )
+            .await;
 
             match outcome {
-                ProcessingOutcome::Completed => {
+                ProcessingOutcome::Completed(result) => {
                     let _ = app_handle.emit(
                         "processing-complete",
                         ProcessingCompletePayload {
                             success: true,
                             message: Some("Track processing finished successfully.".into()),
+                            result: Some(result),
                         },
                     );
                 }
@@ -139,7 +156,11 @@ impl ProcessingManager {
             PROCESSING_MANAGER.finish();
         });
 
-        *guard = Some(ProcessingTask { cancel_flag, handle });
+        *guard = Some(ProcessingTask {
+            cancel_flag,
+            child: child_ref,
+            handle,
+        });
         Ok(())
     }
 
@@ -151,6 +172,13 @@ impl ProcessingManager {
 
         if let Some(task) = guard.as_ref() {
             task.cancel_flag.store(true, Ordering::SeqCst);
+            let child = task.child.clone();
+            async_runtime::spawn(async move {
+                let mut guard = child.lock().await;
+                if let Some(mut child_proc) = guard.take() {
+                    let _ = child_proc.kill().await;
+                }
+            });
             Ok(())
         } else {
             Err("No processing run is active".into())
@@ -174,9 +202,70 @@ impl ProcessingManager {
 static PROCESSING_MANAGER: Lazy<ProcessingManager> = Lazy::new(ProcessingManager::new);
 
 enum ProcessingOutcome {
-    Completed,
+    Completed(ProcessingSuccessPayload),
     Cancelled,
     Failed(String),
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct ScriptProgressEvent {
+    phase: String,
+    phase_index: usize,
+    total_phases: usize,
+    percent: f64,
+    message: String,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct ScriptLogEvent {
+    level: Option<String>,
+    message: String,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct ScriptTrackSummary {
+    key: String,
+    location: String,
+    #[serde(default)]
+    variation: Option<String>,
+    length: f64,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct ScriptAlignmentSummary {
+    alignment_score: f64,
+    max_start_position_delta: f64,
+    resample_count: u32,
+    confidence: f64,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct ScriptResultEvent {
+    glb_path: String,
+    metadata_path: String,
+    output_dir: String,
+    track: ScriptTrackSummary,
+    alignment: ScriptAlignmentSummary,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct ScriptErrorEvent {
+    message: String,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(tag = "type", rename_all = "lowercase")]
+enum ScriptEvent {
+    Progress(ScriptProgressEvent),
+    Log(ScriptLogEvent),
+    Result(ScriptResultEvent),
+    Error(ScriptErrorEvent),
 }
 
 fn current_timestamp() -> String {
@@ -194,85 +283,260 @@ fn emit_log(app_handle: &AppHandle, level: &str, message: &str) {
     );
 }
 
+fn emit_progress(app_handle: &AppHandle, progress: ProcessingProgressPayload) {
+    let _ = app_handle.emit("processing-progress", progress);
+}
+
+fn map_run_files(request: &TrackGenerationRequest) -> Result<HashMap<String, String>, String> {
+    let mut mapping = HashMap::new();
+    for file in &request.exported_files {
+        mapping.insert(file.run_type.to_lowercase(), file.file_path.clone());
+    }
+
+    for run in ["outside", "inside", "racing"] {
+        if !mapping.contains_key(run) {
+            return Err(format!(
+                "Missing {} run export. Re-run recording workflow.",
+                run
+            ));
+        }
+    }
+
+    Ok(mapping)
+}
+
+fn resolve_project_root() -> Result<PathBuf, String> {
+    env::current_dir().map_err(|err| format!("Unable to determine project root: {err}"))
+}
+
+fn resolve_output_dir(app: &AppHandle, track_key: &str) -> Result<PathBuf, String> {
+    let mut base = app
+        .path()
+        .app_data_dir()
+        .map_err(|err| format!("Unable to resolve app data directory: {err}"))?;
+    base.push("gridvox");
+    base.push("track-models");
+    base.push(track_key);
+    fs::create_dir_all(&base).map_err(|err| {
+        format!(
+            "Unable to create output directory {}: {err}",
+            base.display()
+        )
+    })?;
+    Ok(base)
+}
+
 async fn processing_worker(
     app_handle: AppHandle,
     cancel_flag: Arc<AtomicBool>,
+    child_ref: Arc<AsyncMutex<Option<Child>>>,
+    request: TrackGenerationRequest,
     simulate_failure: bool,
 ) -> ProcessingOutcome {
-    emit_log(&app_handle, "INFO", "Processing pipeline started.");
-
-    let total_weight: u32 = PHASES.iter().map(|phase| phase.weight).sum();
-    let mut completed_weight: u32 = 0;
-
-    for (phase_index, phase) in PHASES.iter().enumerate() {
-        emit_log(&app_handle, "INFO", &format!("{} started.", phase.name));
-
-        let steps = phase.steps;
-        if steps.is_empty() {
-            continue;
-        }
-
-        for (step_index, step) in steps.iter().enumerate() {
-            if cancel_flag.load(Ordering::SeqCst) {
-                emit_log(&app_handle, "WARN", "Processing cancelled by user.");
-                return ProcessingOutcome::Cancelled;
-            }
-
-            // Simulate an error halfway through the final phase when requested.
-            if simulate_failure && phase_index == PHASES.len() - 1 && step_index == steps.len() / 2 {
-                emit_log(
-                    &app_handle,
-                    "ERROR",
-                    "Mesh generation failed: invalid lap coverage detected.",
-                );
-                return ProcessingOutcome::Failed(
-                    "Track meshing failed due to inconsistent lap coverage.".into(),
-                );
-            }
-
-            let phase_progress = (((step_index + 1) * 100) / steps.len()).min(100) as u8;
-            let phase_fraction = phase_progress as f32 / 100.0;
-            let weighted_progress = completed_weight as f32 + (phase.weight as f32 * phase_fraction);
-            let overall_progress = ((weighted_progress / total_weight as f32) * 100.0)
-                .clamp(0.0, 100.0)
-                .round() as u8;
-
-            let remaining_weight = (total_weight as f32 - weighted_progress).max(0.0);
-            let eta_seconds = (remaining_weight * (PROGRESS_SLEEP_MS as f32 / 1000.0))
-                .round()
-                .max(0.0) as u64;
-
-            let _ = app_handle.emit(
-                "processing-progress",
-                ProcessingProgressPayload {
-                    overall_progress,
-                    phase_progress,
-                    phase_index,
-                    total_phases: PHASES.len(),
-                    phase_name: phase.name,
-                    message: step.message.to_string(),
-                    eta_seconds,
-                },
-            );
-
-            emit_log(&app_handle, step.level, step.message);
-            sleep(std::time::Duration::from_millis(PROGRESS_SLEEP_MS)).await;
-        }
-
-        completed_weight += phase.weight;
-        emit_log(&app_handle, "INFO", &format!("{} completed.", phase.name));
+    if simulate_failure {
+        emit_log(&app_handle, "ERROR", "Simulated failure requested.");
+        return ProcessingOutcome::Failed("Simulation failure triggered.".into());
     }
 
-    emit_log(&app_handle, "INFO", "Processing pipeline completed successfully.");
-    ProcessingOutcome::Completed
+    let files = match map_run_files(&request) {
+        Ok(map) => map,
+        Err(err) => return ProcessingOutcome::Failed(err),
+    };
+
+    let project_root = match resolve_project_root() {
+        Ok(path) => path,
+        Err(err) => return ProcessingOutcome::Failed(err),
+    };
+
+    let output_dir = match resolve_output_dir(&app_handle, &request.track_key) {
+        Ok(path) => path,
+        Err(err) => return ProcessingOutcome::Failed(err),
+    };
+
+    emit_log(
+        &app_handle,
+        "INFO",
+        "Launching track generation pipeline (Node)",
+    );
+
+    let mut command = Command::new("npx");
+    command
+        .arg("--yes")
+        .arg("tsx")
+        .arg("scripts/run-track-generation.ts")
+        .arg("--outside")
+        .arg(files.get("outside").unwrap())
+        .arg("--inside")
+        .arg(files.get("inside").unwrap())
+        .arg("--racing")
+        .arg(files.get("racing").unwrap())
+        .arg("--trackKey")
+        .arg(&request.track_key)
+        .arg("--trackLocation")
+        .arg(&request.track_location)
+        .arg("--outputDir")
+        .arg(output_dir.to_string_lossy().to_string());
+
+    if let Some(variation) = &request.track_variation {
+        if !variation.trim().is_empty() {
+            command.arg("--trackVariation").arg(variation);
+        }
+    }
+
+    command.current_dir(project_root);
+    command.stdout(std::process::Stdio::piped());
+    command.stderr(std::process::Stdio::piped());
+
+    let mut child = match command.spawn() {
+        Ok(child) => child,
+        Err(err) => {
+            return ProcessingOutcome::Failed(format!("Failed to spawn Node process: {err}"));
+        }
+    };
+
+    let stdout = child.stdout.take();
+    let stderr = child.stderr.take();
+    {
+        let mut guard = child_ref.lock().await;
+        *guard = Some(child);
+    }
+
+    let mut stdout_reader = stdout.map(|s| BufReader::new(s).lines());
+    let mut stderr_reader = stderr.map(|s| BufReader::new(s).lines());
+
+    let mut final_result: Option<ProcessingSuccessPayload> = None;
+    let mut cancel_future = Box::pin(async {
+        loop {
+            if cancel_flag.load(Ordering::SeqCst) {
+                break;
+            }
+            sleep(Duration::from_millis(150)).await;
+        }
+    });
+
+    loop {
+        tokio::select! {
+            _ = &mut cancel_future => {
+                emit_log(&app_handle, "WARN", "Cancelling track generation...");
+                let mut guard = child_ref.lock().await;
+                if let Some(mut child_proc) = guard.take() {
+                    let _ = child_proc.kill().await;
+                }
+                return ProcessingOutcome::Cancelled;
+            }
+            maybe_line = async {
+                if let Some(reader) = &mut stdout_reader {
+                    reader.next_line().await
+                } else {
+                    Ok(None)
+                }
+            } => {
+                match maybe_line {
+                    Ok(Some(line)) => {
+                        if line.trim().is_empty() {
+                            continue;
+                        }
+                        match serde_json::from_str::<ScriptEvent>(&line) {
+                            Ok(ScriptEvent::Progress(event)) => {
+                                let overall = ((event.phase_index as f64 + (event.percent / 100.0))
+                                    / (event.total_phases as f64)
+                                    * 100.0)
+                                    .clamp(0.0, 100.0);
+                                emit_progress(
+                                    &app_handle,
+                                    ProcessingProgressPayload {
+                                        overall_progress: overall.round() as u8,
+                                        phase_progress: event.percent.round() as u8,
+                                        phase_index: event.phase_index,
+                                        total_phases: event.total_phases,
+                                        phase_name: event.phase.clone(),
+                                        message: event.message.clone(),
+                                        eta_seconds: 0,
+                                    },
+                                );
+                                emit_log(&app_handle, "INFO", &format!("{} - {}", event.phase, event.message));
+                            }
+                            Ok(ScriptEvent::Log(event)) => {
+                                let level = event.level.unwrap_or_else(|| "INFO".into());
+                                emit_log(&app_handle, &level, &event.message);
+                            }
+                            Ok(ScriptEvent::Result(event)) => {
+                                emit_log(&app_handle, "INFO", "Track generation succeeded.");
+                                final_result = Some(ProcessingSuccessPayload {
+                                    glb_path: event.glb_path,
+                                    metadata_path: event.metadata_path,
+                                    output_dir: event.output_dir,
+                                    track: event.track,
+                                    alignment: event.alignment,
+                                });
+                            }
+                            Ok(ScriptEvent::Error(event)) => {
+                                emit_log(&app_handle, "ERROR", &event.message);
+                                return ProcessingOutcome::Failed(event.message);
+                            }
+                            Err(err) => {
+                                emit_log(&app_handle, "WARN", &format!("Unparseable output: {line} ({err})"));
+                            }
+                        }
+                    }
+                    Ok(None) => {
+                        break;
+                    }
+                    Err(err) => {
+                        emit_log(&app_handle, "ERROR", &format!("Failed to read process stdout: {err}"));
+                        break;
+                    }
+                }
+            }
+            maybe_err = async {
+                if let Some(reader) = &mut stderr_reader {
+                    reader.next_line().await
+                } else {
+                    Ok(None)
+                }
+            } => {
+                if let Ok(Some(line)) = maybe_err {
+                    if !line.trim().is_empty() {
+                        emit_log(&app_handle, "WARN", &format!("[node] {line}"));
+                    }
+                }
+            }
+        }
+    }
+
+    let mut guard = child_ref.lock().await;
+    if let Some(mut child_proc) = guard.take() {
+        match child_proc.wait().await {
+            Ok(status) => {
+                if !status.success() {
+                    return ProcessingOutcome::Failed(format!(
+                        "Track generation exited with status {}",
+                        status
+                    ));
+                }
+            }
+            Err(err) => {
+                return ProcessingOutcome::Failed(format!(
+                    "Failed to await track generation: {err}"
+                ));
+            }
+        }
+    }
+
+    match final_result {
+        Some(result) => ProcessingOutcome::Completed(result),
+        None => ProcessingOutcome::Failed(
+            "Track generation completed without producing a result payload.".into(),
+        ),
+    }
 }
 
 #[tauri::command]
-pub fn start_processing(
+pub fn generate_track(
     app_handle: AppHandle,
-    options: Option<StartProcessingOptions>,
+    payload: StartProcessingPayload,
 ) -> Result<(), String> {
-    PROCESSING_MANAGER.start(app_handle, options.unwrap_or_default())
+    PROCESSING_MANAGER.start(app_handle, payload)
 }
 
 #[tauri::command]

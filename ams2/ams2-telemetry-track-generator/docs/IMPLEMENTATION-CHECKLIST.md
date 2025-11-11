@@ -91,43 +91,44 @@
 ## Phase 2c: 3D Track Viewer Integration (Priority: CRITICAL)
 
 ### Three.js GLB Viewer Component
-- [ ] Create `TrackViewer3D.tsx` component *Three.js scene with GLTFLoader, lighting, and OrbitControls*
-- [ ] Implement GLB file loading *Use GLTFLoader to load .glb files from Tauri file:// protocol*
-- [ ] Setup scene lighting *Ambient + directional lights for proper track visibility*
-- [ ] Add OrbitControls *Camera manipulation: orbit, zoom, pan*
-- [ ] Implement layer visibility toggles *Show/hide racing line, track surface, sectors, etc.*
-- [ ] Auto-center camera on track bounds *Calculate bounds and position camera for optimal view*
+- [x] Create `TrackViewer3D.tsx` component *Three.js viewer with lifecycle cleanup and reusable props is in place.*
+- [x] Implement GLB file loading *GLTFLoader now streams Tauri `convertFileSrc` paths with error overlays.*
+- [x] Setup scene lighting *Ambient plus dual directional lights tuned for track visibility.*
+- [x] Add OrbitControls *Orbit/pan/zoom controls enabled with damping for smooth navigation.*
+- [x] Implement layer visibility toggles *Layer map toggles individual scene nodes via cached defaults.*
+- [x] Auto-center camera on track bounds *Bounding box framing positions camera and control target.*
 
 **Estimated Time**: 1.5 hours
 
 ---
 
 ### Tauri Backend Track Generation Command
-- [ ] Create `track_generation.rs` module *Rust module for track generation command*
-- [ ] Implement `generate_track` command *Execute Node.js script via std::process::Command*
-- [ ] Parse script output *Extract .glb and .json file paths from stdout*
-- [ ] Emit progress events *Real-time progress updates during generation*
-- [ ] Register command in lib.rs *Make command available to frontend*
+- [x] Refactor processing backend for CLI orchestration *`processing.rs` now owns the Node spawn + cancellation pipeline.*
+- [x] Implement `generate_track` command *Command shells into `npx tsx scripts/run-track-generation.ts` with telemetry args.*
+- [x] Parse script output *Line-by-line JSON events hydrate progress/log/result payloads.*
+- [x] Emit progress events *Progress, logs, completion, error, and cancel events bridge to the UI.*
+- [x] Register command in lib.rs *Invoke handler now exposes `generate_track` instead of the mock runner.*
 
 **Estimated Time**: 1 hour
 
 ---
 
 ### ProcessingScreen Backend Integration
-- [ ] Wire to real track generation *Replace mock start_processing with generate_track command*
-- [ ] Pass telemetry file paths *Use exportedFiles from initialPayload*
-- [ ] Pass track metadata *trackKey, location, variation from initialPayload*
-- [ ] Handle progress events *Display real progress from backend*
-- [ ] Store .glb path in result *Save returned file path to pass to PreviewScreen*
+- [x] Wire to real track generation *Service now invokes `generate_track` and cleans up listeners correctly.*
+- [x] Pass telemetry file paths *Initial payload exports flow through to the backend command arguments.*
+- [x] Pass track metadata *Track key/location/variation forwarded within the payload struct.*
+- [x] Handle progress events *UI reacts to streamed progress/log/error/cancel events.*
+- [x] Store .glb path in result *Completion payload persists summary for preview/export stages.*
+- [x] Support manual telemetry payload selection *Dialog-driven import rebuilds payloads from exported JSON for shortcut testing.*
 
 **Estimated Time**: 1 hour
 
 ---
 
 ### PreviewScreen Viewer Integration
-- [ ] Replace placeholder image *Remove <img> placeholder, add <TrackViewer3D>*
-- [ ] Pass .glb file path to viewer *Use glbPath from processingResult*
-- [ ] Wire layer toggle controls *Connect existing UI toggles to viewer visibility*
+- [x] Replace placeholder image *Preview screen now renders `<TrackViewer3D>` within the 3D panel.*
+- [x] Pass .glb file path to viewer *Viewer receives `glbPath` from processing results with null-guarding.*
+- [x] Wire layer toggle controls *Layer toggles relay state down to the Three.js layer map.*
 - [ ] Update export functionality *Copy .glb + .json to user-selected location*
 
 **Estimated Time**: 0.5 hours
@@ -135,9 +136,9 @@
 ---
 
 ### File Path & Tauri Context Handling
-- [ ] Configure output directory *Set to <AppData>/track-models/<track-key>/*
-- [ ] Handle Tauri file:// protocol *Convert paths for Three.js asset loading*
-- [ ] Cross-platform path handling *Use @tauri-apps/api/path for Windows/Mac/Linux*
+- [x] Configure output directory *Backend writes to `<AppData>/gridvox/track-models/<track-key>`.*
+- [x] Handle Tauri file:// protocol *Preview uses `convertFileSrc` to feed GLB URIs to GLTFLoader.*
+- [x] Cross-platform path handling *Tauri path resolver + Node path logic ensure OS-safe joins.*
 - [ ] Test file access permissions *Verify Tauri can read generated files*
 
 **Estimated Time**: 0.5 hours

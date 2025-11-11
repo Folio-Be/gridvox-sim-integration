@@ -35,7 +35,7 @@ struct ParticipantInfo {
 struct SharedMemoryData {
     // Header - MUST match exact order from shared_memory_struct.py
     version: u32,
-    build_version_number: u32,  // CRITICAL: was missing, causing misalignment
+    build_version_number: u32, // CRITICAL: was missing, causing misalignment
 
     // Session & Race State
     game_state: u32,
@@ -160,7 +160,6 @@ struct SharedMemoryData {
     wind_direction_y: f32,
     cloud_brightness: f32,
     sequence_number: u32,
-
     // Additional arrays (note: field order matters for C struct alignment!)
     // NOTE: The Python struct has MANY more fields here (wheel positions, suspension, participant arrays, etc.)
     // We only define fields up to what we actually need to read
@@ -269,7 +268,10 @@ impl SharedMemoryReader {
                 return Err(format!("AMS2 shared memory exists but version is 0 (game not running or not in session)"));
             }
 
-            eprintln!("Shared memory mapped successfully - Version: {}, Build: {}", data.version, data.build_version_number);
+            eprintln!(
+                "Shared memory mapped successfully - Version: {}, Build: {}",
+                data.version, data.build_version_number
+            );
             Ok(Self { handle, buffer })
         }
     }
@@ -298,8 +300,16 @@ impl SharedMemoryReader {
                     laps_completed: p.laps_completed,
                     // NOTE: For now use player's speed/pit_mode for all participants
                     // The actual mSpeeds and mPitModes arrays come much later in the struct
-                    speed: if i == data.viewed_participant_index { data.speed } else { 0.0 },
-                    pit_mode: if i == data.viewed_participant_index { data.pit_mode } else { 0 },
+                    speed: if i == data.viewed_participant_index {
+                        data.speed
+                    } else {
+                        0.0
+                    },
+                    pit_mode: if i == data.viewed_participant_index {
+                        data.pit_mode
+                    } else {
+                        0
+                    },
                 });
             }
 
@@ -405,9 +415,8 @@ pub async fn start_telemetry<R: tauri::Runtime>(
                             retry_count += 1;
                             // Only log once at the start, not every 10 attempts
                             if retry_count == 1 {
-                                let msg = format!(
-                                    "Waiting for AMS2 shared memory (last error: {e})..."
-                                );
+                                let msg =
+                                    format!("Waiting for AMS2 shared memory (last error: {e})...");
                                 let _ = app.emit("telemetry-error", &msg);
                                 eprintln!("{}", msg);
                             }

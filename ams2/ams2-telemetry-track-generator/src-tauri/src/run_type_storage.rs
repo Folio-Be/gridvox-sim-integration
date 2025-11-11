@@ -72,7 +72,8 @@ fn read_all<R: tauri::Runtime>(app: &tauri::AppHandle<R>) -> Result<RunTypeMap, 
         return Ok(HashMap::new());
     }
 
-    let mut file = File::open(&path).map_err(|err| format!("Failed to open storage file: {err}"))?;
+    let mut file =
+        File::open(&path).map_err(|err| format!("Failed to open storage file: {err}"))?;
     let mut buffer = String::new();
     file.read_to_string(&mut buffer)
         .map_err(|err| format!("Failed to read storage file: {err}"))?;
@@ -84,9 +85,13 @@ fn read_all<R: tauri::Runtime>(app: &tauri::AppHandle<R>) -> Result<RunTypeMap, 
     serde_json::from_str(&buffer).map_err(|err| format!("Failed to parse storage file: {err}"))
 }
 
-fn write_all<R: tauri::Runtime>(app: &tauri::AppHandle<R>, data: &RunTypeMap) -> Result<(), String> {
+fn write_all<R: tauri::Runtime>(
+    app: &tauri::AppHandle<R>,
+    data: &RunTypeMap,
+) -> Result<(), String> {
     let path = storage_path(app)?;
-    let mut file = File::create(&path).map_err(|err| format!("Failed to create storage file: {err}"))?;
+    let mut file =
+        File::create(&path).map_err(|err| format!("Failed to create storage file: {err}"))?;
     let contents = serde_json::to_string_pretty(data)
         .map_err(|err| format!("Failed to serialize assignments: {err}"))?;
     file.write_all(contents.as_bytes())
@@ -158,15 +163,25 @@ fn resolve_telemetry_dir<R: tauri::Runtime>(app: &tauri::AppHandle<R>) -> Result
     if let Ok(path) = app.path().resolve("telemetry-data", BaseDirectory::AppData) {
         attempts.push(path);
     }
-    if let Ok(path) = app.path().resolve("telemetry-data", BaseDirectory::AppConfig) {
+    if let Ok(path) = app
+        .path()
+        .resolve("telemetry-data", BaseDirectory::AppConfig)
+    {
         attempts.push(path);
     }
-    if let Ok(path) = app.path().resolve("telemetry-data", BaseDirectory::Resource) {
+    if let Ok(path) = app
+        .path()
+        .resolve("telemetry-data", BaseDirectory::Resource)
+    {
         attempts.push(path);
     }
 
     if let Ok(mut cwd) = std::env::current_dir() {
-        if cwd.file_name().map(|name| name == "src-tauri").unwrap_or(false) {
+        if cwd
+            .file_name()
+            .map(|name| name == "src-tauri")
+            .unwrap_or(false)
+        {
             cwd.pop();
         }
         attempts.push(cwd.join("telemetry-data"));
@@ -181,10 +196,7 @@ fn resolve_telemetry_dir<R: tauri::Runtime>(app: &tauri::AppHandle<R>) -> Result
         return Ok(path);
     }
 
-    Err(
-        last_error
-            .unwrap_or_else(|| "Unable to determine telemetry-data directory".to_string()),
-    )
+    Err(last_error.unwrap_or_else(|| "Unable to determine telemetry-data directory".to_string()))
 }
 
 fn safe_file_path(dir: &Path, base_name: &str, run_type: &str) -> PathBuf {
