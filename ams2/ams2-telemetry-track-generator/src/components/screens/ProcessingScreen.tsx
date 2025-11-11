@@ -1,5 +1,53 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import ProcessingPhaseItem from "../ui/ProcessingPhaseItem";
+import {
+  getProcessingService,
+  ProcessingLogEvent,
+  ProcessingProgressEvent,
+} from "../../lib/processing-service";
+
+type PhaseStatus = {
+  title: string;
+  description: string;
+  status: "completed" | "in-progress" | "pending";
+  progress: number;
+};
+
+const PROCESSING_PHASES: Array<Pick<PhaseStatus, "title" | "description">> = [
+  {
+    title: "Phase 1: Data Ingestion",
+    description: "Loading telemetry file and normalising capture signals",
+  },
+  {
+    title: "Phase 2: Point Cloud Generation",
+    description: "Aligning GPS coordinates and building the 3D cloud",
+  },
+  {
+    title: "Phase 3: Model Finalization",
+    description: "Meshing the surface and applying overlays",
+  },
+];
+
+function formatEta(seconds: number | null): string {
+  if (seconds === null || !Number.isFinite(seconds)) {
+    return "--";
+  }
+  const clamped = Math.max(0, Math.round(seconds));
+  const minutes = Math.floor(clamped / 60);
+  const remainder = clamped % 60;
+  if (minutes > 0) {
+    return `${minutes}m ${remainder.toString().padStart(2, "0")}s`;
+  }
+  return `${remainder}s`;
+}
+
+function formatLogTimestamp(timestamp: string): string {
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) {
+    return timestamp;
+  }
+  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+}
 
 interface ProcessingScreenProps {
   onComplete: () => void;
@@ -7,31 +55,186 @@ interface ProcessingScreenProps {
 }
 
 export default function ProcessingScreen({ onComplete, onCancel }: ProcessingScreenProps) {
-  const [progress, setProgress] = useState(75);
-  const [hasCompleted, setHasCompleted] = useState(false);
-  const [logEntries] = useState([
-    { level: "INFO", timestamp: "14:32:01", message: "Found 5 valid laps." },
-    { level: "INFO", timestamp: "14:32:02", message: "Ingesting telemetry data from silverstone_lap3.csv" },
-    { level: "INFO", timestamp: "14:32:05", message: "Data ingestion complete. 1.2M data points processed." },
-    { level: "INFO", timestamp: "14:32:06", message: "Starting GPS coordinate alignment..." },
-    { level: "WARN", timestamp: "14:32:15", message: "High G-force spike detected at T3." },
-    { level: "INFO", timestamp: "14:32:20", message: "Generating 3D point cloud, 50% complete..." },
-  ]);
+  const processingService = useMemo(() => getProcessingService(), []);
+  const [phases, setPhases] = useState<PhaseStatus[]>(() =>
+    PROCESSING_PHASES.map((phase, index) => ({
+      ...phase,
+      status: index === 0 ? "in-progress" : "pending",
+      progress: 0,
+    }))
+  );
+  const [overallProgress, setOverallProgress] = useState(0);
+  const [etaSeconds, setEtaSeconds] = useState<number | null>(null);
+  const [logEntries, setLogEntries] = useState<ProcessingLogEvent[]>([]);
+  const [processingError, setProcessingError] = useState<string | null>(null);
+  const [isCancelling, setIsCancelling] = useState(false);
+  const [isRestarting, setIsRestarting] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
+  const logListRef = useRef<HTMLDivElement | null>(null);
 
-  // TODO: Replace with real processing status
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => (prev < 100 ? prev + 1 : prev));
-    }, 500);
-    return () => clearInterval(interval);
+  const resetPhases = useCallback(() => {
+    setPhases(
+      PROCESSING_PHASES.map((phase, index) => ({
+        ...phase,
+        status: index === 0 ? "in-progress" : "pending",
+        progress: 0,
+      }))
+    );
   }, []);
 
-  useEffect(() => {
-    if (progress >= 100 && !hasCompleted) {
-      setHasCompleted(true);
-      onComplete();
+  const resetRun = useCallback(() => {
+    resetPhases();
+    setOverallProgress(0);
+    setEtaSeconds(null);
+    setProcessingError(null);
+    setLogEntries([]);
+  }, [resetPhases]);
+
+  const beginProcessing = useCallback(async () => {
+    resetRun();
+    try {
+      await processingService.start();
+    } catch (error) {
+      setProcessingError(String(error));
     }
-  }, [progress, hasCompleted, onComplete]);
+  }, [processingService, resetRun]);
+
+  useEffect(() => {
+    const handleProgress = (event: ProcessingProgressEvent) => {
+      setIsRunning(true);
+      setOverallProgress(event.overall_progress);
+      setEtaSeconds(Number.isFinite(event.eta_seconds) ? event.eta_seconds : null);
+      setPhases((prev) =>
+        prev.map((phase, index) => {
+          if (index < event.phase_index) {
+            return { ...phase, status: "completed", progress: 100 };
+          }
+          if (index === event.phase_index) {
+            return {
+              ...phase,
+              status: "in-progress",
+              progress: event.phase_progress,
+            };
+          }
+          return { ...phase, status: "pending", progress: 0 };
+        })
+      );
+    };
+
+    const handleLog = (entry: ProcessingLogEvent) => {
+      setLogEntries((prev) => [...prev.slice(-199), entry]);
+    };
+
+    const handleStarted = () => {
+      setIsRunning(true);
+      setIsCancelling(false);
+    };
+
+    const handleComplete = () => {
+      setIsRunning(false);
+      setIsCancelling(false);
+      setOverallProgress(100);
+      setEtaSeconds(0);
+      setPhases((prev) => prev.map((phase) => ({ ...phase, status: "completed", progress: 100 })));
+      setProcessingError(null);
+      onComplete();
+    };
+
+    const handleError = (event: { message: string }) => {
+      setIsRunning(false);
+      setIsCancelling(false);
+      setProcessingError(event.message || "Processing run encountered an error.");
+    };
+
+    const handleCancelled = () => {
+      setIsRunning(false);
+      setIsCancelling(false);
+      onCancel();
+    };
+
+    processingService.on("progress", handleProgress);
+    processingService.on("log", handleLog);
+    processingService.on("started", handleStarted);
+    processingService.on("complete", handleComplete);
+    processingService.on("error", handleError);
+    processingService.on("cancelled", handleCancelled);
+
+    void beginProcessing();
+
+    return () => {
+      processingService.off("progress", handleProgress);
+      processingService.off("log", handleLog);
+      processingService.off("started", handleStarted);
+      processingService.off("complete", handleComplete);
+      processingService.off("error", handleError);
+      processingService.off("cancelled", handleCancelled);
+      void processingService.dispose();
+    };
+  }, [beginProcessing, onCancel, onComplete, processingService]);
+
+  useEffect(() => {
+    if (logListRef.current) {
+      logListRef.current.scrollTop = logListRef.current.scrollHeight;
+    }
+  }, [logEntries]);
+
+  const handleCancel = useCallback(async () => {
+    if (!processingService.isRunning) {
+      onCancel();
+      return;
+    }
+
+    setIsCancelling(true);
+    try {
+      await processingService.cancel();
+    } catch (error) {
+      setProcessingError(`Failed to cancel: ${String(error)}`);
+      setIsCancelling(false);
+    }
+  }, [onCancel, processingService]);
+
+  const handleRetry = useCallback(async () => {
+    setIsRestarting(true);
+    try {
+      await beginProcessing();
+    } finally {
+      setIsRestarting(false);
+    }
+  }, [beginProcessing]);
+
+  const activePhase = phases.find((phase) => phase.status === "in-progress");
+  const overallProgressClamped = Math.max(0, Math.min(100, overallProgress));
+  const overallProgressDisplay = Math.round(overallProgressClamped);
+  const headerSubtitle = processingError
+    ? "Processing run encountered an error. Review the log and retry."
+    : activePhase
+    ? `Currently running: ${activePhase.title}`
+    : isRunning
+    ? "Finalising processing run..."
+    : "Preparing processing pipeline...";
+  const statusText = processingError
+    ? "Error"
+    : isCancelling
+    ? "Cancelling..."
+    : isRunning
+    ? "Running"
+    : "Idle";
+  const statusAccentClass = processingError
+    ? "text-[#F44336]"
+    : isCancelling
+    ? "text-[#FFC107]"
+    : isRunning
+    ? "text-[#4CAF50]"
+    : "text-white/60";
+  const cancelButtonLabel = processingError
+    ? "Return to Setup"
+    : isCancelling
+    ? "Cancelling..."
+    : isRunning
+    ? "Cancel Processing"
+    : "Close";
+  const isCancelDisabled = isCancelling || isRestarting;
+  const retryButtonLabel = isRestarting ? "Restarting..." : "Retry Processing";
 
   return (
     <div className="flex h-screen w-full">
@@ -45,76 +248,72 @@ export default function ProcessingScreen({ onComplete, onCancel }: ProcessingScr
                 Track Generation in Progress
               </p>
               <p className="text-[#9ac1a0] text-base font-normal leading-normal">
-                Processing telemetry and generating 3D track model
+                Processing telemetry and generating a 3D track model.
               </p>
+              <p className="text-[#9ac1a0] text-sm font-normal leading-normal">{headerSubtitle}</p>
             </header>
+
+            {processingError && (
+              <div className="rounded-lg border border-[#F44336]/40 bg-[#2b1a1a] p-4 text-sm text-[#ffcdd2]">
+                <p className="font-semibold text-[#ff8a80]">Processing Error</p>
+                <p className="mt-1 leading-relaxed">{processingError}</p>
+                <p className="mt-2 text-xs text-[#ffab91]">Review the log for details or retry the run.</p>
+              </div>
+            )}
 
             <div className="grid flex-1 grid-cols-3 gap-6">
               {/* Processing Pipeline (2/3 width) */}
               <div className="col-span-3 lg:col-span-2 flex flex-col gap-4 rounded-xl bg-[#1a281c] p-6">
                 <h2 className="text-lg font-semibold text-white">Processing Pipeline</h2>
                 <div className="flex flex-col divide-y divide-white/10">
-                  <ProcessingPhaseItem
-                    title="Phase 1: Data Ingestion"
-                    description="Loading telemetry file, Parsing G-force data"
-                    status="completed"
-                  />
-                  <ProcessingPhaseItem
-                    title="Phase 2: Point Cloud Generation"
-                    description="Aligning GPS coordinates, Generating 3D points"
-                    status="in-progress"
-                    progress={progress}
-                  />
-                  <ProcessingPhaseItem
-                    title="Phase 3: Model Finalization"
-                    description="Meshing track surface, Applying textures"
-                    status="pending"
-                  />
+                  {phases.map((phase) => (
+                    <ProcessingPhaseItem
+                      key={phase.title}
+                      title={phase.title}
+                      description={phase.description}
+                      status={phase.status}
+                      progress={Math.round(phase.progress)}
+                    />
+                  ))}
                 </div>
               </div>
 
               {/* Alignment Quality Sidebar (1/3 width) */}
               <aside className="col-span-3 lg:col-span-1 flex flex-col gap-4 rounded-xl bg-[#1a281c] p-6">
-                <h2 className="text-lg font-semibold text-white">Alignment Quality</h2>
-                <div className="flex flex-col items-center justify-center gap-4 rounded-lg bg-background-dark p-6">
-                  <div className="relative flex size-32 items-center justify-center">
-                    <svg className="absolute inset-0 size-full -rotate-90 transform" viewBox="0 0 36 36">
-                      <circle
-                        className="stroke-current text-white/10"
-                        cx="18"
-                        cy="18"
-                        fill="none"
-                        r="16"
-                        strokeWidth="2"
-                      ></circle>
-                      <circle
-                        className="stroke-current text-[#4CAF50]"
-                        cx="18"
-                        cy="18"
-                        fill="none"
-                        r="16"
-                        strokeDasharray="100, 100"
-                        strokeDashoffset="2"
-                        strokeLinecap="round"
-                        strokeWidth="2"
-                      ></circle>
-                    </svg>
-                    <span className="text-3xl font-bold text-[#4CAF50]">98%</span>
+                <h2 className="text-lg font-semibold text-white">Run Status</h2>
+                <div className="flex flex-col gap-4 rounded-lg bg-background-dark p-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-[#9ac1a0]">Overall Progress</p>
+                    <p className="text-sm font-semibold text-white">{overallProgressDisplay}%</p>
                   </div>
-                  <p className="text-white font-medium">Confidence Score</p>
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
+                    <div
+                      className="h-full rounded-full bg-[#4CAF50] transition-all"
+                      style={{ width: `${overallProgressClamped}%` }}
+                    ></div>
+                  </div>
                 </div>
                 <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-[#4CAF50]">check_circle</span>
-                    <p className="text-[#9ac1a0] text-sm">Data Consistency</p>
+                  <div className="flex items-start gap-3">
+                    <span className={`material-symbols-outlined ${statusAccentClass}`}>play_circle</span>
+                    <div className="flex flex-col">
+                      <p className="text-[#9ac1a0] text-sm">Status</p>
+                      <p className="text-sm font-medium text-white">{statusText}</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-[#4CAF50]">check_circle</span>
-                    <p className="text-[#9ac1a0] text-sm">Lap Cohesion</p>
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-[#9ac1a0]">playlist_add_check</span>
+                    <div className="flex flex-col">
+                      <p className="text-[#9ac1a0] text-sm">Active Phase</p>
+                      <p className="text-sm font-medium text-white">{activePhase ? activePhase.title : "None"}</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-[#4CAF50]">check_circle</span>
-                    <p className="text-[#9ac1a0] text-sm">Elevation Variance</p>
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-[#9ac1a0]">schedule</span>
+                    <div className="flex flex-col">
+                      <p className="text-[#9ac1a0] text-sm">ETA</p>
+                      <p className="text-sm font-medium text-white">{formatEta(etaSeconds)}</p>
+                    </div>
                   </div>
                 </div>
               </aside>
@@ -126,30 +325,58 @@ export default function ProcessingScreen({ onComplete, onCancel }: ProcessingScr
                 <div className="border-b border-white/10 p-4">
                   <h3 className="font-semibold text-white">Processing Log</h3>
                 </div>
-                <div className="flex-1 overflow-y-auto p-4 font-mono text-xs text-[#9ac1a0]">
-                  {logEntries.map((entry, index) => (
-                    <p key={index}>
-                      <span
-                        className={entry.level === "WARN" ? "text-[#FFC107]" : "text-white/50"}
-                      >
-                        [{entry.timestamp}] {entry.level}:
-                      </span>{" "}
-                      {entry.message}
-                    </p>
-                  ))}
+                <div
+                  ref={logListRef}
+                  className="flex-1 overflow-y-auto p-4 font-mono text-xs text-[#9ac1a0] space-y-2"
+                >
+                  {logEntries.length === 0 ? (
+                    <p className="text-white/40">Awaiting log output...</p>
+                  ) : (
+                    logEntries.map((entry, index) => {
+                      const levelClass =
+                        entry.level === "WARN"
+                          ? "text-[#FFC107]"
+                          : entry.level === "ERROR"
+                          ? "text-[#F44336]"
+                          : "text-white/50";
+                      return (
+                        <p key={`${entry.timestamp}-${index}`}>
+                          <span className={levelClass}>
+                            [{formatLogTimestamp(entry.timestamp)}] {entry.level}:
+                          </span>{" "}
+                          {entry.message}
+                        </p>
+                      );
+                    })
+                  )}
                 </div>
               </div>
-              <div className="col-span-3 lg:col-span-1 flex flex-col justify-between gap-4">
+              <div className="col-span-3 lg:col-span-1 flex flex-col gap-4">
                 <div className="flex flex-col gap-2 rounded-xl bg-[#1a281c] p-4">
                   <p className="text-sm text-[#9ac1a0]">Estimated Time Remaining</p>
-                  <p className="text-3xl font-bold text-white">2m 15s</p>
+                  <p className="text-3xl font-bold text-white">{formatEta(etaSeconds)}</p>
+                  <p className="text-xs text-[#9ac1a0]">Overall progress {overallProgressDisplay}%.</p>
                 </div>
-                <button
-                  className="w-full rounded-lg border-2 border-[#F44336]/50 bg-[#F44336]/20 py-3 font-semibold text-[#F44336] transition-colors hover:bg-[#F44336]/30 hover:border-[#F44336]"
-                  onClick={onCancel}
-                >
-                  Cancel Processing
-                </button>
+                <div className="flex flex-col gap-2">
+                  <button
+                    className="w-full rounded-lg border-2 border-[#F44336]/50 bg-[#F44336]/20 py-3 font-semibold text-[#F44336] transition-colors hover:bg-[#F44336]/30 hover:border-[#F44336] disabled:cursor-not-allowed disabled:opacity-50"
+                    onClick={handleCancel}
+                    type="button"
+                    disabled={isCancelDisabled}
+                  >
+                    {cancelButtonLabel}
+                  </button>
+                  {processingError ? (
+                    <button
+                      className="w-full rounded-lg border-2 border-[#2196F3]/40 bg-[#2196F3]/20 py-3 font-semibold text-[#2196F3] transition-colors hover:bg-[#2196F3]/30 hover:border-[#2196F3] disabled:cursor-not-allowed disabled:opacity-50"
+                      onClick={handleRetry}
+                      type="button"
+                      disabled={isRestarting}
+                    >
+                      {retryButtonLabel}
+                    </button>
+                  ) : null}
+                </div>
               </div>
             </div>
           </div>

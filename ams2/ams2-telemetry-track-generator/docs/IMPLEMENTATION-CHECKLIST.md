@@ -4,6 +4,11 @@
 
 ---
 
+## Phase 0: Recording Pipeline Guardrails (Priority: HIGH)
+
+### ✅ Stop Workflow
+- [x] Export run recordings on stop *Stop & Save triggers exportRunTypeRecordings so laps land in telemetry-data.*
+
 ## Phase 1: Core Alignment (Priority: CRITICAL)
 
 ### ✅ Start/Finish Line Detection

@@ -390,7 +390,6 @@ pub async fn start_telemetry<R: tauri::Runtime>(
         {
             let mut reader: Option<SharedMemoryReader> = None;
             let mut retry_count = 0;
-            let max_retries_before_log = 10; // Log every 10 attempts
 
             while *TELEMETRY_RUNNING.lock().unwrap() {
                 // Try to create reader if we don't have one
@@ -406,7 +405,9 @@ pub async fn start_telemetry<R: tauri::Runtime>(
                             retry_count += 1;
                             // Only log once at the start, not every 10 attempts
                             if retry_count == 1 {
-                                let msg = "Waiting for AMS2 shared memory...".to_string();
+                                let msg = format!(
+                                    "Waiting for AMS2 shared memory (last error: {e})..."
+                                );
                                 let _ = app.emit("telemetry-error", &msg);
                                 eprintln!("{}", msg);
                             }

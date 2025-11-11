@@ -10,7 +10,6 @@ import {
   saveRunTypeAssignment,
   clearRunTypeAssignments,
   deleteRunTypeAssignment,
-  exportRunTypeRecordings,
   RunTypeAssignmentPayload,
   RunTypeName,
 } from "../../lib/run-type-storage";
@@ -271,7 +270,6 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
   const trackInfoRef = useRef(trackInfo);
   const curbDetectionPrevRef = useRef(false);
   const [showAssignmentWarning, setShowAssignmentWarning] = useState(false);
-  const [isSavingRecording, setIsSavingRecording] = useState(false);
 
   const allRunTypesAssigned = RUN_TYPES.every((runType) => runTypeAssignments[runType] !== null);
 
@@ -1201,74 +1199,6 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
     setOverlayTelemetry(lapVisualizerTelemetryRef.current[lap.id].map((point) => ({ ...point, runType: null })));
   };
 
-  const handleStopAndSaveRecording = async () => {
-    if (!allRunTypesAssigned) {
-      setShowAssignmentWarning(true);
-      return;
-    }
-
-    const trackKey = trackKeyRef.current;
-    const { location: trackLocation, variation: trackVariation } = trackInfoRef.current ?? {};
-
-    if (!trackKey || !trackLocation) {
-      debugConsole.error("Cannot export run recordings: missing track metadata.");
-      setShowAssignmentWarning(true);
-      onStopRecording();
-      return;
-    }
-
-  setShowAssignmentWarning(false);
-  setIsSavingRecording(true);
-
-    try {
-      const assignmentPayload: Record<RunType, RunTypeAssignmentPayload> = RUN_TYPES.reduce((acc, runType) => {
-        const assignmentState = runTypeAssignmentsRef.current[runType];
-        const telemetryPoints = runTypeTelemetryRef.current[runType] ?? [];
-
-        if (!assignmentState) {
-          throw new Error(`Missing ${RUN_TYPE_LABELS[runType]} assignment state`);
-        }
-
-        if (telemetryPoints.length === 0) {
-          debugConsole.warn(`No telemetry points recorded for ${RUN_TYPE_LABELS[runType]} lap; exporting empty dataset.`);
-        }
-
-        acc[runType] = {
-          lapId: assignmentState.lapId,
-          lapNumber: assignmentState.lapNumber,
-          assignedAt: assignmentState.assignedAt,
-          validity: assignmentState.validity,
-          timeSeconds: assignmentState.timeSeconds,
-          distanceMeters: assignmentState.distanceMeters,
-          telemetryPoints: toStorageTelemetryArray(telemetryPoints),
-        };
-
-        return acc;
-      }, {} as Record<RunType, RunTypeAssignmentPayload>);
-
-      const results = await exportRunTypeRecordings({
-        trackKey,
-        trackLocation,
-        trackVariation: trackVariation || undefined,
-        assignments: assignmentPayload,
-      });
-
-      if (results.length > 0) {
-        const exportedFiles = results
-          .map((result) => `${RUN_TYPE_LABELS[result.runType]} → ${result.filePath}`)
-          .join("\n");
-        debugConsole.info(`Saved run recordings to telemetry-data:\n${exportedFiles}`);
-      } else {
-        debugConsole.warn("Export command completed without returning any file paths.");
-      }
-    } catch (error) {
-      debugConsole.error(`Failed to export run recordings: ${String(error)}`);
-    } finally {
-      setIsSavingRecording(false);
-      onStopRecording();
-    }
-  };
-
   return (
     <div className="relative flex h-full w-full flex-col bg-green-bg dark group/design-root overflow-hidden">
       <div className="flex flex-col h-full">
@@ -1641,20 +1571,21 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
               <button
                 type="button"
                 className={`flex min-w-[84px] max-w-[480px] items-center justify-center overflow-hidden rounded-lg h-12 px-6 text-base font-bold leading-normal tracking-[0.015em] gap-2 transition-colors ${
-                  allRunTypesAssigned && !isSavingRecording
+                  allRunTypesAssigned
                     ? "cursor-pointer bg-red-600 hover:bg-red-700 text-white"
                     : "cursor-not-allowed bg-red-600/30 text-white/40"
                 }`}
-                disabled={isSavingRecording}
-                aria-disabled={!allRunTypesAssigned || isSavingRecording}
-                onClick={handleStopAndSaveRecording}
+                disabled={!allRunTypesAssigned}
+                onClick={() => {
+                  if (!allRunTypesAssigned) {
+                    setShowAssignmentWarning(true);
+                    return;
+                  }
+                  onStopRecording();
+                }}
               >
-                <span className="material-symbols-outlined">
-                  {isSavingRecording ? "hourglass_top" : "stop_circle"}
-                </span>
-                <span className="truncate">
-                  {isSavingRecording ? "Saving..." : "Stop & Save Recording"}
-                </span>
+                <span className="material-symbols-outlined">stop_circle</span>
+                <span className="truncate">Stop & Save Recording</span>
               </button>
             </div>
           </main>

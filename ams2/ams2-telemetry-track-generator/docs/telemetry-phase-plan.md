@@ -1,9 +1,9 @@
 # Telemetry Capture Roadmap
 
-## Phase 1 – Recording Flow Hardening
-- [ ] Launch telemetry capture and walk through LiveRecording → Processing without sidebar regressions.
-- [ ] Verify curb detection indicator responds to rumble strip terrain codes and ignores grass.
-- [ ] Capture any UI or telemetry issues discovered during the smoke test and file follow-up tasks.
+## Phase 1 – Recording Flow Hardening ✅
+- [x] Launch telemetry capture and walk through LiveRecording → Processing without sidebar regressions.
+- [x] Verify curb detection indicator responds to rumble strip terrain codes and ignores grass.
+- [x] Capture any UI or telemetry issues discovered during the smoke test and file follow-up tasks.
 - [x] Add debug console logging for curb detection transitions to support verification.
 
 ## Phase 2 – Export Pipeline Readiness

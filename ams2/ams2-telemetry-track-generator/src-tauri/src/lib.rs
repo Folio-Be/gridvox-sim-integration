@@ -1,4 +1,5 @@
 mod audio;
+mod processing;
 mod run_type_storage;
 mod telemetry;
 
@@ -29,10 +30,14 @@ pub fn run() {
             telemetry::start_telemetry,
             telemetry::stop_telemetry,
             telemetry::is_telemetry_running,
+            processing::start_processing,
+            processing::cancel_processing,
+            processing::processing_status,
             run_type_storage::load_run_type_assignments,
             run_type_storage::save_run_type_assignment,
             run_type_storage::clear_run_type_assignments,
-            run_type_storage::delete_run_type_assignment
+            run_type_storage::delete_run_type_assignment,
+            run_type_storage::export_run_type_recordings
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

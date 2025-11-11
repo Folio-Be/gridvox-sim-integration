@@ -1,7 +1,6 @@
 import { useState } from "react";
 import LayerToggle from "../ui/LayerToggle";
 import ValidationItem from "../ui/ValidationItem";
-import Button from "../ui/Button";
 
 interface PreviewScreenProps {
   onExport: () => void;
