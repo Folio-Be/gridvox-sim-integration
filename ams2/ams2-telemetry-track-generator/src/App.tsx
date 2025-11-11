@@ -6,12 +6,15 @@ import LiveRecording from "./components/screens/LiveRecording";
 import ProcessingScreen from "./components/screens/ProcessingScreen";
 import PreviewScreen from "./components/screens/PreviewScreen";
 import DebugConsole from "./components/ui/DebugConsole";
+import { ProcessingResult, StopRecordingPayload } from "./lib/processing-types";
+import { useCallback, useMemo } from "react";
 
 type Screen = "welcome" | "setup" | "instructions" | "recording" | "processing" | "preview" | "export";
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>("recording");
   const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);
+  const [processingResult, setProcessingResult] = useState<ProcessingResult | null>(null);
 
   const handleSetupComplete = (data: ProjectData) => {
     console.log("Project setup:", data);
@@ -26,6 +29,25 @@ function App() {
       setCurrentScreen(screen);
     }
   };
+
+  const handleStopRecording = useCallback((payload: StopRecordingPayload | null) => {
+    setProcessingResult(payload ? { alignment: null, request: payload } : { alignment: null, request: null });
+    setCurrentScreen("processing");
+  }, []);
+
+  const handleProcessingComplete = useCallback((result: ProcessingResult) => {
+    setProcessingResult(result);
+    setCurrentScreen("preview");
+  }, []);
+
+  const handleProcessingCancel = useCallback(() => {
+    setProcessingResult(null);
+    setCurrentScreen("welcome");
+  }, []);
+
+  const previewProps = useMemo(() => {
+    return processingResult ?? { alignment: null, request: null };
+  }, [processingResult]);
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -42,17 +64,21 @@ function App() {
           />
         );
       case "recording":
-        return <LiveRecording onStopRecording={() => setCurrentScreen("processing")} />;
+        return <LiveRecording onStopRecording={handleStopRecording} />;
       case "processing":
         return (
           <ProcessingScreen
-            onComplete={() => setCurrentScreen("preview")}
-            onCancel={() => setCurrentScreen("welcome")}
+            initialPayload={processingResult?.request ?? null}
+            onComplete={handleProcessingComplete}
+            onCancel={handleProcessingCancel}
           />
         );
       case "preview":
         return (
           <PreviewScreen
+            alignment={previewProps.alignment}
+            exportedFiles={previewProps.request?.exportedFiles ?? []}
+            runAssignments={previewProps.request?.assignments ?? null}
             onExport={() => {
               console.log("Export track");
               // TODO: Implement export functionality

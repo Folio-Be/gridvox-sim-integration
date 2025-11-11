@@ -72,17 +72,15 @@ export default function PreviewScreen({ onExport, onReprocess }: PreviewScreenPr
                 {/* Tab Toggle */}
                 <div className="flex h-10 w-full items-center justify-center rounded-lg bg-[#2d2d2d] p-1">
                   <label
-                    className={`flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-md px-2 text-sm font-medium leading-normal ${
-                      activeTab === "statistics" ? "bg-[#1A1A1A] text-white" : "text-gray-300"
-                    }`}
+                    className={`flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-md px-2 text-sm font-medium leading-normal ${activeTab === "statistics" ? "bg-[#1A1A1A] text-white" : "text-gray-300"
+                      }`}
                     onClick={() => setActiveTab("statistics")}
                   >
                     <span className="truncate">Track Statistics</span>
                   </label>
                   <label
-                    className={`flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-md px-2 text-sm font-medium leading-normal ${
-                      activeTab === "validation" ? "bg-[#1A1A1A] text-white" : "text-gray-300"
-                    }`}
+                    className={`flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-md px-2 text-sm font-medium leading-normal ${activeTab === "validation" ? "bg-[#1A1A1A] text-white" : "text-gray-300"
+                      }`}
                     onClick={() => setActiveTab("validation")}
                   >
                     <span className="truncate">Validation Results</span>

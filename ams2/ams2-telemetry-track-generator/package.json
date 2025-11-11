@@ -9,10 +9,12 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
+    "tauri:dev": "tauri dev",
     "generate": "tsx scripts/generate-track.ts",
     "validate": "tsx scripts/validate-track.ts",
     "optimize": "tsx scripts/optimize-gltf.ts",
-    "enrich": "tsx scripts/enrich-track.ts"
+    "enrich": "tsx scripts/enrich-track.ts",
+    "test:real-data": "tsx scripts/test-with-real-data.ts"
   },
   "keywords": [
     "ams2",

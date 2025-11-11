@@ -14,6 +14,7 @@ import {
   RunTypeAssignmentPayload,
   RunTypeName,
 } from "../../lib/run-type-storage";
+import { StopRecordingPayload } from "../../lib/processing-types";
 
 const GAME_STATES = {
   EXITED: 0,
@@ -145,7 +146,7 @@ const RUN_TYPE_TILE_COLORS: Record<RunType, {
 const MIN_LAP_COVERAGE_RATIO = 0.95;
 
 interface LiveRecordingProps {
-  onStopRecording: () => void;
+  onStopRecording: (payload: StopRecordingPayload | null) => void;
 }
 
 function formatPosition(worldPos: [number, number, number]): string {
@@ -937,7 +938,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
           maxRpm: Math.round(data.max_rpm),
         });
 
-  const curbActive = (data.tyre_terrain?.some((terrainCode) => CURB_SURFACE_CODES.has(terrainCode))) ?? false;
+        const curbActive = (data.tyre_terrain?.some((terrainCode) => CURB_SURFACE_CODES.has(terrainCode))) ?? false;
         setIsCurbDetected(curbActive);
       }
     };
@@ -1014,7 +1015,7 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
     setLapProgress(0);
     setLaps([]);
     setCurrentLapMetrics({ timeSeconds: 0, distanceMeters: 0 });
-  setIsCurbDetected(false);
+    setIsCurbDetected(false);
     updateRecordingIndicator("idle", "Waiting for telemetry");
     debugConsole.warn("Lap history cleared.");
 
@@ -1213,15 +1214,18 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
     if (!trackKey || !trackLocation) {
       debugConsole.error("Cannot export run recordings: missing track metadata.");
       setShowAssignmentWarning(true);
-      onStopRecording();
+      onStopRecording(null);
       return;
     }
 
-  setShowAssignmentWarning(false);
-  setIsSavingRecording(true);
+    setShowAssignmentWarning(false);
+    setIsSavingRecording(true);
+
+    let assignmentPayload: Record<RunType, RunTypeAssignmentPayload> | null = null;
+    let exportedResults: Awaited<ReturnType<typeof exportRunTypeRecordings>> = [];
 
     try {
-      const assignmentPayload: Record<RunType, RunTypeAssignmentPayload> = RUN_TYPES.reduce((acc, runType) => {
+      assignmentPayload = RUN_TYPES.reduce((acc, runType) => {
         const assignmentState = runTypeAssignmentsRef.current[runType];
         const telemetryPoints = runTypeTelemetryRef.current[runType] ?? [];
 
@@ -1246,15 +1250,15 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
         return acc;
       }, {} as Record<RunType, RunTypeAssignmentPayload>);
 
-      const results = await exportRunTypeRecordings({
+      exportedResults = await exportRunTypeRecordings({
         trackKey,
         trackLocation,
         trackVariation: trackVariation || undefined,
         assignments: assignmentPayload,
       });
 
-      if (results.length > 0) {
-        const exportedFiles = results
+      if (exportedResults.length > 0) {
+        const exportedFiles = exportedResults
           .map((result) => `${RUN_TYPE_LABELS[result.runType]} → ${result.filePath}`)
           .join("\n");
         debugConsole.info(`Saved run recordings to telemetry-data:\n${exportedFiles}`);
@@ -1265,7 +1269,19 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
       debugConsole.error(`Failed to export run recordings: ${String(error)}`);
     } finally {
       setIsSavingRecording(false);
-      onStopRecording();
+
+      if (assignmentPayload) {
+        const payload: StopRecordingPayload = {
+          trackKey,
+          trackLocation,
+          trackVariation: trackVariation || undefined,
+          assignments: assignmentPayload,
+          exportedFiles: exportedResults,
+        };
+        onStopRecording(payload);
+      } else {
+        onStopRecording(null);
+      }
     }
   };
 
@@ -1640,11 +1656,10 @@ export default function LiveRecording({ onStopRecording }: LiveRecordingProps) {
               )}
               <button
                 type="button"
-                className={`flex min-w-[84px] max-w-[480px] items-center justify-center overflow-hidden rounded-lg h-12 px-6 text-base font-bold leading-normal tracking-[0.015em] gap-2 transition-colors ${
-                  allRunTypesAssigned && !isSavingRecording
-                    ? "cursor-pointer bg-red-600 hover:bg-red-700 text-white"
-                    : "cursor-not-allowed bg-red-600/30 text-white/40"
-                }`}
+                className={`flex min-w-[84px] max-w-[480px] items-center justify-center overflow-hidden rounded-lg h-12 px-6 text-base font-bold leading-normal tracking-[0.015em] gap-2 transition-colors ${allRunTypesAssigned && !isSavingRecording
+                  ? "cursor-pointer bg-red-600 hover:bg-red-700 text-white"
+                  : "cursor-not-allowed bg-red-600/30 text-white/40"
+                  }`}
                 disabled={isSavingRecording}
                 aria-disabled={!allRunTypesAssigned || isSavingRecording}
                 onClick={handleStopAndSaveRecording}

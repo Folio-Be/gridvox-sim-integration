@@ -208,31 +208,31 @@ export default function ProcessingScreen({ onComplete, onCancel }: ProcessingScr
   const headerSubtitle = processingError
     ? "Processing run encountered an error. Review the log and retry."
     : activePhase
-    ? `Currently running: ${activePhase.title}`
-    : isRunning
-    ? "Finalising processing run..."
-    : "Preparing processing pipeline...";
+      ? `Currently running: ${activePhase.title}`
+      : isRunning
+        ? "Finalising processing run..."
+        : "Preparing processing pipeline...";
   const statusText = processingError
     ? "Error"
     : isCancelling
-    ? "Cancelling..."
-    : isRunning
-    ? "Running"
-    : "Idle";
+      ? "Cancelling..."
+      : isRunning
+        ? "Running"
+        : "Idle";
   const statusAccentClass = processingError
     ? "text-[#F44336]"
     : isCancelling
-    ? "text-[#FFC107]"
-    : isRunning
-    ? "text-[#4CAF50]"
-    : "text-white/60";
+      ? "text-[#FFC107]"
+      : isRunning
+        ? "text-[#4CAF50]"
+        : "text-white/60";
   const cancelButtonLabel = processingError
     ? "Return to Setup"
     : isCancelling
-    ? "Cancelling..."
-    : isRunning
-    ? "Cancel Processing"
-    : "Close";
+      ? "Cancelling..."
+      : isRunning
+        ? "Cancel Processing"
+        : "Close";
   const isCancelDisabled = isCancelling || isRestarting;
   const retryButtonLabel = isRestarting ? "Restarting..." : "Retry Processing";
 
@@ -337,8 +337,8 @@ export default function ProcessingScreen({ onComplete, onCancel }: ProcessingScr
                         entry.level === "WARN"
                           ? "text-[#FFC107]"
                           : entry.level === "ERROR"
-                          ? "text-[#F44336]"
-                          : "text-white/50";
+                            ? "text-[#F44336]"
+                            : "text-white/50";
                       return (
                         <p key={`${entry.timestamp}-${index}`}>
                           <span className={levelClass}>
