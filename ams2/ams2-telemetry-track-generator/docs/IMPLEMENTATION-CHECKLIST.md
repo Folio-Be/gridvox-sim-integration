@@ -88,6 +88,75 @@
 
 ---
 
+## Phase 2c: 3D Track Viewer Integration (Priority: CRITICAL)
+
+### Three.js GLB Viewer Component
+- [ ] Create `TrackViewer3D.tsx` component *Three.js scene with GLTFLoader, lighting, and OrbitControls*
+- [ ] Implement GLB file loading *Use GLTFLoader to load .glb files from Tauri file:// protocol*
+- [ ] Setup scene lighting *Ambient + directional lights for proper track visibility*
+- [ ] Add OrbitControls *Camera manipulation: orbit, zoom, pan*
+- [ ] Implement layer visibility toggles *Show/hide racing line, track surface, sectors, etc.*
+- [ ] Auto-center camera on track bounds *Calculate bounds and position camera for optimal view*
+
+**Estimated Time**: 1.5 hours
+
+---
+
+### Tauri Backend Track Generation Command
+- [ ] Create `track_generation.rs` module *Rust module for track generation command*
+- [ ] Implement `generate_track` command *Execute Node.js script via std::process::Command*
+- [ ] Parse script output *Extract .glb and .json file paths from stdout*
+- [ ] Emit progress events *Real-time progress updates during generation*
+- [ ] Register command in lib.rs *Make command available to frontend*
+
+**Estimated Time**: 1 hour
+
+---
+
+### ProcessingScreen Backend Integration
+- [ ] Wire to real track generation *Replace mock start_processing with generate_track command*
+- [ ] Pass telemetry file paths *Use exportedFiles from initialPayload*
+- [ ] Pass track metadata *trackKey, location, variation from initialPayload*
+- [ ] Handle progress events *Display real progress from backend*
+- [ ] Store .glb path in result *Save returned file path to pass to PreviewScreen*
+
+**Estimated Time**: 1 hour
+
+---
+
+### PreviewScreen Viewer Integration
+- [ ] Replace placeholder image *Remove <img> placeholder, add <TrackViewer3D>*
+- [ ] Pass .glb file path to viewer *Use glbPath from processingResult*
+- [ ] Wire layer toggle controls *Connect existing UI toggles to viewer visibility*
+- [ ] Update export functionality *Copy .glb + .json to user-selected location*
+
+**Estimated Time**: 0.5 hours
+
+---
+
+### File Path & Tauri Context Handling
+- [ ] Configure output directory *Set to <AppData>/track-models/<track-key>/*
+- [ ] Handle Tauri file:// protocol *Convert paths for Three.js asset loading*
+- [ ] Cross-platform path handling *Use @tauri-apps/api/path for Windows/Mac/Linux*
+- [ ] Test file access permissions *Verify Tauri can read generated files*
+
+**Estimated Time**: 0.5 hours
+
+---
+
+### Testing & Validation
+- [ ] Test with Brands Hatch Indy data *End-to-end: Record → Process → View*
+- [ ] Verify 3D model rendering *Track surface and racing line visible*
+- [ ] Test camera controls *Orbit, zoom, pan work smoothly*
+- [ ] Test layer toggles *Show/hide track elements*
+- [ ] Test export functionality *Save .glb + .json to chosen location*
+
+**Estimated Time**: 0.5 hours
+
+**Total Phase 2c**: 5 hours
+
+---
+
 ## Phase 3: Automatic Feature Detection (Priority: HIGH)
 
 ### ✅ Sector Boundaries
@@ -451,14 +520,15 @@
 | Phase 1: Core Alignment | 5 | ✅ COMPLETE |
 | Phase 2: Track Surface | 3 | ✅ COMPLETE |
 | Phase 2b: UI Integration & Testing | 4 | ✅ COMPLETE |
-| Phase 3: Auto Features | 17 | 🔄 IN PROGRESS |
+| Phase 2c: 3D Track Viewer | 5 | 🔄 NEXT |
+| Phase 3: Auto Features | 17 | ⏳ PENDING |
 | Phase 4: Additional Features | 5 | ⏳ PENDING |
 | Phase 5: Metadata & Export | 4 | ⏳ PENDING |
 | Phase 6: Testing | 11 | ⏳ PENDING |
 | Phase 7: Documentation | 5 | ⏳ PENDING |
-| **TOTAL** | **54 hours** | **22% Complete (12/54 hrs)** |
+| **TOTAL** | **59 hours** | **20% Complete (12/59 hrs)** |
 
-**~1.5-2 weeks of development work** to implement all automatic features.
+**~2 weeks of development work** to implement all features.
 
 ---
 
@@ -468,11 +538,12 @@
 1. ✅ Phase 1: Core Alignment (5 hrs) - **DONE**
 2. ✅ Phase 2: Track Surface (3 hrs) - **DONE**
 3. ✅ Phase 2b: UI Integration & Testing (4 hrs) - **DONE**
-4. 🔄 Phase 3 (partial): Sectors, Curbs, Corners (9 hrs) - **NEXT**
-5. ⏳ Phase 5: Basic Metadata (2 hrs)
-6. ⏳ Phase 6 (partial): Integration Test (3 hrs)
+4. 🔄 Phase 2c: 3D Track Viewer (5 hrs) - **NEXT** ← Critical for viewing tracks in app
+5. ⏳ Phase 3 (partial): Sectors, Curbs, Corners (9 hrs)
+6. ⏳ Phase 5: Basic Metadata (2 hrs)
+7. ⏳ Phase 6 (partial): Integration Test (3 hrs)
 
-**Week 1 Total**: 26 hours → **12 hrs complete, 14 hrs remaining**
+**Week 1 Total**: 31 hours → **12 hrs complete, 19 hrs remaining**
 
 ### Week 2: Full Features
 6. ✅ Phase 3 (complete): Pit Lane, Braking, Speed, Elevation (8 hrs)
@@ -540,12 +611,17 @@ Phase 7 depends on Phase 6 (document tested features)
 - [x] Phase 1: Core Alignment ✅ COMPLETE
 - [x] Phase 2: Track Surface Generation ✅ COMPLETE
 - [x] Phase 2b: UI Integration & Real Data Testing ✅ COMPLETE
-- [ ] Phase 3: Automatic Feature Detection (0% - in progress)
+- [ ] Phase 2c: 3D Track Viewer Integration (0% - next up)
+- [ ] Phase 3: Automatic Feature Detection (0% - pending)
 - [ ] Phase 4-7: Additional features, testing, examples (0% - not started)
 
-**Current Progress**: 22% (12/54 hours)
+**Current Progress**: 20% (12/59 hours)
 
-**Next Action**: Begin Phase 3 - Implement sector boundary detection, curb detection, and corner detection
+**Next Action**: Implement Phase 2c - 3D Track Viewer Integration
+- Create TrackViewer3D.tsx component with Three.js + GLTFLoader
+- Add Tauri backend command for track generation
+- Wire ProcessingScreen to real track generation
+- Integrate viewer into PreviewScreen
 
 ---
 
@@ -613,7 +689,17 @@ Verify POC telemetry output matches this structure before implementation.
 - ✅ `src/lib/generateTrack.ts` - Main track generation orchestration
 - ✅ `scripts/test-with-real-data.ts` - Real data validation script
 
-### ⏳ Files to Create (Phase 3+)
+### ⏳ Files to Create (Phase 2c: 3D Viewer)
+- `src/components/TrackViewer3D.tsx` - Three.js GLB viewer component (~200 lines)
+- `src-tauri/src/commands/track_generation.rs` - Tauri track generation command (~150 lines)
+
+### ⏳ Files to Modify (Phase 2c: 3D Viewer)
+- `src-tauri/src/lib.rs` - Register track generation command
+- `src/components/screens/ProcessingScreen.tsx` - Wire to real backend
+- `src/components/screens/PreviewScreen.tsx` - Integrate TrackViewer3D
+- `src/lib/processing-types.ts` - Add glbPath field to ProcessingResult
+
+### ⏳ Files to Create (Phase 3+: Auto Features)
 - `src/lib/detection/detectSectors.ts`
 - `src/lib/detection/detectCurbs.ts`
 - `src/lib/detection/detectCorners.ts`
@@ -629,11 +715,10 @@ Verify POC telemetry output matches this structure before implementation.
 
 ### ✅ Files Modified
 - ✅ `package.json` - Added "test:real-data" script
-- ⏳ `src/App.tsx` - UI integration (pending)
-- ⏳ `src/components/screens/ProcessingScreen.tsx` - Backend integration (pending)
 
 **Total code created**: ~2000 lines
-**Total remaining**: ~2000-3000 lines estimated
+**Phase 2c estimate**: ~350 lines
+**Total remaining**: ~2350-3350 lines estimated
 
 ---
 
@@ -647,4 +732,14 @@ Core alignment, track surface generation, and real data validation are fully fun
 - Export to glTF with optimizations
 - Test with `npm run test:real-data`
 
-**Next up**: Phase 3 - Automatic feature detection (sectors, curbs, corners) 🚀
+🔄 **Phase 2c: NEXT PRIORITY**
+
+The generated tracks work perfectly but can only be viewed externally. Phase 2c adds in-app 3D viewing:
+- TrackViewer3D component with Three.js + GLTFLoader
+- Tauri backend command for real track generation
+- ProcessingScreen wired to actual generation (not mock)
+- PreviewScreen shows interactive 3D track with orbit controls
+
+**After Phase 2c**: Complete MVP with end-to-end workflow: Record → Process → View → Export
+
+**Then**: Phase 3 - Automatic feature detection (sectors, curbs, corners) 🚀
