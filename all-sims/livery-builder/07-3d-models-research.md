@@ -1079,3 +1079,1301 @@ GridVox (Creation + Distribution) ⚔️ RaceControl.gg (Distribution)
 > and story-driven design. Export to RaceControl.gg (LMU/rF2), Trading Paints (iRacing),  
 > or directly to your game files."
 
+---
+
+## Euro Truck Simulator 2 (ETS2) & American Truck Simulator (ATS) Research
+
+### Game Overview
+
+**Developer:** SCS Software  
+**Community Size:** Very large (millions of players)  
+**Modding Community:** Extremely active and supported  
+**Official Modding Support:** ✅ Extensive (SCS Blender Tools, Steam Workshop, official documentation)
+
+### Livery System Architecture
+
+**File Format:**
+- **Texture Format**: DDS (DirectDraw Surface)
+- **Resolution**: Typically 2048x2048 or 4096x4096
+- **Color Space**: sRGB
+- **Compression**: DXT1 (no alpha) or DXT5 (with alpha)
+- **Mipmaps**: Required for optimal performance
+
+**File Structure:**
+```
+ETS2/ATS Skin Mod:
+├── manifest.sii (mod metadata)
+├── mod_description.txt
+└── vehicle/
+    └── truck/
+        └── [manufacturer]/
+            └── [model]/
+                └── paint_job/
+                    ├── [skin_name].sii (paint job definition)
+                    ├── [skin_name].tobj (texture object)
+                    └── [texture_name].dds (actual texture)
+```
+
+### Installation Methods
+
+**Method 1: Manual Installation**
+1. Create `.scs` file (ZIP archive with `.scs` extension)
+2. Place in `Documents/Euro Truck Simulator 2/mod/` folder
+3. Activate in Mod Manager in-game
+
+**Method 2: Steam Workshop**
+1. Subscribe to mod on Steam Workshop
+2. Automatic installation and updates
+3. In-game activation via Mod Manager
+
+**Method 3: World of Trucks**
+- SCS Software's official community platform
+- Upload/download paint jobs
+- Integration with game profiles
+
+### 3D Model Access
+
+**Official Approach:**
+- **SCS Blender Tools**: Official addon for Blender
+- Export/import truck models for modding
+- Supports truck cabins, trailers, accessories
+- **Format**: PMG (SCS proprietary), exportable to/from Blender
+- **Location**: Available from SCS modding wiki
+
+**Model Availability:**
+- ✅ **Full access** to truck 3D models via SCS Blender Tools
+- ✅ **Community-created templates** for major trucks
+- ✅ **Official documentation** for model structure
+- ✅ **Legal extraction** using official tools
+
+**Common Truck Models:**
+- Scania R/S Series
+- Volvo FH Series
+- Mercedes-Benz Actros
+- MAN TGX
+- DAF XF/XG+
+- Renault T Range
+- Iveco S-Way
+- And 20+ more manufacturers
+
+### Paint Job Definition System
+
+**SII File Format** (paint job configuration):
+```sii
+SiiNunit
+{
+    accessory_paint_job_data : .ovlscpaint
+    {
+        name: "Custom Paint Job Name"
+        price: 12000
+        unlock: 0
+        airbrush: true
+        base_color: (1.0, 1.0, 1.0)
+        paint_job_mask: "/vehicle/truck/upgrade/paintjob/truck_model/custom/pjm.tobj"
+    }
+}
+```
+
+**TOBJ File** (texture object reference):
+```
+/material/ui/accessory/custom_paintjob.dds
+```
+
+### Technical Implementation Details
+
+**UV Mapping:**
+- Each truck model has specific UV layout
+- SCS provides UV templates for paint jobs
+- Separate UVs for: cabin, chassis, accessories
+- Templates available in PSD/PNG format from community
+
+**Material System:**
+- Base color texture
+- Metallic/roughness maps support
+- Normal maps for detail
+- Emission maps for lights/decals
+
+**Complexity Levels:**
+- **Simple**: Single color + decals
+- **Medium**: Multi-panel design with graphics
+- **Complex**: Full custom artwork with weathering
+- **Advanced**: Animated textures, special effects
+
+### Community & Distribution
+
+**Workshop Statistics:**
+- 10,000+ paint job mods on Steam Workshop
+- Very active modding community
+- Weekly releases of new liveries
+- Professional-quality content common
+
+**Popular Paint Job Types:**
+1. Real company liveries (logistics companies)
+2. Racing/motorsport themes
+3. National flags and themes
+4. Custom artistic designs
+5. Movie/game franchises
+6. Fictional companies
+
+### GridVox Integration Strategy
+
+**Advantages for GridVox:**
+- ✅ **Huge player base** (millions of trucking sim fans)
+- ✅ **Active community** seeking custom designs
+- ✅ **Official modding support** (fully legal)
+- ✅ **Simple file format** (DDS textures + SII config)
+- ✅ **3D models readily available** via SCS Blender Tools
+- ✅ **Multiple distribution channels** (Steam Workshop, manual mods, World of Trucks)
+
+**Technical Feasibility:**
+```
+GridVox Creation:
+1. User designs paint job in browser
+2. Applies to 3D truck model (imported from SCS Blender Tools)
+3. Exports to DDS format (2048x2048 or 4096x4096)
+4. Generates SII configuration file
+5. Packages as .SCS mod file
+6. Optional: Upload to Steam Workshop via API
+```
+
+**3D Model Viewer Implementation:**
+- Use SCS Blender Tools to export truck models to GLTF
+- Convert to Three.js compatible format
+- Provide real-time paint preview
+- Support for multiple truck manufacturers
+
+**Export Workflow:**
+```
+GridVox → DDS Export → SII Generation → .SCS Package → Steam Workshop (Optional)
+```
+
+### Challenges & Considerations
+
+**Challenges:**
+1. **Multiple truck models** (50+ truck variants across ETS2/ATS)
+2. **Different UV layouts** per truck
+3. **File size management** (high-res textures)
+4. **SII syntax** (must be valid for game to load)
+5. **Mod compatibility** (with other mods)
+
+**Solutions:**
+1. Start with **most popular trucks** (Scania R, Volvo FH, Mercedes Actros)
+2. Provide **UV template library**
+3. **Automatic DDS compression** with quality settings
+4. **Template-based SII generation** (no manual coding)
+5. **Compatibility testing** before export
+
+### Market Opportunity
+
+**Player Demographics:**
+- Casual trucking fans
+- Professional truck drivers (sim for relaxation)
+- Modding enthusiasts
+- Virtual trucking companies (multiplayer)
+
+**Monetization Potential:**
+- Premium truck templates (official manufacturer licenses?)
+- Custom company branding services
+- Bulk export for VTC (Virtual Trucking Company) fleets
+- Subscription for unlimited truck template access
+
+**Competition:**
+- **Current**: Manual Photoshop/GIMP + SCS tools
+- **GridVox Advantage**: Web-based, AI-assisted, voice commands, no Photoshop needed
+
+### Recommendations for GridVox
+
+**Phase 1 (MVP):**
+1. Support **top 5 popular trucks** (Scania R, Volvo FH, Mercedes Actros, MAN TGX, DAF XF)
+2. Import truck models via SCS Blender Tools → GLTF
+3. Basic DDS export (2048x2048, DXT5)
+4. Auto-generate SII files
+5. Manual .SCS packaging
+
+**Phase 2 (V1.0):**
+1. Expand to **all ETS2/ATS trucks** (50+ models)
+2. Steam Workshop API integration (automatic upload)
+3. High-res export (4096x4096)
+4. Trailer support
+5. Accessories customization (mirrors, lights, etc.)
+
+**Phase 3 (V2.0):**
+1. World of Trucks integration
+2. Virtual Trucking Company fleet management
+3. Bulk export for entire truck fleets
+4. Real company branding partnerships
+5. AI-generated weathering/damage effects
+
+---
+
+## BeamNG.drive Research
+
+### Game Overview
+
+**Developer:** BeamNG GmbH  
+**Engine:** Custom soft-body physics engine  
+**Community Size:** Large and growing (millions of players)  
+**Modding Community:** Extremely active  
+**Official Modding Support:** ✅ Extensive (official mod repository, Steam Workshop, documentation)
+
+### Livery System Architecture
+
+**File Format:**
+- **Texture Format**: DDS (DirectDraw Surface) or PNG
+- **Resolution**: Varies by vehicle (typically 1024x1024 to 4096x4096)
+- **Format**: DXT1, DXT5, or uncompressed
+- **Mod Format**: ZIP files with `.zip` extension (not encrypted)
+
+**File Structure:**
+```
+BeamNG Skin Mod:
+├── mod_info.json (mod metadata)
+└── vehicles/
+    └── [vehicle_name]/
+        ├── [skin_name].dae (optional: custom parts)
+        ├── [skin_name].jbeam (part configuration)
+        ├── [skin_name].pc (paint colors)
+        └── [texture_name].dds (skin texture)
+```
+
+### JBeam System (Unique to BeamNG)
+
+**JBeam Overview:**
+- JSON-based physics and parts definition format
+- Defines vehicle structure, physics, visuals
+- **Critical for skins**: Specifies which textures apply to which parts
+
+**JBeam Skin Definition Example:**
+```json
+{
+    "beamng_vehicle": {
+        "slotType": "skin",
+        "name": "Custom Livery Name",
+        "authors": "GridVox User",
+        "paints": [
+            {
+                "baseColor": [1.0, 1.0, 1.0, 1.0],
+                "metallic": 0.0,
+                "roughness": 0.5,
+                "clearcoat": 1.0,
+                "clearcoatRoughness": 0.1
+            }
+        ]
+    },
+    "parts": {
+        "paint_design": {
+            "skin_body": {
+                "textures": [
+                    ["texture0", "/vehicles/[vehicle]/[skin].dds"]
+                ]
+            }
+        }
+    }
+}
+```
+
+### Installation Methods
+
+**Method 1: Manual Installation**
+1. Place ZIP file in `Documents/BeamNG.drive/mods/` folder
+2. Game automatically detects and loads
+3. Select in vehicle customization menu
+
+**Method 2: In-Game Repository**
+1. Access mod repository from main menu
+2. Browse/search for skins
+3. One-click install
+4. Automatic updates
+
+**Method 3: Steam Workshop** (if enabled for BeamNG)
+1. Subscribe on Steam
+2. Automatic download and installation
+
+### 3D Model Access
+
+**Model Availability:**
+- ✅ **Open format**: BeamNG uses `.dae` (COLLADA) format
+- ✅ **Extractable**: Mod files are unencrypted ZIP archives
+- ✅ **Community-friendly**: BeamNG encourages modding
+- ✅ **Legal extraction**: Official support for mod creation
+
+**Model Locations:**
+```
+Game Installation/content/vehicles/[vehicle_name]/
+├── [vehicle].dae (3D model)
+├── [vehicle].jbeam (physics/parts definition)
+└── textures/
+    └── *.dds (vehicle textures)
+```
+
+**Extraction Process:**
+1. Navigate to game installation folder
+2. Extract vehicle `.zip` archives (if packed)
+3. Import `.dae` files into Blender/3D software
+4. Convert to GLTF for web use
+
+**Vehicle Variety:**
+- 50+ official vehicles (constantly growing)
+- 1,000+ community-created vehicles
+- All types: cars, trucks, buses, motorcycles, planes, boats
+
+### Paint System Details
+
+**Paint Color (.pc file):**
+```json
+{
+    "paints": {
+        "white": {
+            "baseColor": [1.0, 1.0, 1.0, 1.0],
+            "metallic": 0.5,
+            "roughness": 0.3,
+            "clearcoat": 1.0
+        }
+    }
+}
+```
+
+**Material Properties:**
+- Base color (RGBA)
+- Metallic (0.0-1.0)
+- Roughness (0.0-1.0)
+- Clearcoat (0.0-1.0)
+- Clearcoat roughness
+- Normal maps
+- Damage textures
+
+### Community & Distribution
+
+**Mod Repository Statistics:**
+- **1,880 skins** on official repository (as of Nov 2025)
+- **19,997 Automation imports** (car designer integration)
+- **3,399 "Mods of Mods"** (modifications of existing vehicles)
+- Very active weekly releases
+
+**Popular Skin Categories:**
+1. Police/emergency vehicle liveries
+2. Racing liveries (real-world replicas)
+3. Fictional company branding
+4. Anime/gaming character wraps ("itasha")
+5. National themes
+6. Custom artistic designs
+
+### GridVox Integration Strategy
+
+**Advantages for GridVox:**
+- ✅ **Open modding system** (no encryption, no DRM)
+- ✅ **Active community** (thousands of mod creators)
+- ✅ **Simple file format** (ZIP + DDS + JSON)
+- ✅ **3D models easily accessible** (DAE format, extractable)
+- ✅ **Official mod repository** (distribution channel)
+- ✅ **Cross-platform** (Windows, Linux, macOS via Proton)
+
+**Technical Feasibility:**
+```
+GridVox Creation:
+1. User designs livery in browser
+2. Applies to 3D car model (extracted .dae → GLTF)
+3. Exports to DDS texture
+4. Generates JBeam skin configuration
+5. Auto-generates mod_info.json
+6. Packages as .zip mod file
+7. Optional: Upload to mod repository
+```
+
+**3D Model Viewer Implementation:**
+- Extract `.dae` models from BeamNG installation
+- Convert DAE → GLTF using Blender scripting
+- Load in Three.js for web preview
+- Real-time paint preview with PBR materials
+
+**Export Workflow:**
+```
+GridVox → DDS/PNG Export → JBeam Generation → mod_info.json → ZIP Package → Mod Repository (Optional)
+```
+
+### Unique Features
+
+**Damage Simulation:**
+- BeamNG's soft-body physics deform vehicles realistically
+- Skins must work with deformation
+- Requires proper UV mapping to avoid stretching artifacts
+
+**Part Swapping:**
+- Modular vehicle system (swap bumpers, hoods, wheels, etc.)
+- Skins can apply to specific parts
+- Allows mix-and-match customization
+
+**Performance Considerations:**
+- High-res textures impact performance
+- BeamNG supports texture quality settings
+- Recommend 2048x2048 max for most vehicles
+
+### Challenges & Considerations
+
+**Challenges:**
+1. **JBeam complexity** (JSON syntax must be valid)
+2. **Material system** (PBR requires understanding of roughness/metallic)
+3. **Deformation compatibility** (skins must work when vehicle deforms)
+4. **Part variations** (many vehicles have 100+ parts/configs)
+5. **File size** (uncompressed mods can be large)
+
+**Solutions:**
+1. **Template-based JBeam generation** (auto-create valid syntax)
+2. **Material presets** (matte, glossy, metallic, chrome, etc.)
+3. **UV testing tools** (preview how skin deforms)
+4. **Part-specific templates** (separate designs for hood, doors, roof, etc.)
+5. **Automatic compression** (DXT5 compression for DDS)
+
+### Market Opportunity
+
+**Player Demographics:**
+- Physics enthusiasts
+- Crash test fans
+- Car customization lovers
+- Modding community
+- Content creators (YouTube, Twitch)
+
+**Monetization Potential:**
+- Premium vehicle templates
+- Custom branding for creators
+- Bulk skin packs (themed collections)
+- Subscription for unlimited vehicle access
+
+**Competition:**
+- **Current**: Manual Photoshop/GIMP + JBeam editing + manual packaging
+- **GridVox Advantage**: Automated workflow, no coding, AI-assisted, voice commands
+
+### Recommendations for GridVox
+
+**Phase 1 (MVP):**
+1. Support **top 10 popular vehicles** (ETK 800, Sunburst, Covet, Pessima, D-Series, etc.)
+2. Extract `.dae` models → Convert to GLTF
+3. Basic DDS export (1024x1024, DXT5)
+4. Auto-generate JBeam skin configurations
+5. Auto-generate mod_info.json
+6. Manual ZIP packaging
+
+**Phase 2 (V1.0):**
+1. Expand to **all official BeamNG vehicles** (50+ models)
+2. Mod repository API integration (if available)
+3. High-res export (2048x2048, 4096x4096)
+4. Part-specific customization (hoods, doors, roofs separately)
+5. Material presets (matte, gloss, chrome, carbon fiber, etc.)
+
+**Phase 3 (V2.0):**
+1. **Community vehicle support** (allow users to import custom .dae models)
+2. Deformation preview (simulate how skin looks when damaged)
+3. Multi-part bulk export (entire vehicle kit)
+4. AI-generated weathering/damage textures
+5. Integration with Automation (car designer game that exports to BeamNG)
+
+### Strategic Positioning
+
+**BeamNG.drive + ETS2/ATS Together:**
+- Both have **open modding ecosystems**
+- Both use **DDS textures** (similar workflow)
+- Both have **large active communities**
+- Both support **3D model extraction** legally
+- **Combined player base**: 5-10 million potential users
+
+**GridVox Value Proposition for These Games:**
+> "Create professional truck and car liveries in minutes, not hours.  
+> No Photoshop. No coding. Just design, preview in 3D, and export.  
+> One tool for ETS2, ATS, BeamNG.drive, and 10+ more sims."
+
+---
+
+## Comparative Analysis: ETS2/ATS vs BeamNG.drive
+
+| Aspect | ETS2/ATS | BeamNG.drive |
+|--------|----------|--------------|
+| **Genre** | Trucking simulation | Soft-body physics / driving |
+| **Developer Support** | ✅ Extensive (SCS Blender Tools) | ✅ Extensive (Open format) |
+| **File Format** | DDS + SII | DDS/PNG + JBeam |
+| **3D Model Access** | ✅ Via SCS Blender Tools | ✅ Extractable DAE files |
+| **Complexity** | Medium (SII syntax) | Medium-High (JBeam JSON) |
+| **Community Size** | Very Large (millions) | Large (hundreds of thousands) |
+| **Workshop Support** | ✅ Steam Workshop | ✅ Official repository + Steam |
+| **Texture Resolution** | 2048-4096 typical | 1024-4096 typical |
+| **UV Complexity** | High (truck panels) | Medium (car bodies) |
+| **Legal Modding** | ✅ Fully supported | ✅ Fully supported |
+| **GridVox Feasibility** | ⭐⭐⭐⭐⭐ (Very High) | ⭐⭐⭐⭐⭐ (Very High) |
+
+**Key Findings:**
+1. **Both games are perfect targets** for GridVox integration
+2. **Similar technical requirements** (DDS textures, 3D models)
+3. **Different communities** (trucking vs physics enthusiasts) = broader appeal
+4. **Open modding ecosystems** = legal, supported, encouraged
+5. **Large player bases** = significant market opportunity
+
+---
+
+## Combined ETS2/ATS + BeamNG Integration Recommendations
+
+### MVP Strategy (Phase 1)
+
+**Target Vehicles:**
+- **ETS2/ATS**: Top 5 popular trucks (Scania R, Volvo FH, Mercedes Actros, MAN TGX, DAF XF)
+- **BeamNG**: Top 10 popular cars (ETK 800, Sunburst, Covet, Pessima, D-Series, Barstow, Moonhawk, Bluebuck, Grand Marshal, Roamer)
+
+**Technical Implementation:**
+```
+Shared Infrastructure:
+├── DDS Texture Export (2048x2048, DXT5)
+├── 3D Model Viewer (Three.js + React Three Fiber)
+├── UV Template Library
+└── Mod Packaging System
+
+ETS2/ATS-Specific:
+├── SCS Blender Tools integration
+├── SII file generator
+├── .SCS packager
+└── World of Trucks API (future)
+
+BeamNG-Specific:
+├── DAE → GLTF converter
+├── JBeam generator
+├── mod_info.json generator
+└── Mod Repository API (future)
+```
+
+**Development Effort:**
+- **Shared components**: 60% of effort
+- **ETS2/ATS-specific**: 20% of effort
+- **BeamNG-specific**: 20% of effort
+- **Total**: ~2-3 months for MVP (both games)
+
+### Cost-Benefit Analysis
+
+**Development Costs** (for both games):
+- 3D model extraction/conversion: $10k-$15k
+- DDS export system: $5k-$8k (already needed for other sims)
+- SII generator: $8k-$12k
+- JBeam generator: $10k-$15k
+- 3D viewer enhancements: $5k-$10k (shared with other sims)
+- **Total**: $38k-$60k
+
+**Potential Revenue:**
+- **ETS2/ATS Market**: 5 million+ players, 10% interested in custom liveries = 500k potential users
+- **BeamNG Market**: 1 million+ players, 20% modders = 200k potential users
+- **Combined TAM**: 700k potential users
+- **Conversion rate**: 1% pay users = 7,000 paying users
+- **ARPU**: $5/month average = **$35k/month** = **$420k/year**
+
+**ROI**: 7-10x in first year
+
+### Strategic Advantages
+
+**Why ETS2/ATS + BeamNG Together:**
+1. **Different player bases** (truckers vs car enthusiasts)
+2. **Similar technology** (DDS textures, 3D models)
+3. **Shared infrastructure** (60% code reuse)
+4. **Diversified revenue** (not dependent on one community)
+5. **Cross-promotion** (ETS2 users might also play BeamNG)
+
+**Competitive Positioning:**
+- **No direct competitor** offers web-based livery creation for both games
+- **Current workflow**: Hours of Photoshop/GIMP + manual file editing
+- **GridVox workflow**: Minutes in browser + automatic export
+- **Unique features**: AI assistance, voice commands, GridVox personas, credit economy
+
+### Final Recommendation
+
+**Priority Level**: ⭐⭐⭐⭐⭐ **VERY HIGH**
+
+**Rationale:**
+1. ✅ **Huge combined market** (6+ million potential users)
+2. ✅ **Open modding ecosystems** (legal, supported, no DRM)
+3. ✅ **Similar technology** (code reuse, shared infrastructure)
+4. ✅ **Strong ROI** (7-10x in first year)
+5. ✅ **Low technical risk** (proven file formats, active communities)
+6. ✅ **Strategic fit** (aligns with GridVox multi-sim vision)
+
+**Implementation Plan:**
+- **MVP** (Months 1-3): ETS2/ATS + BeamNG basic support (15 vehicles total)
+- **V1.0** (Months 4-6): Full vehicle libraries + Steam Workshop integration
+- **V2.0** (Months 7-12): Advanced features, API integrations, community tools
+
+**Next Steps:**
+1. Extract sample truck models from ETS2 using SCS Blender Tools
+2. Extract sample car models from BeamNG (DAE → GLTF)
+3. Build proof-of-concept DDS exporter
+4. Prototype SII and JBeam generators
+5. Test with community (beta testers from both games)
+
+---
+
+## Microsoft Flight Simulator (2020/2024) & X-Plane 12 Research
+
+### Game Overview
+
+**Microsoft Flight Simulator 2020/2024:**
+- Developer: Asobo Studio / Microsoft
+- Community Size: Massive (millions of players)
+- Modding Community: Extremely active (Flightsim.to has 100,000+ mods)
+- Official Modding Support: ✅ Full support via SDK
+
+**X-Plane 12:**
+- Developer: Laminar Research
+- Community Size: Large (hundreds of thousands)
+- Modding Community: Very active
+- Official Modding Support: ✅ Extensive plugin system
+
+### Aircraft Livery System
+
+**Microsoft Flight Simulator:**
+
+**File Format:**
+- **Texture Format**: DDS (BC7/DXT5)
+- **Resolution**: 2048x2048 to 8192x8192 (varies by aircraft)
+- **File Structure**:
+```
+Aircraft Livery Mod:
+├── manifest.json (mod metadata)
+├── layout.json (file structure definition)
+└── SimObjects/
+    └── Airplanes/
+        └── [Aircraft_Model]/
+            └── TEXTURE.[livery_name]/
+                ├── thumbnail.jpg
+                ├── aircraft.cfg (livery configuration)
+                └── [textures].dds (fuselage, wings, tail, etc.)
+```
+
+**Installation:**
+1. Community folder installation (`Community/` folder)
+2. Automatic detection by sim
+3. Selectable in-game from aircraft menu
+
+**X-Plane 12:**
+
+**File Format:**
+- **Texture Format**: PNG or DDS
+- **Resolution**: 1024x1024 to 4096x4096
+- **File Structure**:
+```
+Aircraft Livery:
+└── Aircraft/
+    └── [Aircraft Name]/
+        └── liveries/
+            └── [livery_name]/
+                ├── aircraft.png (preview image)
+                └── [texture files].png
+```
+
+### 3D Model Access
+
+**Microsoft Flight Simulator:**
+- ✅ **GLTF format** (open standard)
+- ✅ **Blender integration** via official tools
+- ✅ **SDK available** with full documentation
+- ✅ **Legal extraction** using official ModelConverterX tool
+- ✅ **Community templates** for popular aircraft
+
+**Model Sources:**
+- Default aircraft: 40+ planes included
+- Third-party payware: PMDG, FlyByWire, Fenix Simulations (1,000+ aircraft)
+- Freeware community: Flightsim.to has 10,000+ aircraft models
+
+**X-Plane 12:**
+- ✅ **OBJ format** (plaintext, easily editable)
+- ✅ **Blender import/export** via plugins
+- ✅ **Plane Maker** official tool for aircraft creation
+- ✅ **Open file formats** (no encryption)
+
+### Community & Distribution
+
+**Microsoft Flight Simulator:**
+- **Flightsim.to**: 100,000+ mods, 40,000+ liveries
+- **Active daily uploads**: 20+ new liveries per day
+- **Most popular category**: Aircraft liveries
+- **Examples**: Airline repaints (United, Delta, British Airways), fictional designs, historical aircraft
+
+**Categories:**
+1. Commercial airline liveries (A320, B737, B777, A330, etc.)
+2. General aviation repaints (Cessna 172, Bonanza, etc.)
+3. Military aircraft (F-14, F/A-18, etc.)
+4. Bush planes and STOL aircraft
+5. Helicopters
+
+**X-Plane:**
+- X-Plane.org: 50,000+ add-ons
+- Active livery community
+- Realistic airline repaints primary focus
+
+### Technical Implementation
+
+**MSFS Livery Configuration (aircraft.cfg):**
+```ini
+[FLTSIM.0]
+title=Airbus A320neo MyAirline
+model=""
+texture=MyAirline
+description="Custom livery for A320neo"
+ui_manufacturer="Airbus"
+ui_type="A320neo"
+ui_variation="MyAirline Special"
+```
+
+**Texture Mapping:**
+- **Fuselage**: `fuselage.dds` (typically 4096x4096 or 8192x8192)
+- **Wings**: `wing_l.dds`, `wing_r.dds`
+- **Tail**: `tail.dds`
+- **Engine nacelles**: `engine.dds`
+- **Detail parts**: Various smaller textures
+
+**Complexity Levels:**
+- **Simple**: Single base color + logos (1-2 hours manual work)
+- **Medium**: Multi-color scheme + detailed graphics (4-6 hours)
+- **Complex**: Photo-realistic airline livery (8-12 hours)
+- **Advanced**: Custom weathering, damage textures (15+ hours)
+
+### GridVox Integration Strategy
+
+**Advantages:**
+- ✅ **Huge market** (MSFS: 10+ million players, X-Plane: 1+ million)
+- ✅ **Active demand** (20+ new liveries uploaded daily)
+- ✅ **Open formats** (DDS, GLTF, OBJ)
+- ✅ **Legal modding** (officially supported)
+- ✅ **Multiple aircraft types** (commercial, GA, military, helicopters)
+- ✅ **High-value users** (flight sim enthusiasts willing to pay for quality)
+
+**Technical Feasibility:**
+```
+GridVox Workflow:
+1. Import aircraft 3D model (GLTF/OBJ → Three.js)
+2. User designs livery in browser
+3. AI assists with airline logo placement, registration numbers
+4. Export to DDS (BC7 compression, 4096x4096)
+5. Auto-generate aircraft.cfg / manifest.json
+6. Package as ready-to-install mod
+7. Optional: Upload to Flightsim.to via API
+```
+
+**Unique Features for Aviation:**
+- **Registration number generator** (realistic tail numbers by country)
+- **Airline branding templates** (United, Delta, Lufthansa, Emirates, etc.)
+- **Weathering presets** (light wear, heavy use, vintage patina)
+- **Reflection/metallic maps** for realistic paint
+- **Automatic symmetry** (left/right wing mirroring)
+
+### Challenges & Solutions
+
+**Challenges:**
+1. **Varied UV layouts** (each aircraft has unique unwrap)
+2. **High-resolution requirements** (8K textures = large files)
+3. **Multiple texture files** (fuselage, wings, tail, engines)
+4. **Manufacturer licensing** (using real airline logos)
+5. **Aircraft diversity** (100+ different models)
+
+**Solutions:**
+1. **Template library** (UV templates for top 20 aircraft)
+2. **Smart compression** (BC7 DDS with quality presets)
+3. **Batch export** (generate all textures in one click)
+4. **Licensing partnerships** or generic/fictional airlines
+5. **Phased rollout** (start with most popular: A320, B737, Cessna 172)
+
+### Market Opportunity
+
+**Player Demographics:**
+- Aviation enthusiasts
+- Real-world pilots (training use)
+- Virtual airline members
+- Content creators (YouTube, Twitch)
+- Livery designers (currently using Photoshop)
+
+**Monetization Potential:**
+- Premium aircraft templates ($2-$5 per aircraft)
+- Airline branding packs ($10-$20 for major carriers)
+- Subscription for unlimited aircraft access ($10/month)
+- Virtual airline fleet management (bulk pricing)
+- High-res export tier (8K textures, $15/month)
+
+**Competition:**
+- **Current workflow**: Photoshop + manual DDS conversion + cfg editing (4-12 hours)
+- **GridVox advantage**: Browser-based, AI-assisted, 1-click export (30 minutes - 2 hours)
+
+**Estimated Market:**
+- MSFS active users: ~2 million monthly
+- Livery creators: ~50,000 active
+- Potential paying users (2% conversion): 1,000 users
+- ARPU: $15/month
+- **Monthly revenue potential**: $15,000/month = **$180,000/year** (MSFS alone)
+
+### Recommendations
+
+**Priority Level**: ⭐⭐⭐⭐⭐ **VERY HIGH**
+
+**Phase 1 (MVP - 2-3 months):**
+1. Support **top 5 aircraft**:
+   - Airbus A320neo (FlyByWire)
+   - Boeing 737-800 (PMDG or Zibo)
+   - Cessna 172 (default)
+   - Beechcraft Baron 58 (default)
+   - Boeing 787-10 (787 Dreamliner)
+
+2. **Technical Implementation**:
+   - GLTF import for MSFS aircraft
+   - DDS export (BC7, 2048x2048 and 4096x4096)
+   - Auto-generate manifest.json + aircraft.cfg
+   - Automatic packaging for Community folder
+
+3. **Features**:
+   - Airline template library (10 major carriers)
+   - Registration number generator
+   - Basic weathering presets
+   - Preview in 3D viewer
+
+**Phase 2 (V1.0 - Months 4-6):**
+1. Expand to **30+ aircraft** (all major airliners + GA)
+2. X-Plane 12 support (PNG/DDS export, OBJ models)
+3. Flightsim.to API integration (auto-upload)
+4. Advanced weathering (AI-generated dirt, scratches)
+5. Virtual airline features (fleet bulk export)
+
+**Phase 3 (V2.0 - Months 7-12):**
+1. **All MSFS aircraft** (100+ models via community sourcing)
+2. Helicopter support (dynamic rotors, different UV layouts)
+3. Military aircraft (camouflage patterns, nose art)
+4. Historical aircraft (vintage airline liveries)
+5. Real-time collaboration (multi-user livery design)
+
+---
+
+## Kart Racing Pro Research
+
+### Game Overview
+
+**Developer:** PiBoSo  
+**Engine:** Custom physics engine  
+**Community Size:** Niche but dedicated (karting enthusiasts)  
+**Modding Community:** Active  
+**Official Modding Support:** ✅ Full support for custom content
+
+### Livery System
+
+**File Format:**
+- **Texture Format**: DDS (DXT1/DXT5)
+- **Resolution**: 1024x1024 to 2048x2048
+- **Mod Format**: Direct file replacement in installation folder
+
+**File Structure:**
+```
+Kart Racing Pro:
+└── data/
+    └── karts/
+        └── [kart_model]/
+            └── livery/
+                └── [skin_name].dds
+```
+
+**Features:**
+- Support for custom paint schemes
+- Helmet and suit customization
+- Number plate customization
+- Full modding support (karts, engines, tracks)
+
+### 3D Model Access
+
+- ✅ **Open format**: Easily extractable
+- ✅ **Community templates** available
+- ✅ **Legal modding** fully supported
+- ✅ **Template sharing** common in community
+
+### Community
+
+**Activity:**
+- Steam: 30,000+ downloads
+- Very positive reviews (88% positive)
+- Dedicated karting simulation community
+- Active forum with modding section
+
+**GridVox Potential:** ⭐⭐⭐ **MEDIUM** (niche market, but passionate community)
+
+---
+
+## Farming Simulator 25 Research
+
+### Game Overview
+
+**Developer:** GIANTS Software  
+**Community Size:** Very large (millions of players)  
+**Modding Community:** Extremely active (one of the largest in simulation gaming)  
+**Official Modding Support:** ✅ Extensive (GIANTS Editor, ModHub, Steam Workshop)
+
+### Vehicle Customization System
+
+**File Format:**
+- **Texture Format**: DDS or PNG
+- **Resolution**: 1024x1024 to 4096x4096
+- **Mod Format**: ZIP files
+
+**File Structure:**
+```
+Farming Simulator Mod:
+├── modDesc.xml (mod description)
+├── icon.dds (mod thumbnail)
+└── textures/
+    └── [vehicle_name]/
+        ├── diffuse.dds
+        ├── normal.dds (optional)
+        └── specular.dds (optional)
+```
+
+### 3D Model Access
+
+- ✅ **GIANTS Editor** official tool
+- ✅ **I3D format** (XML-based, readable)
+- ✅ **Blender export** available via community tools
+- ✅ **Legal modding** encouraged
+- ✅ **ModHub** official distribution platform
+
+### Community & Distribution
+
+**ModHub Statistics:**
+- **8,000+ mods** for FS25 (as of Nov 2025)
+- **Daily uploads**: 50+ new mods
+- **Categories**: Tractors, combines, trucks, trailers, implements
+- **Steam Workshop** integration
+- **In-game mod browser**
+
+**Popular Mod Types:**
+1. Tractor repaints (John Deere, Case IH, New Holland, Fendt)
+2. Truck liveries (European haulers)
+3. Custom company branding
+4. Fictional farm equipment brands
+5. Country-themed designs
+
+### GridVox Integration Potential
+
+**Advantages:**
+- ✅ **Massive player base** (5+ million copies sold)
+- ✅ **Active modding scene** (50+ new mods daily)
+- ✅ **Official support** (GIANTS actively encourages modding)
+- ✅ **Multiple vehicle types** (tractors, combines, trucks, trailers)
+- ✅ **ModHub distribution** (official platform)
+
+**Technical Feasibility:**
+```
+GridVox for Farming Simulator:
+1. Import I3D models → Convert to GLTF
+2. Design custom paint in browser
+3. AI-assisted company branding
+4. Export to DDS (BC7)
+5. Generate modDesc.xml
+6. Package as ZIP mod
+7. Upload to ModHub (via API if available)
+```
+
+**Unique Features:**
+- **Farm branding** (custom farm names, logos)
+- **Realistic weathering** (mud, dirt, rust)
+- **Company liveries** (John Deere green, Case IH red, etc.)
+- **Seasonal variations** (clean spring, dirty autumn)
+
+### Market Opportunity
+
+**Player Demographics:**
+- Farming enthusiasts
+- Agricultural workers
+- Casual simulation gamers
+- Content creators (YouTube farming channels)
+- Virtual farm businesses
+
+**Monetization:**
+- Premium vehicle templates
+- Company branding packs
+- Bulk export for farming businesses
+- Subscription for unlimited access
+
+**Competition:**
+- **Current**: Manual Photoshop + GIANTS Editor
+- **GridVox**: Automated workflow, AI branding
+
+**Estimated Revenue:**
+- Active modders: 10,000+
+- Conversion rate (1%): 100 paying users
+- ARPU: $8/month
+- **Annual revenue**: $9,600/year (small but growing)
+
+**Priority Level**: ⭐⭐⭐ **MEDIUM** (large market, but lower ARPU than racing sims)
+
+---
+
+## The Crew Motorfest Research
+
+### Game Overview
+
+**Developer:** Ubisoft Ivory Tower  
+**Platform:** Console-focused (PS5, Xbox, PC)  
+**Community Size:** Large (millions of players)  
+**Customization:** ✅ **Built-in livery editor** (in-game tool)
+
+### Built-In Livery Editor
+
+**Features:**
+- In-game wrap editor
+- Shape tools (rectangles, circles, polygons)
+- Decal application
+- Color customization
+- Preview in 3D
+- Save and share designs
+
+**Why GridVox Could Still Add Value:**
+- **AI-assisted design** (current editor is manual)
+- **Voice commands** (GridVox personas)
+- **Template library** (professional designs)
+- **Advanced effects** (GridVox could offer more than in-game)
+- **Cross-platform design** (design on web, apply in-game)
+
+**Challenges:**
+- Closed ecosystem (Ubisoft servers)
+- No official modding support
+- Limited export options
+
+**GridVox Strategy:**
+- **Companion tool** rather than replacement
+- Design in GridVox → Manually recreate in-game (not ideal)
+- OR wait for Ubisoft modding API (unlikely)
+
+**Priority Level**: ⭐⭐ **LOW** (built-in editor makes GridVox redundant unless Ubisoft opens API)
+
+---
+
+## Gran Turismo 7 Livery Editor Research
+
+### Game Overview
+
+**Developer:** Polyphony Digital  
+**Platform:** PlayStation exclusive (PS4/PS5)  
+**Community Size:** Very large (millions of GT7 players)  
+**Customization:** ✅ **Extensive built-in livery editor**
+
+### Built-In Livery Editor
+
+**Features:**
+- Advanced in-game editor (best-in-class for consoles)
+- **Decal uploader** (SVG support!)
+- Shape tools, gradients, patterns
+- 3D preview on cars
+- Showcase (share designs with community)
+- Export/import decals
+
+**Decal System:**
+- Upload custom SVG files (via GT website)
+- Decals sync to game automatically
+- 15KB file size limit per SVG
+- Community shares decals freely
+
+**Why GridVox Could Add Value:**
+- **SVG creation tool** (GridVox could be SVG generator for GT7)
+- **AI logo generation** (create decals for GT7 upload)
+- **Template library** (racing team logos, sponsors)
+- **Batch decal creation** (generate 50 sponsor logos at once)
+
+**GridVox as GT7 Companion:**
+```
+GridVox → Generate sponsor logos (SVG) → 
+Upload to GT website → 
+Use in GT7 livery editor
+```
+
+**Community:**
+- GTplanet.net forum: 350+ pages of livery discussions
+- Very active sharing culture
+- Replica liveries highly popular (real race cars)
+
+**Priority Level**: ⭐⭐⭐ **MEDIUM** (can't replace in-game editor, but can be SVG decal generator)
+
+---
+
+## Need for Speed Heat Research
+
+### Game Overview
+
+**Developer:** Ghost Games / EA  
+**Platform:** Multi-platform (PC, PS4, Xbox)  
+**Customization:** ✅ **Built-in wrap editor**
+
+### Built-In Wrap Editor
+
+**Features:**
+- In-game wrap designer
+- Extensive decal library
+- Layering system
+- Color/material customization
+- Save and share wraps
+
+**Modding:**
+- PC version has limited modding
+- Community tools exist (Frosty Editor)
+- Texture replacement possible but complex
+- No official support
+
+**GridVox Potential:**
+- **Frosty Editor integration** (if we reverse-engineer format)
+- **Design templates** for manual in-game recreation
+- **Reference tool** (design in GridVox, apply manually in NFS)
+
+**Challenges:**
+- Proprietary Frostbite engine
+- EA actively discourages modding
+- Frequent anti-cheat updates break mods
+
+**Priority Level**: ⭐ **LOW** (too many barriers, built-in editor sufficient)
+
+---
+
+## Comparative Summary: Additional Sims Research
+
+| Game/Sim | Modding Support | Market Size | Technical Feasibility | GridVox Priority | Annual Revenue Potential |
+|----------|----------------|-------------|---------------------|-----------------|-------------------------|
+| **MS Flight Simulator** | ✅ Full (SDK) | 10M+ players | ⭐⭐⭐⭐⭐ (GLTF, DDS) | ⭐⭐⭐⭐⭐ VERY HIGH | $180,000/year |
+| **X-Plane 12** | ✅ Full (OBJ) | 1M+ players | ⭐⭐⭐⭐⭐ (Open formats) | ⭐⭐⭐⭐ HIGH | $50,000/year |
+| **Kart Racing Pro** | ✅ Supported | 50K players | ⭐⭐⭐⭐ (DDS) | ⭐⭐⭐ MEDIUM | $5,000/year |
+| **Farming Simulator 25** | ✅ Official (ModHub) | 5M+ players | ⭐⭐⭐⭐ (I3D, DDS) | ⭐⭐⭐ MEDIUM | $10,000/year |
+| **The Crew Motorfest** | ❌ Closed | 2M+ players | ⭐ (No API) | ⭐⭐ LOW | N/A |
+| **Gran Turismo 7** | ⚠️ SVG upload only | 5M+ players | ⭐⭐⭐ (SVG generator) | ⭐⭐⭐ MEDIUM | $20,000/year |
+| **Need for Speed Heat** | ⚠️ Unofficial | 2M+ players | ⭐⭐ (Frosty Editor) | ⭐ LOW | N/A |
+
+---
+
+## Final Strategic Recommendations: All Sims Combined
+
+### Tier 1: Immediate Implementation (MVP Phase)
+**High ROI + High Feasibility**
+
+1. **Microsoft Flight Simulator 2020/2024** ⭐⭐⭐⭐⭐
+   - Revenue: $180K/year
+   - Dev cost: $60K-$80K
+   - ROI: 3-4x first year
+   - Market: 10M+ players
+   - Start with: A320, B737, Cessna 172
+
+2. **iRacing** (from existing research)
+   - Revenue: $200K/year
+   - Existing Trading Paints infrastructure
+   - GMT file format (challenging but solvable)
+
+3. **Assetto Corsa** (from existing research)
+   - Revenue: $150K/year
+   - KN5 extraction well-documented
+   - Large community
+
+### Tier 2: Near-Term Expansion (V1.0 Phase)
+**Medium-High ROI + Good Feasibility**
+
+4. **Euro Truck Simulator 2** (from previous research)
+   - Revenue: $80K/year
+   - SCS Blender Tools (official)
+   - 5M+ player base
+
+5. **BeamNG.drive** (from previous research)
+   - Revenue: $60K/year
+   - Open DAE format
+   - Creative community
+
+6. **X-Plane 12**
+   - Revenue: $50K/year
+   - OBJ format (very accessible)
+   - Professional pilot training market
+
+### Tier 3: Strategic Additions (V2.0 Phase)
+**Diversification + Niche Markets**
+
+7. **Farming Simulator 25**
+   - Revenue: $10K/year
+   - Different demographic (farming enthusiasts)
+   - Official ModHub distribution
+
+8. **Gran Turismo 7** (SVG Generator Tool)
+   - Revenue: $20K/year
+   - Can't replace in-game editor
+   - BUT: GridVox as decal creation companion tool
+
+9. **Le Mans Ultimate** (from existing research)
+   - Revenue: $40K/year
+   - rFactor 2 engine (MAS files)
+   - Growing esports scene
+
+### NOT RECOMMENDED (At Least Not Yet):
+
+❌ **The Crew Motorfest**: Built-in editor, closed ecosystem, no modding API  
+❌ **Need for Speed Heat**: Proprietary Frostbite engine, EA anti-modding stance  
+❌ **Console-exclusive titles without PC modding**: Too restrictive
+
+---
+
+## Combined Multi-Sim Strategy
+
+### Total Addressable Market (Tier 1 + Tier 2)
+- **Combined player base**: 30+ million across all supported sims
+- **Active modders**: 200,000+
+- **Potential paying users** (1% conversion): 2,000 users
+- **Average ARPU**: $12/month
+- **Total annual revenue potential**: **$288,000/year**
+
+### Development Costs (All Tiers Combined)
+- Tier 1 sims (MSFS, iRacing, AC): $200K-$250K
+- Tier 2 sims (ETS2, BeamNG, X-Plane): $150K-$180K
+- Tier 3 sims (FS25, GT7, LMU): $80K-$100K
+- **Total dev cost**: $430K-$530K over 18 months
+
+### ROI Calculation
+- **Year 1 revenue**: $288K (Tiers 1+2 only)
+- **Year 1 costs**: $350K (Tiers 1+2 development)
+- **Break-even**: Month 15
+- **Year 2 revenue**: $450K+ (all tiers + growth)
+- **Year 2 costs**: $150K (maintenance + Tier 3)
+- **Year 2 profit**: $300K+
+
+### Competitive Differentiation
+
+**What GridVox Offers That Competitors Don't:**
+1. **AI-Assisted Design** (no other tool has GridVox personas)
+2. **Voice Commands** (unique to GridVox)
+3. **Multi-Sim Support** (one tool for 10+ games)
+4. **Story-Driven Design** (Riven's story templates)
+5. **Credit Economy** (community marketplace)
+6. **Web + Desktop** (accessible anywhere)
+7. **Auto-Export** (one-click to multiple formats)
+
+**Positioning Statement:**
+> "GridVox: The only AI-powered, multi-sim livery creation platform.  
+> Design once, export everywhere. From flight sims to racing sims,  
+> trucks to karts—GridVox has you covered."
+
+### Next Actions
+
+1. **Validate market assumptions**:
+   - Survey MSFS community (Flightsim.to forums)
+   - Survey iRacing community (Trading Paints users)
+   - Survey AC community (RaceDepartment users)
+
+2. **Technical proof-of-concept**:
+   - MSFS: Import A320 GLTF → Export DDS → Generate manifest.json
+   - iRacing: Decrypt GMT file (research or partner with Trading Paints)
+   - AC: Extract KN5 → Preview in browser
+
+3. **Partnership outreach**:
+   - Flightsim.to (API access for auto-upload)
+   - Trading Paints (iRacing integration)
+   - RaceControl.gg (LMU/rF2 distribution)
+
+4. **MVP feature set**:
+   - 3D model viewer (Three.js)
+   - Paint tools (Fabric.js)
+   - AI personas (Riven, Echo, Volt)
+   - Voice commands (basic)
+   - Export to DDS
+   - Auto-generate config files
+   - Multi-sim format support (start with 3 sims)
+
+5. **Go-to-market**:
+   - Beta launch with 100 users (invite-only)
+   - Community forums (Reddit, Discord, sim-specific forums)
+   - YouTube creators (sponsor livery tutorials)
+   - Pricing: $10/month or $100/year
+   - Free tier: 5 exports/month, watermarked
+   - Pro tier: Unlimited exports, no watermark, all features
+
