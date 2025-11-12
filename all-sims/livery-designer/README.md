@@ -30,6 +30,7 @@ Create the world's first AI-powered livery designer that eliminates the complexi
 | Document | Description |
 |----------|-------------|
 | [IMPLEMENTATION-CHECKLIST.md](docs/IMPLEMENTATION-CHECKLIST.md) | **Start here!** Detailed 16-week roadmap with phases, checkboxes, and milestones |
+| [APPROACH-COMPARISON.md](docs/APPROACH-COMPARISON.md) | **Training data decision:** DreamCar vs CADillac vs Blender vs Hybrid (choose before Phase 2) |
 | [USER-STORIES.md](docs/USER-STORIES.md) | 4 user personas (Amateur, League, Creator, Pro Designer) with complete workflows |
 | [UI-UX-DESIGN.md](docs/UI-UX-DESIGN.md) | 9 screen specifications + complete Google AI Studio prompts for mockups |
 

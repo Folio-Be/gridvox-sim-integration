@@ -2,7 +2,9 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:default",
     "opener:default",
@@ -12,9 +14,15 @@
     {
       "identifier": "fs:allow-read-text-file",
       "allow": [
-        { "path": "$APPDATA/**" },
-        { "path": "C:/DATA/GridVox/gridvox-sim-integration/ams2/ams2-telemetry-track-generator/output/**" },
-        { "path": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-telemetry-track-generator\\output\\**" }
+        {
+          "path": "$APPDATA/**"
+        },
+        {
+          "path": "C:/DATA/GridVox/gridvox-sim-integration/ams2/ams2-telemetry-track-generator/output/**"
+        },
+        {
+          "path": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-telemetry-track-generator\\output\\**"
+        }
       ]
     }
   ]

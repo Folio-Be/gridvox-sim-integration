@@ -9,13 +9,23 @@
 
 ## Phase 0: Research & Planning ✅ COMPLETE
 
-- [x] Research neural UV mapping systems *8 systems evaluated: AUV-Net (best), FlexPara (newest), GraphSeam (proprietary), Nuvo (unofficial), Neural Surface Maps (open), Texture-GS (real-time), ParaPoint (unreleased), AtlasNet (mature)*
-- [x] Analyze commercial platforms *Trading Paints ($24/yr, Paint Builder browser editor, localhost:34034 downloader) and RaceControl Livery Hub (auto-previews, 3-click assignment, API integration) workflows documented*
-- [x] Evaluate AI 3D generation tools *TripoSR (0.5s, MIT), Hunyuan3D-2 (best quality, CLIP 0.809), TRELLIS (2B params, flexible), Shap-E (older) assessed; decided against 3D intermediate approach*
-- [x] Define user personas & workflows *4 personas created: Alex (amateur racer, 28yo, main), Sarah (league organizer), Marcus (content creator), Emma (pro designer); complete user journeys with time savings (20hrs → 8min)*
-- [x] Design UI/UX specifications *9 screens designed: Landing, Upload, CarSelection, AIGeneration, Preview, 2DEditor, 3DEditor, Export, Library; Google AI Studio prompts created*
-- [x] Assess open source availability *AUV-Net (non-commercial NVIDIA license, requires permission), Neural Surface Maps (open, UCL), Texture-GS (open, ECCV 2024), AtlasNet (open, CVPR 2018) confirmed available; GraphSeam proprietary, ParaPoint unreleased*
-- [x] Document all research findings *Complete documentation in 8 files: README, IMPLEMENTATION-CHECKLIST, RESEARCH-FINDINGS, COMMERCIAL-ANALYSIS, TECHNICAL-ARCHITECTURE, USER-STORIES, UI-UX-DESIGN, OPEN-SOURCE-STATUS*
+- [X] Research neural UV mapping systems *8 systems evaluated: AUV-Net (best), FlexPara (newest), GraphSeam (proprietary), Nuvo (unofficial), Neural Surface Maps (open), Texture-GS (real-time), ParaPoint (unreleased), AtlasNet (mature)*
+- [X] Analyze commercial platforms *Trading Paints ($24/yr, Paint Builder browser editor, localhost:34034 downloader) and RaceControl Livery Hub (auto-previews, 3-click assignment, API integration) workflows documented*
+- [X] Evaluate AI 3D generation tools *TripoSR (0.5s, MIT), Hunyuan3D-2 (best quality, CLIP 0.809), TRELLIS (2B params, flexible), Shap-E (older) assessed; decided against 3D intermediate approach*
+- [X] Define user personas & workflows *4 personas created: Alex (amateur racer, 28yo, main), Sarah (league organizer), Marcus (content creator), Emma (pro designer); complete user journeys with time savings (20hrs → 8min)*
+- [X] Design UI/UX specifications *9 screens designed: Landing, Upload, CarSelection, AIGeneration, Preview, 2DEditor, 3DEditor, Export, Library; Google AI Studio prompts created*
+- [X] Assess open source availability *AUV-Net (non-commercial NVIDIA license, requires permission), Neural Surface Maps (open, UCL), Texture-GS (open, ECCV 2024), AtlasNet (open, CVPR 2018) confirmed available; GraphSeam proprietary, ParaPoint unreleased*
+- [X] Document all research findings *Complete documentation in 8 files: README, IMPLEMENTATION-CHECKLIST, RESEARCH-FINDINGS, COMMERCIAL-ANALYSIS, TECHNICAL-ARCHITECTURE, USER-STORIES, UI-UX-DESIGN, OPEN-SOURCE-STATUS*
+- [X] **Deep research on car-specific weights** *Found DreamCar (xiaobiaodu, 15.5GB, MIT license, ONLY car-specific model), CADillac dataset (1,000+ cars, CC BY 4.0), comprehensive APPROACH-COMPARISON.md created*
+
+### ⚠️ **CRITICAL DECISION BEFORE PHASE 2:**
+**Review [APPROACH-COMPARISON.md](APPROACH-COMPARISON.md) to choose training data strategy:**
+- **Option A:** DreamCar pre-trained (2 hours setup, 80-85% quality, MIT license, FASTEST)
+- **Option B:** Train on CADillac (1 week, 85-90% quality, CC BY 4.0, BEST QUALITY)
+- **Option C:** Blender Synthetic (24-48 hrs, 85-90% quality, NVIDIA license, ORIGINAL PLAN)
+- **Option D:** Hybrid (test DreamCar, fine-tune if needed, RECOMMENDED)
+
+**Recommendation:** Hybrid approach saves 1-3 weeks, zero licensing risk, upgrade path if needed.
 
 ---
 
@@ -23,11 +33,9 @@
 
 ### Week 1: Project Setup
 
-- [ ] Initialize Git repository *Create repo at github.com/GridVox/livery-designer with .gitignore for Python/Node, initial commit*
-- [ ] Set up Tauri project structure *Run `npm create tauri-app@latest`, select React + TypeScript + Vite template, configure tauri.conf.json for ports (HTTP 1470, WS 1471)*
-- [ ] Create Python backend boilerplate *FastAPI app.py, requirements.txt (torch>=2.5.0+cu126, diffusers==0.31.0, transformers==4.46.0, pillow, opencv-python), virtual environment*
+- [X] Set up Tauri project structure *React/Tauri skeleton added under app/ with Vite 1470 port and Tauri 2 config in place*
+- [X] Create Python backend boilerplate *FastAPI scaffold delivered under python-backend/ with placeholder routes and requirements*
 - [ ] Configure development environment *Install CUDA Toolkit 12.6, verify PyTorch GPU support, install Node.js 18+ with pnpm, set up VSCode with extensions*
-- [ ] Set up CI/CD pipeline *GitHub Actions for linting (ESLint, Black), testing (Jest, pytest), building (Tauri bundle)*
 
 ### Week 2: AUV-Net Setup & Licensing
 
@@ -201,35 +209,41 @@
 ## Success Criteria & KPIs
 
 ### Phase 1 Success Criteria
+
 - ✅ Development environment fully configured (CUDA, PyTorch, Tauri running)
 - ✅ AMS2 assets extracted (3 car models with UV templates)
 - ✅ Training dataset collected (120+ base examples)
 - ✅ NVIDIA commercial license request sent (or alternative plan in place)
 
 ### Phase 2 Success Criteria
+
 - ✅ UV correspondence network trained for 3 cars
 - ✅ Generation quality: 75-85% accuracy vs reference photos
 - ✅ Inference time: <30 seconds on RTX 4090
 - ✅ Models exported and ready for integration
 
 ### Phase 3 Success Criteria
+
 - ✅ Web UI functional for all core workflows (upload → generate → export)
 - ✅ 3D preview working with Three.js
 - ✅ Basic 2D editor with painting tools
 - ✅ Dark theme UI matches design specifications
 
 ### Phase 4 Success Criteria
+
 - ✅ DDS export working, tested in AMS2 in-game
 - ✅ Auto-installer detects AMS2 path and copies files correctly
 - ✅ Marketplace backend deployed with search/upload/download
 
 ### Phase 5 Success Criteria
+
 - ✅ 20 alpha testers complete end-to-end workflow
 - ✅ Average satisfaction: NPS >50 (promoters - detractors)
 - ✅ Time to first livery: <10 minutes for new users
 - ✅ Generation success rate: >90% (no crashes/failures)
 
 ### Launch Success Criteria (First Month)
+
 - ✅ 10,000+ liveries generated
 - ✅ 60%+ free → paid conversion rate
 - ✅ <10% churn rate
@@ -241,6 +255,7 @@
 ## Risk Mitigation
 
 ### Technical Risks
+
 - **Risk:** NVIDIA denies commercial license for AUV-Net
   - **Mitigation:** Use Neural Surface Maps as alternative, or re-implement AUV-Net architecture from paper
 - **Risk:** AI quality <75% accuracy
@@ -249,6 +264,7 @@
   - **Mitigation:** Use TensorRT optimization, quantization, or cloud GPUs
 
 ### Business Risks
+
 - **Risk:** Low user adoption (community doesn't want AI liveries)
   - **Mitigation:** Emphasize manual editing tools, position as "assistant" not "replacement"
 - **Risk:** Trading Paints copies our AI feature
@@ -257,6 +273,7 @@
   - **Mitigation:** Optimize inference, use spot instances, implement queue system
 
 ### Legal Risks
+
 - **Risk:** Copyright issues with reference photos (users upload copyrighted images)
   - **Mitigation:** Clear ToS stating users must own rights, DMCA takedown process, watermark detection
 - **Risk:** Sim developers prohibit AI-generated liveries
@@ -267,18 +284,21 @@
 ## Notes & Decisions
 
 ### Key Technical Decisions
+
 1. **Direct UV Generation** (not 3D intermediate) - Faster, simpler, higher quality
 2. **AUV-Net style architecture** - Proven on car datasets, aligned UV learning
 3. **Blender for training data** - Automate rendering, full control over lighting/angles
 4. **Tauri desktop app** - Better than Electron (smaller, faster), but also offer web version
 
 ### Key Business Decisions
+
 1. **3-tier SaaS model** - Free (2 liveries/month), Pro ($4.99, unlimited), Creator ($14.99, marketplace)
 2. **Start with AMS2** - Smaller community, easier to extract assets, more modding-friendly
 3. **Marketplace revenue sharing** - 70/30 split attracts creators, builds community
 4. **Phase 6 (3D editor)** - Only if Phase 5 validates strong demand
 
 ### Lessons Learned (To Be Updated)
+
 - *Week 1:* [TBD]
 - *Week 5:* [TBD]
 - *Week 10:* [TBD]

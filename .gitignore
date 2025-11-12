@@ -166,3 +166,4 @@ coverage/
 
 ams2/ams2-ai-livery-designer/examples/*
 ams2/ams2-ai-livery-designer/python-backend/poc_results/*
+all-sims/livery-builder/examples/frames/*
