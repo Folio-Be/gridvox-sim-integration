@@ -39,7 +39,7 @@ export function LiveryCanvas({ psd }: LiveryCanvasProps) {
           layerCanvas.width = layer.width;
           layerCanvas.height = layer.height;
           const layerCtx = layerCanvas.getContext('2d');
-          
+
           if (layerCtx) {
             // Composite layer pixels once and cache
             const pixels = await layer.composite(false);
@@ -101,7 +101,7 @@ export function LiveryCanvas({ psd }: LiveryCanvasProps) {
     const startTime = performance.now();
     renderLivery(ctx);
     const endTime = performance.now();
-    
+
     const renderDuration = endTime - startTime;
     setRenderTime(renderDuration);
     setFps(renderDuration > 0 ? Math.round(1000 / renderDuration) : 60);
@@ -126,7 +126,7 @@ export function LiveryCanvas({ psd }: LiveryCanvasProps) {
   };
 
   const toggleLayer = (index: number) => {
-    setLayers(prev => prev.map((layer, i) => 
+    setLayers(prev => prev.map((layer, i) =>
       i === index ? { ...layer, visible: !layer.visible } : layer
     ));
   };
@@ -149,15 +149,15 @@ export function LiveryCanvas({ psd }: LiveryCanvasProps) {
     <div className="livery-canvas-container">
       <div className="controls">
         <h3>Layers ({layers.length})</h3>
-        
+
         {isLoading && <p style={{ color: '#888', fontSize: '0.85rem' }}>Loading layers...</p>}
-        
+
         <div className="control-group" style={{ borderBottom: '1px solid #333', paddingBottom: '0.5rem', marginBottom: '0.5rem' }}>
           <label>
             <span>Background:</span>
-            <input 
-              type="color" 
-              value={backgroundColor} 
+            <input
+              type="color"
+              value={backgroundColor}
               onChange={(e) => setBackgroundColor(e.target.value)}
             />
           </label>
@@ -172,13 +172,13 @@ export function LiveryCanvas({ psd }: LiveryCanvasProps) {
             {renderTime < 16 ? '✅ Excellent' : renderTime < 50 ? '⚠️ Good' : '❌ Needs optimization'}
           </p>
         </div>
-        
+
         {layers.map((layer, index) => (
           <div key={index} className="control-group">
             <label>
-              <input 
-                type="checkbox" 
-                checked={layer.visible} 
+              <input
+                type="checkbox"
+                checked={layer.visible}
                 onChange={() => toggleLayer(index)}
               />
               <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -195,14 +195,14 @@ export function LiveryCanvas({ psd }: LiveryCanvasProps) {
       </div>
 
       <div className="canvas-wrapper" style={{ position: 'relative' }}>
-        <canvas 
+        <canvas
           ref={canvasRef}
-          style={{ 
-            maxWidth: '100%', 
+          style={{
+            maxWidth: '100%',
             height: 'auto'
           }}
         />
-        
+
         {/* FPS Counter - Fixed Top Right */}
         <div style={{
           position: 'absolute',
@@ -216,7 +216,7 @@ export function LiveryCanvas({ psd }: LiveryCanvasProps) {
           backdropFilter: 'blur(10px)',
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
         }}>
-          <p style={{ 
+          <p style={{
             color: renderTime < 16 ? '#3fb950' : renderTime < 50 ? '#d29922' : '#f85149',
             fontWeight: 'bold',
             margin: '0.25rem 0',
@@ -224,7 +224,7 @@ export function LiveryCanvas({ psd }: LiveryCanvasProps) {
           }}>
             ⏱️ {renderTime.toFixed(2)}ms
           </p>
-          <p style={{ 
+          <p style={{
             color: fps >= 60 ? '#3fb950' : fps >= 30 ? '#d29922' : '#f85149',
             fontWeight: 'bold',
             margin: '0.25rem 0',
@@ -236,12 +236,12 @@ export function LiveryCanvas({ psd }: LiveryCanvasProps) {
             {renderTime < 16 ? '✅ SMOOTH' : renderTime < 50 ? '⚠️ OK' : '❌ SLOW'}
           </p>
         </div>
-        
+
         <div className="info">
           <p>Resolution: {psd.width}x{psd.height}</p>
           <p>Total Layers: {psd.layers.length}</p>
           <p>Loaded: {layers.filter(l => l.loaded).length}/{layers.length}</p>
-          
+
           <p style={{ color: '#888', fontSize: '0.85rem', marginTop: '0.5rem' }}>
             💡 Cached rendering enabled
           </p>

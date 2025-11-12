@@ -26,7 +26,7 @@ export function PSDLoader({ onLoad, onError }: PSDLoaderProps) {
 
       // Read file as bytes
       const fileData = await readFile(selected as string);
-      
+
       // Convert to ArrayBuffer
       const arrayBuffer = fileData.buffer.slice(
         fileData.byteOffset,
@@ -36,9 +36,9 @@ export function PSDLoader({ onLoad, onError }: PSDLoaderProps) {
       // Parse PSD
       console.log('Parsing PSD...');
       const psd = Psd.parse(arrayBuffer);
-      
+
       console.log(`PSD loaded: ${psd.width}x${psd.height}, ${psd.layers.length} layers`);
-      
+
       // Log all layer names
       for (const layer of psd.layers) {
         console.log(`  - Layer: ${layer.name}`);
