@@ -1,30 +1,30 @@
 # AMS2 DLL Injector Plan
 
-**Objective:** Build an injected helper that edits AMS2 championship data in-memory and exposes a zero-click control channel (hotkeys + IPC) for GridVox.
+**Objective:** Build an injected helper that edits AMS2 championship data in-memory and exposes a zero-click control channel (hotkeys + IPC) for SimVox.ai.
 
 ## Architecture Overview
 
 ```
-GridVox Desktop ──> Injector Launcher ──> AMS2.exe
+SimVox.ai Desktop ──> Injector Launcher ──> AMS2.exe
                      │                     │
                      │ injects DLL         │ patched runtime exposes
                      ▼                     ▼
-                Injector DLL  <──IPC──>  GridVox (named pipe or WebSocket)
+                Injector DLL  <──IPC──>  SimVox.ai (named pipe or WebSocket)
 ``` 
 
 **Key components**
 1. **Injector Launcher (EXE)** – Finds the AMS2 process, injects the compiled DLL, and sets up a watchdog (re‑inject if the process respawns). No UI.
 2. **Injected DLL** – Uses MinHook to intercept the championship save routine (or the function that buffers championship data). Provides two automation paths:
-   - **IPC bridge:** Named pipe `\\.\pipe\gridvox-ams2` coupled to a simple JSON protocol (`{"command": "applyChampionship", "payload": {...}}`).
+   - **IPC bridge:** Named pipe `\\.\pipe\SimVox.ai-ams2` coupled to a simple JSON protocol (`{"command": "applyChampionship", "payload": {...}}`).
    - **Hotkeys:** Registers one or two global hotkeys (e.g. `Ctrl+Shift+F9`) that apply the current preset directly from data cached inside the DLL.
-3. **GridVox client adapter** – Small service class that connects to the named pipe, sends championship presets, and (optionally) listens for status events.
+3. **SimVox.ai client adapter** – Small service class that connects to the named pipe, sends championship presets, and (optionally) listens for status events.
 
 ## Development Stages
 
 ### Stage 0 – Research hooks
 - Run AMS2 under a debugger and drop breakpoints on the functions that write the championship save (`default.championshipeditor.v1.00.sav`).
 - Capture call stacks and register states to identify a stable target function and the data structure layout (championship buffer pointer, length, checksum calls).
-- Dump the struct to a JSON file to reuse in the DLL and in GridVox.
+- Dump the struct to a JSON file to reuse in the DLL and in SimVox.ai.
 
 ### Stage 1 – Prototype injector (C++)
 1. Set up a Visual Studio solution with two projects:
@@ -61,7 +61,7 @@ GridVox Desktop ──> Injector Launcher ──> AMS2.exe
 ### Stage 3 – IPC and preset handling
 - Implement a named pipe server inside the DLL:
   ```cpp
-  static const wchar_t* PIPE_NAME = L"\\\\.\\pipe\\gridvox-ams2";
+  static const wchar_t* PIPE_NAME = L"\\\\.\\pipe\\SimVox.ai-ams2";
   // Spawn a worker thread on DLL attach that calls ConnectNamedPipe and loops over ReadFile.
   ```
 - Message schema (JSON):
@@ -88,8 +88,8 @@ GridVox Desktop ──> Injector Launcher ──> AMS2.exe
 - If AMS2 is not running, block until it starts; auto-exit when AMS2 closes.
 - Provide CLI flags for telemetry (`--log-level`, `--keep-alive`).
 
-### Stage 6 – GridVox integration
-- Build a thin TypeScript/Node service that connects to `\\.\pipe\gridvox-ams2` (using `node-named-pipe` or raw `net.createConnection` on Windows).
+### Stage 6 – SimVox.ai integration
+- Build a thin TypeScript/Node service that connects to `\\.\pipe\SimVox.ai-ams2` (using `node-named-pipe` or raw `net.createConnection` on Windows).
 - Expose methods: `isBridgeActive()`, `pushChampionshipPreset(preset)`, `onEvent(handler)`.
 - Add UI affordances: show connection status, button to reinstall bridge if injection failed.
 
@@ -97,7 +97,7 @@ GridVox Desktop ──> Injector Launcher ──> AMS2.exe
 - **EAC/DRM:** Automobilista 2 is offline friendly, but create a backup of the executable before loading unsigned code.
 - **Version bumps:** Pattern scanning must include fallback (bail out if signature not found to avoid patching wrong address).
 - **Crash safety:** Wrap every hook call in `__try/__except` to stop propagating errors to the game.
-- **Logging:** Write logs to `%LOCALAPPDATA%\GridVox\ams2-dll-bridge.log` and keep a rotating size limit (~256 KB).
+- **Logging:** Write logs to `%LOCALAPPDATA%\SimVox.ai\ams2-dll-bridge.log` and keep a rotating size limit (~256 KB).
 
 ## Task Checklist
 - [ ] Capture target function signature and struct layout (Stage 0).
@@ -107,7 +107,7 @@ GridVox Desktop ──> Injector Launcher ──> AMS2.exe
 - [ ] Add function hook, pattern scan, and structure patching.
 - [ ] Implement hotkey handling and automation logic.
 - [ ] Ship the injector launcher (CLI) with auto-inject and watchdog.
-- [ ] Build GridVox IPC adapter and expose API.
+- [ ] Build SimVox.ai IPC adapter and expose API.
 - [ ] QA end-to-end: push preset → hotkey apply → confirm in-game.
 
 ---

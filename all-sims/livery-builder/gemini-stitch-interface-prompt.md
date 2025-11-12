@@ -1,7 +1,7 @@
-# Gemini Stitch Interface Design Prompt - GridVox Livery Builder
+# Gemini Stitch Interface Design Prompt - SimVox.ai Livery Builder
 
 ## Project Overview
-Design a modern, professional web-based interface for **GridVox Livery Builder** - a revolutionary multi-sim racing livery design tool that combines traditional design capabilities with AI assistance, voice commands, real-time collaboration, and social features.
+Design a modern, professional web-based interface for **SimVox.ai Livery Builder** - a revolutionary multi-sim racing livery design tool that combines traditional design capabilities with AI assistance, voice commands, real-time collaboration, and social features.
 
 ## Design Philosophy
 Create an interface that is:
@@ -17,7 +17,7 @@ Create an interface that is:
 **Main Application Frame:**
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  [Logo] GridVox Livery Builder    File Edit View  [👤 Profile] │ ← Top Menu Bar (32px height)
+│  [Logo] SimVox.ai Livery Builder    File Edit View  [👤 Profile] │ ← Top Menu Bar (32px height)
 ├────┬─────────────────────────────────────────────────┬────────┤
 │    │                                                 │        │
 │ T  │                                                 │ Layers │
@@ -48,7 +48,7 @@ Create an interface that is:
 - Panel borders: `#3E3E42` (subtle dividers)
 - Text primary: `#CCCCCC` (light gray)
 - Text secondary: `#858585` (mid gray)
-- Accent color: `#007ACC` (GridVox blue)
+- Accent color: `#007ACC` (SimVox.ai blue)
 - Accent hover: `#1E8AD6` (lighter blue)
 - Success: `#4CAF50` (green)
 - Warning: `#FF9800` (orange)
@@ -75,7 +75,7 @@ Create an interface that is:
 **Background:** `#2D2D30`  
 **Content:**
 - **Left side:**
-  - GridVox logo (icon, 24x24px)
+  - SimVox.ai logo (icon, 24x24px)
   - "Livery Builder" text (subtle, 13px)
   - Menu items: File, Edit, View, Tools, Window, Help
   - Each menu item is clickable dropdown
@@ -751,9 +751,9 @@ Please create:
 
 ## Brand Guidelines
 
-### GridVox Brand
+### SimVox.ai Brand
 - **Primary color:** Blue (#007ACC or similar)
-- **Logo:** Include GridVox icon/logo in top-left
+- **Logo:** Include SimVox.ai icon/logo in top-left
 - **Personality:** Professional, modern, innovative, approachable
 - **Tone:** Helpful, encouraging, technically competent
 
@@ -774,8 +774,8 @@ This interface should feel like a modern design tool (think Figma, Canva) but sp
 - **Collaborative** with clear indicators of other users' presence
 - **AI-enhanced** making the AI assistant feel like a natural part of the workflow
 
-The goal is to create an interface that users genuinely enjoy using, that makes livery design accessible to everyone, and that showcases GridVox's innovative approach to racing simulation tools.
+The goal is to create an interface that users genuinely enjoy using, that makes livery design accessible to everyone, and that showcases SimVox.ai's innovative approach to racing simulation tools.
 
 ---
 
-**Ready to design? Let's make GridVox Livery Builder the best livery design tool in the world!** 🏎️🎨
+**Ready to design? Let's make SimVox.ai Livery Builder the best livery design tool in the world!** 🏎️🎨

@@ -1,24 +1,24 @@
-# GridVox Livery Builder - Concept & Vision
+# SimVox.ai Livery Builder - Concept & Vision
 
-**Project Name:** GridVox Livery Builder (working title: "PaintVox" or "DesignVox")  
+**Project Name:** SimVox.ai Livery Builder (working title: "PaintVox" or "DesignVox")  
 **Tagline:** "Your story. Your style. Your sim."  
 **Date:** November 12, 2025  
-**Vision:** A community-driven, AI-powered, multi-sim livery designer deeply integrated with the GridVox ecosystem
+**Vision:** A community-driven, AI-powered, multi-sim livery designer deeply integrated with the SimVox.ai ecosystem
 
 ---
 
 ## Executive Summary
 
-GridVox Livery Builder is a revolutionary browser-based and desktop livery design tool that transcends traditional paint software by integrating AI assistance, social collaboration, persona-driven creativity, and story-based design challenges. Unlike Trading Paints (iRacing-only) or standalone tools (Photoshop, GIMP), GridVox Livery Builder:
+SimVox.ai Livery Builder is a revolutionary browser-based and desktop livery design tool that transcends traditional paint software by integrating AI assistance, social collaboration, persona-driven creativity, and story-based design challenges. Unlike Trading Paints (iRacing-only) or standalone tools (Photoshop, GIMP), SimVox.ai Livery Builder:
 
 1. **Supports multiple sims** (iRacing, ACC, AMS2, rFactor 2, Forza, Gran Turismo, F1, WRC, Wreckfest)
 2. **Leverages AI** for design assistance, color suggestions, logo generation, and voice commands
-3. **Integrates with GridVox personas** for creative feedback and coaching
-4. **Ties to GridVox stories** enabling story-driven livery challenges and progression
+3. **Integrates with SimVox.ai personas** for creative feedback and coaching
+4. **Ties to SimVox.ai stories** enabling story-driven livery challenges and progression
 5. **Is community-powered** with a credit system rewarding contributors
 6. **Offers real-time collaboration** for team projects
 7. **Provides AR preview** to see liveries on physical objects
-8. **Enables voice control** using GridVox's voice command system
+8. **Enables voice control** using SimVox.ai's voice command system
 
 ---
 
@@ -47,7 +47,7 @@ GridVox Livery Builder is a revolutionary browser-based and desktop livery desig
 
 ### 4. Make It Connected
 - **Multi-Sim Support:** One design, export to any sim you own
-- **GridVox Integration:** Personas comment on your livery, stories require themed designs
+- **SimVox.ai Integration:** Personas comment on your livery, stories require themed designs
 - **Story-Driven:** Design liveries for historical recreations or fictional championships
 - **AR Preview:** See your livery on model cars, apparel, or real cars via phone camera
 - **Cross-Platform:** Desktop, browser, mobile app—work anywhere
@@ -63,17 +63,17 @@ GridVox Livery Builder is a revolutionary browser-based and desktop livery desig
 
 ## Key Differentiators from Trading Paints
 
-| Feature | Trading Paints | GridVox Livery Builder |
+| Feature | Trading Paints | SimVox.ai Livery Builder |
 |---------|----------------|------------------------|
 | **Sim Support** | iRacing only | 10+ sims (iRacing, ACC, AMS2, rFactor 2, Forza, GT, F1, WRC, Wreckfest, BeamNG) |
 | **Platform** | Browser only | Browser + Desktop + Mobile |
 | **AI Features** | None | AI design assistant, voice commands, logo generation, style transfer |
 | **Social Features** | Showroom, sharing | Real-time collab, teams, challenges, social media integration |
 | **Gamification** | None | Credits, achievements, leaderboards, challenges |
-| **GridVox Integration** | N/A | Personas, stories, voice commands, social rivalry |
+| **SimVox.ai Integration** | N/A | Personas, stories, voice commands, social rivalry |
 | **Collaboration** | Basic sharing | Real-time multi-user editing with chat |
 | **Community** | View-only showroom | Marketplace, templates, remix culture, creator profiles |
-| **Voice Control** | None | Full voice command support via GridVox |
+| **Voice Control** | None | Full voice command support via SimVox.ai |
 | **AR Features** | None | AR preview on phone, merchandise mockups |
 | **Pricing** | Subscription required | Freemium + credit economy |
 | **Template Conversion** | None | Auto-convert between sims |
@@ -81,11 +81,11 @@ GridVox Livery Builder is a revolutionary browser-based and desktop livery desig
 
 ---
 
-## GridVox Ecosystem Integration
+## SimVox.ai Ecosystem Integration
 
 ### Integration Point 1: Personas 🤖
 
-**Concept:** Your GridVox personas (crew chief, coach, commentator, friends, family) can interact with you while designing liveries.
+**Concept:** Your SimVox.ai personas (crew chief, coach, commentator, friends, family) can interact with you while designing liveries.
 
 **Examples:**
 - **Darth Vader (crew chief):** "This livery lacks power. Add more black and red, young designer."
@@ -103,7 +103,7 @@ GridVox Livery Builder is a revolutionary browser-based and desktop livery desig
 
 ### Integration Point 2: Stories 📖
 
-**Concept:** GridVox stories can require or suggest specific livery designs, creating story-driven design challenges.
+**Concept:** SimVox.ai stories can require or suggest specific livery designs, creating story-driven design challenges.
 
 **Examples:**
 - **1974 F1 Championship Story:** Design a period-appropriate livery for Jacky Ickx's Lotus
@@ -133,7 +133,7 @@ GridVox Livery Builder is a revolutionary browser-based and desktop livery desig
 
 **Features:**
 - **Social Media Auto-Post:** Share WIP or final liveries to Twitter/Instagram
-- **AI-Generated Taunts:** GridVox generates personalized taunts with livery screenshots
+- **AI-Generated Taunts:** SimVox.ai generates personalized taunts with livery screenshots
 - **Livery Challenges:** Challenge friends to design-offs with community voting
 - **Pre-Race Hype Images:** AI-generated hype images featuring your livery
 - **Post-Race Highlights:** Livery showcased in AI-edited victory videos
@@ -141,7 +141,7 @@ GridVox Livery Builder is a revolutionary browser-based and desktop livery desig
 
 ### Integration Point 4: Voice Commands 🎤
 
-**Concept:** Design hands-free using GridVox's natural language voice recognition.
+**Concept:** Design hands-free using SimVox.ai's natural language voice recognition.
 
 **Examples:**
 - **"Change the base color to red"**
@@ -193,7 +193,7 @@ GridVox Livery Builder is a revolutionary browser-based and desktop livery desig
 - **Starting Bonus:** 10,000 credits for new users
 - **Monthly Allowance:** 100 free credits/month
 - **Purchase Packs:** Buy credits if you don't want to contribute (discouraged)
-- **Resale Market:** Users can sell credits to others (50% GridVox commission)
+- **Resale Market:** Users can sell credits to others (50% SimVox.ai commission)
 
 ---
 
@@ -227,7 +227,7 @@ GridVox Livery Builder is a revolutionary browser-based and desktop livery desig
 - Material system (spec maps, normal maps)
 - Car naming conventions
 
-**Solution:** GridVox Livery Builder's Template Converter
+**Solution:** SimVox.ai Livery Builder's Template Converter
 
 **How It Works:**
 1. **Design Once:** Create livery on universal canvas
@@ -343,7 +343,7 @@ GridVox Livery Builder is a revolutionary browser-based and desktop livery desig
 - **Voice Recognition:** Whisper API or Web Speech API
 - **Voice Synthesis:** ElevenLabs or Azure TTS (for persona voices)
 
-### GridVox Integration APIs
+### SimVox.ai Integration APIs
 - **Persona API:** Fetch persona data, trigger voice responses
 - **Story API:** Get story requirements, update livery progression
 - **Social API:** Post to social media, fetch rivalries
@@ -419,7 +419,7 @@ User Action → Frontend (React)
 
 ### Workflow 3: Team Collaboration - Multiplayer Story Livery
 
-1. **Story Selection:** GridVox story mode "1974 F1 Championship"
+1. **Story Selection:** SimVox.ai story mode "1974 F1 Championship"
 2. **Team Formation:** Invite 3 friends to race together
 3. **Livery Requirements:** Story requires 1970s-accurate liveries
 4. **Team Template:** Start from shared team base (Lotus 72)
@@ -430,7 +430,7 @@ User Action → Frontend (React)
 9. **Persona Feedback:** Jackie Stewart (historical persona): "That Gold Leaf livery is spot on!"
 10. **Version Approval:** Team votes to approve final design
 11. **Batch Export:** Export for all 4 team members (different numbers)
-12. **Story Integration:** Liveries automatically sync to GridVox story mode
+12. **Story Integration:** Liveries automatically sync to SimVox.ai story mode
 13. **Race:** Use liveries in story championship races
 
 **Time:** 2-4 hours collaborative design session
@@ -439,7 +439,7 @@ User Action → Frontend (React)
 
 **Scenario:** User is racing in a few hours, wants to quickly update sponsor for new sponsor deal.
 
-1. **Voice:** "Hey GridVox, open my Championship Livery"
+1. **Voice:** "Hey SimVox.ai, open my Championship Livery"
 2. **AI:** "Opening Championship Livery. What would you like to change?"
 3. **Voice:** "Replace the front bumper sponsor with the new RedBull logo"
 4. **AI:** "Selecting front bumper sponsor. Searching graphics library for RedBull logo. Found it. Replacing now."
@@ -532,12 +532,12 @@ User Action → Frontend (React)
 
 **User-to-User Sales:**
 - User sells template for 1,000 credits
-- GridVox takes 30% commission (300 credits)
+- SimVox.ai takes 30% commission (300 credits)
 - Creator receives 700 credits
 - Credits can be withdrawn as cash (1,000 credits = $5) or kept for use
 
 **Featured Templates:**
-- GridVox curates quality templates
+- SimVox.ai curates quality templates
 - Featured templates get visibility boost
 - Higher commission (20%) for featured items
 
@@ -590,7 +590,7 @@ User Action → Frontend (React)
 - Winner featured, earns bonus credits
 
 **Official Contests:**
-- Monthly contests by GridVox
+- Monthly contests by SimVox.ai
 - Sponsored contests (e.g., "Design a livery featuring Brand X")
 - Prize: Credits, featured placement, merchandise
 - Judged by staff and community vote
@@ -689,7 +689,7 @@ User Action → Frontend (React)
 ## Go-To-Market Strategy
 
 ### Phase 1: Closed Beta (Months 1-2)
-- Invite 100 GridVox users
+- Invite 100 SimVox.ai users
 - Focus on iRacing, ACC, AMS2 (3 sims)
 - Gather feedback, iterate on UX
 - Test collaboration features
@@ -729,7 +729,7 @@ User Action → Frontend (React)
 - "From idea to grid in minutes."
 
 **Positioning Statement:**
-"GridVox Livery Builder is the only livery design tool that combines AI-powered design assistance, real-time collaboration, multi-sim support, and a thriving community marketplace—all integrated with the GridVox ecosystem of personas, stories, and social features. Whether you're a beginner creating your first livery or a pro designer managing team liveries across multiple sims, GridVox Livery Builder makes it fast, fun, and rewarding."
+"SimVox.ai Livery Builder is the only livery design tool that combines AI-powered design assistance, real-time collaboration, multi-sim support, and a thriving community marketplace—all integrated with the SimVox.ai ecosystem of personas, stories, and social features. Whether you're a beginner creating your first livery or a pro designer managing team liveries across multiple sims, SimVox.ai Livery Builder makes it fast, fun, and rewarding."
 
 ---
 
@@ -737,7 +737,7 @@ User Action → Frontend (React)
 
 1. ✅ Complete feature analysis
 2. ✅ Create comprehensive feature catalog
-3. ✅ Define GridVox integration concept
+3. ✅ Define SimVox.ai integration concept
 4. ⏳ Create detailed development roadmap
 5. ⏳ Design UI/UX mockups
 6. ⏳ Build technical architecture document
@@ -746,9 +746,9 @@ User Action → Frontend (React)
 
 ---
 
-## Appendix: GridVox Livery Builder vs. Competitors
+## Appendix: SimVox.ai Livery Builder vs. Competitors
 
-| Feature | GridVox Livery Builder | Trading Paints | Photoshop | GIMP | Other Livery Tools |
+| Feature | SimVox.ai Livery Builder | Trading Paints | Photoshop | GIMP | Other Livery Tools |
 |---------|----------------------|----------------|-----------|------|-------------------|
 | **Multi-Sim** | ✅ 10+ sims | ❌ iRacing only | ❌ Manual export | ❌ Manual | ❌ Usually 1 sim |
 | **Browser-Based** | ✅ Yes | ✅ Yes | ❌ No | ❌ No | ⚠️ Varies |
@@ -762,9 +762,9 @@ User Action → Frontend (React)
 | **Credit Economy** | ✅ Earn & spend | ❌ No | ❌ No | ❌ No | ❌ No |
 | **Template Conversion** | ✅ Auto | ❌ No | ❌ Manual | ❌ Manual | ❌ No |
 | **AR Preview** | ✅ Yes | ❌ No | ❌ No | ❌ No | ❌ No |
-| **Story Integration** | ✅ GridVox | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Story Integration** | ✅ SimVox.ai | ❌ No | ❌ No | ❌ No | ❌ No |
 | **Price** | 💰 Freemium | 💰 Subscription | 💰💰 Expensive | 🆓 Free | ⚠️ Varies |
 | **Learning Curve** | ⭐⭐ Easy | ⭐⭐ Easy | ⭐⭐⭐⭐⭐ Hard | ⭐⭐⭐⭐ Hard | ⚠️ Varies |
 
-**Winner:** GridVox Livery Builder in every category that matters for sim racers.
+**Winner:** SimVox.ai Livery Builder in every category that matters for sim racers.
 

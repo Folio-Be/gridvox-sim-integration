@@ -10,20 +10,20 @@ Automobilista 2 stores car preview images in a compressed `GUIVEHICLEIMAGES.bff`
 2. **Converts** DDS textures to web-friendly PNG format
 3. **Crops & Resizes** to thumbnail dimensions (512×128)
 4. **Organizes** output by manufacturer, class, and DLC
-5. **Generates** manifest for GridVox integration
+5. **Generates** manifest for SimVox.ai integration
 
 **Note:** This tool extracts proper 3D-rendered car showcase images (2048×768), NOT UV-mapped livery textures.
 
 ## Output Use Cases
 
 Extracted images can be:
-- **Bundled** with GridVox installer (shipped with app)
+- **Bundled** with SimVox.ai installer (shipped with app)
 - **Hosted** on CDN/website for on-demand loading
 - **Cached** locally by users on first launch
 
 ## ⚠️ NOT for End Users
 
-This is a **developer tool** for the GridVox team. It requires:
+This is a **developer tool** for the SimVox.ai team. It requires:
 - .NET 6.0 Runtime
 - PCarsTools binary
 - Oodle compression DLL (`oo2core_4_win64.dll`)
@@ -92,7 +92,7 @@ npm install
 ## Installation
 
 ```bash
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-car-image-extractor
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-car-image-extractor
 npm install
 ```
 
@@ -246,18 +246,18 @@ output/
 | Upload to CDN | 5-10 min | Depends on bandwidth |
 | **Total** | **10-20 min** | One-time process |
 
-## GridVox Integration
+## SimVox.ai Integration
 
 ### Option A: Bundle with Installer
 
-1. Run extraction once during GridVox build
+1. Run extraction once during SimVox.ai build
 2. Include PNG thumbnails in installer
 3. Ship to users (~20MB additional size)
 
 ### Option B: CDN Hosting
 
-1. Upload thumbnails to GridVox CDN
-2. GridVox app downloads on first launch
+1. Upload thumbnails to SimVox.ai CDN
+2. SimVox.ai app downloads on first launch
 3. Cache locally (~20MB in user's AppData)
 
 ### Option C: Hybrid
@@ -273,15 +273,15 @@ output/
 **Gray Area** - These are:
 - Extracted from game files user owns
 - Transformed (cropped, resized)
-- Used for legitimate GridVox functionality
+- Used for legitimate SimVox.ai functionality
 
 **Safest Approach:**
-- User extracts images themselves (via GridVox)
-- GridVox provides tool, not images
+- User extracts images themselves (via SimVox.ai)
+- SimVox.ai provides tool, not images
 - Like game mod managers
 
 **Alternative:**
-- Host on GridVox servers
+- Host on SimVox.ai servers
 - Terms of service agreement
 - Fair use argument (thumbnails for companion app)
 
@@ -343,7 +343,7 @@ Error: Failed to convert DDS to PNG
 
 - **ams2-content-listing** - Scans AMS2 content metadata
 - **PCarsTools** - https://github.com/Nenkai/PCarsTools
-- **GridVox** - Main sim racing companion app
+- **SimVox.ai** - Main sim racing companion app
 
 ## Future Enhancements
 
@@ -361,7 +361,7 @@ MIT
 
 ## Contributing
 
-This is part of the GridVox sim racing companion project.
+This is part of the SimVox.ai sim racing companion project.
 
 **To implement this tool:**
 1. Review [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)
@@ -373,4 +373,4 @@ This is part of the GridVox sim racing companion project.
 
 ## Contact
 
-For GridVox team only. Questions: see main GridVox repository.
+For SimVox.ai team only. Questions: see main SimVox.ai repository.

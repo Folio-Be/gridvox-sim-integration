@@ -1,5 +1,5 @@
 /**
- * GridVox Track Map - Demo Application
+ * SimVox.ai Track Map - Demo Application
  * 
  * Demonstrates:
  * 1. Pixi.js renderer with WebGL
@@ -8,10 +8,10 @@
  * 4. Track recording from actual driving
  */
 
-import { PixiTrackRenderer } from '@gridvox/track-map-core/rendering';
-import { TrackRecorder } from '@gridvox/track-map-core';
-import type { TrackDefinition, CarPosition } from '@gridvox/track-map-core';
-import { AMS2LiveConnector } from '@gridvox/track-map-ams2';
+import { PixiTrackRenderer } from '@SimVox.ai/track-map-core/rendering';
+import { TrackRecorder } from '@SimVox.ai/track-map-core';
+import type { TrackDefinition, CarPosition } from '@SimVox.ai/track-map-core';
+import { AMS2LiveConnector } from '@SimVox.ai/track-map-ams2';
 import { loadTrack, TRACK_CATALOG, getTracksByCategory, type TrackMetadata } from './trackLoader';
 
 // Get DOM elements

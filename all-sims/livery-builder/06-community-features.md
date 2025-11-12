@@ -1,6 +1,6 @@
-# GridVox Livery Builder - Community Features & Gamification
+# SimVox.ai Livery Builder - Community Features & Gamification
 
-**Document Purpose:** Comprehensive specification of community-driven features, credit economy, marketplace, social features, and gamification systems that make GridVox Livery Builder a thriving ecosystem.
+**Document Purpose:** Comprehensive specification of community-driven features, credit economy, marketplace, social features, and gamification systems that make SimVox.ai Livery Builder a thriving ecosystem.
 
 **Date:** November 12, 2025  
 **Vision:** Build a self-sustaining community where contributors are rewarded and users are engaged
@@ -23,7 +23,7 @@
 
 ### Philosophy: "Contribute to Earn"
 
-Unlike traditional subscription-only models, GridVox rewards community contribution. The more you help the community, the more credits you earn. Credits can be used for premium features, making the platform accessible to all, regardless of financial means.
+Unlike traditional subscription-only models, SimVox.ai rewards community contribution. The more you help the community, the more credits you earn. Credits can be used for premium features, making the platform accessible to all, regardless of financial means.
 
 ### Starting Credits
 
@@ -276,7 +276,7 @@ Users can convert earned credits to real money:
 - **Payment Methods:** PayPal, bank transfer, Stripe
 - **Payout Schedule:** Monthly or on-demand (min $25)
 
-**GridVox Commission:**
+**SimVox.ai Commission:**
 - 50% on credit sales (marketplace)
 - 30% on template/graphic sales
 - 0% on earned credits (rewards for contributing)
@@ -478,7 +478,7 @@ Description: "Less is more. Clean, simple, elegant."
 - **WhatsApp/iMessage:** Share link
 
 **Auto-Generated Share Content:**
-- "Check out my new livery for [car]! Designed with @GridVoxApp"
+- "Check out my new livery for [car]! Designed with @SimVox.aiApp"
 - Includes render image
 - Includes link to livery page
 - Optional: "Challenge me to a race!"
@@ -491,7 +491,7 @@ Description: "Less is more. Clean, simple, elegant."
 
 **Sell/Buy Templates:**
 - **Creator Sets Price:** 100-10,000 credits
-- **GridVox Takes 30% Commission**
+- **SimVox.ai Takes 30% Commission**
 - **Buyer Gets:** Full editable project file
 - **License Options:**
   - Personal use only
@@ -521,7 +521,7 @@ Description: "Less is more. Clean, simple, elegant."
 - **Buyer Requests:** Describe requirements
 - **Creator Accepts:** Agrees to timeline
 - **Milestone Payments:** Pay 50% upfront, 50% on delivery
-- **GridVox Escrow:** Holds credits until delivery
+- **SimVox.ai Escrow:** Holds credits until delivery
 - **Dispute Resolution:** Support team mediates
 
 **Commission Workflow:**
@@ -534,7 +534,7 @@ Description: "Less is more. Clean, simple, elegant."
 6. Buyer approves or requests revisions (max 3)
 7. Buyer pays remaining 50%
 8. Creator delivers final files
-9. GridVox releases funds to creator (70%)
+9. SimVox.ai releases funds to creator (70%)
 ```
 
 ---
@@ -817,7 +817,7 @@ Prizes:
 - Animated turntable GIFs
 - "Challenge me to a race" call-to-action
 - Creator attribution
-- GridVox branding
+- SimVox.ai branding
 
 **Embed Code:**
 - Embed livery viewer on personal website
@@ -834,9 +834,9 @@ Prizes:
 
 ### Cross-Promotion
 
-**GridVox Ecosystem:**
-- Share livery from GridVox app to Livery Builder
-- Use livery in GridVox stories
+**SimVox.ai Ecosystem:**
+- Share livery from SimVox.ai app to Livery Builder
+- Use livery in SimVox.ai stories
 - Voice command "Show me liveries for this car"
 - Integrated seamlessly
 
@@ -892,7 +892,7 @@ Prizes:
 
 ## Conclusion
 
-GridVox Livery Builder's community features create a self-sustaining ecosystem where:
+SimVox.ai Livery Builder's community features create a self-sustaining ecosystem where:
 
 1. **Contributors are rewarded** generously with credits
 2. **Quality content rises** through voting and curation

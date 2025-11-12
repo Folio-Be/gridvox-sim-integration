@@ -9,8 +9,8 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@gridvox/track-map-core': resolve(__dirname, '../track-map-core/src'),
-            '@gridvox/track-map-ams2': resolve(__dirname, '../track-map-ams2/src'),
+            '@SimVox.ai/track-map-core': resolve(__dirname, '../track-map-core/src'),
+            '@SimVox.ai/track-map-ams2': resolve(__dirname, '../track-map-ams2/src'),
         },
     },
     build: {

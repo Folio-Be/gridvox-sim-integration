@@ -25,7 +25,7 @@ Instead of UI automation, this tool:
 ## Quick Start
 
 ```bash
-cd C:\DATA\GridVox\gridvox-sim-integration\savegame-reverse-engineering
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\savegame-reverse-engineering
 
 # Start watcher
 npm run watch
@@ -185,7 +185,7 @@ Example output:
 
 3. **Create config writer:**
    - Once patterns found, write tool to modify saves directly
-   - Integrate with GridVox
+   - Integrate with SimVox.ai
 
 ## Advantages vs UI Automation
 

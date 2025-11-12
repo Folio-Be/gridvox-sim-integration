@@ -2,7 +2,7 @@
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "ams2-ai-livery-designer",
   "version": "0.1.0",
-  "identifier": "com.gridvox.ams2-ai-livery-designer",
+  "identifier": "com.SimVox.ai.ams2-ai-livery-designer",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1435",

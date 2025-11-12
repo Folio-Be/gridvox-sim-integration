@@ -6,7 +6,7 @@ export const AppShell = ({ children }: PropsWithChildren) => {
     return (
         <div className={styles.shell}>
             <header className={styles.header}>
-                <h1>GridVox AI Livery Designer</h1>
+                <h1>SimVox.ai AI Livery Designer</h1>
             </header>
             <main className={styles.main}>{children ?? <UploadScreen />}</main>
         </div>

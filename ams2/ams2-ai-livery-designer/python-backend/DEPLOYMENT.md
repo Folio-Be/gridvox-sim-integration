@@ -78,7 +78,7 @@ if not check_models():
 ### Model Sharing
 - HuggingFace cache: `~/.cache/huggingface/`
 - Multiple projects share same models
-- Saves disk space across GridVox ecosystem
+- Saves disk space across SimVox.ai ecosystem
 
 ### On-Demand Streaming (Advanced)
 - Load model layers progressively

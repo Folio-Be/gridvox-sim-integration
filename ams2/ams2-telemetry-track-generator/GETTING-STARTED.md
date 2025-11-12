@@ -16,9 +16,9 @@
    - With telemetry output enabled
    - See: [Enabling Telemetry](#enabling-telemetry) below
 
-3. **GridVox Track Map Core** (recommended)
+3. **SimVox.ai Track Map Core** (recommended)
    - For recording telemetry data
-   - Location: `C:\DATA\GridVox\gridvox-sim-integration\ams2\track-map-visualization\`
+   - Location: `C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\track-map-visualization\`
 
 ### Hardware Requirements
 
@@ -33,7 +33,7 @@
 ### 1. Clone/Navigate to Project
 
 ```powershell
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-telemetry-track-generator
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-telemetry-track-generator
 ```
 
 ### 2. Install Dependencies
@@ -477,7 +477,7 @@ ams2-telemetry-track-generator/
 
 1. **Validate** the track model
 2. **Optimize** for your use case
-3. **Test** in GridVox desktop app
+3. **Test** in SimVox.ai desktop app
 4. **Enrich** with AI features (optional)
 5. **Document** any track-specific quirks
 
@@ -487,7 +487,7 @@ Once comfortable with the process:
 
 1. Record telemetry for all AMS2 tracks you use
 2. Generate in batch (see batch processing scripts)
-3. Create a track library for GridVox
+3. Create a track library for SimVox.ai
 4. Share with community (if desired)
 
 ### Contribute Improvements
@@ -496,7 +496,7 @@ Found issues or improvements?
 
 1. Check implementation checklist: `docs/IMPLEMENTATION-CHECKLIST.md`
 2. Read methodology: `docs/3-RUN-MAPPING-METHOD.md`
-3. Submit issues/PRs to main GridVox repo
+3. Submit issues/PRs to main SimVox.ai repo
 
 ---
 
@@ -523,8 +523,8 @@ Found issues or improvements?
   - Telemetry recording tools
   - Real-time track visualization
 
-- **GridVox Desktop:** `../../../gridvox-desktop/`
-  - Main GridVox application
+- **SimVox.ai Desktop:** `../../../SimVox.ai-desktop/`
+  - Main SimVox.ai application
   - Where generated tracks are used
   - Telemetry replay and analysis
 
@@ -592,8 +592,8 @@ Found issues or improvements?
 
 1. **Check this guide** - Most common issues covered
 2. **Read documentation** - See links above
-3. **Check issues** - GridVox GitHub repo
-4. **Ask community** - GridVox Discord/Forum
+3. **Check issues** - SimVox.ai GitHub repo
+4. **Ask community** - SimVox.ai Discord/Forum
 
 ### Reporting Issues
 
@@ -606,7 +606,7 @@ When reporting issues, include:
 
 ### Contributing
 
-Contributions welcome! See main GridVox repo for contribution guidelines.
+Contributions welcome! See main SimVox.ai repo for contribution guidelines.
 
 ---
 

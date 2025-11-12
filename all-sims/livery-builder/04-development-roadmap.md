@@ -1,4 +1,4 @@
-# GridVox Livery Builder - Development Roadmap & Architecture
+# SimVox.ai Livery Builder - Development Roadmap & Architecture
 
 **Document Purpose:** Detailed implementation plan with technical architecture, technology stack, team structure, timelines, and resource requirements.
 
@@ -338,7 +338,7 @@ versions (id, project_id, data, created_at, ...)
 - Real-time collaboration
 - AI-powered design features
 - Voice command integration
-- Full GridVox ecosystem integration
+- Full SimVox.ai ecosystem integration
 - Mobile app launch
 - Add 5+ more sims (10+ total)
 - **Target:** 20,000 users, 50,000+ liveries
@@ -373,7 +373,7 @@ versions (id, project_id, data, created_at, ...)
 **Weeks 39-40: Voice Commands**
 - Voice recognition (Web Speech API or Whisper)
 - Natural language command parsing
-- Voice feedback via GridVox personas
+- Voice feedback via SimVox.ai personas
 - Voice command UI/UX
 
 **Deliverable:** AI-powered design and voice control
@@ -396,12 +396,12 @@ versions (id, project_id, data, created_at, ...)
 
 **Deliverable:** Mobile app, 10+ sims
 
-#### Month 12: GridVox Integration & Polish
-**Weeks 45-46: GridVox Features**
+#### Month 12: SimVox.ai Integration & Polish
+**Weeks 45-46: SimVox.ai Features**
 - Persona API integration
 - Story mode livery requirements
 - Social/rivalry integration
-- Credit integration with GridVox
+- Credit integration with SimVox.ai
 - Community challenges
 
 **Weeks 47-48: Final Polish**
@@ -411,7 +411,7 @@ versions (id, project_id, data, created_at, ...)
 - Tutorials (video)
 - V2.0 marketing campaign
 
-**Deliverable:** V2.0 launch with full GridVox integration
+**Deliverable:** V2.0 launch with full SimVox.ai integration
 
 ### Technical Additions (V2.0)
 
@@ -448,7 +448,7 @@ Queue System: Bull/BullMQ for background jobs
 | **UI/UX Designers** | 2 | V2.0 design, mobile UX |
 | **QA/Testers** | 2 | Comprehensive testing |
 | **DevOps** | 1-2 | Scaling, monitoring, reliability |
-| **Product Manager** | 1 | V2.0 roadmap, GridVox integration |
+| **Product Manager** | 1 | V2.0 roadmap, SimVox.ai integration |
 | **Community Manager** | 1 | Community engagement, support |
 | **Marketing** | 1-2 | Growth, campaigns, partnerships |
 
@@ -772,7 +772,7 @@ async function exportLivery(projectId, simId, carId) {
 | Risk | Impact | Likelihood | Mitigation |
 |------|--------|-----------|------------|
 | Low user adoption | High | Medium | Strong marketing, influencer partnerships, free tier |
-| Competitors copy features | Medium | High | Focus on GridVox integration unique value |
+| Competitors copy features | Medium | High | Focus on SimVox.ai integration unique value |
 | Sim developers block integration | High | Low | Establish partnerships early, community pressure |
 | Credit economy abuse | Medium | Medium | AI validation, rate limits, moderation |
 | Marketplace copyright issues | High | Medium | Automated copyright detection, DMCA process |
@@ -823,11 +823,11 @@ async function exportLivery(projectId, simId, carId) {
 
 ## Conclusion
 
-GridVox Livery Builder represents a massive opportunity to dominate the multi-sim livery design market. By combining:
+SimVox.ai Livery Builder represents a massive opportunity to dominate the multi-sim livery design market. By combining:
 1. **Multi-sim support** (vs. Trading Paints' iRacing-only)
 2. **AI-powered features** (vs. manual tools like Photoshop)
 3. **Community-driven economy** (vs. subscription-only models)
-4. **GridVox ecosystem integration** (unique value proposition)
+4. **SimVox.ai ecosystem integration** (unique value proposition)
 5. **Modern UX** (vs. legacy tools)
 
 We can create a platform that becomes the de facto standard for sim racers across all platforms.

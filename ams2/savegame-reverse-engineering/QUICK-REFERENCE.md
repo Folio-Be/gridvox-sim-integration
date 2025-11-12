@@ -8,7 +8,7 @@ sox --version  # Verify
 
 ## 2️⃣ Start Testing (3 minutes)
 ```bash
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering
 run-watcher.bat
 ```
 
@@ -41,5 +41,5 @@ npm run analyze
 
 **Total Time: ~15 minutes to start testing** ⚡
 
-Location: `C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering\`
+Location: `C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering\`
 

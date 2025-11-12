@@ -1,5 +1,5 @@
 {
-    "name": "@gridvox/track-recorder",
+    "name": "@SimVox.ai/track-recorder",
     "version": "1.0.0",
     "description": "AMS2 track coordinate recorder - drive 1 lap to generate track JSON files",
     "type": "module",
@@ -16,10 +16,10 @@
         "recorder",
         "telemetry"
     ],
-    "author": "GridVox",
+    "author": "SimVox.ai",
     "license": "MIT",
     "dependencies": {
-        "@gridvox/track-map-ams2": "file:../track-map-ams2"
+        "@SimVox.ai/track-map-ams2": "file:../track-map-ams2"
     },
     "devDependencies": {
         "@types/node": "^20.10.0",

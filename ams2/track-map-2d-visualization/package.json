@@ -1,16 +1,16 @@
 {
-    "name": "@gridvox/track-map-workspace",
+    "name": "@SimVox.ai/track-map-workspace",
     "version": "1.0.0",
     "private": true,
-    "description": "GridVox Track Map Visualization - Multi-sim library with Pixi.js rendering",
+    "description": "SimVox.ai Track Map Visualization - Multi-sim library with Pixi.js rendering",
     "workspaces": [
         "packages/*"
     ],
     "scripts": {
-        "dev": "npm run dev -w @gridvox/track-map-demo",
-        "build": "npm run build -w @gridvox/track-map-core && npm run build -w @gridvox/track-map-ams2",
-        "build:demo": "npm run build -w @gridvox/track-map-demo",
-        "record": "npm run record -w @gridvox/track-recorder",
+        "dev": "npm run dev -w @SimVox.ai/track-map-demo",
+        "build": "npm run build -w @SimVox.ai/track-map-core && npm run build -w @SimVox.ai/track-map-ams2",
+        "build:demo": "npm run build -w @SimVox.ai/track-map-demo",
+        "record": "npm run record -w @SimVox.ai/track-recorder",
         "clean": "rimraf packages/*/dist packages/*/node_modules",
         "type-check": "tsc --build --force"
     },

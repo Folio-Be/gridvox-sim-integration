@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-Research confirms that **track map visualization for sim racing is a solved problem** with multiple mature open-source implementations. This analysis reviews two major projects and provides recommendations for GridVox's implementation strategy.
+Research confirms that **track map visualization for sim racing is a solved problem** with multiple mature open-source implementations. This analysis reviews two major projects and provides recommendations for SimVox.ai's implementation strategy.
 
 ---
 
@@ -72,7 +72,7 @@ local.Race.Laps = (int)participant.mCurrentLap;
 - ✅ **Multi-sim** - works across multiple racing games
 
 **Weaknesses**:
-- ❌ C# / WPF - different stack from GridVox (TypeScript/Electron)
+- ❌ C# / WPF - different stack from SimVox.ai (TypeScript/Electron)
 - ❌ Bitmap-based - less flexible than vector/JSON approach
 - ❌ Requires full lap - can't use track immediately
 
@@ -152,7 +152,7 @@ drivers.forEach(driver => {
 ```
 
 **Strengths**:
-- ✅ **Same Stack as GridVox** - TypeScript/React/Electron
+- ✅ **Same Stack as SimVox.ai** - TypeScript/React/Electron
 - ✅ **Pre-Generated Tracks** - instant availability
 - ✅ **Vector-Based** - scalable, precise, customizable
 - ✅ **Official Data** - high-quality track layouts
@@ -167,7 +167,7 @@ drivers.forEach(driver => {
 
 ## Comparison Matrix
 
-| Feature | Race-Element (AMS2) | RaceVision (iRacing) | GridVox Need |
+| Feature | Race-Element (AMS2) | RaceVision (iRacing) | SimVox.ai Need |
 |---------|---------------------|----------------------|--------------|
 | **Technology** | C# / WPF / Bitmaps | TypeScript / Canvas / SVG | TypeScript / Canvas |
 | **AMS2 Support** | ✅ Native | ❌ None | ✅ Required |
@@ -181,7 +181,7 @@ drivers.forEach(driver => {
 
 ---
 
-## Recommended Approach for GridVox
+## Recommended Approach for SimVox.ai
 
 ### Strategy: **Hybrid Model**
 
@@ -363,7 +363,7 @@ const calculateSectors = (trackData: TrackData) => {
 **Reasons**:
 1. **Same Stack as RaceVision** - Can directly adapt TypeScript/React code
 2. **AMS2 Focus** - Neither project prioritizes AMS2 (Race-Element supports it but isn't primary)
-3. **GridVox Integration** - Need tight integration with crew radio, commentary, social features
+3. **SimVox.ai Integration** - Need tight integration with crew radio, commentary, social features
 4. **Learning Opportunity** - Team gains deep understanding of track mapping
 
 **What to Borrow**:
@@ -382,11 +382,11 @@ const calculateSectors = (trackData: TrackData) => {
 
 ### 🎯 Success Criteria
 
-GridVox's track map should:
+SimVox.ai's track map should:
 1. ✅ **Auto-generate** tracks (like Race-Element) - drive 1 lap, instant reuse
 2. ✅ **Vector-based** rendering (like RaceVision) - scalable, customizable
-3. ✅ **TypeScript/Canvas** (like RaceVision) - matches GridVox stack
-4. ✅ **GridVox-native** features - integrate crew radio callouts, commentary triggers, social rivalry highlights
+3. ✅ **TypeScript/Canvas** (like RaceVision) - matches SimVox.ai stack
+4. ✅ **SimVox.ai-native** features - integrate crew radio callouts, commentary triggers, social rivalry highlights
 
 ---
 
@@ -419,7 +419,7 @@ GridVox's track map should:
 - ❌ No AMS2 support (major rewrite needed)
 - ❌ iRacing-specific assumptions throughout codebase
 - ❌ Track generation script tied to iRacing API
-- ❌ May be harder to customize for GridVox features
+- ❌ May be harder to customize for SimVox.ai features
 
 **Recommendation**: Don't fork - build fresh with RaceVision as heavy reference
 
@@ -514,4 +514,4 @@ foreach (var car in carsOnTrack.Cars) {
 5. Add auto-recording tool
 6. Iterate on visual polish
 
-The good news: **This is a well-solved problem.** GridVox can build a production-quality track map in 2-3 weeks by learning from these projects.
+The good news: **This is a well-solved problem.** SimVox.ai can build a production-quality track map in 2-3 weeks by learning from these projects.

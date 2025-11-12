@@ -24,7 +24,7 @@ This guide provides step-by-step instructions for implementing the track map vis
 ### Initialize Node.js Project
 
 ```bash
-cd c:\DATA\GridVox\gridvox-sim-integration\ams2
+cd c:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2
 mkdir track-map-visualization
 cd track-map-visualization
 
@@ -1006,7 +1006,7 @@ import { PositionCalculator } from '../core/PositionCalculator';
 const trackPath = path.join(__dirname, '../../track-definitions/silverstone-gp.json');
 const trackData = JSON.parse(fs.readFileSync(trackPath, 'utf-8')) as TrackDefinition;
 
-console.log('\\n🏁 GridVox Track Map Visualization - Static Demo\\n');
+console.log('\\n🏁 SimVox.ai Track Map Visualization - Static Demo\\n');
 console.log(`Track: ${trackData.name} - ${trackData.variation}`);
 console.log(`Length: ${trackData.length}m`);
 console.log(`Points: ${trackData.trackPath.length}`);

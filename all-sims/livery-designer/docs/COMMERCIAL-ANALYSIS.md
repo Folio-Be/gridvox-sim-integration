@@ -1,6 +1,6 @@
 # Commercial Platform Analysis
 
-**Research Objective:** Analyze existing livery marketplaces and design tools to understand business models, technical architecture, user workflows, and competitive positioning for GridVox AI Livery Designer.
+**Research Objective:** Analyze existing livery marketplaces and design tools to understand business models, technical architecture, user workflows, and competitive positioning for SimVox.ai AI Livery Designer.
 
 **Platforms Analyzed:**
 1. Trading Paints (iRacing) - 2010-present, 15 years, market leader
@@ -164,7 +164,7 @@ Storage: AWS S3 or similar (high availability)
 
 ---
 
-### Key Learnings for GridVox
+### Key Learnings for SimVox.ai
 
 1. **Browser-based editor is killer feature**
    - Users hate installing/learning Photoshop
@@ -343,7 +343,7 @@ RaceControl API ↔ LMU Game (bidirectional)
 
 ### Competitive Position vs Trading Paints
 
-| Feature | Trading Paints (iRacing) | RaceControl Livery Hub (LMU) | GridVox (Planned) |
+| Feature | Trading Paints (iRacing) | RaceControl Livery Hub (LMU) | SimVox.ai (Planned) |
 |---------|-------------------------|------------------------------|-------------------|
 | **Year Founded** | 2010 | 2024 | 2025 |
 | **Library Size** | 500,000+ liveries | ~5,000 (new) | 0 (launching) |
@@ -354,7 +354,7 @@ RaceControl API ↔ LMU Game (bidirectional)
 | **AI Features** | ❌ None | ❌ None | ✅ AI livery generation (unique!) |
 | **Cross-Sim** | iRacing only | LMU only | ✅ AMS2, iRacing, ACC, LMU (Phase 2-3) |
 
-**GridVox Advantages:**
+**SimVox.ai Advantages:**
 - ✅ **AI generation** (10 minutes vs 20 hours manual)
 - ✅ **Cross-simulator** (one livery → multiple sims)
 - ✅ **Browser editor** (like Paint Builder, but enhanced)
@@ -362,7 +362,7 @@ RaceControl API ↔ LMU Game (bidirectional)
 
 ---
 
-### Key Learnings for GridVox
+### Key Learnings for SimVox.ai
 
 1. **Auto-preview generation is now expected**
    - RaceControl set new standard (no manual screenshots)
@@ -457,7 +457,7 @@ Broader context: Real-world vehicle wrap industry uses similar workflows (3D vis
 
 ---
 
-## Competitive Positioning for GridVox
+## Competitive Positioning for SimVox.ai
 
 ### Market Landscape
 
@@ -477,7 +477,7 @@ Broader context: Real-world vehicle wrap industry uses similar workflows (3D vis
 │  - Team management                                      │
 │  - No AI features                                       │
 │                                                          │
-│  OPPORTUNITY: GridVox (Multi-Sim)                       │
+│  OPPORTUNITY: SimVox.ai (Multi-Sim)                       │
 │  - 2025 launch, AI-first, $4.99-14.99/mo               │
 │  - AI livery generation (unique!)                       │
 │  - Browser editor + 3D editor                           │
@@ -486,9 +486,9 @@ Broader context: Real-world vehicle wrap industry uses similar workflows (3D vis
 └─────────────────────────────────────────────────────────┘
 ```
 
-### GridVox Unique Value Props
+### SimVox.ai Unique Value Props
 
-| Feature | Trading Paints | RaceControl | **GridVox** |
+| Feature | Trading Paints | RaceControl | **SimVox.ai** |
 |---------|----------------|-------------|-------------|
 | **AI Generation** | ❌ | ❌ | ✅ 10min vs 20hr manual |
 | **Browser Editor** | ✅ $24/yr | ❌ | ✅ Included in Pro |

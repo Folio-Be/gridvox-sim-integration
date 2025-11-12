@@ -1,6 +1,6 @@
 # AI 3D Generation Tools Comparison
 
-**Project:** GridVox AI Livery Designer
+**Project:** SimVox.ai AI Livery Designer
 **Purpose:** Detailed analysis of TripoSR, Hunyuan3D-2, TRELLIS, Shap-E for potential Phase 6+ integration
 **Last Updated:** January 11, 2025
 
@@ -154,7 +154,7 @@ Topology Accuracy: 4/10 (mesh structure doesn't match game models)
 Speed: 10/10 (fastest by far)
 ```
 
-#### Best Use Case for GridVox
+#### Best Use Case for SimVox.ai
 ```
 Potential Phase 6+ Feature: "Quick 3D Preview"
 - User uploads photo
@@ -271,7 +271,7 @@ Topology Accuracy: 5/10 (high quality but still doesn't match game models)
 Speed: 4/10 (20x slower than TripoSR)
 ```
 
-#### Best Use Case for GridVox
+#### Best Use Case for SimVox.ai
 ```
 Potential Phase 6+ Feature: "Pro 3D Painting Mode"
 - User wants fully custom design (no reference photo)
@@ -379,7 +379,7 @@ Speed: 7/10 (moderate, 3-5s)
 Flexibility: 10/10 (image + text input, most versatile)
 ```
 
-#### Best Use Case for GridVox
+#### Best Use Case for SimVox.ai
 ```
 Potential Phase 6+ Feature: "Hybrid Text + Photo Mode"
 - User uploads rough photo (low quality)
@@ -483,9 +483,9 @@ Topology Accuracy: 3/10 (very rough geometry)
 Speed: 9/10 (fast but useless without textures)
 ```
 
-#### Best Use Case for GridVox
+#### Best Use Case for SimVox.ai
 ```
-❌ NOT SUITABLE for any GridVox use case
+❌ NOT SUITABLE for any SimVox.ai use case
 
 Reason:
 - No texture generation (liveries are ALL about textures)
@@ -693,7 +693,7 @@ Benefits:
 ```python
 # Lazy loading: Only load 3D models when user activates Advanced Mode
 
-class GridVoxModelManager:
+class SimVox.aiModelManager:
     def __init__(self):
         # Always loaded (core models)
         self.auv_net = load_auv_net()  # 500MB per car
@@ -749,7 +749,7 @@ def remap_3d_to_game_uv(
 
     elif method == "manual":
         # Show UI: User clicks corresponding points on 3D mesh and UV template
-        # GridVox interpolates the rest
+        # SimVox.ai interpolates the rest
         correspondences = show_correspondence_ui(painted_mesh, game_uv_template)
         remapped_uv = interpolate_uv(correspondences)
         return remapped_uv

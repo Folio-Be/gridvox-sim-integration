@@ -314,7 +314,7 @@ fn resolve_output_dir(app: &AppHandle, track_key: &str) -> Result<PathBuf, Strin
         .path()
         .app_data_dir()
         .map_err(|err| format!("Unable to resolve app data directory: {err}"))?;
-    base.push("gridvox");
+    base.push("simvox");
     base.push("track-models");
     base.push(track_key);
     fs::create_dir_all(&base).map_err(|err| {

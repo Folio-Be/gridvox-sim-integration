@@ -1,4 +1,4 @@
-# GridVox Livery Builder - UX/UI Improvements & Modern Design
+# SimVox.ai Livery Builder - UX/UI Improvements & Modern Design
 
 **Document Purpose:** Detailed UX/UI improvements over Trading Paints and other competitors, showcasing modern design patterns, workflow optimization, and user-centered design principles.
 
@@ -26,7 +26,7 @@ Design for all users, including those with disabilities.
 
 ---
 
-## Trading Paints vs. GridVox Livery Builder UX
+## Trading Paints vs. SimVox.ai Livery Builder UX
 
 ### Layout & Workspace
 
@@ -37,7 +37,7 @@ Design for all users, including those with disabilities.
 - ❌ Limited screen real estate management
 - ❌ No dark mode
 
-#### GridVox Solutions:
+#### SimVox.ai Solutions:
 - ✅ **Flexible Panel System:** Panels can be resized, collapsed, floating, or docked
 - ✅ **Context-Sensitive UI:** Show only relevant tools based on current task
 - ✅ **Maximizable Preview:** Double-click preview to enter focus mode (full screen)
@@ -72,7 +72,7 @@ Design for all users, including those with disabilities.
 - ❌ No interactive tutorial
 - ❌ Assumes Photoshop knowledge
 
-### GridVox:
+### SimVox.ai:
 - ✅ **Welcome Screen:** Choose your path (beginner, intermediate, advanced)
 - ✅ **Interactive Tutorial:** 5-minute walkthrough of key features
 - ✅ **Quickstart Templates:** "Create your first livery in 3 clicks"
@@ -109,7 +109,7 @@ Step 4: "Great job! Want to explore more?"
 - ❌ Limited keyboard shortcuts
 - ❌ No tool grouping
 
-### GridVox:
+### SimVox.ai:
 - ✅ **Command Palette (Ctrl+K):** Search all features, tools, commands
 - ✅ **Radial Tool Menu:** Right-click for context-sensitive radial menu
 - ✅ **Tool Groups:** Related tools grouped (draw tools, select tools, etc.)
@@ -148,7 +148,7 @@ Results:
 - ❌ Limited layer organization
 - ❌ Small thumbnails
 
-### GridVox:
+### SimVox.ai:
 - ✅ **Large Layer Thumbnails:** Bigger previews, easier to identify
 - ✅ **Layer Search/Filter:** Search layers by name or type
 - ✅ **Smart Layer Grouping:** Auto-group related layers (logos, shapes, text)
@@ -188,7 +188,7 @@ Results:
 - ❌ Limited color harmony tools
 - ❌ Material system is beta, clunky
 
-### GridVox:
+### SimVox.ai:
 - ✅ **Advanced Color Picker:**
   - HSV wheel, RGB sliders, hex input
   - Gradient editor
@@ -234,7 +234,7 @@ System: Shows contrast ratios, colorblind preview
 - ❌ No comparison mode
 - ❌ No animation options
 
-### GridVox:
+### SimVox.ai:
 - ✅ **Lighting Presets:** Studio, outdoor, track, sunset, night
 - ✅ **Custom Lighting:** Adjust light position, color, intensity
 - ✅ **Environment Maps:** HDR environments for realistic reflections
@@ -269,7 +269,7 @@ System: Shows contrast ratios, colorblind preview
 - ❌ Limited format options
 - ❌ No batch export
 
-### GridVox:
+### SimVox.ai:
 - ✅ **Multi-Sim Export Wizard:** Step-by-step guide
 - ✅ **Smart Car Matching:** AI suggests matching cars across sims
 - ✅ **Batch Export:** Export to multiple sims with one click
@@ -310,7 +310,7 @@ Result: 3 sims exported in 10 seconds
 - ❌ No real-time collaboration
 - ❌ Limited commenting
 
-### GridVox:
+### SimVox.ai:
 - ✅ **Live User Presence:** See who's editing, what they're doing
 - ✅ **Colored Cursors:** Each user has a color-coded cursor
 - ✅ **Live Selections:** See what layers others are selecting
@@ -345,9 +345,9 @@ Result: 3 sims exported in 10 seconds
 ## AI Integration UX
 
 ### No Competitor Has This:
-GridVox is first to market with AI livery design assistance
+SimVox.ai is first to market with AI livery design assistance
 
-### GridVox AI Features:
+### SimVox.ai AI Features:
 
 #### 1. **AI Design Assistant (Chat Interface)**
 ```
@@ -433,7 +433,7 @@ AI: Generates refined version
 ### Trading Paints:
 - ❌ No mobile app
 
-### GridVox:
+### SimVox.ai:
 - ✅ **Mobile Viewer:** View all projects on phone
 - ✅ **Light Editing:** Swap colors, change text, replace logos
 - ✅ **AR Preview:** Point camera at surface, see livery in AR
@@ -444,7 +444,7 @@ AI: Generates refined version
 
 **Mobile AR Workflow:**
 ```
-1. Open GridVox mobile app
+1. Open SimVox.ai mobile app
 2. Select livery
 3. Tap "AR Preview"
 4. Point camera at table/floor
@@ -510,7 +510,7 @@ AI: Generates refined version
 - ✅ **Large Click Targets:** Minimum 44x44px (WCAG AA)
 - ✅ **Hover Delays:** Avoid instant hover actions
 - ✅ **Sticky Keys Support:** Works with OS accessibility features
-- ✅ **Voice Control:** Full voice command support (via GridVox)
+- ✅ **Voice Control:** Full voice command support (via SimVox.ai)
 
 **Accessibility Settings Panel:**
 ```
@@ -613,7 +613,7 @@ AI: Generates refined version
 - ❌ No recovery suggestions
 - ❌ Lost work on errors
 
-### GridVox:
+### SimVox.ai:
 - ✅ **Friendly Error Messages:**
   - ❌ "Error 500" → ✅ "Oops! Something went wrong. We've been notified and are on it!"
   - ❌ "Export failed" → ✅ "Export couldn't complete. Try reducing resolution or contact support."
@@ -649,7 +649,7 @@ AI: Generates refined version
 
 ## Comparison Summary
 
-| UX Aspect | Trading Paints | GridVox Livery Builder |
+| UX Aspect | Trading Paints | SimVox.ai Livery Builder |
 |-----------|----------------|------------------------|
 | **Onboarding** | Minimal | Interactive tutorial |
 | **UI Flexibility** | Fixed | Customizable, resizable |
@@ -669,7 +669,7 @@ AI: Generates refined version
 
 ## Conclusion
 
-GridVox Livery Builder doesn't just match Trading Paints—it leapfrogs it with modern UX principles, AI integration, multi-platform support, and a focus on user delight. Every interaction is designed to be intuitive, forgiving, and enjoyable.
+SimVox.ai Livery Builder doesn't just match Trading Paints—it leapfrogs it with modern UX principles, AI integration, multi-platform support, and a focus on user delight. Every interaction is designed to be intuitive, forgiving, and enjoyable.
 
 **The result:** A livery designer that's a joy to use, whether you're a beginner or a pro.
 

@@ -28,7 +28,7 @@ node test-full-scan.js
 ## Basic Usage
 
 ```typescript
-import { detectSimulators, getInstalledSimulators } from '@gridvox/sim-detection';
+import { detectSimulators, getInstalledSimulators } from '@SimVox.ai/sim-detection';
 
 // Simple - just get the list
 const sims = await getInstalledSimulators();
@@ -61,7 +61,7 @@ iRacing • Assetto Corsa • ACC • AC EVO • rFactor 2 • AMS2 • Le Mans 
 ## Files
 
 - `README.md` - Full documentation
-- `INTEGRATION-GUIDE.md` - GridVox integration steps
+- `INTEGRATION-GUIDE.md` - SimVox.ai integration steps
 - `PROJECT-SUMMARY.md` - Complete project overview
 - `example.ts` - Usage examples
 
@@ -90,7 +90,7 @@ refreshDetection(options?)       // Force fresh scan
 { enableManualScan: true }   // Include C:\GAMES scan
 ```
 
-## GridVox Integration
+## SimVox.ai Integration
 
 1. Install: `npm install file:../path/to/sim-detection-listing`
 2. Import in Electron main process

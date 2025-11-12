@@ -10,7 +10,7 @@
 
 To make this work, you need:
 
-1. **POC-02 Native Addon**: The AMS2 memory reader from `gridvox-desktop/pocs/poc-02-direct-memory`
+1. **POC-02 Native Addon**: The AMS2 memory reader from `SimVox.ai-desktop/pocs/poc-02-direct-memory`
 2. **Build Tools**: Visual Studio Build Tools for compiling native modules
 
 ## Alternative Solutions (Use These Instead)
@@ -30,7 +30,7 @@ Virtual Pitwall has pre-made SVG paths for iRacing tracks:
 # Download RivalTrackerPaths.1.0.js from:
 # https://github.com/kart7990/virtualpitwall/blob/main/Pitwall.Web.App/public/js/RivalTrackerPaths.1.0.js
 
-# Extract track paths and convert to GridVox JSON format
+# Extract track paths and convert to SimVox.ai JSON format
 # These can serve as templates for AMS2 tracks
 ```
 
@@ -58,7 +58,7 @@ When ready to build the actual recorder:
 
 1. **Integrate POC-02**:
    ```bash
-   cd c:\DATA\GridVox\gridvox-desktop\pocs\poc-02-direct-memory
+   cd c:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-02-direct-memory
    npm install
    npm run build
    ```

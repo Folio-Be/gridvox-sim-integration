@@ -19,7 +19,7 @@ Replace the current `package.json` with:
 
 ```json
 {
-  "name": "@gridvox/ams2-telemetry-track-generator",
+  "name": "@SimVox.ai/ams2-telemetry-track-generator",
   "version": "1.0.0",
   "description": "Generate 3D track models from AMS2 telemetry using the 3-run mapping approach",
   "type": "module",
@@ -45,7 +45,7 @@ Replace the current `package.json` with:
     "tauri",
     "desktop-app"
   ],
-  "author": "GridVox",
+  "author": "SimVox.ai",
   "license": "MIT",
   "dependencies": {
     "react": "^19.1.0",
@@ -88,19 +88,19 @@ npm install
 
 ### Step 1.3: Copy Tauri structure from POC-06
 
-Copy these directories/files from `C:\DATA\GridVox\gridvox-desktop\pocs\poc-06-tauri-integration\gridvox-poc06\`:
+Copy these directories/files from `C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-06-tauri-integration\SimVox.ai-poc06\`:
 
 ```bash
 # Copy src-tauri directory (Rust backend)
-cp -r "C:\DATA\GridVox\gridvox-desktop\pocs\poc-06-tauri-integration\gridvox-poc06\src-tauri" ./
+cp -r "C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-06-tauri-integration\SimVox.ai-poc06\src-tauri" ./
 
 # Copy config files
-cp "C:\DATA\GridVox\gridvox-desktop\pocs\poc-06-tauri-integration\gridvox-poc06\vite.config.ts" ./
-cp "C:\DATA\GridVox\gridvox-desktop\pocs\poc-06-tauri-integration\gridvox-poc06\tsconfig.node.json" ./
-cp "C:\DATA\GridVox\gridvox-desktop\pocs\poc-06-tauri-integration\gridvox-poc06\index.html" ./
+cp "C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-06-tauri-integration\SimVox.ai-poc06\vite.config.ts" ./
+cp "C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-06-tauri-integration\SimVox.ai-poc06\tsconfig.node.json" ./
+cp "C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-06-tauri-integration\SimVox.ai-poc06\index.html" ./
 
 # Copy public directory
-cp -r "C:\DATA\GridVox\gridvox-desktop\pocs\poc-06-tauri-integration\gridvox-poc06\public" ./
+cp -r "C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-06-tauri-integration\SimVox.ai-poc06\public" ./
 ```
 
 ### Step 1.4: Update tsconfig.json
@@ -142,10 +142,10 @@ Replace `tsconfig.json`:
 mkdir -p src/native
 
 # Copy C++ shared memory reader
-cp "C:\DATA\GridVox\gridvox-desktop\pocs\poc-02-direct-memory\src\native\shared_memory.cc" src/native/
+cp "C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-02-direct-memory\src\native\shared_memory.cc" src/native/
 
 # Copy binding.gyp
-cp "C:\DATA\GridVox\gridvox-desktop\pocs\poc-02-direct-memory\binding.gyp" ./
+cp "C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-02-direct-memory\binding.gyp" ./
 ```
 
 ### Step 2.2: Copy TypeScript telemetry library
@@ -155,13 +155,13 @@ cp "C:\DATA\GridVox\gridvox-desktop\pocs\poc-02-direct-memory\binding.gyp" ./
 mkdir -p src/lib
 
 # Copy types
-cp "C:\DATA\GridVox\gridvox-desktop\pocs\poc-02-direct-memory\src\lib\types.ts" src/lib/
+cp "C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-02-direct-memory\src\lib\types.ts" src/lib/
 
 # Copy EventDetector system
-cp "C:\DATA\GridVox\gridvox-desktop\pocs\poc-02-direct-memory\src\lib\EventDetector.ts" src/lib/
+cp "C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-02-direct-memory\src\lib\EventDetector.ts" src/lib/
 
 # Copy detectors directory
-cp -r "C:\DATA\GridVox\gridvox-desktop\pocs\poc-02-direct-memory\src\lib\detectors" src/lib/
+cp -r "C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-02-direct-memory\src\lib\detectors" src/lib/
 ```
 
 ---
@@ -258,7 +258,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1>GridVox Track Generator</h1>
+      <h1>SimVox.ai Track Generator</h1>
       <p>Current screen: {currentScreen}</p>
     </div>
   );

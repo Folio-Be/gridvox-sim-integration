@@ -2,9 +2,9 @@
 
 ## Overview
 
-A production-ready TypeScript library for detecting installed racing simulators across multiple platforms and game launchers. Built specifically for GridVox MVP integration.
+A production-ready TypeScript library for detecting installed racing simulators across multiple platforms and game launchers. Built specifically for SimVox.ai MVP integration.
 
-**Project Location:** `C:\DATA\GridVox\gridvox-sim-integration\all-sims\sim-detection-listing`
+**Project Location:** `C:\DATA\SimVox.ai\SimVox.ai-sim-integration\all-sims\sim-detection-listing`
 
 ## What Was Built
 
@@ -176,14 +176,14 @@ interface DetectedSim {
 }
 ```
 
-## GridVox MVP Integration
+## SimVox.ai MVP Integration
 
 ### Recommended Integration Pattern
 
 ```typescript
 // In Electron main process (main.ts)
 import { app, ipcMain } from 'electron';
-import { detectSimulators } from '@gridvox/sim-detection';
+import { detectSimulators } from '@SimVox.ai/sim-detection';
 
 // On first launch - full scan (slower)
 app.whenReady().then(async () => {
@@ -284,10 +284,10 @@ npm run lint
 npm run format
 ```
 
-## Next Steps for GridVox
+## Next Steps for SimVox.ai
 
 ### Immediate Integration
-1. Copy library to GridVox project or publish to npm
+1. Copy library to SimVox.ai project or publish to npm
 2. Import in Electron main process
 3. Implement initial detection on app startup
 4. Cache results in app settings
@@ -349,10 +349,10 @@ npm run format
 ✅ **Fast performance (<250ms)**
 ✅ **Comprehensive coverage (23 simulators)**
 ✅ **Well-documented API**
-✅ **Ready for GridVox MVP integration**
+✅ **Ready for SimVox.ai MVP integration**
 
 **Status:** Complete and ready for production use.
 
-**Contact:** Built for GridVox project
+**Contact:** Built for SimVox.ai project
 **Date:** 2025-01-05
 **Version:** 0.1.0

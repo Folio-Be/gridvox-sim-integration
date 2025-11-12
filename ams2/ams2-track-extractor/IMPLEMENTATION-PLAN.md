@@ -1,7 +1,7 @@
 # AMS2 Track Extraction & Conversion - Implementation Plan
 
-**Project:** GridVox AMS2 Track Extractor  
-**Location:** `C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor`  
+**Project:** SimVox.ai AMS2 Track Extractor  
+**Location:** `C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor`  
 **Date:** November 9, 2025  
 **Objective:** Extract and convert AMS2 track data to glTF 2.0 format for Three.js 3D visualization
 
@@ -187,7 +187,7 @@ If track not found in community sources → **Move to Approach 2 (Procedural)**
 
 ### Success Probability: 98%
 
-**Rationale:** GridVox already records telemetry with 3D world coordinates. By driving 3 specific runs (outside border, inside border, racing line), we can reconstruct actual track geometry with perfect coordinate alignment.
+**Rationale:** SimVox.ai already records telemetry with 3D world coordinates. By driving 3 specific runs (outside border, inside border, racing line), we can reconstruct actual track geometry with perfect coordinate alignment.
 
 ### Strategy - 3-Run Mapping Method
 

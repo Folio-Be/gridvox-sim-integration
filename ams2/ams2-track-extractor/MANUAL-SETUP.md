@@ -58,7 +58,7 @@ C:\Program Files (x86)\Steam\steamapps\common\Automobilista 2
 
 ### Record the Path
 
-Create file: `C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor\AMS2_PATH.txt`
+Create file: `C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor\AMS2_PATH.txt`
 
 Contents:
 ```
@@ -128,7 +128,7 @@ If any missing → Wrong folder, search again
 
 ```powershell
 # Navigate to tools directory
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor\tools
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor\tools
 
 # Clone repository
 git clone https://github.com/Nenkai/PCarsTools.git
@@ -140,7 +140,7 @@ cd PCarsTools
 **Alternative (if Git not available):**
 1. Visit: https://github.com/Nenkai/PCarsTools
 2. Click "Code" → "Download ZIP"
-3. Extract to: `C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor\tools\PCarsTools`
+3. Extract to: `C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor\tools\PCarsTools`
 
 #### Step 2: Build Project
 
@@ -179,7 +179,7 @@ Create file: `PCARSTOOLS_PATH.txt`
 
 Contents:
 ```
-C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor\tools\PCarsTools\bin\Release\net6.0\PCarsTools.exe
+C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor\tools\PCarsTools\bin\Release\net6.0\PCarsTools.exe
 ```
 
 ---
@@ -201,14 +201,14 @@ C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor\tools\PCarsToo
    ```powershell
    # Replace paths as needed
    $ams2Path = "C:\Program Files (x86)\Steam\steamapps\common\Automobilista 2"
-   $pcarsPath = "C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor\tools\PCarsTools\bin\Release\net6.0"
+   $pcarsPath = "C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor\tools\PCarsTools\bin\Release\net6.0"
    
    Copy-Item "$ams2Path\oo2core_7_win64.dll" -Destination "$pcarsPath\oo2core_7_win64.dll"
    ```
 
 3. **Copy to project tools folder:**
    ```powershell
-   $toolsPath = "C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor\tools"
+   $toolsPath = "C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor\tools"
    
    Copy-Item "$ams2Path\oo2core_7_win64.dll" -Destination "$toolsPath\oo2core_7_win64.dll"
    ```
@@ -238,7 +238,7 @@ Both should be identical (~1 MB)
 
 2. **Create Languages folder in PCarsTools:**
    ```powershell
-   $pcarsPath = "C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor\tools\PCarsTools\bin\Release\net6.0"
+   $pcarsPath = "C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor\tools\PCarsTools\bin\Release\net6.0"
    
    New-Item -Path "$pcarsPath\Languages" -ItemType Directory -Force
    ```

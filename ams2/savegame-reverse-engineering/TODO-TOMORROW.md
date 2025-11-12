@@ -24,7 +24,7 @@ sox --version
 
 ### 2. Test the Watcher
 ```bash
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering
 run-watcher.bat
 ```
 
@@ -109,10 +109,10 @@ Create a test report with:
 
 ```
 Savegame Watcher:
-C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering\
+C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering\
 
 POC-05 (Next):
-C:\DATA\GridVox\gridvox-desktop\pocs\poc-05-voice-commands\
+C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-05-voice-commands\
 ```
 
 ## ⏰ Time Estimate
@@ -133,7 +133,7 @@ C:\DATA\GridVox\gridvox-desktop\pocs\poc-05-voice-commands\
 choco install sox.portable
 
 # Navigate to directory
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering
 
 # Start watcher
 run-watcher.bat

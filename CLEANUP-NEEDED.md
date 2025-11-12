@@ -54,7 +54,7 @@ Repository contains **~40,000+ files**, with majority being:
 
 ```powershell
 # Count files that will be ignored
-cd C:\DATA\GridVox\gridvox-sim-integration
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration
 
 # Dependencies
 Get-ChildItem -Recurse -Directory -Filter "node_modules" | Measure-Object
@@ -72,7 +72,7 @@ Get-ChildItem -Path ams2 -Recurse -Directory -Filter "output" | Measure-Object
 ### 2. Remove Build Artifacts (Safe - Can Rebuild)
 
 ```powershell
-cd C:\DATA\GridVox\gridvox-sim-integration
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration
 
 # Remove node_modules (can reinstall with npm install)
 Get-ChildItem -Recurse -Directory -Filter "node_modules" | Remove-Item -Recurse -Force
@@ -92,7 +92,7 @@ Get-ChildItem -Recurse -File -Filter "*.map" | Remove-Item -Force
 ⚠️ **CAUTION:** Only run if you can regenerate this content!
 
 ```powershell
-cd C:\DATA\GridVox\gridvox-sim-integration
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration
 
 # Remove car image extractor output
 Remove-Item -Path "ams2\ams2-car-image-extractor\output" -Recurse -Force
@@ -113,7 +113,7 @@ Remove-Item -Path "ams2\savegame-reverse-engineering\vosk-model*" -Recurse -Forc
 ### 4. Git Cleanup (After Manual Removal)
 
 ```powershell
-cd C:\DATA\GridVox\gridvox-sim-integration
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration
 
 # Remove ignored files from Git index (doesn't delete from disk)
 git rm -r --cached .
@@ -192,7 +192,7 @@ git status
 After cleanup, verify repository health:
 
 ```powershell
-cd C:\DATA\GridVox\gridvox-sim-integration
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration
 
 # Count remaining files
 (Get-ChildItem -Recurse -File | Measure-Object).Count

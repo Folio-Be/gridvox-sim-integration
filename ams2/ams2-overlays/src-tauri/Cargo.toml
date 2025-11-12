@@ -1,8 +1,8 @@
 [package]
 name = "ams2-overlay-poc"
 version = "0.1.0"
-description = "GridVox AMS2 Overlay POC"
-authors = ["GridVox Team"]
+description = "SimVox AMS2 Overlay POC"
+authors = ["SimVox Team"]
 edition = "2021"
 
 [lib]

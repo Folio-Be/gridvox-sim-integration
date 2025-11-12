@@ -1,6 +1,6 @@
 # Blender Automation Guide
 
-**Project:** GridVox AI Livery Designer
+**Project:** SimVox.ai AI Livery Designer
 **Purpose:** Production-ready implementation guide for synthetic training data generation using Blender
 **Last Updated:** January 11, 2025
 
@@ -190,7 +190,7 @@ def import_gmt_car(gmt_path: str) -> bpy.types.Object:
     return car_obj
 
 # Example usage:
-gmt_path = "C:\\GridVox\\training_data\\porsche_992_gt3_r\\models\\porsche_992_gt3_r.gmt"
+gmt_path = "C:\\SimVox.ai\\training_data\\porsche_992_gt3_r\\models\\porsche_992_gt3_r.gmt"
 car = import_gmt_car(gmt_path)
 ```
 
@@ -538,10 +538,10 @@ def setup_lighting(hdri_path: str):
 
 # Example HDRI library:
 hdri_library = [
-    "C:\\GridVox\\hdris\\studio_small_08_8k.exr",
-    "C:\\GridVox\\hdris\\outdoor_summer_8k.exr",
-    "C:\\GridVox\\hdris\\warehouse_8k.exr",
-    "C:\\GridVox\\hdris\\sunset_8k.exr"
+    "C:\\SimVox.ai\\hdris\\studio_small_08_8k.exr",
+    "C:\\SimVox.ai\\hdris\\outdoor_summer_8k.exr",
+    "C:\\SimVox.ai\\hdris\\warehouse_8k.exr",
+    "C:\\SimVox.ai\\hdris\\sunset_8k.exr"
 ]
 ```
 
@@ -630,9 +630,9 @@ def generate_training_dataset(
 
     # Load HDRI library
     hdris = [
-        "C:\\GridVox\\hdris\\studio_small_08_8k.exr",
-        "C:\\GridVox\\hdris\\outdoor_summer_8k.exr",
-        "C:\\GridVox\\hdris\\warehouse_8k.exr"
+        "C:\\SimVox.ai\\hdris\\studio_small_08_8k.exr",
+        "C:\\SimVox.ai\\hdris\\outdoor_summer_8k.exr",
+        "C:\\SimVox.ai\\hdris\\warehouse_8k.exr"
     ]
 
     sample_id = 0
@@ -834,13 +834,13 @@ import json
 import math
 from pathlib import Path
 
-# Add GridVox modules to path (if needed)
-sys.path.append("C:\\GridVox\\training_pipeline")
+# Add SimVox.ai modules to path (if needed)
+sys.path.append("C:\\SimVox.ai\\training_pipeline")
 
 # ... (Include all functions from above sections)
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate synthetic training data for GridVox")
+    parser = argparse.ArgumentParser(description="Generate synthetic training data for SimVox.ai")
     parser.add_argument("--car-gmt", required=True, help="Path to .gmt car model")
     parser.add_argument("--output-dir", required=True, help="Output directory for dataset")
     parser.add_argument("--num-samples", type=int, default=4800, help="Total samples to generate")
@@ -851,7 +851,7 @@ def main():
 
     args = parser.parse_args(sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else [])
 
-    print(f"\nGridVox Training Data Generator")
+    print(f"\nSimVox.ai Training Data Generator")
     print(f"================================")
     print(f"Car Model: {args.car_gmt}")
     print(f"Output Dir: {args.output_dir}")
@@ -879,8 +879,8 @@ if __name__ == "__main__":
 **Run Command:**
 ```bash
 "C:\Tools\Blender\blender.exe" --background --python generate_training_data.py -- \
-  --car-gmt "C:\GridVox\training_data\porsche_992_gt3_r\models\porsche_992_gt3_r.gmt" \
-  --output-dir "C:\GridVox\datasets\porsche_992_gt3_r" \
+  --car-gmt "C:\SimVox.ai\training_data\porsche_992_gt3_r\models\porsche_992_gt3_r.gmt" \
+  --output-dir "C:\SimVox.ai\datasets\porsche_992_gt3_r" \
   --num-samples 4800 \
   --resolution 1024 \
   --samples 128

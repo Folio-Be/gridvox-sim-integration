@@ -1,6 +1,6 @@
 # File Format Specifications
 
-**Project:** GridVox AI Livery Designer
+**Project:** SimVox.ai AI Livery Designer
 **Purpose:** Technical specifications for all file formats used in livery creation pipeline
 **Last Updated:** January 11, 2025
 
@@ -10,7 +10,7 @@
 1. [DDS Format (DirectDraw Surface)](#dds-format-directdraw-surface)
 2. [TGA Format (Targa)](#tga-format-targa)
 3. [PNG Format (Portable Network Graphics)](#png-format-portable-network-graphics)
-4. [GVOX Format (GridVox Project)](#gvox-format-gridvox-project)
+4. [GVOX Format (SimVox.ai Project)](#gvox-format-SimVox.ai-project)
 5. [GMT/GMTK Format (AMS2 3D Models)](#gmtgmtk-format-ams2-3d-models)
 6. [MAS/BFF Format (AMS2 Archives)](#masbff-format-ams2-archives)
 7. [MIP Format (iRacing Textures)](#mip-format-iracing-textures)
@@ -35,7 +35,7 @@ Supported Resolutions (Powers of 2):
 - 2048×2048 (High quality, RECOMMENDED for GT3/GTE cars)
 - 4096×4096 (Ultra quality, overkill for most use cases)
 
-GridVox Default: 2048×2048 (balances quality vs file size)
+SimVox.ai Default: 2048×2048 (balances quality vs file size)
 ```
 
 #### Compression Formats
@@ -76,7 +76,7 @@ Quality: Best (better than BC3)
 Issue: ❌ Not supported by AMS2/ACC (older game engines)
 
 When to Use:
-❌ Do NOT use for GridVox exports (compatibility issues)
+❌ Do NOT use for SimVox.ai exports (compatibility issues)
 ```
 
 #### Mipmap Chain Specification
@@ -107,7 +107,7 @@ Example: 2048×2048 BC3 with mipmaps = 2.7MB (vs 2.0MB without)
 
 **Mipmap Generation Algorithm:**
 ```python
-# GridVox uses Lanczos3 resampling (high quality downscaling)
+# SimVox.ai uses Lanczos3 resampling (high quality downscaling)
 from PIL import Image
 
 def generate_mipmaps(image: Image.Image) -> list[Image.Image]:
@@ -237,7 +237,7 @@ Supported Resolutions:
 - 2048×2048 (Standard quality, RECOMMENDED)
 - 4096×4096 (High quality, iRacing Pro users)
 
-GridVox Default: 2048×2048
+SimVox.ai Default: 2048×2048
 ```
 
 #### Bit Depth Options
@@ -291,7 +291,7 @@ Byte 17: Image Descriptor (0x00 for RGB, 0x08 for RGBA)
 #### Compression: RLE (Run-Length Encoding)
 
 ```
-GridVox uses RLE compression to reduce file size:
+SimVox.ai uses RLE compression to reduce file size:
 
 Uncompressed TGA (2048×2048, 32-bit): 16MB
 RLE Compressed TGA: 4-8MB (depends on livery complexity)
@@ -336,7 +336,7 @@ Special Naming:
 car_porsche992gt3r_42_rodriguez.tga   - Adds driver name "Rodriguez"
 
 Note: iRacing Paint Shop has specific templates for number placement.
-GridVox must render numbers on UV texture (not rely on filename).
+SimVox.ai must render numbers on UV texture (not rely on filename).
 ```
 
 ##### Trading Paints Integration
@@ -348,7 +348,7 @@ Trading Paints Downloader:
 - Downloads .tga files from Trading Paints servers
 - Copies to Documents\iRacing\paint\
 
-GridVox Export Strategy:
+SimVox.ai Export Strategy:
 1. Export TGA to iRacing paint folder (direct install)
 2. Optionally upload to Trading Paints (requires API key, Pro tier feature)
 ```
@@ -362,7 +362,7 @@ Differences from iRacing:
 - Installation path: <LMU_Install>\UserData\CustomLiveries\<CarID>\
 
 Example:
-C:\Program Files\Le Mans Ultimate\UserData\CustomLiveries\hypercar_porsche_963\team_gridvox_42.tga
+C:\Program Files\Le Mans Ultimate\UserData\CustomLiveries\hypercar_porsche_963\team_SimVox.ai_42.tga
 ```
 
 ---
@@ -383,9 +383,9 @@ Input Photos (User Uploads):
 - Recommended: 1920×1080 (Full HD, good quality)
 - Maximum: 7680×4320 (8K, overkill)
 
-GridVox internally resizes to 1024×1024 for AI processing.
+SimVox.ai internally resizes to 1024×1024 for AI processing.
 
-Preview Renders (GridVox Generates):
+Preview Renders (SimVox.ai Generates):
 - Thumbnails: 400×300 (card previews)
 - Standard: 1920×1080 (gallery view)
 - High-Res: 3840×2160 (4K, for content creators)
@@ -402,10 +402,10 @@ Output Previews: 24-bit RGB (no transparency needed)
 ```
 PNG Compression (zlib):
 Level 0: Uncompressed (16MB for 2048×2048 RGB)
-Level 6: Default (4-6MB, good balance) ← GridVox uses this
+Level 6: Default (4-6MB, good balance) ← SimVox.ai uses this
 Level 9: Maximum (3-4MB, slower encoding)
 
-GridVox Setting: Level 6 (fast encoding, good compression)
+SimVox.ai Setting: Level 6 (fast encoding, good compression)
 ```
 
 #### Color Space
@@ -419,10 +419,10 @@ Note: AI models expect sRGB input. LinearRGB photos must be converted.
 #### Metadata (EXIF/PNG Chunks)
 
 ```
-GridVox Embeds Metadata in Exported PNGs:
+SimVox.ai Embeds Metadata in Exported PNGs:
 
 tEXt Chunks (Text Metadata):
-- "Software": "GridVox AI Livery Designer v0.1.0"
+- "Software": "SimVox.ai AI Livery Designer v0.1.0"
 - "CreationTime": "2025-01-11T14:32:00Z"
 - "CarModel": "Porsche 992 GT3 R"
 - "Simulator": "Automobilista 2"
@@ -433,7 +433,7 @@ from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 
 metadata = PngInfo()
-metadata.add_text("Software", "GridVox v0.1.0")
+metadata.add_text("Software", "SimVox.ai v0.1.0")
 metadata.add_text("CarModel", "Porsche 992 GT3 R")
 
 image.save("preview.png", pnginfo=metadata)
@@ -441,10 +441,10 @@ image.save("preview.png", pnginfo=metadata)
 
 ---
 
-## GVOX Format (GridVox Project)
+## GVOX Format (SimVox.ai Project)
 
 ### Overview
-**Usage:** GridVox project files (save/load livery projects)
+**Usage:** SimVox.ai project files (save/load livery projects)
 **File Extension:** `.gvox`
 **Purpose:** Store livery state for reopening/editing later
 
@@ -648,7 +648,7 @@ Car with 42,000 vertices = 1.68MB just for vertex data
 
 #### Extracting UV Template from GMT
 
-GridVox doesn't need to parse GMT directly. Instead, use PCarsTools (see [PCARSTOOLS-EXTRACTION-GUIDE.md](PCARSTOOLS-EXTRACTION-GUIDE.md)) to extract pre-rendered UV templates.
+SimVox.ai doesn't need to parse GMT directly. Instead, use PCarsTools (see [PCARSTOOLS-EXTRACTION-GUIDE.md](PCARSTOOLS-EXTRACTION-GUIDE.md)) to extract pre-rendered UV templates.
 
 ---
 
@@ -695,13 +695,13 @@ Compression: BC1/BC3 (same as DDS)
 Mipmaps: Always included
 ```
 
-#### GridVox Handling
+#### SimVox.ai Handling
 
 ```
-GridVox DOES NOT generate .mip files directly.
+SimVox.ai DOES NOT generate .mip files directly.
 
 Workflow:
-1. GridVox exports .tga to iRacing paint folder
+1. SimVox.ai exports .tga to iRacing paint folder
 2. iRacing converts .tga → .mip on-the-fly when loading car
 3. .mip files cached in: C:\Users\<User>\AppData\Local\iRacing\cache\
 
@@ -721,7 +721,7 @@ Note: .tga is the ONLY format users should install. iRacing handles .mip convers
 | **Assetto Corsa Competizione** | DDS | BC3 (DXT5) | 2048×2048 | ✅ Required | ✅ Yes | `<carid>_<teamid>.dds` |
 | **Le Mans Ultimate** | TGA | RLE | 2048×2048 | ❌ No | ✅ Yes | `<teamid>_<num>.tga` |
 
-### GridVox Export Pipeline
+### SimVox.ai Export Pipeline
 
 ```python
 # Simplified export workflow
@@ -764,7 +764,7 @@ def export_livery(
     elif simulator == "lmu":
         # Similar to iRacing (TGA, but with alpha support)
         tga_path = generate_tga(uv_texture, compression="RLE", bit_depth=32)
-        filename = f"team_gridvox_{car_number}.tga"
+        filename = f"team_SimVox.ai_{car_number}.tga"
         install_path = get_lmu_path(car_id, filename)
         shutil.copy(tga_path, install_path)
 ```
@@ -803,7 +803,7 @@ DirectXTex (texconv.exe):
 - Reliable mipmap generation
 Download: https://github.com/microsoft/DirectXTex/releases
 
-GridVox Strategy:
+SimVox.ai Strategy:
 - Use texconv.exe via subprocess for DDS export (more reliable than pure Python)
 ```
 

@@ -134,12 +134,12 @@ yt-dlp https://vimeo.com/834107724 -o "06-sim-preview.%(ext)s"
 yt-dlp https://vimeo.com/834103573 -o "07-sharing-collaboration.%(ext)s"
 ```
 
-## Relevance to GridVox
+## Relevance to SimVox.ai
 
-### Applicable Features for GridVox Livery Designer
+### Applicable Features for SimVox.ai Livery Designer
 
 1. **Browser-based Design**
-   - Consideration: GridVox could adopt a similar web-based approach or hybrid desktop/web
+   - Consideration: SimVox.ai could adopt a similar web-based approach or hybrid desktop/web
    - Advantage: No installation, cross-platform compatibility
 
 2. **Layer System**
@@ -158,7 +158,7 @@ yt-dlp https://vimeo.com/834103573 -o "07-sharing-collaboration.%(ext)s"
 
 5. **Collaboration Features**
    - Real-time sharing
-   - Could differentiate GridVox in the market
+   - Could differentiate SimVox.ai in the market
 
 6. **Material/Finish System**
    - Advanced feature (spec maps, chrome, metallic)
@@ -176,11 +176,11 @@ yt-dlp https://vimeo.com/834103573 -o "07-sharing-collaboration.%(ext)s"
 - Large community and Showroom
 - Pro membership model
 
-**GridVox Opportunities:**
+**SimVox.ai Opportunities:**
 - Multi-sim support (not just iRacing)
 - AI-assisted design features
 - More advanced automation
-- Integration with GridVox ecosystem
+- Integration with SimVox.ai ecosystem
 
 ### Implementation Priority
 

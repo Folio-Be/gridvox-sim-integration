@@ -7,7 +7,7 @@ A complete **Tauri-based desktop application** framework for AI-powered livery g
 ### Project Structure
 
 ```
-C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-ai-livery-designer\
+C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-ai-livery-designer\
 ├── 📄 Documentation
 │   ├── README.md                        # Project overview
 │   ├── QUICKSTART.md                    # Getting started guide
@@ -68,7 +68,7 @@ C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-ai-livery-designer\
 - Small bundle size (~5MB vs Electron's 100MB+)
 - Direct file system access for DDS export
 - GPU acceleration support
-- Same stack as other GridVox POCs
+- Same stack as other SimVox.ai POCs
 
 #### Why React 19?
 - Modern hooks and concurrent features
@@ -148,7 +148,7 @@ Based on AMS2 actual vehicle data:
 ### 1. Install Dependencies
 
 ```powershell
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-ai-livery-designer
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-ai-livery-designer
 pnpm install
 ```
 
@@ -279,7 +279,7 @@ By end of Week 8, should have:
 - **AMS2 Car Data:** `../ams2-car-image-extractor/output/manifest.json`
 - **Research:** `AI_LIVERY_DESIGNER_RESEARCH.md` (1776 lines!)
 - **Phase Plan:** `PHASE_1_POC.md` (detailed weekly todos)
-- **Similar POC:** `../../gridvox-desktop/pocs/poc-08-tts-integration/`
+- **Similar POC:** `../../SimVox.ai-desktop/pocs/poc-08-tts-integration/`
 
 ## Next Immediate Actions
 

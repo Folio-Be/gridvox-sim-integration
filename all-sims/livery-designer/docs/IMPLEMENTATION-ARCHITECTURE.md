@@ -1,6 +1,6 @@
 # Implementation Architecture
 
-**Project:** GridVox AI Livery Designer
+**Project:** SimVox.ai AI Livery Designer
 **Purpose:** Technical implementation patterns, architectural decisions, and code organization
 **Last Updated:** January 11, 2025
 
@@ -499,7 +499,7 @@ export const useAppStore = create<AppState>()(
       setSimulator: (simulator) => set({ simulator }),
     }),
     {
-      name: 'gridvox-app-storage',  // localStorage key
+      name: 'SimVox.ai-app-storage',  // localStorage key
     }
   )
 );
@@ -586,31 +586,31 @@ export const useProjectStore = create<ProjectState>((set) => ({
 ```python
 # api/exceptions.py
 
-class GridVoxException(Exception):
-    """Base exception for GridVox errors."""
+class SimVox.aiException(Exception):
+    """Base exception for SimVox.ai errors."""
     def __init__(self, message: str, error_code: str, details: dict = None):
         self.message = message
         self.error_code = error_code
         self.details = details or {}
         super().__init__(self.message)
 
-class PhotoAnalysisError(GridVoxException):
+class PhotoAnalysisError(SimVox.aiException):
     """Photo analysis failed (no car detected, poor quality, etc.)."""
     pass
 
-class ModelLoadError(GridVoxException):
+class ModelLoadError(SimVox.aiException):
     """Failed to load AI model (missing weights, CUDA error, etc.)."""
     pass
 
-class InferenceError(GridVoxException):
+class InferenceError(SimVox.aiException):
     """Inference failed (OOM, corrupted input, timeout)."""
     pass
 
-class ExportError(GridVoxException):
+class ExportError(SimVox.aiException):
     """Export failed (DDS compression error, file write error, etc.)."""
     pass
 
-class GameNotFoundError(GridVoxException):
+class GameNotFoundError(SimVox.aiException):
     """Game installation not detected."""
     pass
 
@@ -618,8 +618,8 @@ class GameNotFoundError(GridVoxException):
 from fastapi import Request, HTTPException
 from fastapi.responses import JSONResponse
 
-@app.exception_handler(GridVoxException)
-async def gridvox_exception_handler(request: Request, exc: GridVoxException):
+@app.exception_handler(SimVox.aiException)
+async def SimVox.ai_exception_handler(request: Request, exc: SimVox.aiException):
     return JSONResponse(
         status_code=500,
         content={
@@ -668,7 +668,7 @@ apiClient.interceptors.response.use(
       });
     } else if (error.request) {
       // Backend not responding
-      toast.error('Cannot connect to GridVox backend', {
+      toast.error('Cannot connect to SimVox.ai backend', {
         description: 'Ensure Python backend is running on port 1472',
         action: {
           label: 'Troubleshoot',
@@ -823,16 +823,16 @@ def test_generate_livery_e2e():
 
 ```
 User Installation:
-1. Download GridVox installer (.msi for Windows)
-2. Run installer (installs to C:\Program Files\GridVox)
+1. Download SimVox.ai installer (.msi for Windows)
+2. Run installer (installs to C:\Program Files\SimVox.ai)
 3. First launch:
    - Tauri app starts (port 1470)
    - Python backend auto-starts in background (port 1472)
    - Downloads initial car models (~500MB per car)
 
 Files Installed:
-C:\Program Files\GridVox\
-├── GridVox.exe                      # Tauri executable
+C:\Program Files\SimVox.ai\
+├── SimVox.ai.exe                      # Tauri executable
 ├── resources\
 │   ├── frontend\                    # React build
 │   │   ├── index.html
@@ -854,14 +854,14 @@ Total Install Size: ~3GB (app + 3 car models)
 ```
 Update Flow:
 1. On app launch, check GitHub Releases API:
-   GET https://api.github.com/repos/GridVox/livery-designer/releases/latest
+   GET https://api.github.com/repos/SimVox.ai/livery-designer/releases/latest
 
 2. Compare version:
    Current: v0.1.0
    Latest:  v0.2.0
 
 3. If outdated:
-   - Show toast: "GridVox v0.2.0 available. Update now?"
+   - Show toast: "SimVox.ai v0.2.0 available. Update now?"
    - User clicks "Update"
    - Download update (5MB delta, not full 3GB)
    - Install silently in background

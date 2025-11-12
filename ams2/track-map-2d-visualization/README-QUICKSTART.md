@@ -1,4 +1,4 @@
-# GridVox Track Map Visualization
+# SimVox.ai Track Map Visualization
 
 Multi-sim track map library with Pixi.js (WebGL) rendering for high-performance visualization.
 
@@ -48,7 +48,7 @@ Compiles TypeScript for `track-map-core` and `track-map-ams2` packages.
 
 ## 📦 Package Details
 
-### @gridvox/track-map-core
+### @SimVox.ai/track-map-core
 
 Core rendering library (sim-agnostic).
 
@@ -61,11 +61,11 @@ Core rendering library (sim-agnostic).
 
 **Exports:**
 ```typescript
-import { PixiTrackRenderer } from '@gridvox/track-map-core/rendering';
-import type { TrackDefinition, CarPosition } from '@gridvox/track-map-core';
+import { PixiTrackRenderer } from '@SimVox.ai/track-map-core/rendering';
+import type { TrackDefinition, CarPosition } from '@SimVox.ai/track-map-core';
 ```
 
-### @gridvox/track-map-ams2
+### @SimVox.ai/track-map-ams2
 
 AMS2 telemetry adapter.
 
@@ -77,7 +77,7 @@ AMS2 telemetry adapter.
 
 **Exports:**
 ```typescript
-import { AMS2Adapter } from '@gridvox/track-map-ams2';
+import { AMS2Adapter } from '@SimVox.ai/track-map-ams2';
 ```
 
 **Usage:**
@@ -181,12 +181,12 @@ All packages use strict TypeScript:
 - [ ] Pit lane indicators
 - [ ] Multiple track support
 
-## 🏁 Integration with GridVox
+## 🏁 Integration with SimVox.ai
 
-This library is designed to integrate with GridVox's AI crew radio:
+This library is designed to integrate with SimVox.ai's AI crew radio:
 
 ```typescript
-import { TrackContextProvider } from '@gridvox/track-map-core/llm';
+import { TrackContextProvider } from '@SimVox.ai/track-map-core/llm';
 
 const context = new TrackContextProvider(trackData, carPositions);
 
@@ -206,4 +206,4 @@ context.getOvertakeOpportunities(player);
 
 ## 📄 License
 
-MIT License - GridVox Team
+MIT License - SimVox.ai Team

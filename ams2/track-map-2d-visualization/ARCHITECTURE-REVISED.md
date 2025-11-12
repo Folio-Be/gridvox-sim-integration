@@ -16,12 +16,12 @@ Based on competitive analysis and your requirements, this revised architecture:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    GridVox Ecosystem                     │
+│                    SimVox.ai Ecosystem                     │
 │  (Crew Radio, Commentary, Social, LLM Integration)      │
 └─────────────────────┬───────────────────────────────────┘
                       │
 ┌─────────────────────┴───────────────────────────────────┐
-│            @gridvox/track-map-core (Library)            │
+│            @SimVox.ai/track-map-core (Library)            │
 │  ┌──────────────┐  ┌─────────────┐  ┌────────────────┐ │
 │  │ TrackRenderer│  │ TrackDataMgr│  │ PositionEngine │ │
 │  │  (Pixi.js)   │  │ (JSON cache)│  │ (interpolation)│ │
@@ -47,7 +47,7 @@ Based on competitive analysis and your requirements, this revised architecture:
 
 ---
 
-## Core Library: `@gridvox/track-map-core`
+## Core Library: `@SimVox.ai/track-map-core`
 
 ### Technology Stack
 
@@ -457,7 +457,7 @@ export class TrackContextProvider {
 ```typescript
 // packages/track-map-ams2/src/AMS2Adapter.ts
 
-import type { CarPosition } from '@gridvox/track-map-core';
+import type { CarPosition } from '@SimVox.ai/track-map-core';
 import type { AMS2SharedMemory, AMS2Participant } from './types/AMS2Telemetry';
 
 export class AMS2Adapter {
@@ -910,9 +910,9 @@ export class TrackRecorder {
 ## LLM Integration Example
 
 ```typescript
-// Example: GridVox crew radio integration
+// Example: SimVox.ai crew radio integration
 
-import { TrackContextProvider } from '@gridvox/track-map-core';
+import { TrackContextProvider } from '@SimVox.ai/track-map-core';
 
 const trackContext = new TrackContextProvider(trackData, carPositions);
 
@@ -1024,7 +1024,7 @@ console.log(context);
 ```json
 // packages/track-map-core/package.json
 {
-  "name": "@gridvox/track-map-core",
+  "name": "@SimVox.ai/track-map-core",
   "version": "1.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -1046,10 +1046,10 @@ console.log(context);
 ```json
 // packages/track-map-ams2/package.json
 {
-  "name": "@gridvox/track-map-ams2",
+  "name": "@SimVox.ai/track-map-ams2",
   "version": "1.0.0",
   "dependencies": {
-    "@gridvox/track-map-core": "workspace:*"
+    "@SimVox.ai/track-map-core": "workspace:*"
   }
 }
 ```

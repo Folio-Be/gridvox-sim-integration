@@ -1,4 +1,4 @@
-# GridVox AI Livery Designer Backend
+# SimVox.ai AI Livery Designer Backend
 
 Minimal FastAPI service scaffold that mirrors the research architecture. The app exposes placeholder endpoints so the desktop client can integrate early while the ML components are under construction.
 

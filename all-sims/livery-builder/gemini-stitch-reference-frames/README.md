@@ -1,6 +1,6 @@
 # Reference Frames for Gemini Stitch
 
-This folder contains selected frames from the Trading Paints Builder analysis, chosen as reference points for the GridVox Livery Builder interface redesign.
+This folder contains selected frames from the Trading Paints Builder analysis, chosen as reference points for the SimVox.ai Livery Builder interface redesign.
 
 ## Frame Index
 
@@ -77,7 +77,7 @@ This folder contains selected frames from the Trading Paints Builder analysis, c
 2. **Identify pain points** in each screen (cluttered, cramped, dated design)
 3. **Read improvement goals** in `gemini-stitch-prompt-with-references.md`
 4. **Design modern alternatives** that address the issues
-5. **Add GridVox-specific features** (AI, collaboration, voice, multi-sim)
+5. **Add SimVox.ai-specific features** (AI, collaboration, voice, multi-sim)
 
 ---
 
@@ -148,7 +148,7 @@ This folder contains selected frames from the Trading Paints Builder analysis, c
 2. Refer to `gemini-stitch-prompt-with-references.md` for detailed specifications
 3. Design 10 screens as requested in the prompt
 4. Focus on **improving** the current design, not just replicating it
-5. Add GridVox's unique features that set it apart from competitors
+5. Add SimVox.ai's unique features that set it apart from competitors
 
 ---
 

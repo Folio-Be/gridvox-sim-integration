@@ -1,4 +1,4 @@
-# GridVox Racing Simulator Detection
+# SimVox.ai Racing Simulator Detection
 
 A comprehensive Node.js/TypeScript library for detecting installed racing simulators across multiple platforms and game launchers.
 
@@ -18,13 +18,13 @@ A comprehensive Node.js/TypeScript library for detecting installed racing simula
 ## Installation
 
 ```bash
-npm install @gridvox/sim-detection
+npm install @SimVox.ai/sim-detection
 ```
 
 ## Quick Start
 
 ```typescript
-import { detectSimulators, getInstalledSimulators } from '@gridvox/sim-detection';
+import { detectSimulators, getInstalledSimulators } from '@SimVox.ai/sim-detection';
 
 // Simple usage - get array of detected sims
 const simulators = await getInstalledSimulators();
@@ -103,7 +103,7 @@ if (iracing) {
 Detect currently running racing simulators.
 
 ```typescript
-import { detectRunningSimulators } from '@gridvox/sim-detection';
+import { detectRunningSimulators } from '@SimVox.ai/sim-detection';
 
 const running = await detectRunningSimulators();
 if (running.length > 0) {
@@ -116,7 +116,7 @@ if (running.length > 0) {
 Check if a specific simulator is currently running.
 
 ```typescript
-import { isSimulatorRunning } from '@gridvox/sim-detection';
+import { isSimulatorRunning } from '@SimVox.ai/sim-detection';
 
 if (await isSimulatorRunning('assetto-corsa')) {
   console.log('Assetto Corsa is running!');
@@ -130,7 +130,7 @@ if (await isSimulatorRunning('assetto-corsa')) {
 Clear the detection cache.
 
 ```typescript
-import { clearCache } from '@gridvox/sim-detection';
+import { clearCache } from '@SimVox.ai/sim-detection';
 
 clearCache();
 ```
@@ -140,7 +140,7 @@ clearCache();
 Clear cache and perform fresh detection.
 
 ```typescript
-import { refreshDetection } from '@gridvox/sim-detection';
+import { refreshDetection } from '@SimVox.ai/sim-detection';
 
 const result = await refreshDetection();
 ```
@@ -253,14 +253,14 @@ interface DetectionResult {
 
 **Recommendation**: Use default options (manual scan disabled) for best performance.
 
-## Integration with GridVox
+## Integration with SimVox.ai
 
 This library is designed to be called from the Electron main process:
 
 ```typescript
 // In Electron main process
 import { app, ipcMain } from 'electron';
-import { detectSimulators } from '@gridvox/sim-detection';
+import { detectSimulators } from '@SimVox.ai/sim-detection';
 
 app.whenReady().then(async () => {
   // Detect sims on startup
@@ -328,7 +328,7 @@ Contributions welcome! Please submit PRs for:
 
 ## Credits
 
-Built for **GridVox** - AI-driven sim racing companion application.
+Built for **SimVox.ai** - AI-driven sim racing companion application.
 
 Research sources:
 - Steam VDF format documentation

@@ -13,7 +13,7 @@ This document outlines a comprehensive approach to automatically enrich 3D track
 
 **Primary Approach**: Use **Google Gemini Vision API** for image analysis and shape matching, combined with free web APIs and satellite imagery.
 
-**💰 Cost**: **COMPLETELY FREE** using Gemini's free tier! (No API costs for typical GridVox usage)  
+**💰 Cost**: **COMPLETELY FREE** using Gemini's free tier! (No API costs for typical SimVox.ai usage)  
 **🎯 Accuracy**: 85-95% for corner name matching, 70-80% for building extraction  
 **⏱️ Implementation Time**: 40-60 hours development
 
@@ -1924,7 +1924,7 @@ ams2-track-extractor/
 **Note**: Google Maps Static and Custom Search have free tiers too:
 - Maps Static: First ~28,000 requests/month free ($200 credit)
 - Custom Search: First 100 requests/day free
-- **Realistic total cost**: $0.00 for typical GridVox usage
+- **Realistic total cost**: $0.00 for typical SimVox.ai usage
 
 ---
 

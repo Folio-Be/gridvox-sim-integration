@@ -28,7 +28,7 @@ Press **Ctrl+C** in the terminal
 ## Analyze Results
 
 ```cmd
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering
 npm run analyze
 ```
 

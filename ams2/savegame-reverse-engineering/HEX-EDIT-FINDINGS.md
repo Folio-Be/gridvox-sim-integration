@@ -203,7 +203,7 @@ node hex-diff.js file1.sav file2.sav Label1 Label2
 
 All snapshots in:
 ```
-C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering\snapshots\
+C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering\snapshots\
 ```
 
 ### AMS2 Save Location
@@ -240,7 +240,7 @@ Start
   └─ If hex editing works
       └─→ Map all settings
           └─→ Create config writer
-              └─→ Integrate with GridVox
+              └─→ Integrate with SimVox.ai
 ```
 
 ## Conclusion
@@ -259,7 +259,7 @@ Start
 
 ```bash
 # Navigate to tool directory
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering
 
 # Run clean test helper
 test-clean-comparison.bat

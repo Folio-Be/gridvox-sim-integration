@@ -9,23 +9,23 @@
   "singleton_examples": [],
   "lowest_coverage": [
     {
-      "source_uv": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body1.png",
+      "source_uv": "C:\\DATA\\SimVox.ai\\SimVox.ai-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body1.png",
       "pairs": 32
     },
     {
-      "source_uv": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body3.png",
+      "source_uv": "C:\\DATA\\SimVox.ai\\SimVox.ai-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body3.png",
       "pairs": 32
     },
     {
-      "source_uv": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body4.png",
+      "source_uv": "C:\\DATA\\SimVox.ai\\SimVox.ai-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body4.png",
       "pairs": 32
     },
     {
-      "source_uv": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body5.png",
+      "source_uv": "C:\\DATA\\SimVox.ai\\SimVox.ai-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body5.png",
       "pairs": 32
     },
     {
-      "source_uv": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body2.png",
+      "source_uv": "C:\\DATA\\SimVox.ai\\SimVox.ai-sim-integration\\ams2\\ams2-ai-livery-designer\\examples\\gt4_skins\\Automobilista 2\\Vehicles\\Textures\\CustomLiveries\\Overrides\\ginetta_g55_gt4_2\\GIN\\body2.png",
       "pairs": 96
     }
   ]

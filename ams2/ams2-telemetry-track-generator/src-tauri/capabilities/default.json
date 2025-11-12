@@ -18,10 +18,10 @@
           "path": "$APPDATA/**"
         },
         {
-          "path": "C:/DATA/GridVox/gridvox-sim-integration/ams2/ams2-telemetry-track-generator/output/**"
+          "path": "C:/DATA/SimVox.ai/SimVox.ai-sim-integration/ams2/ams2-telemetry-track-generator/output/**"
         },
         {
-          "path": "C:\\DATA\\GridVox\\gridvox-sim-integration\\ams2\\ams2-telemetry-track-generator\\output\\**"
+          "path": "C:\\DATA\\SimVox.ai\\SimVox.ai-sim-integration\\ams2\\ams2-telemetry-track-generator\\output\\**"
         }
       ]
     }

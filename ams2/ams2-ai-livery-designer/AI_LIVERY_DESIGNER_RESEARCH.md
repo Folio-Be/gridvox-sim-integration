@@ -1,5 +1,5 @@
 # AI Livery Designer Research Report
-## Automobilista 2 - GridVox Integration
+## Automobilista 2 - SimVox.ai Integration
 
 **Date:** November 10, 2025
 **Status:** Feasibility Study
@@ -464,8 +464,8 @@ Based on research findings from Paint3D, DreamFusion, and texture generation pap
 - No subscription commitment
 - Appeals to casual users
 
-**Option C: Integration with GridVox**
-- Premium GridVox feature
+**Option C: Integration with SimVox.ai**
+- Premium SimVox.ai feature
 - Bundled with other sim racing tools
 - Cross-sell opportunity
 
@@ -481,11 +481,11 @@ Based on research findings from Paint3D, DreamFusion, and texture generation pap
 
 ### 6.1 Overview
 
-**IMPORTANT CONTEXT:** GridVox is a companion app for racing simulators. **Users already have gaming PCs capable of running AMS2, ACC, iRacing, etc.** Racing sims require high-end GPUs (RTX 2060+ minimum, RTX 3070+ for VR), meaning the target audience already owns hardware suitable for AI livery generation.
+**IMPORTANT CONTEXT:** SimVox.ai is a companion app for racing simulators. **Users already have gaming PCs capable of running AMS2, ACC, iRacing, etc.** Racing sims require high-end GPUs (RTX 2060+ minimum, RTX 3070+ for VR), meaning the target audience already owns hardware suitable for AI livery generation.
 
-This section analyzes deployment options, but the **primary recommendation is local deployment** since GridVox users already have the necessary hardware.
+This section analyzes deployment options, but the **primary recommendation is local deployment** since SimVox.ai users already have the necessary hardware.
 
-### 6.1.1 GridVox User Hardware Profile
+### 6.1.1 SimVox.ai User Hardware Profile
 
 Based on racing sim system requirements:
 
@@ -496,13 +496,13 @@ Based on racing sim system requirements:
 | **iRacing** | GTX 1050 | RTX 2060 | RTX 3070+ |
 | **Le Mans Ultimate** | GTX 1060 | RTX 2070 | RTX 3070+ |
 
-**Expected GridVox User GPU Distribution:**
+**Expected SimVox.ai User GPU Distribution:**
 - **Entry-level (20%):** GTX 1660 / RTX 2060 (6-8GB VRAM) - Can run SD 1.5
 - **Mid-tier (50%):** RTX 3060 / 3070 / 2070 (8-12GB VRAM) - Can run SDXL with optimizations
 - **High-end (25%):** RTX 3080 / 3090 / 4070 / 4080 (10-24GB VRAM) - Full SDXL pipeline
 - **Enthusiast (5%):** RTX 4090 / Dual GPU setups (24GB+ VRAM) - Maximum performance
 
-**Key Insight:** 80% of GridVox users likely have GPUs capable of running SDXL (RTX 3060 or better), eliminating the need for cloud infrastructure for the majority of users.
+**Key Insight:** 80% of SimVox.ai users likely have GPUs capable of running SDXL (RTX 3060 or better), eliminating the need for cloud infrastructure for the majority of users.
 
 ### 6.2 Local GPU Options - Hardware Specifications
 
@@ -788,13 +788,13 @@ For an AI livery designer service, a **hybrid approach** offers optimal cost/per
 
 **PRIMARY RECOMMENDATION: Local-First Architecture**
 
-Given that GridVox users already have gaming PCs with capable GPUs, the optimal approach is to **build the AI livery designer as a local GridVox feature** that runs on the user's existing hardware.
+Given that SimVox.ai users already have gaming PCs with capable GPUs, the optimal approach is to **build the AI livery designer as a local SimVox.ai feature** that runs on the user's existing hardware.
 
 #### Architecture: Local Processing with Optional Cloud Fallback
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ GridVox Desktop App (Electron + Node.js)                │
+│ SimVox.ai Desktop App (Electron + Node.js)                │
 │  ┌──────────────────────────────────────────────────┐   │
 │  │  GPU Detection & Capability Assessment           │   │
 │  │  - Detects RTX 2060+: Full local processing      │   │
@@ -831,11 +831,11 @@ Given that GridVox users already have gaming PCs with capable GPUs, the optimal 
 - **Deliverable:** Proof that local processing works on typical gaming GPU
 
 **Phase 2: MVP (Months 3-6) - $0 capital**
-- **Deploy as:** GridVox desktop feature (local processing)
+- **Deploy as:** SimVox.ai desktop feature (local processing)
 - **Rationale:** Users already have the hardware! Zero infrastructure cost
 - **Target users:** RTX 3060+ owners (75% of user base)
 - **Expected usage:** 100-500 users × 5-10 liveries/month
-- **Cost to GridVox:** $0 (compute happens on user's PC)
+- **Cost to SimVox.ai:** $0 (compute happens on user's PC)
 - **Cost to user:** $0 (electricity: ~$0.10/month)
 - **Benefit:** Instant adoption, no payment friction
 
@@ -866,7 +866,7 @@ Given that GridVox users already have gaming PCs with capable GPUs, the optimal 
 
 **Savings vs cloud-only: $24K-44K over 3 years**
 
-#### Why Local-First Wins for GridVox
+#### Why Local-First Wins for SimVox.ai
 
 1. ✅ **Zero Infrastructure Costs** - Users provide the compute
 2. ✅ **Zero Friction Adoption** - No payment required, instant feature
@@ -874,7 +874,7 @@ Given that GridVox users already have gaming PCs with capable GPUs, the optimal 
 4. ✅ **Complete Privacy** - User's photos never leave their PC
 5. ✅ **Offline Capability** - Works without internet after model download
 6. ✅ **Better UX** - Runs in background while gaming
-7. ✅ **Scalability** - More users = zero additional cost to GridVox
+7. ✅ **Scalability** - More users = zero additional cost to SimVox.ai
 8. ✅ **Competitive Advantage** - No other tool offers local AI livery generation
 
 #### ⚠️ Critical Challenge: Quality Consistency Across Hardware
@@ -1179,7 +1179,7 @@ With Ultra tier:
 
 **Marketing message (revised for accuracy):**
 
-"GridVox AI Livery Designer
+"SimVox.ai AI Livery Designer
 
 **Free Mode (Local):**
 Professional quality from a single photo
@@ -1220,7 +1220,7 @@ Premium (Cloud):
 
 **Marketing message:**
 
-"GridVox AI Livery Designer: Professional quality for everyone, free forever.
+"SimVox.ai AI Livery Designer: Professional quality for everyone, free forever.
 
 Your GPU determines speed, not quality:
 - RTX 4090: 15 seconds ⚡
@@ -1264,9 +1264,9 @@ This is absolutely achievable:
 #### User Experience Flow
 
 ```
-1. User opens GridVox AI Livery Designer
+1. User opens SimVox.ai AI Livery Designer
    ↓
-2. GridVox detects GPU capability
+2. SimVox.ai detects GPU capability
    ↓
    ├─ RTX 3060+: "Local processing available! Generate unlimited liveries for free"
    │   ↓
@@ -1341,7 +1341,7 @@ This is absolutely achievable:
 - Advanced refinement tools (manual touch-up)
 - Batch processing
 - Community gallery (share liveries)
-- Integration with GridVox app
+- Integration with SimVox.ai app
 - Documentation and tutorials
 
 **Success Criteria:**
@@ -1511,7 +1511,7 @@ This is absolutely achievable:
 1. ✅ **Technically Feasible:** All required AI components exist and are proven
 2. ✅ **Market Need:** Current manual workflow is painful for 70%+ of users
 3. ✅ **Competitive Advantage:** No existing AI solution for racing sim liveries
-4. ✅ **Integration Opportunity:** Natural fit with GridVox ecosystem
+4. ✅ **Integration Opportunity:** Natural fit with SimVox.ai ecosystem
 5. ✅ **Revenue Potential:** Freemium SaaS model viable ($50K-250K/year)
 
 **Conditions for Success:**
@@ -1537,7 +1537,7 @@ This is absolutely achievable:
   - 20 popular AMS2 cars
   - GPU detection and capability assessment
   - Automatic model downloading (12GB SDXL)
-  - Basic UI integrated into GridVox app
+  - Basic UI integrated into SimVox.ai app
   - Local processing with progress indicators
 - Target: RTX 3060+ users (80% of user base)
 - Decision Point: If < 100 beta testers satisfied with local processing, optimize
@@ -1605,15 +1605,15 @@ An AI-powered livery designer that generates racing sim textures from real-world
 3. **Market Opportunity Exists:**
    - 500K+ sim racers, 5-10% addressable market
    - No current AI competitors
-   - Natural fit with GridVox's sim racing focus
+   - Natural fit with SimVox.ai's sim racing focus
 
 4. **Challenges Are Manageable:**
    - Technical complexity is moderate (3-5 month timeline)
    - Legal risks mitigated with proper terms/disclaimers
    - User expectations managed through clear communication
 
-5. **🎯 GAME-CHANGER: GridVox Users Already Have the Hardware!**
-   - **80% of GridVox users have RTX 3060+ GPUs** (required for sim racing)
+5. **🎯 GAME-CHANGER: SimVox.ai Users Already Have the Hardware!**
+   - **80% of SimVox.ai users have RTX 3060+ GPUs** (required for sim racing)
    - **Zero infrastructure costs** - users provide the compute
    - **Zero payment friction** - free local processing = instant adoption
    - **Massive competitive advantage** - no other tool offers local AI livery generation
@@ -1622,15 +1622,15 @@ An AI-powered livery designer that generates racing sim textures from real-world
 6. **Recommended Approach:**
    - **LOCAL-FIRST ARCHITECTURE** (primary recommendation)
    - Start with POC on dev team's gaming PCs (2 months, $0)
-   - Launch MVP as free GridVox desktop feature (3 months, $20-40K)
+   - Launch MVP as free SimVox.ai desktop feature (3 months, $20-40K)
    - Add optional cloud fallback for older GPUs (3 months, $40-60K)
    - Total investment: $60-100K (vs $95-160K for cloud-only)
 
 ### Final Verdict
 
-**BUILD IT - as a local-first GridVox feature.**
+**BUILD IT - as a local-first SimVox.ai feature.**
 
-This represents a genuine innovation in sim racing modding tools, with a **massive competitive advantage**: GridVox users already have the hardware needed to run it.
+This represents a genuine innovation in sim racing modding tools, with a **massive competitive advantage**: SimVox.ai users already have the hardware needed to run it.
 
 **Why This Is a Game-Changer:**
 
@@ -1639,13 +1639,13 @@ This represents a genuine innovation in sim racing modding tools, with a **massi
 3. **Instant Processing** - No network latency, runs during loading screens
 4. **Complete Privacy** - Users' real car photos never leave their PC
 5. **Unique Market Position** - First and only local AI livery generator
-6. **Natural GridVox Fit** - Sim racers already have the hardware
+6. **Natural SimVox.ai Fit** - Sim racers already have the hardware
 
 **The Perfect Storm:**
 - Technology is ready (Stable Diffusion + ControlNet proven)
 - Market is ready (3,000+ ACC liveries show demand)
 - **Hardware is already deployed** (80% of users have RTX 3060+)
-- Integration is natural (GridVox already detects GPUs for sim detection)
+- Integration is natural (SimVox.ai already detects GPUs for sim detection)
 
 **Quality Strategy (REVISED):**
 - **Free tier (Local):** Professional quality (85-90%) for EVERYONE, unlimited, privacy-focused
@@ -1660,7 +1660,7 @@ This represents a genuine innovation in sim racing modding tools, with a **massi
 While it won't replace professional livery designers for championship-level work, it will:
 - **Democratize** livery creation for 70%+ of sim racers
 - **Accelerate** prototyping for professionals (10-40x faster)
-- **Differentiate** GridVox from competitors (unique feature)
+- **Differentiate** SimVox.ai from competitors (unique feature)
 - **Drive adoption** through viral "look what I made" social sharing
 
 **Proceed with local-first POC development ($0 cost) and validate on typical sim racing hardware (RTX 3070).**
@@ -1772,4 +1772,4 @@ Optional: Manual touch-up (15-30 min) → 98%+ quality
 
 **End of Report**
 
-*For questions or implementation planning, contact the GridVox development team.*
+*For questions or implementation planning, contact the SimVox.ai development team.*

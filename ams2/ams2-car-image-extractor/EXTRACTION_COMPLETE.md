@@ -84,7 +84,7 @@ Examples of generated thumbnails:
 - Trucks that share generic preview images
 - Older vehicles that predate current GUI system
 
-**Workaround for GridVox:** Use class/category placeholder images or fallback to manufacturer logo.
+**Workaround for SimVox.ai:** Use class/category placeholder images or fallback to manufacturer logo.
 
 ---
 
@@ -143,7 +143,7 @@ Handles vehicle ID inconsistencies:
 
 ---
 
-## GridVox Integration Guide
+## SimVox.ai Integration Guide
 
 ### Option A: Bundle with Installer (Recommended)
 
@@ -157,7 +157,7 @@ Handles vehicle ID inconsistencies:
 - Users download all content (even DLC they don't own)
 
 **Steps:**
-1. Copy `output/thumbnails/` to GridVox assets directory
+1. Copy `output/thumbnails/` to SimVox.ai assets directory
 2. Include `manifest.json` in application bundle
 3. Map vehicle IDs from AMS2 to thumbnail paths at runtime
 
@@ -175,7 +175,7 @@ Handles vehicle ID inconsistencies:
 
 **Steps:**
 1. Upload `output/thumbnails/` to CDN
-2. GridVox downloads manifest.json on first launch
+2. SimVox.ai downloads manifest.json on first launch
 3. Lazy-load thumbnails as user browses vehicles
 4. Cache locally in AppData
 
@@ -226,7 +226,7 @@ Handles vehicle ID inconsistencies:
 }
 ```
 
-### GridVox Usage Example
+### SimVox.ai Usage Example
 
 ```typescript
 // Load manifest
@@ -261,10 +261,10 @@ const baseCars = manifest.vehicles.filter(v => v.isBasGame);
 
 **Recommendations:**
 
-1. **Safest (GridVox extracts for user):**
-   - Ship this tool with GridVox
+1. **Safest (SimVox.ai extracts for user):**
+   - Ship this tool with SimVox.ai
    - User runs extraction from their AMS2 install
-   - GridVox generates thumbnails locally
+   - SimVox.ai generates thumbnails locally
    - Like mod managers (Vortex, MO2, etc.)
 
 2. **Medium Risk (Bundle or CDN):**
@@ -297,19 +297,19 @@ const baseCars = manifest.vehicles.filter(v => v.isBasGame);
 Could implement:
 - Compare manifest dates
 - Only extract new/changed files
-- Delta updates for GridVox users
+- Delta updates for SimVox.ai users
 
 ---
 
 ## Files Generated
 
 ### Source Files
-- **C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-car-image-extractor\**
+- **C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-car-image-extractor\**
   - `output/extracted/gui/` - 367 vehicle directories with DDS source (1.5GB, gitignored)
   - `output/thumbnails/` - 367×3 PNG thumbnails organized 3 ways (31MB total)
   - `output/manifest.json` - Metadata for all 367 vehicles
 
-### Deliverables for GridVox
+### Deliverables for SimVox.ai
 - **thumbnails/** (31MB) - All PNG files ready for integration
 - **manifest.json** (60KB) - Vehicle metadata catalog
 
@@ -330,7 +330,7 @@ Could implement:
 
 ---
 
-## Next Steps for GridVox Team
+## Next Steps for SimVox.ai Team
 
 1. **Review Output Quality**
    - Check `output/thumbnails/by-manufacturer/` for sample thumbnails
@@ -342,14 +342,14 @@ Could implement:
    - Consider legal implications
    - Plan for DLC updates
 
-3. **Integrate with GridVox**
+3. **Integrate with SimVox.ai**
    - Add thumbnail loading logic
    - Map AMS2 vehicle IDs to thumbnail paths
    - Handle missing vehicles (20 skipped)
    - Implement fallback images for trucks/missing content
 
 4. **Test Integration**
-   - Load all 367 thumbnails in GridVox UI
+   - Load all 367 thumbnails in SimVox.ai UI
    - Verify performance with full vehicle list
    - Test with different AMS2 DLC ownership combinations
 
@@ -381,7 +381,7 @@ Could implement:
 
 ## Contact & Support
 
-For GridVox team only. Questions about:
+For SimVox.ai team only. Questions about:
 - **Extraction process:** See [README.md](README.md)
 - **Implementation details:** See [IMPLEMENTATION_COMPLETE.md](IMPLEMENTATION_COMPLETE.md)
 - **GUIVEHICLEIMAGES fix:** See [GUIVEHICLEIMAGES_FIX.md](GUIVEHICLEIMAGES_FIX.md)

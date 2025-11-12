@@ -41,7 +41,7 @@ Copied from POC-02:
 ### ✅ React Application
 - `src/main.tsx` - React entry point
 - `src/App.tsx` - Main app component with routing
-- `src/App.css` - Dark theme styles (GridVox design system)
+- `src/App.css` - Dark theme styles (SimVox.ai design system)
 - `src/styles/index.css` - Global styles
 - Directory structure:
   - `src/components/ui/` - Design system components (ready)
@@ -58,7 +58,7 @@ Copied from POC-02:
 ### Step 1: Install Dependencies
 
 ```bash
-cd "C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-telemetry-track-generator"
+cd "C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-telemetry-track-generator"
 npm install
 ```
 

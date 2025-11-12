@@ -83,7 +83,7 @@ ams2-ai-livery-designer/
 
 ```powershell
 # Navigate to project root
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-ai-livery-designer
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-ai-livery-designer
 
 # Install Node.js dependencies
 pnpm install
@@ -273,8 +273,8 @@ Based on actual AMS2 vehicle data:
 
 ## License
 
-This is a proof-of-concept project for GridVox. All AI-generated content is for personal/research use only.
+This is a proof-of-concept project for SimVox.ai. All AI-generated content is for personal/research use only.
 
 ## Contact
 
-Part of the GridVox ecosystem - AI-powered tools for sim racing.
+Part of the SimVox.ai ecosystem - AI-powered tools for sim racing.

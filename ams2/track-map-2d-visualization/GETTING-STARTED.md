@@ -2,22 +2,22 @@
 
 ## ✅ What Was Created
 
-Complete monorepo structure for GridVox Track Map Visualization with:
+Complete monorepo structure for SimVox.ai Track Map Visualization with:
 
 ### 📦 Packages
 
-1. **@gridvox/track-map-core** - Sim-agnostic core library
+1. **@SimVox.ai/track-map-core** - Sim-agnostic core library
    - ✅ Pixi.js WebGL renderer (`PixiRenderer.ts`)
    - ✅ Universal type system (`CarPosition`, `TrackDefinition`, `TrackContext`)
    - ✅ Modular architecture (rendering, data, positioning, llm)
 
-2. **@gridvox/track-map-ams2** - AMS2 adapter
+2. **@SimVox.ai/track-map-ams2** - AMS2 adapter
    - ✅ AMS2 telemetry type definitions
    - ✅ Adapter class converting to universal format
    - ✅ Lap distance % calculation
    - ✅ Sector normalization (0-2 → 1-3)
 
-3. **@gridvox/track-map-demo** - Demo application
+3. **@SimVox.ai/track-map-demo** - Demo application
    - ✅ Vite-powered dev server
    - ✅ Beautiful UI with FPS counter
    - ✅ Mock oval track generator
@@ -45,7 +45,7 @@ Complete monorepo structure for GridVox Track Map Visualization with:
 Navigate to the project root and run:
 
 ```bash
-cd c:\DATA\GridVox\gridvox-sim-integration\ams2\track-map-visualization
+cd c:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\track-map-visualization
 npm install
 ```
 
@@ -62,8 +62,8 @@ npm run build
 ```
 
 This compiles:
-- `@gridvox/track-map-core` → `packages/track-map-core/dist/`
-- `@gridvox/track-map-ams2` → `packages/track-map-ams2/dist/`
+- `@SimVox.ai/track-map-core` → `packages/track-map-core/dist/`
+- `@SimVox.ai/track-map-ams2` → `packages/track-map-ams2/dist/`
 
 ### 3. Run Demo
 
@@ -113,7 +113,7 @@ You should see:
 
 ```
 ┌─────────────────────────────────────────────────┐
-│  🏁 GridVox Track Map Visualization             │
+│  🏁 SimVox.ai Track Map Visualization             │
 │  Multi-Sim Track Map with Pixi.js Rendering     │
 ├─────────────────────────────────────────────────┤
 │                                                  │
@@ -175,7 +175,7 @@ interface CarPosition {
 ### Phase 1: Real AMS2 Integration (Week 1)
 
 1. **Connect to AMS2 Shared Memory**
-   - Use existing `poc-02-direct-memory` from GridVox desktop
+   - Use existing `poc-02-direct-memory` from SimVox.ai desktop
    - Read telemetry every 60Hz
    - Feed to `AMS2Adapter.toCarPositions()`
 
@@ -283,7 +283,7 @@ track-map-visualization/
 - Easy to add `track-map-iracing`, `track-map-acc` later
 
 ### Q: Why TypeScript?
-**A:** Type safety prevents bugs. Matches GridVox desktop stack (Electron + TypeScript).
+**A:** Type safety prevents bugs. Matches SimVox.ai desktop stack (Electron + TypeScript).
 
 ---
 
@@ -302,19 +302,19 @@ If all green checkmarks: **You're ready to integrate with real AMS2 telemetry!**
 
 ---
 
-## 🤝 Contributing to GridVox
+## 🤝 Contributing to SimVox.ai
 
 This POC is designed to integrate with:
 
-1. **GridVox Desktop** (`poc-02-direct-memory`)
+1. **SimVox.ai Desktop** (`poc-02-direct-memory`)
    - Already reads AMS2 shared memory
    - Use same native addon here
 
-2. **GridVox Crew Radio** (LLM integration)
+2. **SimVox.ai Crew Radio** (LLM integration)
    - `TrackContextProvider` will feed context
    - "What corner am I in?" → "You're in Copse"
 
-3. **GridVox Commentary**
+3. **SimVox.ai Commentary**
    - Track position data for AI commentary
    - "Close racing in Sector 2!"
 
@@ -332,4 +332,4 @@ If you encounter issues:
 
 **Happy Racing! 🏎️💨**
 
-Built with ❤️ by the GridVox Team
+Built with ❤️ by the SimVox.ai Team

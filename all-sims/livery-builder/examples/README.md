@@ -23,9 +23,9 @@ This directory contains video demonstrations extracted from the Trading Paints B
 ## Detailed Analysis
 
 For a comprehensive analysis of each video and its features, see:
-- **[tradingpaints-builder-videos.md](./tradingpaints-builder-videos.md)** - Full feature breakdown and GridVox relevance analysis
+- **[tradingpaints-builder-videos.md](./tradingpaints-builder-videos.md)** - Full feature breakdown and SimVox.ai relevance analysis
 
-## Key Takeaways for GridVox
+## Key Takeaways for SimVox.ai
 
 ### Must-Have Features
 1. ✅ **Layer system** - Professional workflow requirement

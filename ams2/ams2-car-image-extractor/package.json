@@ -11,7 +11,7 @@
     "help": "ts-node src/cli.ts --help"
   },
   "keywords": ["ams2", "pcarstools", "image-extraction"],
-  "author": "GridVox Team",
+  "author": "SimVox.ai Team",
   "license": "MIT",
   "dependencies": {
     "sharp": "^0.34.4"

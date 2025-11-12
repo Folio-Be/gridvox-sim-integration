@@ -144,15 +144,15 @@ for (const vehicle of database.vehicles) {
 }
 ```
 
-## GridVox Integration
+## SimVox.ai Integration
 
 ### Recommended Workflow
 
 **Development/Build Time:**
 ```bash
-# During GridVox build process
+# During SimVox.ai build process
 npm run convert
-# Bundle PNG files with GridVox installer
+# Bundle PNG files with SimVox.ai installer
 ```
 
 **User's First Launch:**

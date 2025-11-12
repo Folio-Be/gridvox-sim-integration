@@ -1,6 +1,6 @@
 # Training Data Approach Comparison
 
-**Project:** GridVox AI Livery Designer
+**Project:** SimVox.ai AI Livery Designer
 **Purpose:** Compare 4 approaches for obtaining/training neural UV mapping models
 **Decision Impact:** Phase 2 timeline, licensing costs, MVP quality
 **Last Updated:** January 11, 2025
@@ -97,7 +97,7 @@ User Photo → DreamCar Model → 3D Car + Texture → UV Unwrapping → UV Text
 #### Week 1: Download & Setup (2 hours)
 ```bash
 # 1. Download DreamCar weights (15.5GB)
-cd C:\GridVox\models
+cd C:\SimVox.ai\models
 wget https://huggingface.co/xiaobiaodu/dreamcar123/resolve/main/dreamcar123.ckpt
 
 # 2. Download required dependencies
@@ -359,8 +359,8 @@ wget https://polyhaven.com/hdris/outdoor_summer_8k.exr
 ```bash
 # Generate 4,800 examples for Porsche 992 GT3 R
 blender --background --python generate_training_data.py -- \
-  --car-gmt "C:\GridVox\training_data\porsche_992_gt3_r\models\porsche_992_gt3_r.gmt" \
-  --output-dir "C:\GridVox\datasets\porsche_992_gt3_r" \
+  --car-gmt "C:\SimVox.ai\training_data\porsche_992_gt3_r\models\porsche_992_gt3_r.gmt" \
+  --output-dir "C:\SimVox.ai\datasets\porsche_992_gt3_r" \
   --num-samples 4800 \
   --resolution 1024 \
   --samples 128

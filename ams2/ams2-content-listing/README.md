@@ -243,16 +243,16 @@ src/
 3. Scans `GUI/VehicleClassLogosHUD/` for vehicle class logo DDS files
 4. Maps thumbnails to content by ID matching (with fallback variations)
 
-## GridVox Integration
+## SimVox.ai Integration
 
-This library is designed for the GridVox AI racing companion to:
+This library is designed for the SimVox.ai AI racing companion to:
 
 1. **Pre-Race Setup**: Display available cars/tracks for session configuration
 2. **Persona Context**: Provide AI personas with accurate car/track information
 3. **Story Mode**: Filter cars by class/era for narrative campaigns
 4. **Voice Commands**: Enable natural language car/track selection
 
-### Example GridVox Usage
+### Example SimVox.ai Usage
 
 ```typescript
 // Scan installed content
@@ -349,7 +349,7 @@ Thumbnails are stored in DirectDraw Surface (DDS) format, a compressed texture f
 For extracting individual car images from .bff archives, see:
 - **Project**: `ams2-car-image-extractor` (separate subproject)
 - **Purpose**: Developer tool to extract and convert car livery textures
-- **Output**: Can be bundled with GridVox or hosted on CDN
+- **Output**: Can be bundled with SimVox.ai or hosted on CDN
 - **Note**: Requires PCarsTools + .NET 6.0 (developer-only, not end-user)
 
 ## API Reference
@@ -391,4 +391,4 @@ MIT
 
 ## Contributing
 
-This is part of the GridVox sim racing companion project. See main repository for contribution guidelines.
+This is part of the SimVox.ai sim racing companion project. See main repository for contribution guidelines.

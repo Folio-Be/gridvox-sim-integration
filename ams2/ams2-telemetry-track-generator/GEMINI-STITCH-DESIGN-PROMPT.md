@@ -6,7 +6,7 @@
 
 ### Design Brief
 
-Create a complete UI/UX design for **GridVox AMS2 Telemetry Track Generator**, a desktop application that records telemetry from racing simulators and generates 3D track models.
+Create a complete UI/UX design for **SimVox.ai AMS2 Telemetry Track Generator**, a desktop application that records telemetry from racing simulators and generates 3D track models.
 
 ---
 
@@ -44,7 +44,7 @@ Create a complete UI/UX design for **GridVox AMS2 Telemetry Track Generator**, a
 **Purpose**: Entry point for creating new tracks or loading existing projects
 
 **Layout**:
-- Custom dark title bar at top with app name "GridVox Track Generator" and window controls
+- Custom dark title bar at top with app name "SimVox.ai Track Generator" and window controls
 - Large centered logo/icon (race track icon or checkered flag)
 - App title and tagline: "AMS2 Telemetry Track Generator" / "Generate 3D tracks from telemetry"
 - Two large action cards side-by-side:
@@ -518,10 +518,10 @@ Optional:
 Welcome Screen:
 ```
 ┌────────────────────────────────────────────┐
-│ 🏁 GridVox Track Generator      [─][□][×] │
+│ 🏁 SimVox.ai Track Generator      [─][□][×] │
 ├────────────────────────────────────────────┤
 │                                            │
-│           [GridVox Logo Icon]              │
+│           [SimVox.ai Logo Icon]              │
 │     AMS2 Telemetry Track Generator         │
 │                                            │
 │  ┌──────────────┐  ┌──────────────┐        │

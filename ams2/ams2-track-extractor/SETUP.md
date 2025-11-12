@@ -54,7 +54,7 @@ dotnet --version
 
 **File path should be:**
 ```
-C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor\tools\PCarsTools\pcarstools_x64.exe
+C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor\tools\PCarsTools\pcarstools_x64.exe
 ```
 
 **Verify:**
@@ -106,7 +106,7 @@ Get-ChildItem -Path "C:\" -Filter "oo2core_4_win64.dll" -Recurse -ErrorAction Si
 
 **File path should be:**
 ```
-C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor\tools\PCarsTools\oo2core_4_win64.dll
+C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor\tools\PCarsTools\oo2core_4_win64.dll
 ```
 
 **Verify:**
@@ -152,7 +152,7 @@ $env:Path += ";C:\Program Files\Blender Foundation\Blender 4.0"
 
 - [ ] Navigate to project directory:
 ```powershell
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor
 ```
 
 - [ ] Install dependencies:
@@ -440,7 +440,7 @@ C:\GAMES\Automobilista 2
 2. **Read error messages** - Often indicate exactly what's missing
 3. **Verify each step** - Use verification commands above
 4. **Check PCarsTools documentation** - https://github.com/Nenkai/PCarsTools
-5. **GridVox community** - Discord/Forum
+5. **SimVox.ai community** - Discord/Forum
 
 ---
 

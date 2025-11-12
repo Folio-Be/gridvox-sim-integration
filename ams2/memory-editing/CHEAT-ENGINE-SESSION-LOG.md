@@ -181,7 +181,7 @@ AMS2 might store car names alongside IDs:
 ### Why This Matters
 Once we find car selection address:
 1. **Other parameters nearby** (track, weather likely +4, +8, +12 bytes offset)
-2. **Only need 3-6 parameters** for GridVox (not all 200)
+2. **Only need 3-6 parameters** for SimVox.ai (not all 200)
 3. **Pointer scan reveals base struct** (access to all config at once)
 4. **One-time effort** - document and build tool, users won't need Cheat Engine
 
@@ -195,7 +195,7 @@ Once we find car selection address:
 - `CHEAT-ENGINE-SESSION-LOG.md` - This document ✅
 
 ### Related Files:
-- `C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering\`
+- `C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering\`
   - `HEX-EDIT-TEST-RESULTS.md` - Why hex editing failed
   - `hex-diff.js` - Hex comparison tool
   - `watcher.js` - Save file snapshot tool

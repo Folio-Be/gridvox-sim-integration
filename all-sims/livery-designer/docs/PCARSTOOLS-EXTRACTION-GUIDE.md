@@ -1,6 +1,6 @@
 # PCarsTools Asset Extraction Guide
 
-**Project:** GridVox AI Livery Designer
+**Project:** SimVox.ai AI Livery Designer
 **Purpose:** Step-by-step guide for extracting car models and UV templates from Automobilista 2
 **Last Updated:** January 11, 2025
 
@@ -30,7 +30,7 @@
 - ✅ Export textures (`.dds`)
 - ✅ Export physics files (`.sbc`, `.tbc`)
 
-**What GridVox Needs:**
+**What SimVox.ai Needs:**
 - 🎯 UV texture templates (`body2.dds`, `body2_alt.dds`)
 - 🎯 3D car models (`.gmt` files for Blender import)
 - 🎯 Material definitions (which textures map to which parts)
@@ -133,7 +133,7 @@ Key Folders:
 │   ├── mclaren_720s_gt3.gmt
 │   └── bmw_m4_gt3.gmt
 └── Physics\
-    └── ... (not needed for GridVox)
+    └── ... (not needed for SimVox.ai)
 
 Problem: These files are inside .mas archives!
 Solution: Use PCarsTools to extract them.
@@ -164,7 +164,7 @@ cd "C:\Tools\PCarsTools"
 # Extract vehicles archive (this contains ALL car assets)
 .\PCarsTools.exe extract `
   "C:\Program Files\Steam\steamapps\common\Automobilista 2\GameData\Vehicles.mas" `
-  -o "C:\GridVox\extracted_ams2_assets\vehicles"
+  -o "C:\SimVox.ai\extracted_ams2_assets\vehicles"
 
 # Extraction Progress (takes 5-10 minutes):
 # Extracting: ginetta_g55_gt4_2.gmt... [1/523]
@@ -176,7 +176,7 @@ cd "C:\Tools\PCarsTools"
 **Expected Output Structure:**
 
 ```
-C:\GridVox\extracted_ams2_assets\vehicles\
+C:\SimVox.ai\extracted_ams2_assets\vehicles\
 ├── Textures\
 │   ├── ginetta_g55_gt4_2_body2.dds
 │   ├── ginetta_g55_gt4_2_body2_alt.dds
@@ -193,7 +193,7 @@ C:\GridVox\extracted_ams2_assets\vehicles\
 ### Step 3: Organize Extracted Assets
 
 ```powershell
-# Create car-specific folders for GridVox training pipeline
+# Create car-specific folders for SimVox.ai training pipeline
 $carsToExtract = @(
     "ginetta_g55_gt4_2",
     "mclaren_720s_gt3",
@@ -202,19 +202,19 @@ $carsToExtract = @(
 
 foreach ($car in $carsToExtract) {
     # Create folder structure
-    $carFolder = "C:\GridVox\training_data\$car"
+    $carFolder = "C:\SimVox.ai\training_data\$car"
     New-Item -ItemType Directory -Force -Path $carFolder
     New-Item -ItemType Directory -Force -Path "$carFolder\textures"
     New-Item -ItemType Directory -Force -Path "$carFolder\models"
 
     # Copy UV templates
     Copy-Item `
-        "C:\GridVox\extracted_ams2_assets\vehicles\Textures\${car}_body2.dds" `
+        "C:\SimVox.ai\extracted_ams2_assets\vehicles\Textures\${car}_body2.dds" `
         "$carFolder\textures\body2.dds"
 
     # Copy 3D model
     Copy-Item `
-        "C:\GridVox\extracted_ams2_assets\vehicles\Models\$car.gmt" `
+        "C:\SimVox.ai\extracted_ams2_assets\vehicles\Models\$car.gmt" `
         "$carFolder\models\$car.gmt"
 
     Write-Host "✅ Organized assets for $car"
@@ -223,7 +223,7 @@ foreach ($car in $carsToExtract) {
 
 **Result:**
 ```
-C:\GridVox\training_data\
+C:\SimVox.ai\training_data\
 ├── ginetta_g55_gt4_2\
 │   ├── textures\
 │   │   └── body2.dds              # ← Ready for AI training
@@ -243,7 +243,7 @@ C:\GridVox\training_data\
 
 # Open body2.dds in NVIDIA Texture Tools
 & "C:\Program Files\NVIDIA Corporation\NVIDIA Texture Tools\nvtt_export.exe" `
-  "C:\GridVox\training_data\ginetta_g55_gt4_2\textures\body2.dds"
+  "C:\SimVox.ai\training_data\ginetta_g55_gt4_2\textures\body2.dds"
 
 # Expected:
 # - Resolution: 2048×2048
@@ -335,8 +335,8 @@ Custom Teams (user-created):
 CUS     # Generic "Custom" team
 TM1, TM2, TM3...  # Custom team slots
 
-GridVox Exports:
-GVX     # GridVox-generated liveries (reserved ID)
+SimVox.ai Exports:
+GVX     # SimVox.ai-generated liveries (reserved ID)
 ```
 
 ---
@@ -372,7 +372,7 @@ Solution:
 DO NOT extract to Program Files (requires admin permissions).
 Extract to user-writable location:
 
-✅ GOOD: C:\GridVox\extracted_ams2_assets\
+✅ GOOD: C:\SimVox.ai\extracted_ams2_assets\
 ✅ GOOD: C:\Users\<User>\Documents\AMS2_Assets\
 ❌ BAD:  C:\Program Files\... (requires admin)
 ❌ BAD:  C:\Windows\... (system folder)
@@ -456,15 +456,15 @@ This extracts ONLY Ginetta files (30 seconds instead of 10 minutes)
 
 ## Automation Script
 
-### PowerShell Script: Extract AMS2 Cars for GridVox
+### PowerShell Script: Extract AMS2 Cars for SimVox.ai
 
 ```powershell
 # extract_ams2_cars.ps1
-# Automates extraction of UV templates and 3D models for GridVox training
+# Automates extraction of UV templates and 3D models for SimVox.ai training
 
 param(
     [string]$AMS2Path = "C:\Program Files\Steam\steamapps\common\Automobilista 2",
-    [string]$OutputPath = "C:\GridVox\training_data",
+    [string]$OutputPath = "C:\SimVox.ai\training_data",
     [string[]]$CarsToExtract = @(
         "ginetta_g55_gt4_2",
         "mclaren_720s_gt3",
@@ -569,7 +569,7 @@ Write-Host "3. Begin synthetic data generation (see TECHNICAL-ARCHITECTURE.md)"
 )
 
 # Specify output location
-.\extract_ams2_cars.ps1 -OutputPath "D:\GridVox\cars"
+.\extract_ams2_cars.ps1 -OutputPath "D:\SimVox.ai\cars"
 ```
 
 ---
@@ -605,7 +605,7 @@ def import_gmt_car(gmt_path: str):
     return car_obj
 
 # Example usage:
-gmt_path = "C:\\GridVox\\training_data\\ginetta_g55_gt4_2\\models\\ginetta_g55_gt4_2.gmt"
+gmt_path = "C:\\SimVox.ai\\training_data\\ginetta_g55_gt4_2\\models\\ginetta_g55_gt4_2.gmt"
 car = import_gmt_car(gmt_path)
 ```
 
@@ -630,10 +630,10 @@ Answer: GRAY AREA (depends on usage)
 - Using 3D models in commercial games (IP theft)
 - Selling extracted textures/models
 
-GridVox Strategy:
+SimVox.ai Strategy:
 1. Extract UV templates for AI training (transformative use)
 2. Generate NEW textures (original content, not redistributed assets)
-3. Do NOT include extracted .gmt models in GridVox distribution
+3. Do NOT include extracted .gmt models in SimVox.ai distribution
 4. Users extract their own assets (like other modding tools)
 
 Similar Precedent: Skyrim/Fallout modding tools (legal for 15+ years)

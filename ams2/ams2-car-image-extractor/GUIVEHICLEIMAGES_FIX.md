@@ -12,7 +12,7 @@ Initial implementation extracted from individual `*_Livery.bff` files for each v
 Example of UV texture issue:
 - Extracted `alpine_a424_36v2.dds` from `Alpine_A424_Livery.bff`
 - Result: Flat unwrapped texture showing car body panels laid out for 3D mapping
-- NOT suitable for thumbnails in GridVox UI
+- NOT suitable for thumbnails in SimVox.ai UI
 
 ## Solution Found
 
@@ -132,7 +132,7 @@ Total time: 0.59s
 - Side profile view of fully rendered car
 - 2048×768 source aspect ratio (showcase quality)
 - Cropped/resized to 512×128 for thumbnails
-- Perfect for GridVox car selection UI
+- Perfect for SimVox.ai car selection UI
 
 Example: [output/thumbnails/by-manufacturer/Alpine/Alpine_A424.png](output/thumbnails/by-manufacturer/Alpine/Alpine_A424.png)
 
@@ -159,13 +159,13 @@ Example: [output/thumbnails/by-manufacturer/Alpine/Alpine_A424.png](output/thumb
 1. ✅ Test mode validated (5 vehicles)
 2. ⏭️ Run full extraction (387 vehicles)
 3. ⏭️ Verify all vehicles have proper preview images
-4. ⏭️ Integrate thumbnails with GridVox application
+4. ⏭️ Integrate thumbnails with SimVox.ai application
 5. ⏭️ Decide distribution strategy (bundle vs CDN vs hybrid)
 
 ## Command to Run Full Extraction
 
 ```bash
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-car-image-extractor
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-car-image-extractor
 npm run process-all
 ```
 

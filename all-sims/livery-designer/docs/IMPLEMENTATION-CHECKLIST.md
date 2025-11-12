@@ -1,6 +1,6 @@
 # Implementation Checklist: AI Livery Designer
 
-**Project:** GridVox AI-Powered Livery Generation
+**Project:** SimVox.ai AI-Powered Livery Generation
 **Timeline:** 16 weeks to production launch
 **Budget:** $45,000 development + $300 GPU training
 **Current Phase:** Phase 0 Complete → Starting Phase 1
@@ -42,7 +42,7 @@
 - [ ] Clone AUV-Net repository *git clone https://github.com/nv-tlabs/AUV-NET.git, review code structure*
 - [ ] Read NVIDIA license carefully *Determine if POC qualifies as "non-commercial research", document restrictions*
 - [ ] Test AUV-Net on sample data *Run provided examples, verify outputs, measure inference time on RTX 4090*
-- [ ] Draft NVIDIA commercial license request *Prepare email: explain GridVox use case, community benefit, request commercial licensing; include project overview and timeline*
+- [ ] Draft NVIDIA commercial license request *Prepare email: explain SimVox.ai use case, community benefit, request commercial licensing; include project overview and timeline*
 - [ ] Set up alternative: Neural Surface Maps *Clone github.com/luca-morreale/neural_surface_maps as backup, verify license permits commercial use*
 
 ### Week 3: AMS2 Asset Extraction
@@ -190,7 +190,7 @@
 
 ### Business & Community
 
-- [ ] Launch marketplace revenue sharing *Creators earn 70%, GridVox takes 30%, implement payment processing (Stripe), payout automation*
+- [ ] Launch marketplace revenue sharing *Creators earn 70%, SimVox.ai takes 30%, implement payment processing (Stripe), payout automation*
 - [ ] Add team management features *League organizer dashboard, batch generate liveries for 20+ drivers (CSV upload), team branding templates*
 - [ ] Implement affiliate program *5-10% commission for referrals, generate unique links, track conversions, monthly payouts*
 - [ ] Create API for third parties *REST API for teams/leagues, webhook notifications, rate limiting (100 requests/day), paid tiers for higher limits*

@@ -16,7 +16,7 @@ The watcher now supports **voice annotation input** to prevent AMS2 focus loss! 
 ### 1. Install Dependencies
 
 ```bash
-cd /home/user/gridvox-sim-integration/ams2/savegame-reverse-engineering
+cd /home/user/SimVox.ai-sim-integration/ams2/savegame-reverse-engineering
 npm install
 ```
 
@@ -66,7 +66,7 @@ npm run setup-voice-large
 2. Download: `vosk-model-small-en-us-0.15.zip` (40MB) - Recommended for speed
    - Or `vosk-model-en-us-0.22.zip` (1.8GB) - For better accuracy
 3. Extract the zip file
-4. Place the extracted folder in: `/home/user/gridvox-sim-integration/ams2/savegame-reverse-engineering/vosk-model-small-en-us-0.15`
+4. Place the extracted folder in: `/home/user/SimVox.ai-sim-integration/ams2/savegame-reverse-engineering/vosk-model-small-en-us-0.15`
 
 **Expected folder structure:**
 ```
@@ -185,7 +185,7 @@ In this case, you can:
 **Problem**: `Cannot find module 'vosk'` or similar
 **Solution**:
 ```bash
-cd /home/user/gridvox-sim-integration/ams2/savegame-reverse-engineering
+cd /home/user/SimVox.ai-sim-integration/ams2/savegame-reverse-engineering
 npm install
 ```
 

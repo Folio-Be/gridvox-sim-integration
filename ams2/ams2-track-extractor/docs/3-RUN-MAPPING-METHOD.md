@@ -1004,4 +1004,4 @@ Try PCarsTools extraction first (Approach 3) for best quality, but fall back to 
 
 **Version:** 1.0  
 **Last Updated:** November 9, 2025  
-**Author:** GridVox Team
+**Author:** SimVox.ai Team

@@ -644,7 +644,7 @@ class CoarseToFineUVGenerator(nn.Module):
 
 ### Week 9-10: Polish & Documentation (Dec 9-22)
 **Day 29-35: User Testing**
-- Collect feedback from GridVox team
+- Collect feedback from SimVox.ai team
 - Fix edge cases
 - Improve quality on difficult photos
 

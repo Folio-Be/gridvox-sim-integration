@@ -28,7 +28,7 @@ This guide installs PyTorch with CUDA and Stable Diffusion XL for the AI Livery 
 ### Step 1: Install PyTorch with CUDA
 
 ```powershell
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-ai-livery-designer\python-backend
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-ai-livery-designer\python-backend
 .\install-cuda.bat
 ```
 

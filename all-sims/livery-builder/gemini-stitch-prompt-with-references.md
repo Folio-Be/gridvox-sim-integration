@@ -1,10 +1,10 @@
-# GridVox Livery Builder - Interface Design Prompt (With Reference Images)
+# SimVox.ai Livery Builder - Interface Design Prompt (With Reference Images)
 
 ## Overview
 
-Design a modern, professional web-based interface for **GridVox Livery Builder** - a next-generation multi-sim racing livery design tool. You'll be redesigning an existing tool (Trading Paints) with significant improvements in UX, AI integration, collaboration features, and modern design patterns.
+Design a modern, professional web-based interface for **SimVox.ai Livery Builder** - a next-generation multi-sim racing livery design tool. You'll be redesigning an existing tool (Trading Paints) with significant improvements in UX, AI integration, collaboration features, and modern design patterns.
 
-**Reference images provided** show the current Trading Paints interface. Your task is to **redesign and improve** these screens while maintaining familiar design tool patterns but adding GridVox's innovative features.
+**Reference images provided** show the current Trading Paints interface. Your task is to **redesign and improve** these screens while maintaining familiar design tool patterns but adding SimVox.ai's innovative features.
 
 ---
 
@@ -314,9 +314,9 @@ Design a modern, professional web-based interface for **GridVox Livery Builder**
 
 ---
 
-## NEW GridVox-Specific Features to Add
+## NEW SimVox.ai-Specific Features to Add
 
-These features are **NOT** in the reference images but are essential for GridVox:
+These features are **NOT** in the reference images but are essential for SimVox.ai:
 
 ### 1. AI Assistant Panel
 
@@ -561,7 +561,7 @@ Smooth:   cubic-bezier(0.4, 0.0, 0.2, 1) (smooth easing)
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│ [Logo] GridVox Livery Builder  File Edit View [👤]      │ ← 32px height
+│ [Logo] SimVox.ai Livery Builder  File Edit View [👤]      │ ← 32px height
 ├────┬────────────────────────────────────────────┬────────┤
 │    │                                            │        │
 │ T  │                                            │ Layers │ ← Resizable
@@ -725,11 +725,11 @@ The reference images show a **functional but dated interface**. Your goal is to:
 
 1. **Modernize** the visual design (dark theme, better typography, spacing, colors)
 2. **Enhance** the UX (better navigation, clearer hierarchy, more intuitive controls)
-3. **Add** new GridVox features (AI, voice, collaboration, multi-sim)
+3. **Add** new SimVox.ai features (AI, voice, collaboration, multi-sim)
 4. **Optimize** for efficiency (command palette, shortcuts, smart defaults)
 5. **Delight** users (smooth animations, helpful feedback, thoughtful details)
 
-Make GridVox Livery Builder the tool that designers **want to use**, not just **have to use**. It should be a joy to open and work in, whether you're creating your first livery or your hundredth.
+Make SimVox.ai Livery Builder the tool that designers **want to use**, not just **have to use**. It should be a joy to open and work in, whether you're creating your first livery or your hundredth.
 
 ---
 

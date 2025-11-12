@@ -30,7 +30,7 @@ The telemetry coordinates are used to procedurally generate a glTF 2.0 track mod
 ### Installation
 
 ```bash
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-telemetry-track-generator
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-telemetry-track-generator
 npm install
 ```
 
@@ -184,7 +184,7 @@ npm run enrich -- \
 
 - [ams2-track-extractor](../ams2-track-extractor/) - PCarsTools extraction approach
 - [track-map-visualization](../track-map-visualization/) - 2D track map viewer
-- [gridvox-desktop](../../../gridvox-desktop/) - Main GridVox application
+- [SimVox.ai-desktop](../../../SimVox.ai-desktop/) - Main SimVox.ai application
 
 ## License
 
@@ -192,8 +192,8 @@ MIT
 
 ## Contributing
 
-See the main GridVox repository for contribution guidelines.
+See the main SimVox.ai repository for contribution guidelines.
 
 ## Support
 
-For questions or issues, please open an issue in the main GridVox repository.
+For questions or issues, please open an issue in the main SimVox.ai repository.

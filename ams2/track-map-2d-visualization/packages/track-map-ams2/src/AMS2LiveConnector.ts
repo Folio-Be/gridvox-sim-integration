@@ -5,7 +5,7 @@
  * The bridge server loads the native addon and sends telemetry data
  */
 
-import type { CarPosition } from '@gridvox/track-map-core';
+import type { CarPosition } from '@SimVox.ai/track-map-core';
 import { AMS2Adapter } from './AMS2Adapter.js';
 import type { AMS2SharedMemory } from './types/AMS2Telemetry.js';
 

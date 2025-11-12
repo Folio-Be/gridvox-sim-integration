@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-This POC implements a real-time track map visualization system that displays all racers on a 2D representation of the racing circuit, similar to broadcast TV graphics. The system leverages the existing GridVox telemetry infrastructure from `poc-02-direct-memory` to show:
+This POC implements a real-time track map visualization system that displays all racers on a 2D representation of the racing circuit, similar to broadcast TV graphics. The system leverages the existing SimVox.ai telemetry infrastructure from `poc-02-direct-memory` to show:
 
 - **Racer positions** on track (color-coded by class/team/status)
 - **Sector markers** (S1, S2, S3 boundaries)
@@ -28,9 +28,9 @@ The target visualization style (see attached image) shows:
 
 ---
 
-## 🎯 GridVox Integration Goals
+## 🎯 SimVox.ai Integration Goals
 
-This track map serves multiple GridVox features:
+This track map serves multiple SimVox.ai features:
 
 ### 1. **Companion App Display**
 - Mobile/web app showing live race positions
@@ -433,7 +433,7 @@ class TrackMapRenderer {
 - Auto-track-detection system
 
 ### Phase 5: Advanced Features (Week 5+)
-**Goal:** GridVox-specific integrations
+**Goal:** SimVox.ai-specific integrations
 
 - [ ] **Companion app web view** - Embed in mobile/web interface
 - [ ] **Replay mode** - Playback recorded telemetry data
@@ -445,7 +445,7 @@ class TrackMapRenderer {
 - [ ] **Multi-screen support** - Separate window/monitor display
 
 **Deliverables:**
-- Full-featured track map for GridVox ecosystem
+- Full-featured track map for SimVox.ai ecosystem
 
 ---
 
@@ -612,7 +612,7 @@ const imageBlob = await visualizer.exportPNG({
   width: 1920,
   height: 1080,
   includeOverlay: true, // Add leaderboard, timing info
-  watermark: 'GridVox Racing'
+  watermark: 'SimVox.ai Racing'
 });
 
 // Upload to social media
@@ -643,7 +643,7 @@ replay.setSpeed(2.0); // 2x speed
 
 ---
 
-## 🔗 Integration Points with GridVox
+## 🔗 Integration Points with SimVox.ai
 
 ### 1. Companion App (Mobile/Web)
 
@@ -763,7 +763,7 @@ overtakeDetector.on('overtake', async (event) => {
   await socialMedia.post({
     image: trackImage,
     caption: caption,
-    hashtags: ['GridVox', 'SimRacing', event.trackName]
+    hashtags: ['SimVox.ai', 'SimRacing', event.trackName]
   });
 });
 ```
@@ -901,7 +901,7 @@ See [IMPLEMENTATION-GUIDE.md](./IMPLEMENTATION-GUIDE.md) for step-by-step coding
 
 **Quick Start:**
 ```bash
-cd gridvox-sim-integration/ams2/track-map-visualization
+cd SimVox.ai-sim-integration/ams2/track-map-visualization
 npm install
 npm run dev
 # Open browser to http://localhost:3000
@@ -911,6 +911,6 @@ npm run dev
 
 ---
 
-**Author:** GridVox Development Team  
-**Contact:** [GitHub Issues](https://github.com/Folio-Be/gridvox/issues)  
+**Author:** SimVox.ai Development Team  
+**Contact:** [GitHub Issues](https://github.com/Folio-Be/SimVox.ai/issues)  
 **License:** MIT

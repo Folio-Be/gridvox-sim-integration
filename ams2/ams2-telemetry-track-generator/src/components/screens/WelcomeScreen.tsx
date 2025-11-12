@@ -12,17 +12,17 @@ export default function WelcomeScreen({ onNavigate }: WelcomeScreenProps) {
   const recentProjects = [
     {
       name: "Nurburgring-GP-Optimal",
-      path: "/Users/You/Documents/GridVox/Nurburgring-GP-Optimal.gvct",
+      path: "/Users/You/Documents/SimVox.ai/Nurburgring-GP-Optimal.gvct",
       modified: "2 days ago",
     },
     {
       name: "Silverstone-Hotlap",
-      path: "/Users/You/Documents/GridVox/Silverstone-Hotlap.gvct",
+      path: "/Users/You/Documents/SimVox.ai/Silverstone-Hotlap.gvct",
       modified: "1 week ago",
     },
     {
       name: "Laguna-Seca-Analysis",
-      path: "/Users/You/Documents/GridVox/Laguna-Seca-Analysis.gvct",
+      path: "/Users/You/Documents/SimVox.ai/Laguna-Seca-Analysis.gvct",
       modified: "3 weeks ago",
     },
   ];
@@ -53,7 +53,7 @@ export default function WelcomeScreen({ onNavigate }: WelcomeScreenProps) {
             <div className="mb-4 inline-block">
               <span className="material-symbols-outlined text-6xl text-primary">emoji_transportation</span>
             </div>
-            <h1 className="text-text-light tracking-tight text-5xl font-bold leading-tight">GridVox Circuit Tracing</h1>
+            <h1 className="text-text-light tracking-tight text-5xl font-bold leading-tight">SimVox.ai Circuit Tracing</h1>
             <p className="text-text-muted text-lg font-normal leading-normal pt-2">Visualize Your Perfect Lap</p>
           </div>
 

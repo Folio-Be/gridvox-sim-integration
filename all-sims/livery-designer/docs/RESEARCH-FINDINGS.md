@@ -66,7 +66,7 @@ Learns to embed 3D surfaces into a 2D **aligned** UV space by mapping semantic p
 1. Fine-tune on AMS2 car models (GT3, GT4 categories)
 2. Use StyleGAN2 → SDXL for texture generation in aligned UV space
 3. Train car-specific basis generators (one per simulator car model)
-4. Request NVIDIA commercial license for GridVox use case
+4. Request NVIDIA commercial license for SimVox.ai use case
 
 ### Performance Estimates
 - **Training:** 2-3 days per car category (RTX 4090)

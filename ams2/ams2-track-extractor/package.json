@@ -1,5 +1,5 @@
 {
-    "name": "@gridvox/ams2-track-extractor",
+    "name": "@SimVox.ai/ams2-track-extractor",
     "version": "1.0.0",
     "description": "Extract and convert AMS2 race tracks to glTF 2.0 using PCarsTools and Blender",
     "main": "dist/index.js",
@@ -24,7 +24,7 @@
         "visualization",
         "telemetry"
     ],
-    "author": "GridVox",
+    "author": "SimVox.ai",
     "license": "MIT",
     "dependencies": {
         "three": "^0.181.0",
@@ -48,7 +48,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/GridVox/gridvox-sim-integration.git",
+        "url": "https://github.com/SimVox.ai/SimVox.ai-sim-integration.git",
         "directory": "ams2/ams2-track-extractor"
     }
 }

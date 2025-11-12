@@ -58,7 +58,7 @@ fn storage_path<R: tauri::Runtime>(app: &tauri::AppHandle<R>) -> Result<PathBuf,
         .path()
         .app_data_dir()
         .map_err(|err| format!("Unable to resolve app data directory: {err}"))?;
-    base.push("gridvox");
+    base.push("simvox");
     if let Err(err) = create_dir_all(&base) {
         return Err(format!("Unable to create storage directory: {err}"));
     }

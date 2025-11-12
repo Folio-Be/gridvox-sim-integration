@@ -1,6 +1,6 @@
 # Open Source & Licensing Status
 
-**Project:** GridVox AI Livery Designer
+**Project:** SimVox.ai AI Livery Designer
 **Purpose:** License analysis for neural UV mapping systems and commercial feasibility
 **Last Updated:** January 11, 2025
 
@@ -163,7 +163,7 @@ furnished to do so, subject to the following conditions:
 #### When to Use
 - If NVIDIA denies commercial license for AUV-Net
 - As "safe" baseline during development (no licensing risk)
-- For open-source version of GridVox (if we release free tier as open-source)
+- For open-source version of SimVox.ai (if we release free tier as open-source)
 
 ---
 
@@ -382,7 +382,7 @@ Actions:
 
    Dear NVIDIA Licensing Team,
 
-   We are developing GridVox, an AI-powered livery designer for sim racing.
+   We are developing SimVox.ai, an AI-powered livery designer for sim racing.
    Our product uses neural UV mapping technology inspired by your AUV-Net
    research (CVPR 2022). We would like to discuss commercial licensing options.
 
@@ -403,7 +403,7 @@ Actions:
 
    Best regards,
    [Your Name]
-   [GridVox Team]
+   [SimVox.ai Team]
    [Email]
 
 3. Prepare fallback: Begin re-implementation planning if license denied
@@ -458,7 +458,7 @@ Legal Status: ✅ Commercially compliant
 NVIDIA could:
 - Send cease & desist letter (demand we stop using their code)
 - Sue for copyright infringement (statutory damages: $750-30,000 per work)
-- Seek injunction (court order to shut down GridVox)
+- Seek injunction (court order to shut down SimVox.ai)
 
 Defenses:
 - None (clear license violation)
@@ -561,11 +561,11 @@ LAUNCH (Week 16):
 
 ## Open Source Release Strategy (Phase 6+)
 
-If we decide to open-source GridVox (free tier):
+If we decide to open-source SimVox.ai (free tier):
 
 ### Dual Licensing Approach
 ```
-GridVox Codebase:
+SimVox.ai Codebase:
 - Frontend (React): MIT License (fully open)
 - Backend (FastAPI): MIT License (fully open)
 - AI Models: Dual license

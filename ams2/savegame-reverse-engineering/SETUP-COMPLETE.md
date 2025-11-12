@@ -9,7 +9,7 @@
 
 ✅ **Voice model downloaded**
 - Model: vosk-model-small-en-us-0.15 (40MB)
-- Location: C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering\vosk-model-small-en-us-0.15
+- Location: C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering\vosk-model-small-en-us-0.15
 - Type: Fast, optimized for short phrases
 
 ✅ **Scripts ready**
@@ -31,13 +31,13 @@ Double-click or run from terminal. This will:
 
 ### Option 2: Using PowerShell/Terminal
 ```powershell
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering
 node watcher.js
 ```
 
 ### Option 3: Using NPM Script
 ```bash
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering
 npm run watch
 ```
 

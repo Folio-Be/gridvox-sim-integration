@@ -60,7 +60,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>GridVox AMS2 Overlay POC</h1>
+      <h1>SimVox.ai AMS2 Overlay POC</h1>
       <p>Main Control Window</p>
 
       <div className="controls">

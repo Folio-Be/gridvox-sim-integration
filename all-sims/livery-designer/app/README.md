@@ -1,6 +1,6 @@
-# GridVox AI Livery Designer Desktop App
+# SimVox.ai AI Livery Designer Desktop App
 
-React/Tauri shell that mirrors the reference tech stack from recent GridVox POCs while remaining standalone for the livery-designer project.
+React/Tauri shell that mirrors the reference tech stack from recent SimVox.ai POCs while remaining standalone for the livery-designer project.
 
 ## Available Scripts
 

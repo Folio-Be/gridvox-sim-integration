@@ -167,7 +167,7 @@ output/
 │       ├── base/
 │       ├── endurancept2pack/
 │       └── ...
-└── manifest.json                 # Metadata for GridVox integration
+└── manifest.json                 # Metadata for SimVox.ai integration
 ```
 
 ## Next Steps for Production Use
@@ -184,12 +184,12 @@ output/
 3. If successful, run `npm run process-all` (all 387 vehicles, ~45-90 min)
 4. Verify manifest.json contains correct metadata
 
-### Integration with GridVox
+### Integration with SimVox.ai
 1. Decide distribution strategy:
    - **Option A:** Bundle thumbnails with installer (~20MB)
    - **Option B:** Host on CDN, download on first launch
    - **Option C:** Hybrid (base bundled, DLC on-demand) ✅ Recommended
-2. Update GridVox app to read manifest.json
+2. Update SimVox.ai app to read manifest.json
 3. Map vehicle IDs to thumbnail paths
 4. Display in UI during car selection
 
@@ -212,7 +212,7 @@ Before deploying to production:
 - [ ] All 387 thumbnails generated correctly
 - [ ] Manifest.json is valid JSON
 - [ ] File sizes are reasonable (~5-20KB per PNG)
-- [ ] Images display correctly in GridVox UI
+- [ ] Images display correctly in SimVox.ai UI
 - [ ] By-manufacturer organization is correct
 - [ ] By-class organization is correct
 - [ ] By-DLC organization is correct
@@ -280,8 +280,8 @@ All implementation goals achieved:
 
 ## Contact & Support
 
-This tool is part of the GridVox project. For questions:
-- See main GridVox repository
+This tool is part of the SimVox.ai project. For questions:
+- See main SimVox.ai repository
 - Consult [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for detailed design
 - Review [README.md](README.md) for usage instructions
 - Check [SETUP.md](SETUP.md) for setup help

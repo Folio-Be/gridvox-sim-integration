@@ -1,7 +1,7 @@
 # AMS2 Overlay POC - Implementation Plan
 
 **Date:** November 10, 2025  
-**Goal:** Create proof-of-concept overlay system for GridVox in AMS2  
+**Goal:** Create proof-of-concept overlay system for SimVox.ai in AMS2  
 **Tech Stack:** Tauri v2 + Rust + React  
 **Reference:** Comprehensive online research + existing overlay systems
 
@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-Based on extensive research of existing overlay solutions (SimHub, Race-Element, overlay frameworks), this POC will implement a **transparent overlay window** approach using Tauri v2's native capabilities. This is the fastest path to MVP while maintaining alignment with GridVox's tech stack.
+Based on extensive research of existing overlay solutions (SimHub, Race-Element, overlay frameworks), this POC will implement a **transparent overlay window** approach using Tauri v2's native capabilities. This is the fastest path to MVP while maintaining alignment with SimVox.ai's tech stack.
 
 **Key Finding:** No major overlay system for AMS2 exists beyond SimHub's dashboard system. This POC will pioneer transparent video overlays specifically for story-driven cutscenes.
 
@@ -276,7 +276,7 @@ Based on research of existing overlay systems and GPU profiling data:
 - For **wireless PCVR streaming** (Quest → PC via Wi-Fi 6)
 - **Same OpenXR API** as native PCVR (no proprietary API needed!)
 
-**Key Insight:** Virtual Desktop implements the **standard OpenXR runtime**, so GridVox's OpenXR overlay code works identically whether user is on native PCVR or wireless Quest streaming via Virtual Desktop.
+**Key Insight:** Virtual Desktop implements the **standard OpenXR runtime**, so SimVox.ai's OpenXR overlay code works identically whether user is on native PCVR or wireless Quest streaming via Virtual Desktop.
 
 **GPU Impact:**
 - **VD Encoding:** 8-15% GPU (base streaming overhead, always present)
@@ -311,9 +311,9 @@ Based on research of existing overlay systems and GPU profiling data:
 **Architecture:**
 ```
 ┌─────────────────────────────────────────────┐
-│ PC (GridVox + AMS2)                         │
+│ PC (SimVox.ai + AMS2)                         │
 │  ├─ AMS2 (DirectX rendering)                │
-│  ├─ GridVox OpenXR Overlay (video)          │ Rendered
+│  ├─ SimVox.ai OpenXR Overlay (video)          │ Rendered
 │  └─ VD Streamer (encodes both to h.265)     │ on PC
 └─────────────────┬───────────────────────────┘
                   │ Wi-Fi 6 (h.265 stream)
@@ -360,7 +360,7 @@ Based on research of existing overlay systems and GPU profiling data:
 
 ---
 
-##### VR Overlay Recommendation for GridVox
+##### VR Overlay Recommendation for SimVox.ai
 
 **Primary Choice: OpenXR**
 - ✅ Best performance (9-19% GPU vs 12-23% OpenVR)
@@ -393,7 +393,7 @@ Based on research of existing overlay systems and GPU profiling data:
 
 ---
 
-### Why Transparent Window is Best for GridVox
+### Why Transparent Window is Best for SimVox.ai
 
 #### Advantages
 1. ✅ **Tauri Native Support:** Built-in transparent window APIs
@@ -413,7 +413,7 @@ Based on research of existing overlay systems and GPU profiling data:
 
 **Performance Verdict:** Transparent window has **comparable GPU impact** to DirectX injection (both ~8-18%), but with **lower CPU overhead** (3-6% vs 4-10%) and **no injection latency spikes**. The trade-off is 2-5% additional GPU for DWM compositing, which is negligible on modern hardware.
 
-**Decision:** Transparent window is correct approach for GridVox story cutscenes.
+**Decision:** Transparent window is correct approach for SimVox.ai story cutscenes.
 
 ---
 
@@ -423,7 +423,7 @@ Based on research of existing overlay systems and GPU profiling data:
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│ GridVox Desktop (Tauri v2)                                   │
+│ SimVox.ai Desktop (Tauri v2)                                   │
 │  ┌────────────────────────────────────────────────────────┐ │
 │  │ Main Window (Normal)                                    │ │
 │  │  - React UI                                             │ │
@@ -475,7 +475,7 @@ fn main() {
                 "main",
                 tauri::WindowUrl::App("index.html".into())
             )
-            .title("GridVox")
+            .title("SimVox.ai")
             .inner_size(1200.0, 800.0)
             .build()?;
 
@@ -485,7 +485,7 @@ fn main() {
                 "overlay",
                 tauri::WindowUrl::App("overlay.html".into())
             )
-            .title("GridVox Overlay")
+            .title("SimVox.ai Overlay")
             .transparent(true)
             .decorations(false)
             .always_on_top(true)
@@ -527,7 +527,7 @@ export const OverlayPage: React.FC = () => {
         color: 'white',
         fontFamily: 'Arial',
       }}>
-        <h1>GridVox Story Cutscene</h1>
+        <h1>SimVox.ai Story Cutscene</h1>
         <p>This is a test overlay</p>
       </div>
     </div>
@@ -570,7 +570,7 @@ pub fn is_overlay_visible(app: tauri::AppHandle) -> Result<bool, String> {
 ```
 
 **Test:** 
-1. Run GridVox
+1. Run SimVox.ai
 2. Call `show_overlay()` from main window
 3. Verify transparent window appears on top
 4. Call `hide_overlay()` to dismiss
@@ -899,7 +899,7 @@ async fn main() {
 
 **Test:**
 1. Start AMS2
-2. Start GridVox
+2. Start SimVox.ai
 3. Complete lap 3 in practice session
 4. Verify overlay automatically appears with test video
 
@@ -941,7 +941,7 @@ impl VROverlayService {
 
         let instance = entry.create_instance(
             &xr::ApplicationInfo {
-                application_name: "GridVox",
+                application_name: "SimVox.ai",
                 application_version: 1,
                 engine_name: "Tauri",
                 engine_version: 1,
@@ -1180,7 +1180,7 @@ pub fn is_vr_available(vr_manager: State<'_, VROverlayManager>) -> bool {
 
 **Test VR Overlay:**
 1. Launch AMS2 in VR mode
-2. Start GridVox
+2. Start SimVox.ai
 3. Trigger story event
 4. Verify overlay appears in VR headset
 5. Test both HMD-locked and world-locked modes
@@ -1592,7 +1592,7 @@ fn quaternion_to_forward(q: xr::Quaternionf) -> xr::Vector3f {
 
 ### Phase 6: Story Integration (Week 2-3) - Desktop + VR Unified
 
-**Goal:** Connect to GridVox story system with unified desktop + VR overlay support
+**Goal:** Connect to SimVox.ai story system with unified desktop + VR overlay support
 
 #### Step 6.1: Unified Overlay Manager
 
@@ -1836,7 +1836,7 @@ impl StoryEngine {
 ## File Structure
 
 ```
-gridvox-sim-integration/ams2/ams2-overlays/
+SimVox.ai-sim-integration/ams2/ams2-overlays/
 ├── README.md
 ├── OVERLAY-POC-PLAN.md (this file)
 ├── Cargo.toml
@@ -1881,7 +1881,7 @@ gridvox-sim-integration/ams2/ams2-overlays/
 3. **Implement Phase 2:** Video playback
 4. **Implement Phase 3:** Telemetry triggering
 5. **Document learnings** in `TESTING-LOG.md`
-6. **Prepare for GridVox integration** once POC validates approach
+6. **Prepare for SimVox.ai integration** once POC validates approach
 
 ---
 
@@ -1935,7 +1935,7 @@ gridvox-sim-integration/ams2/ams2-overlays/
 #### Telemetry Integration
 9. **AMS2 Shared Memory**:
    - CREST2-AMS2: https://github.com/viper4gh/CREST2-AMS2
-   - POC-02 (GridVox): Native C++ addon for direct memory access
+   - POC-02 (SimVox.ai): Native C++ addon for direct memory access
 
 10. **Community Forums**:
     - r/simracing overlay discussions

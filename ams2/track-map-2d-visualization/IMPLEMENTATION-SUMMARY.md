@@ -14,7 +14,7 @@
   - Detects lap completion automatically
   - Normalizes and centers tracks to fit canvas
   - Calculates sectors and track length
-  - Exports to GridVox JSON format
+  - Exports to SimVox.ai JSON format
 
 ### 3. Added Recording UI 🎮
 - **Button:** "🔴 Record Track (Drive 1 Lap)"
@@ -97,7 +97,7 @@ When POC-02 (AMS2 shared memory) is ready:
 | **Fast-F1** | Records GPS coordinates from F1 telemetry |
 | **iRacing SDK** | Samples car position every frame |
 | **RaceRoom Tools** | Records world coordinates during lap |
-| **GridVox** | ✅ Same approach - record telemetry positions! |
+| **SimVox.ai** | ✅ Same approach - record telemetry positions! |
 
 ## Next Steps
 

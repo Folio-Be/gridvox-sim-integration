@@ -2,7 +2,7 @@
 name = "ams2-ai-livery-designer"
 version = "0.1.0"
 description = "AMS2 AI Livery Designer POC"
-authors = ["GridVox Team"]
+authors = ["SimVox Team"]
 edition = "2021"
 
 [lib]

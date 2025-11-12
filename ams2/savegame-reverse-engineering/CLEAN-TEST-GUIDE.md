@@ -55,7 +55,7 @@ We need cleaner before/after snapshots with **ONLY** car selection changed.
 
 8. **Compare:**
    ```bash
-   cd C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering
+   cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering
    node hex-diff.js "C:\Users\tomat\OneDrive\Documents\Automobilista 2\savegame\bmw-test.sav" "C:\Users\tomat\OneDrive\Documents\Automobilista 2\savegame\mercedes-test.sav" BMW Mercedes
    ```
 
@@ -135,7 +135,7 @@ After clean testing:
 → Create patcher script
 → Test if AMS2 accepts modified saves
 → Map all car IDs
-→ Integrate with GridVox
+→ Integrate with SimVox.ai
 
 ### If Still Too Many Changes ⚠️
 → File likely has checksums or compression

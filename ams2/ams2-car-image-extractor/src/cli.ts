@@ -110,7 +110,7 @@ async function main(): Promise<void> {
   console.log(`
 ╔════════════════════════════════════════════════════════════╗
 ║          AMS2 Car Image Extractor v1.0.0                   ║
-║          GridVox Developer Tool                            ║
+║          SimVox.ai Developer Tool                            ║
 ╚════════════════════════════════════════════════════════════╝
 `);
 
@@ -163,7 +163,7 @@ async function main(): Promise<void> {
     console.log('Next steps:');
     console.log('  1. Review thumbnails in output/thumbnails/');
     console.log('  2. Check manifest.json for metadata');
-    console.log('  3. Integrate with GridVox application');
+    console.log('  3. Integrate with SimVox.ai application');
     console.log();
 
   } catch (error) {

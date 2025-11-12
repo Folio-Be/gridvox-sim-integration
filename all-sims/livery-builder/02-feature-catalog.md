@@ -1,6 +1,6 @@
-# GridVox Livery Builder - Complete Feature Catalog
+# SimVox.ai Livery Builder - Complete Feature Catalog
 
-**Document Purpose:** Comprehensive categorization of all features identified from Trading Paints Builder analysis, organized by implementation priority and aligned with GridVox ecosystem.
+**Document Purpose:** Comprehensive categorization of all features identified from Trading Paints Builder analysis, organized by implementation priority and aligned with SimVox.ai ecosystem.
 
 **Date:** November 12, 2025  
 **Total Features:** 150+ core features + sub-features  
@@ -836,7 +836,7 @@
   - List templates for credits
   - List full liveries for credits
   - Price in credits or real money
-  - GridVox commission (50% on credit sales)
+  - SimVox.ai commission (50% on credit sales)
   - License selection
   - Customer reviews
 
@@ -850,7 +850,7 @@
 
 ---
 
-## 13. GRIDVOX ECOSYSTEM INTEGRATION 🆕
+## 13. SimVox.ai ECOSYSTEM INTEGRATION 🆕
 
 ### 13.1 Persona Integration ⭐ V2.0
 - **Design with Personas**
@@ -901,7 +901,7 @@
   - Remove background from sponsor logos
   - Upscale low-res logos
 
-- **Voice Commands** (via GridVox)
+- **Voice Commands** (via SimVox.ai)
   - "Change the base color to red"
   - "Add a white stripe down the middle"
   - "Rotate the car to the left"
@@ -1157,11 +1157,11 @@
 - Accessibility features (colorblind mode, high contrast)
 - Mobile viewer app (read-only)
 
-### ⭐ V2.0 (Months 9-12) - Advanced & GridVox Integration
+### ⭐ V2.0 (Months 9-12) - Advanced & SimVox.ai Integration
 **Total: +60 features**
 - Real-time collaboration
 - AI design assistant
-- Voice commands (via GridVox)
+- Voice commands (via SimVox.ai)
 - Persona integration
 - Story-driven livery system
 - Social media integration

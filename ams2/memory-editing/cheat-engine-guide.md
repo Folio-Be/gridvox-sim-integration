@@ -301,7 +301,7 @@ Once addresses are found:
 2. ✅ Verify addresses work across game sessions
 3. ✅ Map all car/track/weather values
 4. → **Phase 2:** Build custom memory tool (no Cheat Engine needed)
-5. → **Phase 3:** Integrate with GridVox
+5. → **Phase 3:** Integrate with SimVox.ai
 
 ---
 

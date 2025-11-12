@@ -1,4 +1,4 @@
-# GridVox Story Video Assets
+# SimVox.ai Story Video Assets
 
 This directory contains video cutscenes for story-driven racing moments.
 

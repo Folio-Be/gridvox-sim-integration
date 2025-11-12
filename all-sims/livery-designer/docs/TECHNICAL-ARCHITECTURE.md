@@ -1,6 +1,6 @@
 # Technical Architecture
 
-**Project:** GridVox AI Livery Designer
+**Project:** SimVox.ai AI Livery Designer
 **Purpose:** System design, training pipeline, API specifications, cost estimates
 **Last Updated:** January 11, 2025
 
@@ -462,10 +462,10 @@ Response (200 OK):
 | **Development GPU** | RTX 4090 (24GB) - Training & inference testing | $0 (one-time $1,800 purchase) | $1,800 (Year 0) |
 | **Cloud GPU (Optional)** | RunPod A100 40GB - Parallel training for 5+ cars | $200 (20 hours × $10/hr) | $200 (once) |
 | **GitHub Pro** | Private repo, LFS for model weights | $4/month | $48 |
-| **Domain & Hosting** | gridvox.com (marketing site, NOT app hosting) | $15/month | $180 |
+| **Domain & Hosting** | SimVox.ai.com (marketing site, NOT app hosting) | $15/month | $180 |
 | **TOTAL Year 1** | - | - | **$2,228** |
 
-**Note:** GridVox is a **local-first desktop application**. No cloud API costs for inference (runs on user's GPU).
+**Note:** SimVox.ai is a **local-first desktop application**. No cloud API costs for inference (runs on user's GPU).
 
 ### Training Costs per Car Model
 

@@ -1,5 +1,5 @@
 {
-    "name": "@gridvox/track-map-core",
+    "name": "@SimVox.ai/track-map-core",
     "version": "1.0.0",
     "description": "Core track map rendering library (sim-agnostic) with Pixi.js",
     "main": "./dist/index.js",
@@ -41,6 +41,6 @@
         "pixi.js",
         "webgl"
     ],
-    "author": "GridVox Team",
+    "author": "SimVox.ai Team",
     "license": "MIT"
 }

@@ -136,7 +136,7 @@
 ---
 
 ### File Path & Tauri Context Handling
-- [x] Configure output directory *Backend writes to `<AppData>/gridvox/track-models/<track-key>`.*
+- [x] Configure output directory *Backend writes to `<AppData>/SimVox.ai/track-models/<track-key>`.*
 - [x] Handle Tauri file:// protocol *Preview uses `convertFileSrc` to feed GLB URIs to GLTFLoader.*
 - [x] Cross-platform path handling *Tauri path resolver + Node path logic ensure OS-safe joins.*
 - [ ] Test file access permissions *Verify Tauri can read generated files*

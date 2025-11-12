@@ -6,7 +6,7 @@
 
 ```powershell
 # Navigate to project directory
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-ai-livery-designer
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-ai-livery-designer
 
 # Install Node.js dependencies
 pnpm install
@@ -33,7 +33,7 @@ cd python-backend
 # Server will start on http://127.0.0.1:8002
 
 # Terminal 2: Start Tauri app
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-ai-livery-designer
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-ai-livery-designer
 pnpm tauri dev
 # This will:
 # - Start Vite dev server on http://localhost:1430
@@ -158,7 +158,7 @@ python main.py
 
 ## File Locations
 
-- **Project Root:** `C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-ai-livery-designer`
+- **Project Root:** `C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-ai-livery-designer`
 - **Frontend Code:** `src/`
 - **Rust Backend:** `src-tauri/`
 - **Python Backend:** `python-backend/`

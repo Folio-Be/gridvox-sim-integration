@@ -5,7 +5,7 @@
  * Based on proven patterns from Race-Element's Ams2Mapper.cs
  */
 
-import type { CarPosition } from '@gridvox/track-map-core';
+import type { CarPosition } from '@SimVox.ai/track-map-core';
 import type { AMS2SharedMemory, AMS2Participant } from './types/AMS2Telemetry.js';
 
 export class AMS2Adapter {

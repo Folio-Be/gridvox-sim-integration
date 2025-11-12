@@ -1,11 +1,11 @@
-"""FastAPI entry point for the GridVox AI Livery Designer backend."""
+"""FastAPI entry point for the SimVox AI Livery Designer backend."""
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import health, generation, upload
 
-app = FastAPI(title="GridVox AI Livery Designer API", version="0.1.0")
+app = FastAPI(title="SimVox AI Livery Designer API", version="0.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,4 +23,4 @@ app.include_router(generation.router, prefix="/api")
 @app.get("/")
 async def root() -> dict[str, str]:
     """Basic heartbeat for smoke testing."""
-    return {"status": "ok", "service": "gridvox-livery-designer"}
+    return {"status": "ok", "service": "simvox-livery-designer"}

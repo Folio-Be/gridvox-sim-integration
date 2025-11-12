@@ -16,7 +16,7 @@
 
 **What's Done:**
 - ✅ Extracted 16 professional track maps from Virtual Pitwall
-- ✅ Converted to GridVox JSON format
+- ✅ Converted to SimVox.ai JSON format
 - ✅ Ready to load in demo
 - ✅ Extraction script fully automated
 

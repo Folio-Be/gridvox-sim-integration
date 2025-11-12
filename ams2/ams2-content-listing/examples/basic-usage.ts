@@ -84,9 +84,9 @@ async function thumbnailExample() {
   console.log(`Interlagos photo: ${thumbnails.photo}`);
 }
 
-async function gridvoxIntegration() {
+async function SimVox.aiIntegration() {
   /**
-   * Example of how GridVox might use this library
+   * Example of how SimVox.ai might use this library
    */
   const scanner = new AMS2ContentScanner('C:\\GAMES\\Automobilista 2');
   const { database } = await scanner.scan();
@@ -177,7 +177,7 @@ if (require.main === module) {
     console.log('\n=== DLC Example ===');
     await dlcExample();
 
-    console.log('\n=== GridVox Integration ===');
-    await gridvoxIntegration();
+    console.log('\n=== SimVox.ai Integration ===');
+    await SimVox.aiIntegration();
   })();
 }

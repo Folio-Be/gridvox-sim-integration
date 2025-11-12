@@ -1,6 +1,6 @@
 # AMS2 Overlay POC
 
-**GridVox Transparent Video Overlay Proof of Concept**
+**SimVox.ai Transparent Video Overlay Proof of Concept**
 
 ## Overview
 
@@ -201,4 +201,4 @@ See `OVERLAY-POC-PLAN.md` for detailed performance analysis.
 
 ## License
 
-Part of GridVox project.
+Part of SimVox.ai project.

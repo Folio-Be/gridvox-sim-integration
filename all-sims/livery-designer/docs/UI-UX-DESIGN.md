@@ -1,6 +1,6 @@
 # UI/UX Design Specifications
 
-**Project:** GridVox AI Livery Designer
+**Project:** SimVox.ai AI Livery Designer
 **Design Philosophy:** Dark gaming aesthetic + professional creative tools
 **Inspiration:** Trading Paints + Figma + Midjourney
 **Screen Count:** 9 core screens
@@ -71,7 +71,7 @@ Inputs:
 ### Layout Description
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  [GridVox Logo]          [Library] [Marketplace] [Account]   │
+│  [SimVox.ai Logo]          [Library] [Marketplace] [Account]   │
 ├─────────────────────────────────────────────────────────────┤
 │                                                               │
 │              ╔═══════════════════════════════════╗           │
@@ -370,7 +370,7 @@ Inputs:
 ## GOOGLE AI STUDIO PROMPT (Complete Version)
 
 ```
-Create a modern, dark-themed desktop application UI design for an AI-powered racing livery creator called "GridVox". The design should combine gaming aesthetics with professional creative tools, similar to Figma + Trading Paints + Midjourney interface.
+Create a modern, dark-themed desktop application UI design for an AI-powered racing livery creator called "SimVox.ai". The design should combine gaming aesthetics with professional creative tools, similar to Figma + Trading Paints + Midjourney interface.
 
 OVERALL STYLE:
 - Dark theme with deep grays (#1E1E1E), blacks (#0D0D0D), subtle gradients
@@ -383,7 +383,7 @@ OVERALL STYLE:
 GENERATE 9 SCREENS:
 
 SCREEN 1 - LANDING DASHBOARD:
-- Top navigation: GridVox logo (left), menu items (Library, Marketplace, Account) on right
+- Top navigation: SimVox.ai logo (left), menu items (Library, Marketplace, Account) on right
 - Large hero section: gradient background (dark blue #1a2332 to black), centered
 - Prominent CTA button: "Create New Livery" with glowing electric blue effect (#00D9FF), pulsing animation
 - Three feature cards below hero: "AI Generation" (paint brush icon), "Quick Start" (lightning icon), "Learn" (book icon)
@@ -560,7 +560,7 @@ Style requirements: Dark UI, blue/orange accents (#00D9FF/#FF6B35), Inter font, 
 If creating in Figma:
 
 ```
-GridVox_AI_Livery_Designer.fig
+SimVox.ai_AI_Livery_Designer.fig
 ├── 🎨 Design System
 │   ├── Colors (palette with hex codes)
 │   ├── Typography (text styles: H1-H4, Body, Small)

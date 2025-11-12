@@ -102,7 +102,7 @@ C:\Program Files\Epic Games\Automobilista 2
 3. Run PCarsTools:
 
 ```powershell
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor
 
 .\tools\PCarsTools\pcarstools_x64.exe extract `
   --input "C:\GAMES\Automobilista 2\GameData\Locations\Silverstone.bff" `
@@ -575,7 +575,7 @@ If you want to isolate just the track surface or clean up the geometry, use Blen
 
 ### After First Track
 
-1. **Test in GridVox** desktop app
+1. **Test in SimVox.ai** desktop app
 2. **Verify telemetry alignment** with actual replay
 3. **Document any issues**
 4. **Decide if approach is worth continuing**
@@ -618,7 +618,7 @@ If you want to isolate just the track surface or clean up the geometry, use Blen
 1. **Check error messages** - Often self-explanatory
 2. **Review SETUP.md** - Ensure all tools installed correctly
 3. **Check PCarsTools docs** - https://github.com/Nenkai/PCarsTools
-4. **GridVox community** - Discord/Forum for questions
+4. **SimVox.ai community** - Discord/Forum for questions
 
 ---
 

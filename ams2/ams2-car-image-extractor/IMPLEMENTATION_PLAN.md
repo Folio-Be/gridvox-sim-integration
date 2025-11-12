@@ -663,7 +663,7 @@ Different classes to test variety.
 
 ## Distribution Strategy
 
-### Option A: Bundle with GridVox
+### Option A: Bundle with SimVox.ai
 
 **Pros:**
 - Instant availability
@@ -692,7 +692,7 @@ Different classes to test variety.
 - First-launch delay
 
 **Implementation:**
-1. Upload to GridVox CDN
+1. Upload to SimVox.ai CDN
 2. Download on first launch
 3. Cache in AppData
 
@@ -788,7 +788,7 @@ When ready to implement:
 6. ⬜ Implement remaining phases
 7. ⬜ Full extraction
 8. ⬜ Decide distribution method
-9. ⬜ Integrate with GridVox
+9. ⬜ Integrate with SimVox.ai
 
 ---
 

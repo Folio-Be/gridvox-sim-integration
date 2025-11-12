@@ -1,7 +1,7 @@
-# GridVox AI Livery Designer - Research Documentation Complete
+# SimVox.ai AI Livery Designer - Research Documentation Complete
 
 ## Project Location
-C:\DATA\GridVox\gridvox-sim-integration\all-sims\livery-designer
+C:\DATA\SimVox.ai\SimVox.ai-sim-integration\all-sims\livery-designer
 
 ## Documentation Created (January 11, 2025)
 

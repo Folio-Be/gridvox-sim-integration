@@ -1,4 +1,4 @@
-# GridVox AI Livery Designer
+# SimVox.ai AI Livery Designer
 
 **AI-Powered Custom Livery Generation for Sim Racing**
 
@@ -153,7 +153,7 @@ Create the world's first AI-powered livery designer that eliminates the complexi
 
 ```bash
 # Clone repository
-git clone https://github.com/GridVox/livery-designer.git
+git clone https://github.com/SimVox.ai/livery-designer.git
 cd livery-designer
 
 # Install dependencies
@@ -241,7 +241,7 @@ Join our Discord: [Coming Soon]
 
 ## 📄 License
 
-**Research Phase:** All documentation is internal to GridVox.
+**Research Phase:** All documentation is internal to SimVox.ai.
 **Code License:** TBD (likely MIT or Apache 2.0 for core, proprietary for AI models)
 **Third-Party:** AUV-Net usage requires NVIDIA commercial license approval
 
@@ -269,9 +269,9 @@ Join our Discord: [Coming Soon]
 ## 📞 Contact
 
 **Project Lead:** [Your Name]
-**Organization:** GridVox
+**Organization:** SimVox.ai
 **Email:** [Coming Soon]
-**Website:** https://gridvox.com
+**Website:** https://SimVox.ai.com
 
 ---
 

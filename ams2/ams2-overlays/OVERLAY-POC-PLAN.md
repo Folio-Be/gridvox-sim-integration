@@ -1,7 +1,7 @@
 # AMS2 Overlay POC - Implementation Plan
 
 **Date:** November 10, 2025  
-**Goal:** Create proof-of-concept overlay system for GridVox story cutscenes in AMS2  
+**Goal:** Create proof-of-concept overlay system for SimVox.ai story cutscenes in AMS2  
 **Tech Stack:** Tauri v2 + Rust + React + TypeScript  
 **Status:** Phase 2 in progress (video playback)
 
@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-This POC implements a **transparent overlay window** approach using Tauri v2's native capabilities to display story-driven video cutscenes over AMS2 racing gameplay. This is the fastest, safest path to MVP while maintaining alignment with GridVox's tech stack.
+This POC implements a **transparent overlay window** approach using Tauri v2's native capabilities to display story-driven video cutscenes over AMS2 racing gameplay. This is the fastest, safest path to MVP while maintaining alignment with SimVox.ai's tech stack.
 
 **Key Decision:** Transparent borderless window (vs DirectX injection) - proven approach used by SimHub and Race-Element, with no anti-cheat risks and lower complexity.
 
@@ -21,7 +21,7 @@ This POC implements a **transparent overlay window** approach using Tauri v2's n
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│ GridVox Overlay App (Tauri v2)                               │
+│ SimVox.ai Overlay App (Tauri v2)                               │
 │  ┌────────────────────────────────────────────────────────┐ │
 │  │ Main Window                                             │ │
 │  │  - Control interface                                    │ │
@@ -205,7 +205,7 @@ impl TelemetryBridge {
 - ✅ Multi-monitor support
 - ✅ User documentation
 - ✅ Demo video created
-- ✅ Integration path into main GridVox app defined
+- ✅ Integration path into main SimVox.ai app defined
 
 ---
 

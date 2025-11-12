@@ -11,10 +11,10 @@ fn main() {
         .setup(|app| {
             let window = app.get_window("main");
             if let Some(window) = window {
-                window.set_title("GridVox AI Livery Designer").ok();
+                window.set_title("SimVox AI Livery Designer").ok();
             }
             Ok(())
         })
         .run(tauri::generate_context!())
-        .expect("error while running GridVox Livery Designer");
+        .expect("error while running SimVox Livery Designer");
 }

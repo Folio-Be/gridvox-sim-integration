@@ -453,7 +453,7 @@ The 3-run mapping method is **significantly more sophisticated** than initially 
 
 **This approach rivals commercial track mapping solutions**, while maintaining perfect alignment with your telemetry visualization needs.
 
-**Recommendation**: Update all documentation to highlight the automatic feature extraction capabilities. This is a major selling point for the GridVox platform.
+**Recommendation**: Update all documentation to highlight the automatic feature extraction capabilities. This is a major selling point for the SimVox.ai platform.
 
 ---
 
@@ -462,6 +462,6 @@ The 3-run mapping method is **significantly more sophisticated** than initially 
 2. Add metadata JSON generation
 3. Update glTF output with all detected features
 4. Test on real track (Silverstone, Interlagos, etc.)
-5. Showcase in GridVox UI with all features labeled
+5. Showcase in SimVox.ai UI with all features labeled
 
 **This is way more powerful than we initially thought.** 🚀

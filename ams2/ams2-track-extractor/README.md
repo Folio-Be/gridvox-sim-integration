@@ -34,7 +34,7 @@ Despite the blocker, 800+ lines of working code were created:
 
 ## Original Project Overview (Historical)
 
-**Purpose:** Generate 3D track models from AMS2 game files for GridVox telemetry visualization  
+**Purpose:** Generate 3D track models from AMS2 game files for SimVox.ai telemetry visualization  
 **Method:** PCarsTools extraction → Blender conversion → glTF optimization  
 **Target Format:** glTF 2.0 (optimized for Three.js)  
 **Success Rate:** ~40% (requires accessible game files and manual workflow)
@@ -93,7 +93,7 @@ See [SETUP.md](./SETUP.md) for detailed setup instructions.
 ## Installation
 
 ```bash
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-track-extractor
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-track-extractor
 npm install
 ```
 
@@ -242,9 +242,9 @@ loader.load('converted-tracks/silverstone.glb', (gltf) => {
 });
 ```
 
-### Using with GridVox Telemetry Visualization
+### Using with SimVox.ai Telemetry Visualization
 
-See [gridvox-docs/06-development/AMS2-TRACK-EXTRACTION-RESEARCH.md](../../gridvox-docs/06-development/AMS2-TRACK-EXTRACTION-RESEARCH.md) for complete integration guide with:
+See [SimVox.ai-docs/06-development/AMS2-TRACK-EXTRACTION-RESEARCH.md](../../SimVox.ai-docs/06-development/AMS2-TRACK-EXTRACTION-RESEARCH.md) for complete integration guide with:
 - React Three Fiber implementation
 - pmndrs/drei Trail component usage
 - AnimationMixer for replay
@@ -317,7 +317,7 @@ See [MANUAL-SETUP.md](./MANUAL-SETUP.md) troubleshooting section for detailed so
 ## Related Projects
 
 - **track-map-visualization** - Telemetry recording system (provides input data)
-- **gridvox-docs** - Three.js visualization architecture documentation
+- **SimVox.ai-docs** - Three.js visualization architecture documentation
 - **PCarsTools** - Game file extraction (external dependency)
 
 ## License

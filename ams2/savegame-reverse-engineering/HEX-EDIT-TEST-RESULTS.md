@@ -205,7 +205,7 @@ Notice McLaren values **match Mercedes** - suggests time-based cycling, not car 
 7. Repeat until 1-5 addresses remain
 8. Test changing those addresses
 9. If it works, document memory offsets
-10. Create memory patcher tool for GridVox
+10. Create memory patcher tool for SimVox.ai
 
 ## Files Created
 

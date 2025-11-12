@@ -4,7 +4,7 @@
 
 ### 1. Voice STT Integration for Savegame Watcher ✅
 
-**Location:** `gridvox-sim-integration/ams2/savegame-reverse-engineering/`
+**Location:** `SimVox.ai-sim-integration/ams2/savegame-reverse-engineering/`
 
 #### What Was Accomplished:
 - ✅ Pulled latest code with voice input features
@@ -31,7 +31,7 @@
 
 ### 2. Git Cleanup ✅
 
-**Repository:** `gridvox-sim-integration`
+**Repository:** `SimVox.ai-sim-integration`
 
 #### What Was Accomplished:
 - ✅ Added `node_modules/` to .gitignore
@@ -63,7 +63,7 @@
 
 ### Test 1: Verify Watcher Starts
 ```bash
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering
 node watcher.js
 ```
 
@@ -136,7 +136,7 @@ choco install sox.portable
 4. Verify accuracy of transcriptions
 
 ### Priority 2: POC-05 Voice Commands
-**Location:** `gridvox-desktop/pocs/poc-05-voice-commands/`
+**Location:** `SimVox.ai-desktop/pocs/poc-05-voice-commands/`
 
 The README is ready but POC-05 needs implementation:
 - Use Whisper.cpp (different from Vosk)
@@ -144,7 +144,7 @@ The README is ready but POC-05 needs implementation:
 - Integration with LLM (POC-03)
 - Racing-specific commands
 
-See: `gridvox-desktop/pocs/poc-05-voice-commands/README.md`
+See: `SimVox.ai-desktop/pocs/poc-05-voice-commands/README.md`
 
 ### Priority 3: Document Findings
 After testing voice input, document:
@@ -157,7 +157,7 @@ After testing voice input, document:
 
 ### Savegame Watcher (Voice-Enabled)
 ```
-C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering\
+C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering\
 ├── watcher.js              # Main watcher (voice-enabled)
 ├── voiceInput.js           # Voice recognition (FIXED)
 ├── run-watcher.bat         # Quick launcher
@@ -170,7 +170,7 @@ C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering\
 
 ### POC-05 (Next Implementation)
 ```
-C:\DATA\GridVox\gridvox-desktop\pocs\poc-05-voice-commands\
+C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-05-voice-commands\
 └── README.md               # Implementation plan
 ```
 
@@ -178,7 +178,7 @@ C:\DATA\GridVox\gridvox-desktop\pocs\poc-05-voice-commands\
 
 ### Start Watcher
 ```bash
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering
 run-watcher.bat
 ```
 
@@ -189,13 +189,13 @@ choco install sox.portable
 
 ### Analyze Results
 ```bash
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering
 npm run analyze
 ```
 
 ### Check Git Status
 ```bash
-cd C:\DATA\GridVox\gridvox-sim-integration
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration
 git status
 git log --oneline -5
 ```

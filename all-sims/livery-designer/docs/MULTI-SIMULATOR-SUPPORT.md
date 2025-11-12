@@ -1,6 +1,6 @@
 # Multi-Simulator Support Specification
 
-**Project:** GridVox AI Livery Designer
+**Project:** SimVox.ai AI Livery Designer
 **Purpose:** Technical specifications for supporting AMS2, iRacing, ACC, and LMU
 **Last Updated:** January 11, 2025
 
@@ -97,7 +97,7 @@ LMU Last:
 | **AMS2** | `body2.dds` | `body2.dds` (no car/number in filename) |
 | **iRacing** | `car_<carid>_<num>.tga` | `car_porsche992gt3r_42.tga` |
 | **ACC** | `<carid>_<teamid>.dds` | `porsche_991ii_gt3_r_custom.dds` |
-| **LMU** | `<teamid>_<num>.tga` | `team_gridvox_42.tga` |
+| **LMU** | `<teamid>_<num>.tga` | `team_SimVox.ai_42.tga` |
 
 ---
 
@@ -146,7 +146,7 @@ Documents\Automobilista 2\UserData\CustomLiveries\
 │   │   ├── body2_alt.dds
 │   │   ├── decals.dds
 │   │   └── livery.json          # Metadata (optional, for auto-detection)
-│   ├── GVX\                     # GridVox custom team
+│   ├── GVX\                     # SimVox.ai custom team
 │   │   └── body2.dds
 │   └── CUS\                     # Generic custom team
 │       └── body2.dds
@@ -174,7 +174,7 @@ mercedes_amg_gt3_evo     # Mercedes-AMG GT3 Evo
 audi_r8_lms_gt3_evo      # Audi R8 LMS GT3 Evo
 ```
 
-#### GridVox Export Strategy
+#### SimVox.ai Export Strategy
 
 ```python
 def export_ams2_livery(
@@ -248,10 +248,10 @@ iRacing overlays number graphics on top of texture.
 
 System 2: Baked-in (Modern, Trading Paints style)
 Filename: car_porsche992gt3r_42.tga
-Number 42 is PAINTED on texture (GridVox approach).
+Number 42 is PAINTED on texture (SimVox.ai approach).
 More control over number placement/style.
 
-GridVox uses System 2 (baked-in) for consistency.
+SimVox.ai uses System 2 (baked-in) for consistency.
 ```
 
 #### Installation Path Structure
@@ -278,7 +278,7 @@ Number selection: Garage → Paint Car → Select Custom Paint → #42
 **Problem:** iRacing uses internal IDs different from friendly names.
 
 ```
-iRacing Car ID          GridVox Display Name
+iRacing Car ID          SimVox.ai Display Name
 --------------------    --------------------------
 porsche992gt3r          Porsche 992 GT3 R
 mclaren720sgt3          McLaren 720S GT3
@@ -304,7 +304,7 @@ Mapping Database (partial):
   }
 }
 
-GridVox maintains JSON file: car_mappings.json (200+ cars)
+SimVox.ai maintains JSON file: car_mappings.json (200+ cars)
 ```
 
 #### Trading Paints Integration
@@ -317,22 +317,22 @@ Trading Paints Workflow:
 4. Files copied to Documents\iRacing\paint\
 5. iRacing applies liveries in real-time
 
-GridVox Integration Strategy (Phase 6+):
+SimVox.ai Integration Strategy (Phase 6+):
 - Offer "Upload to Trading Paints" button (requires TP API key)
 - Benefits: Other racers see your livery in multiplayer
 - Alternative: Local-only export (free, but only you see livery)
 ```
 
-#### GridVox Export Strategy
+#### SimVox.ai Export Strategy
 
 ```python
 def export_iracing_livery(
     uv_texture: np.ndarray,
-    car_id: str,           # GridVox ID: "porsche_992_gt3_r"
+    car_id: str,           # SimVox.ai ID: "porsche_992_gt3_r"
     car_number: int,       # 0-999
     driver_name: str = None
 ):
-    # Map GridVox ID to iRacing ID
+    # Map SimVox.ai ID to iRacing ID
     iracing_car = map_to_iracing_id(car_id)  # "porsche992gt3r"
 
     # Add number and name to texture (baked-in approach)
@@ -404,7 +404,7 @@ Compression: BC3 (same as AMS2)
 ```
 Documents\Assetto Corsa Competizione\Customs\Liveries\
 ├── porsche_991ii_gt3_r\         # Car ID (ACC naming)
-│   ├── gridvox_custom\          # Custom team folder
+│   ├── SimVox.ai_custom\          # Custom team folder
 │   │   ├── livery.dds           # Main texture
 │   │   ├── sponsors.dds         # Sponsor decals
 │   │   └── decals.json          # Decal placement metadata
@@ -428,15 +428,15 @@ mercedes_amg_gt3_evo     # Mercedes-AMG GT3 Evo
 audi_r8_lms_gt3_evo      # Audi R8 LMS GT3 Evo (2019)
 
 Note: ACC focuses on GT3 class only (no GT4, no Formula cars).
-GridVox must filter car list when exporting to ACC.
+SimVox.ai must filter car list when exporting to ACC.
 ```
 
 #### decals.json Format
 
 ```json
 {
-  "liveryName": "GridVox Custom Livery #42",
-  "teamName": "GridVox Racing",
+  "liveryName": "SimVox.ai Custom Livery #42",
+  "teamName": "SimVox.ai Racing",
   "carNumber": 42,
   "decals": [
     {
@@ -458,13 +458,13 @@ GridVox must filter car list when exporting to ACC.
 }
 ```
 
-#### GridVox Export Strategy
+#### SimVox.ai Export Strategy
 
 ```python
 def export_acc_livery(
     uv_texture: np.ndarray,
     car_id: str,
-    team_name: str = "GridVox Racing",
+    team_name: str = "SimVox.ai Racing",
     car_number: int = 42
 ):
     # Verify car is GT3 (ACC only supports GT3)
@@ -486,7 +486,7 @@ def export_acc_livery(
     acc_docs = find_acc_documents_folder()
 
     # Create team folder
-    team_folder = f"{acc_docs}\\Customs\\Liveries\\{acc_car}\\gridvox_{car_number}"
+    team_folder = f"{acc_docs}\\Customs\\Liveries\\{acc_car}\\SimVox.ai_{car_number}"
     os.makedirs(team_folder, exist_ok=True)
 
     # Copy DDS
@@ -494,7 +494,7 @@ def export_acc_livery(
 
     # Generate decals.json
     decals_config = {
-        "liveryName": f"GridVox Livery #{car_number}",
+        "liveryName": f"SimVox.ai Livery #{car_number}",
         "teamName": team_name,
         "carNumber": car_number,
         "decals": extract_decal_positions(uv_texture)
@@ -536,8 +536,8 @@ Color Space: sRGB
 ```
 <LMU_Install>\UserData\CustomLiveries\
 ├── hypercar_porsche_963\        # Car ID (LMU naming)
-│   ├── team_gridvox_42.tga
-│   ├── team_gridvox_7.tga
+│   ├── team_SimVox.ai_42.tga
+│   ├── team_SimVox.ai_7.tga
 │   └── ...
 └── lmp2_oreca_07\
     └── team_custom_12.tga
@@ -560,13 +560,13 @@ Note: LMU focuses on Le Mans 24h classes (Hypercar, LMP2, LMGT3).
 Different from AMS2/iRacing GT3 focus.
 ```
 
-#### GridVox Export Strategy
+#### SimVox.ai Export Strategy
 
 ```python
 def export_lmu_livery(
     uv_texture: np.ndarray,
     car_id: str,
-    team_name: str = "GridVox",
+    team_name: str = "SimVox.ai",
     car_number: int = 42
 ):
     # Map to LMU car ID
@@ -709,7 +709,7 @@ class ExportConfig:
     simulator: Simulator
     car_id: str
     car_number: int = None
-    team_name: str = "GridVox"
+    team_name: str = "SimVox.ai"
     driver_name: str = None
     resolution: int = 2048
     quality: str = "high"  # "draft", "high", "ultra"
@@ -782,7 +782,7 @@ print(f"Livery installed to: {output_path}")
 | Audi R8 LMS GT3 Evo II | ✅ Yes | ✅ Yes | ✅ Yes | ❌ No |
 | Ginetta G55 GT4 | ✅ Yes | ⚠️ G56 only | ❌ No GT4 | ❌ No |
 
-**Implication for GridVox:**
+**Implication for SimVox.ai:**
 - Train models on cars available in multiple simulators (maximizes ROI)
 - McLaren 720S GT3: Available in ALL 4 sims (prioritize training)
 - GT4 cars: Only AMS2/iRacing (lower priority)

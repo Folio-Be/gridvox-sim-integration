@@ -1,7 +1,7 @@
 # Phase 1: Proof of Concept - AI Livery Designer
 ## AMS2 AI Livery Designer POC (Weeks 1-8)
 
-**Project Location:** `C:\DATA\GridVox\gridvox-sim-integration\ams2\ams2-ai-livery-designer`
+**Project Location:** `C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\ams2-ai-livery-designer`
 
 **Goal:** Build a working Tauri-based POC that demonstrates AI-powered livery generation from real-world photos with 70%+ accuracy on 2-3 test cars.
 

@@ -19,7 +19,7 @@ run-watcher.bat
 
 ### 2. Or from terminal:
 ```powershell
-cd C:\DATA\GridVox\gridvox-sim-integration\ams2\savegame-reverse-engineering
+cd C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering
 node watcher.js
 ```
 

@@ -9,7 +9,7 @@
 
 Trading Paints uses iRacing's built-in 3D car model viewer, which is part of the iRacing installation. They do NOT have direct access to 3D model files. Instead, they use a **preview integration** approach where the Trading Paints Downloader sends paint files to iRacing, and iRacing's UI displays the car with the custom paint applied.
 
-**Key Finding:** For a multi-sim livery builder like GridVox, we need **separate 3D model acquisition strategies per sim**, as each game uses proprietary formats and has different access levels.
+**Key Finding:** For a multi-sim livery builder like SimVox.ai, we need **separate 3D model acquisition strategies per sim**, as each game uses proprietary formats and has different access levels.
 
 ---
 
@@ -93,7 +93,7 @@ C:\Program Files (x86)\iRacing\cars\[car_name]\
 
 ---
 
-## Alternative: How to Get 3D Car Models for GridVox Livery Builder
+## Alternative: How to Get 3D Car Models for SimVox.ai Livery Builder
 
 Since we can't extract proprietary 3D models from sims, here are **legal and practical alternatives**:
 
@@ -452,21 +452,21 @@ C:\Program Files (x86)\Steam\steamapps\common\Le Mans Ultimate\
 - **Classes Supported:** Hypercar, LMP2, LMGT3 (all major WEC/IMSA classes)
 - **File Management:** Handles livery file distribution to users
 
-**Important for GridVox Strategy:**
+**Important for SimVox.ai Strategy:**
 - RaceControl.gg is the **official competitor** for LMU (like Trading Paints for iRacing)
 - They likely have **official access** to LMU 3D models/viewer
-- Studio 397 partnership for GridVox would need to account for RaceControl.gg
-- Alternative: GridVox could **complement** RaceControl.gg (not compete) with advanced features:
+- Studio 397 partnership for SimVox.ai would need to account for RaceControl.gg
+- Alternative: SimVox.ai could **complement** RaceControl.gg (not compete) with advanced features:
   - AI design assistance
   - Voice commands
-  - GridVox persona integration
+  - SimVox.ai persona integration
   - Cross-sim support (LMU + rF2 + ACC + iRacing in one tool)
   - Advanced livery builder vs simple upload/download
 
 **Partnership Consideration:**
-- Instead of competing with RaceControl.gg, GridVox could **integrate** with it
-- Export to RaceControl.gg from GridVox Livery Builder
-- GridVox = advanced creation tool, RaceControl.gg = distribution platform
+- Instead of competing with RaceControl.gg, SimVox.ai could **integrate** with it
+- Export to RaceControl.gg from SimVox.ai Livery Builder
+- SimVox.ai = advanced creation tool, RaceControl.gg = distribution platform
 - Similar to how Photoshop complements Instagram (create → share)
 
 ### Assetto Corsa (Original)
@@ -531,7 +531,7 @@ C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\
 
 ---
 
-## Recommended Strategy for GridVox Livery Builder
+## Recommended Strategy for SimVox.ai Livery Builder
 
 ### Phase 1: MVP (Months 1-4)
 
@@ -542,7 +542,7 @@ C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\
 - Focus on livery builder features
 
 **Implementation:**
-- GridVox Desktop app communicates with iRacing
+- SimVox.ai Desktop app communicates with iRacing
 - Web app generates TGA textures
 - Desktop app triggers iRacing's 3D viewer
 - Same user experience as Trading Paints Sim Preview
@@ -555,7 +555,7 @@ C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\
 - Extract AC models using KN5 tools (legal, modding-friendly)
 - Convert KN5 → GLTF/GLB
 - Build custom 3D viewer in browser (Three.js)
-- Host models on GridVox servers
+- Host models on SimVox.ai servers
 
 **Implementation:**
 - Use "AC Car Tuner" or "KN5 Tools" to extract models
@@ -634,7 +634,7 @@ C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\
 2. Reverse engineering proprietary formats (iRacing GMT)
 3. Redistributing extracted models
 
-**Recommendation:** For GridVox, prioritize legal methods:
+**Recommendation:** For SimVox.ai, prioritize legal methods:
 - iRacing: Use official viewer
 - AC: Use KN5 tools (community-accepted)
 - Others: Create simplified models or partner
@@ -775,11 +775,11 @@ fragment shader: apply phong lighting
 
 5. **Le Mans Ultimate uses rFactor 2 engine** - Similar MAS file system, shares modding community with rF2
 
-6. **For GridVox MVP:** Use iRacing's official viewer (like Trading Paints) + flat 2D/3D previews for other sims
+6. **For SimVox.ai MVP:** Use iRacing's official viewer (like Trading Paints) + flat 2D/3D previews for other sims
 
-7. **For GridVox V1.0:** Add AC support (KN5 extraction) + LMU support (rF2-based) + initiate sim developer partnerships
+7. **For SimVox.ai V1.0:** Add AC support (KN5 extraction) + LMU support (rF2-based) + initiate sim developer partnerships
 
-8. **For GridVox V2.0:** Official partnerships or custom simplified models for all sims
+8. **For SimVox.ai V2.0:** Official partnerships or custom simplified models for all sims
 
 9. **Legal approach:** Prioritize official APIs, create original models, or use modding-friendly sims
 
@@ -821,7 +821,7 @@ fragment shader: apply phong lighting
 
 ## Conclusion
 
-**GridVox Livery Builder can succeed without extracting proprietary 3D models.**
+**SimVox.ai Livery Builder can succeed without extracting proprietary 3D models.**
 
 **Strategy:**
 - **MVP:** Use iRacing's official viewer (legal, zero cost, excellent quality)
@@ -835,7 +835,7 @@ fragment shader: apply phong lighting
 - ✅ Better UX than Trading Paints (multi-sim support)
 - ✅ Community-friendly (open to contributions)
 
-**Key differentiator:** While Trading Paints is iRacing-only, GridVox will support **10+ sims** through a combination of official integrations, extracted models (where legal), and custom simplified models.
+**Key differentiator:** While Trading Paints is iRacing-only, SimVox.ai will support **10+ sims** through a combination of official integrations, extracted models (where legal), and custom simplified models.
 
 **Le Mans Ultimate Advantage:**
 - LMU has smaller car roster (~25-30 cars) making it feasible to create custom simplified models
@@ -907,7 +907,7 @@ Based on webpage structure and similarity to Trading Paints:
 - **Official endorsement** from game developer
 - **Ecosystem integration** (SimGrid, Coach Dave Delta partnerships)
 
-### Strategic Implications for GridVox
+### Strategic Implications for SimVox.ai
 
 #### Positioning Analysis
 
@@ -919,12 +919,12 @@ Based on webpage structure and similarity to Trading Paints:
 
 **2. Complementary Opportunity:**
 - **RaceControl.gg = Distribution** (like Instagram)
-- **GridVox = Creation Tool** (like Adobe Photoshop)
+- **SimVox.ai = Creation Tool** (like Adobe Photoshop)
 - Different value propositions, not competing
 
 **3. Multi-Sim Advantage:**
 - RaceControl.gg only covers LMU + rF2 (2 sims)
-- GridVox targeting 12+ sims
+- SimVox.ai targeting 12+ sims
 - Can dominate other sims (ACC, AMS2, AC, Forza, GT7, F1, etc.)
 - LMU/rF2 would be just 2 of 12+ supported platforms
 
@@ -941,23 +941,23 @@ Based on webpage structure and similarity to Trading Paints:
 
 **Option A: Export Integration**
 ```
-GridVox → "Publish to RaceControl.gg" → RaceControl.gg LiveryHub → LMU/rF2 Game
+SimVox.ai → "Publish to RaceControl.gg" → RaceControl.gg LiveryHub → LMU/rF2 Game
 ```
-- User creates in GridVox (advanced tools, AI, voice, personas)
+- User creates in SimVox.ai (advanced tools, AI, voice, personas)
 - One-click publish to RaceControl.gg
 - Automatic sync to game via existing infrastructure
 
 **Option B: White Label Creation Tool**
 ```
-RaceControl.gg → "Create Livery" → GridVox Embedded Editor → Save to RaceControl.gg
+RaceControl.gg → "Create Livery" → SimVox.ai Embedded Editor → Save to RaceControl.gg
 ```
-- RaceControl.gg embeds GridVox editor as official creation tool
-- GridVox provides superior UX/features
+- RaceControl.gg embeds SimVox.ai editor as official creation tool
+- SimVox.ai provides superior UX/features
 - RaceControl.gg handles distribution
 
 **Option C: Parallel Platforms (Not Recommended)**
 ```
-GridVox (Creation + Distribution) ⚔️ RaceControl.gg (Distribution)
+SimVox.ai (Creation + Distribution) ⚔️ RaceControl.gg (Distribution)
 ```
 - Direct competition with official platform
 - Likely to fail without Studio 397 support
@@ -992,7 +992,7 @@ GridVox (Creation + Distribution) ⚔️ RaceControl.gg (Distribution)
 ### Recommended Strategy
 
 **Strategic Positioning:**
-> **"GridVox is the Adobe Photoshop of livery design;  
+> **"SimVox.ai is the Adobe Photoshop of livery design;  
 > RaceControl.gg and Trading Paints are the Instagram of livery distribution."**
 
 **Recommended Approach:**
@@ -1005,17 +1005,17 @@ GridVox (Creation + Distribution) ⚔️ RaceControl.gg (Distribution)
 
 2. **Integration Partnership**:
    - Approach Studio 397 with **complementary pitch**:
-     - "GridVox will drive more users to RaceControl.gg"
+     - "SimVox.ai will drive more users to RaceControl.gg"
      - "Superior creation tools feed your distribution platform"
      - "We handle creation; you handle distribution and events"
    - Negotiate **official integration**:
-     - "Publish to RaceControl.gg" feature in GridVox
+     - "Publish to RaceControl.gg" feature in SimVox.ai
      - Co-marketing: "Official Creation Partner for RaceControl.gg"
      - Access to official 3D models for rF2 + LMU
 
 3. **Value Proposition Separation**:
 
-| Aspect | GridVox | RaceControl.gg |
+| Aspect | SimVox.ai | RaceControl.gg |
 |--------|---------|----------------|
 | **Core Value** | Advanced creation (AI, voice, personas, stories) | Distribution + events + racing |
 | **User Focus** | Livery designers, artists, creators | Racers, leagues, events |
@@ -1026,7 +1026,7 @@ GridVox (Creation + Distribution) ⚔️ RaceControl.gg (Distribution)
 4. **Implementation Phases**:
 
 **Phase 1 (MVP):**
-- Build GridVox for iRacing, AC, ACC, AMS2
+- Build SimVox.ai for iRacing, AC, ACC, AMS2
 - Research RaceControl.gg API
 - Contact Studio 397 for partnership discussions
 
@@ -1056,13 +1056,13 @@ GridVox (Creation + Distribution) ⚔️ RaceControl.gg (Distribution)
 **Mitigations:**
 - ✅ Multi-sim strategy reduces dependency on any one platform
 - ✅ Superior creation tools provide unique value
-- ✅ GridVox credit economy works independently
+- ✅ SimVox.ai credit economy works independently
 - ✅ Can always fall back to manual export/upload workflow
 
 ### Conclusion: RaceControl.gg Strategic Recommendation
 
 **DO:**
-- ✅ Position GridVox as **creation tool** (not distribution platform)
+- ✅ Position SimVox.ai as **creation tool** (not distribution platform)
 - ✅ Integrate with RaceControl.gg as export target
 - ✅ Partner with Studio 397 for official support
 - ✅ Focus on multi-sim advantage (12+ games vs. their 2)
@@ -1075,7 +1075,7 @@ GridVox (Creation + Distribution) ⚔️ RaceControl.gg (Distribution)
 - ❌ Bypass official channels with unauthorized integrations
 
 **Value Proposition:**
-> "GridVox: The advanced multi-sim livery creation platform with AI, voice commands,  
+> "SimVox.ai: The advanced multi-sim livery creation platform with AI, voice commands,  
 > and story-driven design. Export to RaceControl.gg (LMU/rF2), Trading Paints (iRacing),  
 > or directly to your game files."
 
@@ -1215,9 +1215,9 @@ SiiNunit
 5. Movie/game franchises
 6. Fictional companies
 
-### GridVox Integration Strategy
+### SimVox.ai Integration Strategy
 
-**Advantages for GridVox:**
+**Advantages for SimVox.ai:**
 - ✅ **Huge player base** (millions of trucking sim fans)
 - ✅ **Active community** seeking custom designs
 - ✅ **Official modding support** (fully legal)
@@ -1227,7 +1227,7 @@ SiiNunit
 
 **Technical Feasibility:**
 ```
-GridVox Creation:
+SimVox.ai Creation:
 1. User designs paint job in browser
 2. Applies to 3D truck model (imported from SCS Blender Tools)
 3. Exports to DDS format (2048x2048 or 4096x4096)
@@ -1244,7 +1244,7 @@ GridVox Creation:
 
 **Export Workflow:**
 ```
-GridVox → DDS Export → SII Generation → .SCS Package → Steam Workshop (Optional)
+SimVox.ai → DDS Export → SII Generation → .SCS Package → Steam Workshop (Optional)
 ```
 
 ### Challenges & Considerations
@@ -1279,9 +1279,9 @@ GridVox → DDS Export → SII Generation → .SCS Package → Steam Workshop (O
 
 **Competition:**
 - **Current**: Manual Photoshop/GIMP + SCS tools
-- **GridVox Advantage**: Web-based, AI-assisted, voice commands, no Photoshop needed
+- **SimVox.ai Advantage**: Web-based, AI-assisted, voice commands, no Photoshop needed
 
-### Recommendations for GridVox
+### Recommendations for SimVox.ai
 
 **Phase 1 (MVP):**
 1. Support **top 5 popular trucks** (Scania R, Volvo FH, Mercedes Actros, MAN TGX, DAF XF)
@@ -1349,7 +1349,7 @@ BeamNG Skin Mod:
     "beamng_vehicle": {
         "slotType": "skin",
         "name": "Custom Livery Name",
-        "authors": "GridVox User",
+        "authors": "SimVox.ai User",
         "paints": [
             {
                 "baseColor": [1.0, 1.0, 1.0, 1.0],
@@ -1458,9 +1458,9 @@ Game Installation/content/vehicles/[vehicle_name]/
 5. National themes
 6. Custom artistic designs
 
-### GridVox Integration Strategy
+### SimVox.ai Integration Strategy
 
-**Advantages for GridVox:**
+**Advantages for SimVox.ai:**
 - ✅ **Open modding system** (no encryption, no DRM)
 - ✅ **Active community** (thousands of mod creators)
 - ✅ **Simple file format** (ZIP + DDS + JSON)
@@ -1470,7 +1470,7 @@ Game Installation/content/vehicles/[vehicle_name]/
 
 **Technical Feasibility:**
 ```
-GridVox Creation:
+SimVox.ai Creation:
 1. User designs livery in browser
 2. Applies to 3D car model (extracted .dae → GLTF)
 3. Exports to DDS texture
@@ -1488,7 +1488,7 @@ GridVox Creation:
 
 **Export Workflow:**
 ```
-GridVox → DDS/PNG Export → JBeam Generation → mod_info.json → ZIP Package → Mod Repository (Optional)
+SimVox.ai → DDS/PNG Export → JBeam Generation → mod_info.json → ZIP Package → Mod Repository (Optional)
 ```
 
 ### Unique Features
@@ -1541,9 +1541,9 @@ GridVox → DDS/PNG Export → JBeam Generation → mod_info.json → ZIP Packag
 
 **Competition:**
 - **Current**: Manual Photoshop/GIMP + JBeam editing + manual packaging
-- **GridVox Advantage**: Automated workflow, no coding, AI-assisted, voice commands
+- **SimVox.ai Advantage**: Automated workflow, no coding, AI-assisted, voice commands
 
-### Recommendations for GridVox
+### Recommendations for SimVox.ai
 
 **Phase 1 (MVP):**
 1. Support **top 10 popular vehicles** (ETK 800, Sunburst, Covet, Pessima, D-Series, etc.)
@@ -1576,7 +1576,7 @@ GridVox → DDS/PNG Export → JBeam Generation → mod_info.json → ZIP Packag
 - Both support **3D model extraction** legally
 - **Combined player base**: 5-10 million potential users
 
-**GridVox Value Proposition for These Games:**
+**SimVox.ai Value Proposition for These Games:**
 > "Create professional truck and car liveries in minutes, not hours.  
 > No Photoshop. No coding. Just design, preview in 3D, and export.  
 > One tool for ETS2, ATS, BeamNG.drive, and 10+ more sims."
@@ -1597,10 +1597,10 @@ GridVox → DDS/PNG Export → JBeam Generation → mod_info.json → ZIP Packag
 | **Texture Resolution** | 2048-4096 typical | 1024-4096 typical |
 | **UV Complexity** | High (truck panels) | Medium (car bodies) |
 | **Legal Modding** | ✅ Fully supported | ✅ Fully supported |
-| **GridVox Feasibility** | ⭐⭐⭐⭐⭐ (Very High) | ⭐⭐⭐⭐⭐ (Very High) |
+| **SimVox.ai Feasibility** | ⭐⭐⭐⭐⭐ (Very High) | ⭐⭐⭐⭐⭐ (Very High) |
 
 **Key Findings:**
-1. **Both games are perfect targets** for GridVox integration
+1. **Both games are perfect targets** for SimVox.ai integration
 2. **Similar technical requirements** (DDS textures, 3D models)
 3. **Different communities** (trucking vs physics enthusiasts) = broader appeal
 4. **Open modding ecosystems** = legal, supported, encouraged
@@ -1674,8 +1674,8 @@ BeamNG-Specific:
 **Competitive Positioning:**
 - **No direct competitor** offers web-based livery creation for both games
 - **Current workflow**: Hours of Photoshop/GIMP + manual file editing
-- **GridVox workflow**: Minutes in browser + automatic export
-- **Unique features**: AI assistance, voice commands, GridVox personas, credit economy
+- **SimVox.ai workflow**: Minutes in browser + automatic export
+- **Unique features**: AI assistance, voice commands, SimVox.ai personas, credit economy
 
 ### Final Recommendation
 
@@ -1687,7 +1687,7 @@ BeamNG-Specific:
 3. ✅ **Similar technology** (code reuse, shared infrastructure)
 4. ✅ **Strong ROI** (7-10x in first year)
 5. ✅ **Low technical risk** (proven file formats, active communities)
-6. ✅ **Strategic fit** (aligns with GridVox multi-sim vision)
+6. ✅ **Strategic fit** (aligns with SimVox.ai multi-sim vision)
 
 **Implementation Plan:**
 - **MVP** (Months 1-3): ETS2/ATS + BeamNG basic support (15 vehicles total)
@@ -1828,7 +1828,7 @@ ui_variation="MyAirline Special"
 - **Complex**: Photo-realistic airline livery (8-12 hours)
 - **Advanced**: Custom weathering, damage textures (15+ hours)
 
-### GridVox Integration Strategy
+### SimVox.ai Integration Strategy
 
 **Advantages:**
 - ✅ **Huge market** (MSFS: 10+ million players, X-Plane: 1+ million)
@@ -1840,7 +1840,7 @@ ui_variation="MyAirline Special"
 
 **Technical Feasibility:**
 ```
-GridVox Workflow:
+SimVox.ai Workflow:
 1. Import aircraft 3D model (GLTF/OBJ → Three.js)
 2. User designs livery in browser
 3. AI assists with airline logo placement, registration numbers
@@ -1891,7 +1891,7 @@ GridVox Workflow:
 
 **Competition:**
 - **Current workflow**: Photoshop + manual DDS conversion + cfg editing (4-12 hours)
-- **GridVox advantage**: Browser-based, AI-assisted, 1-click export (30 minutes - 2 hours)
+- **SimVox.ai advantage**: Browser-based, AI-assisted, 1-click export (30 minutes - 2 hours)
 
 **Estimated Market:**
 - MSFS active users: ~2 million monthly
@@ -1988,7 +1988,7 @@ Kart Racing Pro:
 - Dedicated karting simulation community
 - Active forum with modding section
 
-**GridVox Potential:** ⭐⭐⭐ **MEDIUM** (niche market, but passionate community)
+**SimVox.ai Potential:** ⭐⭐⭐ **MEDIUM** (niche market, but passionate community)
 
 ---
 
@@ -2044,7 +2044,7 @@ Farming Simulator Mod:
 4. Fictional farm equipment brands
 5. Country-themed designs
 
-### GridVox Integration Potential
+### SimVox.ai Integration Potential
 
 **Advantages:**
 - ✅ **Massive player base** (5+ million copies sold)
@@ -2055,7 +2055,7 @@ Farming Simulator Mod:
 
 **Technical Feasibility:**
 ```
-GridVox for Farming Simulator:
+SimVox.ai for Farming Simulator:
 1. Import I3D models → Convert to GLTF
 2. Design custom paint in browser
 3. AI-assisted company branding
@@ -2088,7 +2088,7 @@ GridVox for Farming Simulator:
 
 **Competition:**
 - **Current**: Manual Photoshop + GIANTS Editor
-- **GridVox**: Automated workflow, AI branding
+- **SimVox.ai**: Automated workflow, AI branding
 
 **Estimated Revenue:**
 - Active modders: 10,000+
@@ -2119,11 +2119,11 @@ GridVox for Farming Simulator:
 - Preview in 3D
 - Save and share designs
 
-**Why GridVox Could Still Add Value:**
+**Why SimVox.ai Could Still Add Value:**
 - **AI-assisted design** (current editor is manual)
-- **Voice commands** (GridVox personas)
+- **Voice commands** (SimVox.ai personas)
 - **Template library** (professional designs)
-- **Advanced effects** (GridVox could offer more than in-game)
+- **Advanced effects** (SimVox.ai could offer more than in-game)
 - **Cross-platform design** (design on web, apply in-game)
 
 **Challenges:**
@@ -2131,12 +2131,12 @@ GridVox for Farming Simulator:
 - No official modding support
 - Limited export options
 
-**GridVox Strategy:**
+**SimVox.ai Strategy:**
 - **Companion tool** rather than replacement
-- Design in GridVox → Manually recreate in-game (not ideal)
+- Design in SimVox.ai → Manually recreate in-game (not ideal)
 - OR wait for Ubisoft modding API (unlikely)
 
-**Priority Level**: ⭐⭐ **LOW** (built-in editor makes GridVox redundant unless Ubisoft opens API)
+**Priority Level**: ⭐⭐ **LOW** (built-in editor makes SimVox.ai redundant unless Ubisoft opens API)
 
 ---
 
@@ -2165,15 +2165,15 @@ GridVox for Farming Simulator:
 - 15KB file size limit per SVG
 - Community shares decals freely
 
-**Why GridVox Could Add Value:**
-- **SVG creation tool** (GridVox could be SVG generator for GT7)
+**Why SimVox.ai Could Add Value:**
+- **SVG creation tool** (SimVox.ai could be SVG generator for GT7)
 - **AI logo generation** (create decals for GT7 upload)
 - **Template library** (racing team logos, sponsors)
 - **Batch decal creation** (generate 50 sponsor logos at once)
 
-**GridVox as GT7 Companion:**
+**SimVox.ai as GT7 Companion:**
 ```
-GridVox → Generate sponsor logos (SVG) → 
+SimVox.ai → Generate sponsor logos (SVG) → 
 Upload to GT website → 
 Use in GT7 livery editor
 ```
@@ -2210,10 +2210,10 @@ Use in GT7 livery editor
 - Texture replacement possible but complex
 - No official support
 
-**GridVox Potential:**
+**SimVox.ai Potential:**
 - **Frosty Editor integration** (if we reverse-engineer format)
 - **Design templates** for manual in-game recreation
-- **Reference tool** (design in GridVox, apply manually in NFS)
+- **Reference tool** (design in SimVox.ai, apply manually in NFS)
 
 **Challenges:**
 - Proprietary Frostbite engine
@@ -2226,7 +2226,7 @@ Use in GT7 livery editor
 
 ## Comparative Summary: Additional Sims Research
 
-| Game/Sim | Modding Support | Market Size | Technical Feasibility | GridVox Priority | Annual Revenue Potential |
+| Game/Sim | Modding Support | Market Size | Technical Feasibility | SimVox.ai Priority | Annual Revenue Potential |
 |----------|----------------|-------------|---------------------|-----------------|-------------------------|
 | **MS Flight Simulator** | ✅ Full (SDK) | 10M+ players | ⭐⭐⭐⭐⭐ (GLTF, DDS) | ⭐⭐⭐⭐⭐ VERY HIGH | $180,000/year |
 | **X-Plane 12** | ✅ Full (OBJ) | 1M+ players | ⭐⭐⭐⭐⭐ (Open formats) | ⭐⭐⭐⭐ HIGH | $50,000/year |
@@ -2289,7 +2289,7 @@ Use in GT7 livery editor
 8. **Gran Turismo 7** (SVG Generator Tool)
    - Revenue: $20K/year
    - Can't replace in-game editor
-   - BUT: GridVox as decal creation companion tool
+   - BUT: SimVox.ai as decal creation companion tool
 
 9. **Le Mans Ultimate** (from existing research)
    - Revenue: $40K/year
@@ -2329,9 +2329,9 @@ Use in GT7 livery editor
 
 ### Competitive Differentiation
 
-**What GridVox Offers That Competitors Don't:**
-1. **AI-Assisted Design** (no other tool has GridVox personas)
-2. **Voice Commands** (unique to GridVox)
+**What SimVox.ai Offers That Competitors Don't:**
+1. **AI-Assisted Design** (no other tool has SimVox.ai personas)
+2. **Voice Commands** (unique to SimVox.ai)
 3. **Multi-Sim Support** (one tool for 10+ games)
 4. **Story-Driven Design** (Riven's story templates)
 5. **Credit Economy** (community marketplace)
@@ -2339,9 +2339,9 @@ Use in GT7 livery editor
 7. **Auto-Export** (one-click to multiple formats)
 
 **Positioning Statement:**
-> "GridVox: The only AI-powered, multi-sim livery creation platform.  
+> "SimVox.ai: The only AI-powered, multi-sim livery creation platform.  
 > Design once, export everywhere. From flight sims to racing sims,  
-> trucks to karts—GridVox has you covered."
+> trucks to karts—SimVox.ai has you covered."
 
 ### Next Actions
 

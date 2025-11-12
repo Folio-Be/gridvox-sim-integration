@@ -276,7 +276,7 @@ async function loadDDSWithUTEX(ddsPath: string): Promise<ImageData> {
 
 ---
 
-## Recommended Approach for GridVox
+## Recommended Approach for SimVox.ai
 
 ### Phase 1: Quick Start (Option 1)
 

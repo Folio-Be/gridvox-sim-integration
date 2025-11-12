@@ -18,7 +18,7 @@ import { RunDictionary } from '../src/lib/alignment';
 
 // Path to AppData telemetry folder
 const APPDATA_PATH = process.env.APPDATA || path.join(process.env.HOME || '', 'AppData', 'Roaming');
-const TELEMETRY_PATH = path.join(APPDATA_PATH, 'com.gridvox.circuit-tracing', 'telemetry-data');
+const TELEMETRY_PATH = path.join(APPDATA_PATH, 'com.SimVox.ai.circuit-tracing', 'telemetry-data');
 
 // Output path for generated files
 const OUTPUT_DIR = path.join(process.cwd(), 'output');

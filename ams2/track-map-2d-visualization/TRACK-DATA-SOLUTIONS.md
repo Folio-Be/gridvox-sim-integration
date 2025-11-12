@@ -1,4 +1,4 @@
-# Track Data Solutions for GridVox
+# Track Data Solutions for SimVox.ai
 
 ## Summary
 
@@ -29,7 +29,7 @@ The `track-map-demo` currently uses a programmatically generated oval track that
 
 **View it now:**
 ```bash
-cd c:\DATA\GridVox\gridvox-sim-integration\ams2\track-map-visualization
+cd c:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\track-map-visualization
 npm run dev
 # Open http://localhost:3000
 ```
@@ -59,7 +59,7 @@ RivalTracker.paths = {
 **How to use:**
 1. Download `RivalTrackerPaths.1.0.js`
 2. Extract track data (coordinates and SVG paths)
-3. Convert to GridVox JSON format:
+3. Convert to SimVox.ai JSON format:
    ```json
    {
      "name": "Spa-Francorchamps",
@@ -68,7 +68,7 @@ RivalTracker.paths = {
      "sectors": [0.330, 0.716]
    }
    ```
-4. Use in GridVox track-map-demo
+4. Use in SimVox.ai track-map-demo
 
 **Pros:**
 - ✅ Professionally traced tracks
@@ -165,7 +165,7 @@ public override int TrackLength => 5891;
 
 **Quick Win (1-2 hours):**
 - Extract iRacing SVG paths from Virtual Pitwall
-- Convert 5-10 popular tracks to GridVox JSON
+- Convert 5-10 popular tracks to SimVox.ai JSON
 - Update demo to load these tracks
 
 **Manual Approach (1 day):**

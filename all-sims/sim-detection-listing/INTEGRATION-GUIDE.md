@@ -1,21 +1,21 @@
-# GridVox MVP Integration Guide
+# SimVox.ai MVP Integration Guide
 
-Quick guide for integrating the racing simulator detection library into GridVox.
+Quick guide for integrating the racing simulator detection library into SimVox.ai.
 
 ## Step 1: Install the Library
 
 ### Option A: Local Package (Recommended for MVP)
 
 ```bash
-# In your GridVox project
-npm install ../gridvox-sim-integration/all-sims/sim-detection-listing
+# In your SimVox.ai project
+npm install ../SimVox.ai-sim-integration/all-sims/sim-detection-listing
 ```
 
 Or add to `package.json`:
 ```json
 {
   "dependencies": {
-    "@gridvox/sim-detection": "file:../gridvox-sim-integration/all-sims/sim-detection-listing"
+    "@SimVox.ai/sim-detection": "file:../SimVox.ai-sim-integration/all-sims/sim-detection-listing"
   }
 }
 ```
@@ -27,9 +27,9 @@ cd sim-detection-listing
 npm publish
 ```
 
-Then in GridVox:
+Then in SimVox.ai:
 ```bash
-npm install @gridvox/sim-detection
+npm install @SimVox.ai/sim-detection
 ```
 
 ## Step 2: Implement in Electron Main Process
@@ -43,7 +43,7 @@ import {
   detectSimulators,
   getInstalledSimulators,
   refreshDetection
-} from '@gridvox/sim-detection';
+} from '@SimVox.ai/sim-detection';
 import Store from 'electron-store';
 
 const store = new Store();
@@ -430,7 +430,7 @@ ipcMain.handle('simulators:test', async () => {
 
 ```typescript
 // test-integration.ts
-import { detectSimulators } from '@gridvox/sim-detection';
+import { detectSimulators } from '@SimVox.ai/sim-detection';
 
 async function test() {
   console.log('Testing simulator detection...\n');
@@ -478,7 +478,7 @@ test();
 
 **Documentation:** See [README.md](README.md)
 **Examples:** See [example.ts](example.ts)
-**Issues:** GridVox internal issue tracker
+**Issues:** SimVox.ai internal issue tracker
 
 ---
 

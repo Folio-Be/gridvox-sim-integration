@@ -75,12 +75,12 @@ Track Selection:
 
 **Time:** 3-5 hours
 
-**User Installation:** ❌ None - bundled with GridVox
+**User Installation:** ❌ None - bundled with SimVox.ai
 
 ### Architecture
 
 ```
-GridVox Desktop
+SimVox.ai Desktop
     ↓
 Memory Tool (Node.js native addon or C# executable)
     ↓
@@ -183,16 +183,16 @@ WriteProcessMemory(handle, (IntPtr)0x12AB5678, buffer, 4, out _);
    - Map human-readable names to IDs
    - "Mercedes-AMG GT3" → 1
 
-## Phase 3: Integration with GridVox
+## Phase 3: Integration with SimVox.ai
 
-**Goal:** Expose memory editing through GridVox API
+**Goal:** Expose memory editing through SimVox.ai API
 
 **Time:** 2-3 hours
 
 ### API Design
 
 ```typescript
-// gridvox-desktop/src/services/ams2-config.ts
+// SimVox.ai-desktop/src/services/ams2-config.ts
 
 export class AMS2ConfigService {
   // Initialize memory tool
@@ -218,10 +218,10 @@ interface RaceConfig {
 }
 ```
 
-### Usage in GridVox
+### Usage in SimVox.ai
 
 ```typescript
-// User configures race in GridVox UI
+// User configures race in SimVox.ai UI
 const config: RaceConfig = {
   car: "Mercedes-AMG GT3",
   track: "Monza",
@@ -285,7 +285,7 @@ await ams2Service.setConfig(config);
 **Problem:** May need admin rights to write process memory
 
 **Solutions:**
-1. Request elevation on GridVox startup
+1. Request elevation on SimVox.ai startup
 2. Or only on first AMS2 connection
 3. Fallback to read-only mode if denied
 
@@ -312,7 +312,7 @@ await ams2Service.setConfig(config);
 - [ ] Handle access denied errors
 - [ ] Test with multiple game versions
 
-### Phase 3 Testing (GridVox Integration)
+### Phase 3 Testing (SimVox.ai Integration)
 - [ ] API correctly reads config
 - [ ] API correctly writes config
 - [ ] UI shows current config
@@ -355,7 +355,7 @@ await ams2Service.setConfig(config);
 **Roadmap:**
 1. **Tomorrow:** Complete car selection address discovery (30-60 min)
 2. **Later:** Build memory tool (Phase 2)
-3. **Later:** Integrate with GridVox (Phase 3)
+3. **Later:** Integrate with SimVox.ai (Phase 3)
 
 ---
 
@@ -372,4 +372,4 @@ await ams2Service.setConfig(config);
 - `CHEAT-ENGINE-SESSION-LOG.md` - **Current session progress and resume instructions** ⏸️
 - `memory-addresses.json` - Discovered addresses per AMS2 version (not yet created)
 - `memory-tool/` - Node.js or C# memory editing tool (Phase 2)
-- `ams2-config-service.ts` - GridVox integration service (Phase 3)
+- `ams2-config-service.ts` - SimVox.ai integration service (Phase 3)
