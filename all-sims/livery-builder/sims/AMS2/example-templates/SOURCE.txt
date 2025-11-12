@@ -1,0 +1,92 @@
+# AMS2 Livery Template Sources
+
+**Download Date:** 2025-11-12  
+**Source Thread:** https://forum.reizastudios.com/threads/ams2-user-livery-overrides.14819/  
+**Official Repository:** https://downloads.game-automobilista2.com/AMS2/templates/
+
+## Templates Downloaded
+
+### 1. Alpine A424 (LMDh/Hypercar)
+- **File:** AMS2_alpine_a424_template.rar (4.05 MB)
+- **URL:** https://downloads.game-automobilista2.com/AMS2/templates/AMS2_alpine_a424_template.rar
+- **Class:** LMDh Prototype
+- **Expected Contents:** PSD files with UV-mapped livery layers, wireframe overlays, AO maps
+
+### 2. BMW M4 GT3 (GT3)
+- **File:** AMS2_bmw_m4_gt3_template.rar (1.88 MB)
+- **URL:** https://downloads.game-automobilista2.com/AMS2/templates/AMS2_bmw_m4_gt3_template.rar
+- **Class:** GT3
+- **Expected Contents:** PSD files with UV-mapped livery layers, wireframe overlays, AO maps
+
+### 3. Lamborghini Huracan GT3 EVO2 (GT3)
+- **File:** AMS2_lamborghini_huracan_gt3_evo2_template.rar (7.92 MB)
+- **URL:** https://downloads.game-automobilista2.com/AMS2/templates/AMS2_lamborghini_huracan_gt3_evo2_template.rar
+- **Class:** GT3
+- **Expected Contents:** PSD files with UV-mapped livery layers, wireframe overlays, AO maps
+
+### 4. Formula V10 (Open Wheel)
+- **File:** AMS2_FV10_Template.rar (36.65 MB)
+- **URL:** https://downloads.game-automobilista2.com/AMS2/templates/AMS2_FV10_Template.rar
+- **Class:** Formula / Open Wheel
+- **Expected Contents:** PSD files with UV-mapped livery layers, wireframe overlays, AO maps
+- **Note:** Large file size suggests high-resolution templates or multiple variants
+
+## Additional Available Templates (Not Downloaded)
+
+Full list available at: https://forum.reizastudios.com/threads/ams2-user-livery-overrides.14819/
+
+Notable templates include:
+- Alpine A110 GT4 EVO
+- Audi R8 LMS GT3 / GT3 EVO2 / GT4
+- Porsche 911 GT3 R / 963 GTP
+- Formula Ultimate 2024
+- Stock Car Cruze 2024
+- Various vintage and classic cars
+
+## Template Format
+
+- **Container:** RAR compressed archives
+- **Content:** Photoshop PSD files (layered)
+- **Layers Typically Include:**
+  - Base paint layer (UV-mapped)
+  - Wireframe overlay (for panel identification)
+  - Ambient occlusion (AO) layer
+  - Decal/sponsor placement guides
+  - Window/glass masks
+  - Number plate regions
+
+## Export Requirements
+
+Per AMS2 custom livery system:
+- **Format:** DDS (DirectDraw Surface)
+- **Texture Names:** Match vehicle-specific naming in `Overrides/{vehicle}/_dist.xml`
+- **Installation Path:** `C:\GAMES\Automobilista 2\Vehicles\Textures\CustomLiveries\Overrides\`
+- **Multiplayer:** Local only (custom liveries not visible to other players)
+
+## Official Documentation
+
+**Reiza Custom Livery System Guide:**
+- Navigate to `Automobilista 2\Vehicles\Textures\CustomLiveries\Overrides\`
+- Each car has `_dist.xml` with installation instructions
+- XML specifies texture file names, livery slots, helmet overrides
+
+**Helmet Templates:**
+- https://downloads.game-automobilista2.com/AMS2/templates/AMS2_helmet_templates_viewers.rar
+
+**Driver Outfit Templates:**
+- https://downloads.game-automobilista2.com/AMS2/templates/ams2_driver_outfit_templates.rar
+
+## Extraction Status
+
+- [x] Downloaded 4 representative templates across different classes
+- [ ] Extract RAR archives (requires WinRAR, 7-Zip, or similar)
+- [ ] Inspect PSD layer structure
+- [ ] Document texture dimensions and naming conventions
+- [ ] Create sample export workflow
+
+## Notes
+
+- Templates are official Reiza Studios releases
+- Free to download and use for personal liveries
+- Updated periodically with new car releases
+- Thread is actively maintained by Reiza staff (Rob Thompson)

@@ -1,0 +1,68 @@
+{
+  "0Driver": {
+    "enabled": false,
+    "patternEnabled": true,
+    "patternSelected": null,
+    "patternColors": []
+  },
+  "1Driver": {
+    "enabled": false,
+    "patternEnabled": true,
+    "patternSelected": null,
+    "patternColors": []
+  },
+  "belt_a": {
+    "enabled": false,
+    "colors": [
+      "#000000"
+    ]
+  },
+  "belt_lod": {
+    "enabled": false,
+    "colors": [
+      "#000000"
+    ]
+  },
+  "calipers": {
+    "enabled": false,
+    "colors": [
+      "#000000"
+    ]
+  },
+  "kneepad": {
+    "enabled": false,
+    "colors": [
+      "#000000"
+    ]
+  },
+  "metals": {
+    "enabled": true,
+    "colors": [
+      "#2B2B2B"
+    ]
+  },
+  "metals_1": {
+    "enabled": false,
+    "colors": [
+      "#000000"
+    ]
+  },
+  "plastics": {
+    "enabled": false,
+    "colors": [
+      "#000000"
+    ]
+  },
+  "rim_details": {
+    "enabled": true,
+    "colors": [
+      "#424242"
+    ]
+  },
+  "rims": {
+    "enabled": true,
+    "colors": [
+      "#424242"
+    ]
+  }
+}

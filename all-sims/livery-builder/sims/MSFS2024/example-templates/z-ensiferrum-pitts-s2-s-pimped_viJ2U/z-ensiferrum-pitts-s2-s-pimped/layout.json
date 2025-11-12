@@ -1,0 +1,99 @@
+{
+  "content": [
+    {
+      "path": "ContentInfo/zensiferrum-pitts-s2-s-pimped/Thumbnail.jpg",
+      "size": 5446,
+      "date": 133842572210000000
+    },
+    {
+      "path": "Documents/AVIAT AIRCRAFT INCPitts S-2SP.docx",
+      "size": 917122,
+      "date": 133905509466857224
+    },
+    {
+      "path": "Documents/AVIAT AIRCRAFT INCPitts S-2SP.pdf",
+      "size": 840329,
+      "date": 133905509643671278
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/attachments/asobo/function_exterior_pitts_s2/attachment.cfg",
+      "size": 61,
+      "date": 133866786196896831
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/attachments/asobo/function_exterior_pitts_s2/texture/S2S_COCKPIT_DECALS01_ALBD.PNG.KTX2",
+      "size": 5593040,
+      "date": 133902269250000006
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/attachments/asobo/function_exterior_pitts_s2/texture/S2S_COCKPIT_DECALS01_ALBD.PNG.KTX2.json",
+      "size": 144,
+      "date": 133902269250000006
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/attachments/asobo/function_exterior_pitts_s2/texture/s2s_cockpit_gauges_albd.png.ktx2",
+      "size": 5593040,
+      "date": 133903029460000006
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/attachments/asobo/function_exterior_pitts_s2/texture/S2S_COCKPIT_GAUGES_ALBD.PNG.KTX2.json",
+      "size": 144,
+      "date": 133903029460000006
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/attachments/asobo/function_exterior_pitts_s2/texture/TACHOMETER_ALBD.PNG.KTX2",
+      "size": 1398704,
+      "date": 133903034290000006
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/attachments/asobo/function_exterior_pitts_s2/texture/TACHOMETER_ALBD.PNG.KTX2.json",
+      "size": 127,
+      "date": 133903034290000006
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/attachments/asobo/function_interior_pitts_s2/model/pitts_s2_interior.xml",
+      "size": 21176,
+      "date": 133901446096610286
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/common/config/cockpit.cfg",
+      "size": 5836,
+      "date": 133904183519581148
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/common/config/engines.cfg",
+      "size": 10187,
+      "date": 133904183545306960
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/common/config/flight_model.cfg",
+      "size": 18198,
+      "date": 133904183496863267
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/common/config/systems.cfg",
+      "size": 15932,
+      "date": 133901420007729093
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/common/config/target_performance.cfg",
+      "size": 1823,
+      "date": 133898791600000000
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/common/flt/apron.flt",
+      "size": 2006,
+      "date": 133904671960160764
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/common/flt/apronwithoutcovers.flt",
+      "size": 2006,
+      "date": 133904671973502614
+    },
+    {
+      "path": "SimObjects/airplanes/asobo_pitts_s2/common/flt/taxi.flt",
+      "size": 2046,
+      "date": 133904671990382587
+    }
+  ]
+}
