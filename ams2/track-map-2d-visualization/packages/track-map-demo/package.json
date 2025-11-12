@@ -1,5 +1,5 @@
 {
-    "name": "@SimVox.ai/track-map-demo",
+    "name": "@simvox/track-map-demo",
     "version": "1.0.0",
     "description": "Demo application for track map visualization",
     "private": true,
@@ -10,8 +10,8 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@SimVox.ai/track-map-ams2": "file:../track-map-ams2",
-        "@SimVox.ai/track-map-core": "file:../track-map-core",
+        "@simvox/track-map-ams2": "file:../track-map-ams2",
+        "@simvox/track-map-core": "file:../track-map-core",
         "ws": "^8.18.3"
     },
     "devDependencies": {

@@ -1,5 +1,5 @@
 {
-  "name": "@SimVox.ai/ams2-telemetry-track-generator",
+  "name": "@simvox/ams2-telemetry-track-generator",
   "version": "1.0.0",
   "description": "Generate 3D track models from AMS2 telemetry using the 3-run mapping approach",
   "type": "module",
@@ -27,7 +27,7 @@
     "tauri",
     "desktop-app"
   ],
-  "author": "SimVox.ai",
+  "author": "simvox",
   "license": "MIT",
   "dependencies": {
     "@gltf-transform/core": "^4.0.0",

@@ -1,5 +1,5 @@
 /**
- * SimVox.ai Track Loader - Load tracks from JSON files
+ * SimVox Track Loader - Load tracks from JSON files
  * 
  * This utility loads track data from:
  * - Generated tracks (demo oval)
@@ -48,7 +48,7 @@ export async function loadTrackFromFile(trackId: string, source: 'iracing' | 'am
 }
 
 /**
- * Convert iRacing/AMS2 JSON format to SimVox.ai TrackDefinition
+ * Convert iRacing/AMS2 JSON format to SimVox TrackDefinition
  */
 export function convertToTrackDefinition(trackData: any): TrackDefinition {
     // Calculate approximate track length from coordinates

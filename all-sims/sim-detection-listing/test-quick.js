@@ -5,7 +5,7 @@
 const { detectSimulators } = require('./dist/index.js');
 
 async function test() {
-  console.log('Testing @SimVox.ai/sim-detection...\n');
+  console.log('Testing @SimVox/sim-detection...\n');
 
   try {
     const result = await detectSimulators({

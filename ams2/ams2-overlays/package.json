@@ -1,7 +1,7 @@
 {
   "name": "ams2-overlay-poc",
   "version": "0.1.0",
-  "description": "SimVox.ai AMS2 Overlay POC - Transparent video overlays for story cutscenes",
+  "description": "simvox AMS2 Overlay POC - Transparent video overlays for story cutscenes",
   "type": "module",
   "scripts": {
     "dev": "vite",

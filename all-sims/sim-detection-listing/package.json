@@ -1,7 +1,7 @@
 {
-  "name": "@SimVox.ai/sim-detection",
+  "name": "@simvox/sim-detection",
   "version": "0.1.0",
-  "description": "Racing simulator detection library for SimVox.ai - detects installed racing sims across Steam, Epic, EA, and manual installations",
+  "description": "Racing simulator detection library for simvox - detects installed racing sims across Steam, Epic, EA, and manual installations",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -21,7 +21,7 @@
     "iracing",
     "assetto-corsa"
   ],
-  "author": "SimVox.ai",
+  "author": "simvox",
   "license": "MIT",
   "dependencies": {
     "@node-steam/vdf": "^2.2.0",

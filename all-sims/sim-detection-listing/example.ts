@@ -1,5 +1,5 @@
 /**
- * Example usage of @SimVox.ai/sim-detection
+ * Example usage of @SimVox/sim-detection
  */
 
 import {
@@ -13,7 +13,7 @@ import {
 } from './src/index';
 
 async function main() {
-  console.log('=== SimVox.ai Simulator Detection Example ===\n');
+  console.log('=== SimVox Simulator Detection Example ===\n');
 
   // Example 1: Simple detection
   console.log('1. Detecting installed simulators...');
