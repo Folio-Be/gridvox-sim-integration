@@ -55,7 +55,7 @@
 
 ### What's Needed
 ❌ **POC-02 Native Addon Integration**  
-❌ `ams2_memory.node` (from `SimVox.ai-desktop/pocs/poc-02-direct-memory`)  
+❌ `ams2_memory.node` (from `simvox-desktop/pocs/poc-02-direct-memory`)  
 ❌ Native memory reading capability  
 ❌ Build toolchain (Visual Studio, node-gyp, etc.)
 
@@ -156,7 +156,7 @@ The iRacing tracks are already extracted and ready. To use them in the demo:
 ### Option 3: Record AMS2 Tracks (FUTURE - When POC-02 is Ready)
 
 **Prerequisites**:
-1. Build POC-02 native addon from `SimVox.ai-desktop`
+1. Build POC-02 native addon from `simvox-desktop`
 2. Copy `ams2_memory.node` to `track-recorder` package
 3. Install native dependencies (if needed)
 

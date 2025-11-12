@@ -136,7 +136,7 @@ choco install sox.portable
 4. Verify accuracy of transcriptions
 
 ### Priority 2: POC-05 Voice Commands
-**Location:** `SimVox.ai-desktop/pocs/poc-05-voice-commands/`
+**Location:** `simvox-desktop/pocs/poc-05-voice-commands/`
 
 The README is ready but POC-05 needs implementation:
 - Use Whisper.cpp (different from Vosk)
@@ -144,7 +144,7 @@ The README is ready but POC-05 needs implementation:
 - Integration with LLM (POC-03)
 - Racing-specific commands
 
-See: `SimVox.ai-desktop/pocs/poc-05-voice-commands/README.md`
+See: `simvox-desktop/pocs/poc-05-voice-commands/README.md`
 
 ### Priority 3: Document Findings
 After testing voice input, document:
@@ -170,7 +170,7 @@ C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering\
 
 ### POC-05 (Next Implementation)
 ```
-C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-05-voice-commands\
+C:\DATA\SimVox.ai\simvox-desktop\pocs\poc-05-voice-commands\
 └── README.md               # Implementation plan
 ```
 

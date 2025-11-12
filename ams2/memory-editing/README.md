@@ -192,7 +192,7 @@ WriteProcessMemory(handle, (IntPtr)0x12AB5678, buffer, 4, out _);
 ### API Design
 
 ```typescript
-// SimVox.ai-desktop/src/services/ams2-config.ts
+// simvox-desktop/src/services/ams2-config.ts
 
 export class AMS2ConfigService {
   // Initialize memory tool

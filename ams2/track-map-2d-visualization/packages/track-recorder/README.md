@@ -10,7 +10,7 @@
 
 To make this work, you need:
 
-1. **POC-02 Native Addon**: The AMS2 memory reader from `SimVox.ai-desktop/pocs/poc-02-direct-memory`
+1. **POC-02 Native Addon**: The AMS2 memory reader from `simvox-desktop/pocs/poc-02-direct-memory`
 2. **Build Tools**: Visual Studio Build Tools for compiling native modules
 
 ## Alternative Solutions (Use These Instead)
@@ -58,7 +58,7 @@ When ready to build the actual recorder:
 
 1. **Integrate POC-02**:
    ```bash
-   cd c:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-02-direct-memory
+   cd c:\DATA\SimVox.ai\simvox-desktop\pocs\poc-02-direct-memory
    npm install
    npm run build
    ```

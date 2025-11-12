@@ -523,7 +523,7 @@ Found issues or improvements?
   - Telemetry recording tools
   - Real-time track visualization
 
-- **SimVox.ai Desktop:** `../../../SimVox.ai-desktop/`
+- **SimVox.ai Desktop:** `../../../simvox-desktop/`
   - Main SimVox.ai application
   - Where generated tracks are used
   - Telemetry replay and analysis

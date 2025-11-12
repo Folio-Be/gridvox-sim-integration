@@ -112,7 +112,7 @@ Savegame Watcher:
 C:\DATA\SimVox.ai\SimVox.ai-sim-integration\ams2\savegame-reverse-engineering\
 
 POC-05 (Next):
-C:\DATA\SimVox.ai\SimVox.ai-desktop\pocs\poc-05-voice-commands\
+C:\DATA\SimVox.ai\simvox-desktop\pocs\poc-05-voice-commands\
 ```
 
 ## ⏰ Time Estimate

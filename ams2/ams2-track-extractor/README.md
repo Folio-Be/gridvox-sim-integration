@@ -244,7 +244,7 @@ loader.load('converted-tracks/silverstone.glb', (gltf) => {
 
 ### Using with SimVox.ai Telemetry Visualization
 
-See [SimVox.ai-docs/06-development/AMS2-TRACK-EXTRACTION-RESEARCH.md](../../SimVox.ai-docs/06-development/AMS2-TRACK-EXTRACTION-RESEARCH.md) for complete integration guide with:
+See [simvox-docs/06-development/AMS2-TRACK-EXTRACTION-RESEARCH.md](../../simvox-docs/06-development/AMS2-TRACK-EXTRACTION-RESEARCH.md) for complete integration guide with:
 - React Three Fiber implementation
 - pmndrs/drei Trail component usage
 - AnimationMixer for replay
@@ -317,7 +317,7 @@ See [MANUAL-SETUP.md](./MANUAL-SETUP.md) troubleshooting section for detailed so
 ## Related Projects
 
 - **track-map-visualization** - Telemetry recording system (provides input data)
-- **SimVox.ai-docs** - Three.js visualization architecture documentation
+- **simvox-docs** - Three.js visualization architecture documentation
 - **PCarsTools** - Game file extraction (external dependency)
 
 ## License

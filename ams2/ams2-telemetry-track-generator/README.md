@@ -184,7 +184,7 @@ npm run enrich -- \
 
 - [ams2-track-extractor](../ams2-track-extractor/) - PCarsTools extraction approach
 - [track-map-visualization](../track-map-visualization/) - 2D track map viewer
-- [SimVox.ai-desktop](../../../SimVox.ai-desktop/) - Main SimVox.ai application
+- [simvox-desktop](../../../simvox-desktop/) - Main SimVox.ai application
 
 ## License
 

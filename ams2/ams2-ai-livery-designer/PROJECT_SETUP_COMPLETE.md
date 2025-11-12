@@ -279,7 +279,7 @@ By end of Week 8, should have:
 - **AMS2 Car Data:** `../ams2-car-image-extractor/output/manifest.json`
 - **Research:** `AI_LIVERY_DESIGNER_RESEARCH.md` (1776 lines!)
 - **Phase Plan:** `PHASE_1_POC.md` (detailed weekly todos)
-- **Similar POC:** `../../SimVox.ai-desktop/pocs/poc-08-tts-integration/`
+- **Similar POC:** `../../simvox-desktop/pocs/poc-08-tts-integration/`
 
 ## Next Immediate Actions
 
