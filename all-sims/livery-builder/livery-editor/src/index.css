@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  /* SimVox Design System Colors */
+  --color-primary: #22D3EE;
+
+  --color-bg-base: #0B0F14;
+  --color-bg-surface: #121826;
+  --color-bg-elevated: #1C222B;
+
+  --color-border-default: #2D3540;
+  --color-border-subtle: #1F2937;
+
+  --color-text-primary: #F0F2F5;
+  --color-text-secondary: #8A94A3;
+  --color-text-tertiary: #6B7280;
+
+  --color-accent-blue: #2688FF;
+  --color-accent-green: #22C55E;
+  --color-accent-red: #EF4444;
+  --color-accent-yellow: #F59E0B;
+
+  font-family: Inter, sans-serif;
+}
+
+* {
+  border-color: var(--color-border-default);
+}
+
+body {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Custom Scrollbar */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #2D3540 #121826;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #121826;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #2D3540;
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #3D4550;
+}

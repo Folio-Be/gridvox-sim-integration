@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SimVox Livery Editor - Advanced</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#20d3ee",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101f22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for a more integrated look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #101f22;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #283639;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3b5054;
+        }
+        /* Custom range input styles */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #3b5054;
+            border-radius: 2px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #ffffff;
+            border-radius: 9999px;
+            cursor: pointer;
+            border: none;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #ffffff;
+            border-radius: 9999px;
+            cursor: pointer;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white">
+<div class="flex flex-col h-screen">
+<!-- Top Nav Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#283639] px-6 py-2 flex-shrink-0">
+<div class="flex items-center gap-4 text-white">
+<span class="material-symbols-outlined text-primary text-2xl">drive_eta</span>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">SimVox Livery Editor</h2>
+</div>
+<div class="flex items-center gap-6">
+<a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">File</a>
+<a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Edit</a>
+<a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">View</a>
+<a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Help</a>
+</div>
+<div class="flex flex-1 justify-end items-center gap-4">
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-[#283639] text-white hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB41oYIr0KLDBI22EfauYjzlsfjWCRAbiVIjpoffPscrVo3rTkspEBJbRVpgZC_9lHnJ92oy4xPoXKbPRill0moAb9zxjyD4t8oBu35ib48bup2o22jQNmWlNlIsMA4Mrpr92rLpnDbRqW30THq_8lwiL8BuSUFjczUP11m6Nwbhs6AMYYsZY33VH0NKolCz7MDDlGlpLDJOyFJpYbvnomzsz34J5YVtq6f6rCTaluTaxF8I9srWkH_Fcrx-Mvt5GhqMvtLaNnPDHA");'></div>
+</div>
+</header>
+<!-- Main Content -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Expanded Toolbar Panel (Left) -->
+<aside class="w-[250px] bg-[#111718] border-r border-[#283639] flex-shrink-0 flex flex-col p-4 space-y-4 overflow-y-auto">
+<div class="flex gap-3 items-center">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-10" data-alt="Project Viper icon" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCD12RDYae5GCwCkpjS8-raBxhEVp1z3yMMqTLa22WH_ZNFlmL77vs-RwLRWm-U3IXGq10tACvv4EK8XxKk1oivZ3IvxL0-CYap1wpEzTB9tFLE7XC0i8v-b5btEai1e29ghO7XfFTe1EIlU3XEgEMWHcXHoCujp_MCaxcUFl5txB_Y7wwWlond4HE_m61ZRXfd-xFYL43Tf1k_QX3mfyYVKmrFbY2q1eug3CxPokc87pO-JpoyKQ1lkelFdupdLAHNiA8ebdmjiRY");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-medium leading-normal">Project Viper</h1>
+<p class="text-[#9db5b9] text-sm font-normal leading-normal">Advanced Editor</p>
+</div>
+</div>
+<!-- Tool Accordions -->
+<div class="flex flex-col gap-2">
+<details class="flex flex-col rounded-lg bg-[#283639]/50 group" open="">
+<summary class="flex cursor-pointer items-center justify-between gap-4 p-3 list-none">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">brush</span>
+<p class="text-white text-sm font-medium leading-normal">Drawing Tools</p>
+</div>
+<span class="material-symbols-outlined text-white group-open:rotate-180 transition-transform text-xl">expand_more</span>
+</summary>
+<div class="grid grid-cols-4 gap-2 px-3 pb-3">
+<button class="flex items-center justify-center p-2 rounded-md bg-primary/20 hover:bg-primary/30" title="Brush"><span class="material-symbols-outlined text-primary">brush</span></button>
+<button class="flex items-center justify-center p-2 rounded-md hover:bg-primary/20" title="Pencil"><span class="material-symbols-outlined text-white">edit</span></button>
+<button class="flex items-center justify-center p-2 rounded-md hover:bg-primary/20" title="Spray Brush"><span class="material-symbols-outlined text-white">sprinkler</span></button>
+<button class="flex items-center justify-center p-2 rounded-md hover:bg-primary/20" title="Gradient"><span class="material-symbols-outlined text-white">gradient</span></button>
+</div>
+</details>
+<details class="flex flex-col rounded-lg bg-[#283639]/50 group">
+<summary class="flex cursor-pointer items-center justify-between gap-4 p-3 list-none">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">auto_awesome</span>
+<p class="text-white text-sm font-medium leading-normal">Effects</p>
+</div>
+<span class="material-symbols-outlined text-white group-open:rotate-180 transition-transform text-xl">expand_more</span>
+</summary>
+<div class="grid grid-cols-4 gap-2 px-3 pb-3">
+<button class="flex items-center justify-center p-2 rounded-md hover:bg-primary/20" title="Blur"><span class="material-symbols-outlined text-white">blur_on</span></button>
+<button class="flex items-center justify-center p-2 rounded-md hover:bg-primary/20" title="Sharpen"><span class="material-symbols-outlined text-white">filter_vintage</span></button>
+</div>
+</details>
+<details class="flex flex-col rounded-lg bg-[#283639]/50 group">
+<summary class="flex cursor-pointer items-center justify-between gap-4 p-3 list-none">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">space_dashboard</span>
+<p class="text-white text-sm font-medium leading-normal">Layout Tools</p>
+</div>
+<span class="material-symbols-outlined text-white group-open:rotate-180 transition-transform text-xl">expand_more</span>
+</summary>
+<div class="grid grid-cols-4 gap-2 px-3 pb-3">
+<button class="flex items-center justify-center p-2 rounded-md hover:bg-primary/20" title="Group"><span class="material-symbols-outlined text-white">group_work</span></button>
+<button class="flex items-center justify-center p-2 rounded-md hover:bg-primary/20" title="Ungroup"><span class="material-symbols-outlined text-white">ungroup</span></button>
+</div>
+</details>
+<details class="flex flex-col rounded-lg bg-[#283639]/50 group">
+<summary class="flex cursor-pointer items-center justify-between gap-4 p-3 list-none">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">sports_score</span>
+<p class="text-white text-sm font-medium leading-normal">Racing Tools</p>
+</div>
+<span class="material-symbols-outlined text-white group-open:rotate-180 transition-transform text-xl">expand_more</span>
+</summary>
+<div class="flex flex-col gap-2 px-3 pb-3">
+<button class="flex w-full items-center justify-center p-2 rounded-md hover:bg-primary/20 text-white text-sm" title="Sponsor Library"><span class="material-symbols-outlined mr-2 text-base">photo_library</span>Sponsor Library</button>
+<button class="flex w-full items-center justify-center p-2 rounded-md hover:bg-primary/20 text-white text-sm" title="Number Plate Generator"><span class="material-symbols-outlined mr-2 text-base">pin</span>Number Plate Gen</button>
+</div>
+</details>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 bg-background-dark flex items-center justify-center relative">
+<div class="absolute inset-0 bg-grid-pattern opacity-10"></div>
+<div class="w-full h-full p-8">
+<img alt="3D model of a sports car on the main canvas" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO9eAlhePyKji6umHA-r1PO5ZQ59eE8kYc3I972g82CMmx_Btx_opt0QJ1Njio3EyekA8WgUilov9CltRw8nZdH4S2BQsZwWS6TDW06ibiCJ0Wqynxfvs6o8M7SMZDTa7hFUfqPbwmfzGNoXsMHJIg4hvQnrIkmpVW4QpLmtSEwk2yXhq_D-ibb-iGcNdBhJi82ww6O5gblRaE9tR4J8rX_FlEoi6DqDQH7FS4n0Lzy4gXJ8pb7BB-lI3DFa-ZtHmW6v9nK6pIPig"/>
+</div>
+</main>
+<!-- Expanded Properties Panel (Right) -->
+<aside class="w-[400px] bg-[#111718] border-l border-[#283639] flex-shrink-0 flex flex-col overflow-y-auto">
+<div class="p-4 space-y-3">
+<label class="flex flex-col w-full">
+<p class="text-white text-sm font-medium leading-normal pb-2">Layer Name</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-1 focus:ring-primary border-none bg-[#283639] h-10 placeholder:text-[#9db5b9] px-3 text-sm font-normal leading-normal" value="Main Decal"/>
+</label>
+<details class="flex flex-col rounded-lg bg-[#283639] group" open="">
+<summary class="flex cursor-pointer items-center justify-between gap-6 p-3 list-none">
+<p class="text-white text-sm font-medium leading-normal">Layer Properties</p>
+<span class="material-symbols-outlined text-white group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-3 pb-3 space-y-4">
+<div class="relative flex w-full flex-col items-start justify-between gap-2">
+<div class="flex w-full items-center justify-between">
+<p class="text-white text-sm font-medium leading-normal">Opacity</p>
+<p class="text-white text-sm font-normal leading-normal">85%</p>
+</div>
+<input class="w-full h-1 bg-[#3b5054] rounded-sm appearance-none cursor-pointer" max="100" min="0" style="--value: 85%" type="range" value="85"/>
+</div>
+<div class="flex flex-col gap-2">
+<p class="text-white text-sm font-medium leading-normal">Blend Mode</p>
+<select class="form-select w-full bg-[#283639] border-none rounded-lg text-white text-sm focus:ring-1 focus:ring-primary">
+<option>Normal</option>
+<option>Multiply</option>
+<option>Screen</option>
+<option>Overlay</option>
+</select>
+</div>
+</div>
+</details>
+<details class="flex flex-col rounded-lg bg-[#283639] group">
+<summary class="flex cursor-pointer items-center justify-between gap-6 p-3 list-none">
+<p class="text-white text-sm font-medium leading-normal">Gradient</p>
+<span class="material-symbols-outlined text-white group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-3 pb-3 space-y-4">
+<div class="h-8 w-full rounded-md bg-gradient-to-r from-cyan-500 to-blue-500 border border-[#3b5054]"></div>
+</div>
+</details>
+<details class="flex flex-col rounded-lg bg-[#283639] group">
+<summary class="flex cursor-pointer items-center justify-between gap-6 p-3 list-none">
+<p class="text-white text-sm font-medium leading-normal">Shadow</p>
+<span class="material-symbols-outlined text-white group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-3 pb-3 space-y-4">
+<div class="grid grid-cols-2 gap-4">
+<label class="flex flex-col gap-2"><span class="text-sm text-[#9db5b9]">Offset X</span><input class="form-input text-center bg-[#3b5054] border-none rounded-md h-8 text-sm" type="number" value="4"/></label>
+<label class="flex flex-col gap-2"><span class="text-sm text-[#9db5b9]">Offset Y</span><input class="form-input text-center bg-[#3b5054] border-none rounded-md h-8 text-sm" type="number" value="4"/></label>
+<label class="flex flex-col gap-2"><span class="text-sm text-[#9db5b9]">Blur</span><input class="form-input text-center bg-[#3b5054] border-none rounded-md h-8 text-sm" type="number" value="8"/></label>
+<label class="flex flex-col gap-2"><span class="text-sm text-[#9db5b9]">Spread</span><input class="form-input text-center bg-[#3b5054] border-none rounded-md h-8 text-sm" type="number" value="0"/></label>
+</div>
+</div>
+</details>
+<details class="flex flex-col rounded-lg bg-[#283639] group">
+<summary class="flex cursor-pointer items-center justify-between gap-6 p-3 list-none">
+<p class="text-white text-sm font-medium leading-normal">Filters</p>
+<span class="material-symbols-outlined text-white group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-3 pb-3 space-y-4">
+<p class="text-[#9db5b9] text-sm font-normal leading-normal">Add and adjust visual filters.</p>
+</div>
+</details>
+<details class="flex flex-col rounded-lg bg-[#283639] group">
+<summary class="flex cursor-pointer items-center justify-between gap-6 p-3 list-none">
+<p class="text-white text-sm font-medium leading-normal">Stroke</p>
+<span class="material-symbols-outlined text-white group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-3 pb-3 space-y-4">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-md bg-primary border-2 border-white"></div>
+<label class="flex-1"><span class="text-sm text-[#9db5b9] block mb-1">Width</span><input class="form-input text-center bg-[#3b5054] border-none rounded-md h-8 text-sm w-full" type="number" value="2"/></label>
+</div>
+</div>
+</details>
+</div>
+</aside>
+</div>
+<!-- Bottom Bar -->
+<footer class="flex items-center justify-between bg-[#111718] border-t border-[#283639] px-6 py-1.5 text-xs text-[#9db5b9] flex-shrink-0">
+<div class="flex items-center gap-4">
+<span>Zoom: 100%</span>
+<span>Tool: Brush</span>
+</div>
+<span>X: 1240, Y: 860</span>
+</footer>
+</div>
+</body></html>

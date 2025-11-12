@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sponsor Logos Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#20d3ee",
+              "background-light": "#f6f8f8",
+              "background-dark": "#121826",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            background-color: #0c101b; /* A darker backdrop to make the panel stand out */
+        }
+    </style>
+</head>
+<body class="font-display">
+<!-- This is the main application background, simulating the context -->
+<div class="relative min-h-screen w-full flex justify-end bg-background-light dark:bg-[#0c101b] group/design-root overflow-hidden">
+<!-- Slide-In Panel -->
+<div class="flex flex-col h-screen w-[350px] bg-background-light dark:bg-background-dark border-l border-white/10 dark:border-[#1F2937] shadow-2xl">
+<!-- Panel Header -->
+<div class="flex items-center justify-between gap-2 px-4 py-3 border-b border-white/10 dark:border-[#1F2937] shrink-0">
+<div class="flex items-center gap-3">
+<h1 class="text-slate-200 dark:text-white text-base font-semibold leading-normal">Sponsor Logos</h1>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-slate-300 dark:text-slate-400 hover:text-white dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+</div>
+</div>
+<!-- Search Bar -->
+<div class="px-4 py-3">
+<label class="flex flex-col min-w-40 h-10 w-full">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-400 dark:text-[#9db5b9] flex border-none bg-slate-200/50 dark:bg-[#1F2937] items-center justify-center pl-3 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined text-[22px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-100 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border-none bg-slate-200/50 dark:bg-[#1F2937] h-full placeholder:text-slate-400 dark:placeholder:text-[#9db5b9] px-4 rounded-l-none border-l-0 pl-2 text-sm font-normal leading-normal" placeholder="Search sponsors..." value=""/>
+</div>
+</label>
+</div>
+<!-- Tabs -->
+<div class="px-4 pb-3">
+<div class="flex gap-2">
+<a class="flex items-center justify-center text-white px-4 py-1.5 rounded-full bg-primary" href="#">
+<p class="text-white text-sm font-medium leading-normal">All</p>
+</a>
+<a class="flex items-center justify-center text-slate-300 dark:text-[#9db5b9] px-4 py-1.5 rounded-full bg-slate-200/50 dark:bg-[#1F2937] hover:bg-primary/20 dark:hover:bg-[#2a3a4a] transition-colors" href="#">
+<p class="text-sm font-medium leading-normal">Tire</p>
+</a>
+<a class="flex items-center justify-center text-slate-300 dark:text-[#9db5b9] px-4 py-1.5 rounded-full bg-slate-200/50 dark:bg-[#1F2937] hover:bg-primary/20 dark:hover:bg-[#2a3a4a] transition-colors" href="#">
+<p class="text-sm font-medium leading-normal">Fuel</p>
+</a>
+<a class="flex items-center justify-center text-slate-300 dark:text-[#9db5b9] px-4 py-1.5 rounded-full bg-slate-200/50 dark:bg-[#1F2937] hover:bg-primary/20 dark:hover:bg-[#2a3a4a] transition-colors" href="#">
+<p class="text-sm font-medium leading-normal">Custom</p>
+</a>
+</div>
+</div>
+<!-- Logo Grid -->
+<div class="flex-1 overflow-y-auto px-4">
+<div class="grid grid-cols-3 gap-3 py-1">
+<div class="flex flex-col gap-2 p-2 rounded-lg cursor-grab hover:bg-primary/20 dark:hover:bg-[#1F2937] transition-colors group">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-md bg-white p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="Pirelli logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDvVilSAORPKq3VhuoKYjNln_pElW_BG6RTs0KGwqP9jndRK1dov6QedSGnZ1ofwegyTffEfmd0icVpxP8i3dMqf9h84ij8qfxPcAuVpvonqS9jkmxYS3O5gGE_e-qJ5s-CpfGpKBuZbPGJIo-JzyypfntN0bRZrbkMUSfPvW_Kh9kleM8CtA4p8J7dgxiCeFoG5VnXTR71yxVKPh5sOjg6rp1UsKduDMiyDUDkqDY3DtlORc-xZ5MGul499B6WapiZvsJ9m0U1JE0");'></div>
+</div>
+<p class="text-slate-400 dark:text-slate-400 text-xs font-medium leading-normal text-center truncate group-hover:text-white">Pirelli</p>
+</div>
+<div class="flex flex-col gap-2 p-2 rounded-lg cursor-grab hover:bg-primary/20 dark:hover:bg-[#1F2937] transition-colors group">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-md bg-white p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="Shell logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCfnBgbvMFQTpiAMrHmOgAMQste_DFykVAucxhvgWFIdp9k2N-4s206n7IZ_JfX7RSEE1bRpxT_ob4YUx93cralcM_YTjQq3Bm3ZuxpUqS_q5cn9q_dOuLOtieKDFVl-V-YXAT3zzuxO4IrzYW5wtqwFq4r9Ce_Kuh1bJ-H0xP3xqbCngYSTQ9urXmFX6t5xBeiyGqkyj18JgreXP3G4dD0DEgPfoI8AsaQKax9fgeEYGsGL4ELkrYpIcF9YiEgHWG2PG5GfTSl840");'></div>
+</div>
+<p class="text-slate-400 dark:text-slate-400 text-xs font-medium leading-normal text-center truncate group-hover:text-white">Shell</p>
+</div>
+<div class="flex flex-col gap-2 p-2 rounded-lg cursor-grab hover:bg-primary/20 dark:hover:bg-[#1F2937] transition-colors group">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-md bg-white p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="Brembo logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuASpqs4KCmQ5YV06EEkXe-p_ybtJwWVhEZ5t0Ia5rbpm7Ii12UhBi2jlpsnN5Zez6dSWTN4dxa-mfChN34Gl4sS9GbfvcQnQSKFNNLEdUAaVqpxGueHGm4UAVkfyMFfM1XpMSttvNGhmZdKW06SwP1fUjEsaBkxrnHu5I6uWi3oosND5esT9NpxU1uLn8iOI417edNCtsoCE5du7sQBLHGVhQ-iwQ3Ak4-UVE27W8H89XcI6ZPk9L44-5iKX3V2P9n2xXjTOZUttKo");'></div>
+</div>
+<p class="text-slate-400 dark:text-slate-400 text-xs font-medium leading-normal text-center truncate group-hover:text-white">Brembo</p>
+</div>
+<div class="flex flex-col gap-2 p-2 rounded-lg cursor-grab hover:bg-primary/20 dark:hover:bg-[#1F2937] transition-colors group">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-md bg-white p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="Michelin logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAJ9T2sUp6uJHuhxb-kB3yFs6NkCL05y7_TKlAc7YyArz6keuWTnlgfZuQtexJp23PKDcFWiobXYhFX0nFVu1lx_VwT8o6VP7B_aGExX0OK2T8G0oau6uWf2wPSbNbazKhEMxEmbeQdpjPuUz5Xz2rp7kcVSPob7IjgCQgeVwIqBdEz0cLeFvggvO57DY1_8N7KpuNXqd7fbJNdyEVKuMME-N_c4cyDVi4Bq-Jp7kbGdD8Ug84SypC4mtzRerlOguarHkcqnlXDqS0");'></div>
+</div>
+<p class="text-slate-400 dark:text-slate-400 text-xs font-medium leading-normal text-center truncate group-hover:text-white">Michelin</p>
+</div>
+<div class="flex flex-col gap-2 p-2 rounded-lg cursor-grab hover:bg-primary/20 dark:hover:bg-[#1F2937] transition-colors group">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-md bg-white p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="Mobil 1 logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA0W6e9cGMz95qlkcPG7dRO4J-gC6GXcw2SmlCeXxeJSbyYKQTZHD3KBgj-vKVIULHtwAE32YK-ICEb-Ro5xfB6ijUVsPiEKXNOzLxYoWc-yZbKW_yF3s0Zar_Ywcrx8Tgllh0QzWR0_8SlIi_B7lcUhsqLCqGuRfGY1czilEo-CSJcmImeaiHZRFPeMzVVLlVcrFdFPOZL78Ga0XvTTbKYS-VjA3zU8CY4jOr-i9FC6_LwMesbJVhRvZ-ThyCXdxQ5XGEKLebux0k");'></div>
+</div>
+<p class="text-slate-400 dark:text-slate-400 text-xs font-medium leading-normal text-center truncate group-hover:text-white">Mobil 1</p>
+</div>
+<div class="flex flex-col gap-2 p-2 rounded-lg cursor-grab hover:bg-primary/20 dark:hover:bg-[#1F2937] transition-colors group">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-md bg-white p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="Sparco logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAXcKfqieUIANToWxjIXxdeqD4kqXUkkySPDjg1oVZK2yq2_ai37-dsZie5dyi7r9xHjIh71u2OwH8zI7HGaWWYo2Ps2jE87rTSDfCArCOy6jNMOt8fUpXHfjl9J1MkMldvLiYPaeoN0hWE3Z6Vr2wy4alvZ24PQsMrfYyaYGlMxvJukqGi8FegYaD3Xg-8ZNH9piNbok8_xG2rfr5EmXIneIGauOiqAQ9IrHnWgMbXXTUVCxreqtQHLnep-ET7uYc-xPEsgLAQAlk");'></div>
+</div>
+<p class="text-slate-400 dark:text-slate-400 text-xs font-medium leading-normal text-center truncate group-hover:text-white">Sparco</p>
+</div>
+<div class="flex flex-col gap-2 p-2 rounded-lg cursor-grab hover:bg-primary/20 dark:hover:bg-[#1F2937] transition-colors group">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-md bg-white p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="Castrol logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA1LEkdQIjMzniR3aQayXE0IbwGVIcu51Tqlr56o1WSS-RHQE0g0h6eTTKCzkgL5Fm-OJam8DPZayI_J4Sate7CQG9jJWJxJo-lJo3jZbcDW-mo6qseSg7gJcUN-6VIZMKrd9HGBlK2-6serIz9ysIB4mQaEbBylqzCpNxMjeCM1sWYqrrftzlS04wsxBcyou0iqF2tLsH8n-V-9_8Rjz5LmmHIJcAbm_2QbEtmoK6lbYpA-KESH6mxIbrT7DF0CowwBmHKrOnQfAk");'></div>
+</div>
+<p class="text-slate-400 dark:text-slate-400 text-xs font-medium leading-normal text-center truncate group-hover:text-white">Castrol</p>
+</div>
+<div class="flex flex-col gap-2 p-2 rounded-lg cursor-grab hover:bg-primary/20 dark:hover:bg-[#1F2937] transition-colors group">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-md bg-white p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="Goodyear logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBjJiQFOVm3yC0m9_FnKyoL82qrv_Ph19xkX0KVuIyiVEuVNUSWLlIlxM0aSUBsz3YEiXbCJQkNVWtEGyn-lnzBnn4i0m4YIePKyTSpYOJHHE45BB57QD-XxbxaZBkAO6w2xe1WhkQRa_zNidte7kSCawqNJyWN26M4op_ixJtukNTdgQGbGzBSjFH7JsGH66kK_-fSVKgaRO8bBQwrtaLP2AEwkHOsc62sA80lt-A8zHzgGOpexkG0mPMlf3jzOp2mB8owmLRdn9g");'></div>
+</div>
+<p class="text-slate-400 dark:text-slate-400 text-xs font-medium leading-normal text-center truncate group-hover:text-white">Goodyear</p>
+</div>
+<div class="flex flex-col gap-2 p-2 rounded-lg cursor-grab hover:bg-primary/20 dark:hover:bg-[#1F2937] transition-colors group">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-md bg-white p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="Bosch logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAPHECX7gtRZYImxuyG9skmuBxx9CDMxlXjeAo52ZHcbpWS6rH8EItw3BSnnFV05FS-RGPNugTTFI66HJOlyvDeRWs9dpTM-2XP0qgaqMge49zhrQK50fozRrOT2sYi86RdqaaZsJC8uXJF1c9RWYoWrLnWVsvmgThsNbfH7GAIlH1HCONAKcI3wplJbDUfyx9a5egVse7SRlH2dj3mTrqJdwqZ6r7W5WXl9V_R1X4TUKzW93JbKt0LaKA54PfADz5UD7fWn7YsRas");'></div>
+</div>
+<p class="text-slate-400 dark:text-slate-400 text-xs font-medium leading-normal text-center truncate group-hover:text-white">Bosch</p>
+</div>
+<div class="flex flex-col gap-2 p-2 rounded-lg cursor-grab hover:bg-primary/20 dark:hover:bg-[#1F2937] transition-colors group">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-md bg-white p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="Valvoline logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAIr_OncVTON2afuuU9DGGTAiwzbrbh8-oogF3zJs5jPvaIS6yLpIFlhtqNcff6F5Ncn5G3BmxkzG7JOH1nK-G_ZWf-ZVTG6b0L8dk5bRiv2ZhIw3zSsEYKravvnHF-hFOuArR7UC9JfVBzLnUv-mUVHf6jQvNdf_OSFhGr1pnvmO-MU90S8P9t1yLuIck9j_V4zshR_kFSZhWaRViplbqZMEBM3-p5vpfLp76qroPf-bwen9Q51mmPdRcm6OELZTOQ-NkS7QKPNec");'></div>
+</div>
+<p class="text-slate-400 dark:text-slate-400 text-xs font-medium leading-normal text-center truncate group-hover:text-white">Valvoline</p>
+</div>
+<div class="flex flex-col gap-2 p-2 rounded-lg cursor-grab hover:bg-primary/20 dark:hover:bg-[#1F2937] transition-colors group">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-md bg-white p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="STP logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCvc9dLcVPIvQI-Si-ApYd8aJW7ov7tYV2M_CSfnTqhNXhr07j80BumKWqZDKV0VU3xq29p8bUz6WjW8HejPR3BjpI3q0mHLITqMiL62xvb0YacmRB-nSJ98FWLwO_iImQhBJPArux2w2vnYg_GCeI112fd_IAPJ5RscPd94yVSYGxIgNtEQ-CPr8PPqkZFB09LqkqJHWVHdQnBphEANFgQqVJzbf7RvPji70_e0jinD6D8GFALNZpk1Xx0x6t-6VYGqmp6ALpLwzs");'></div>
+</div>
+<p class="text-slate-400 dark:text-slate-400 text-xs font-medium leading-normal text-center truncate group-hover:text-white">STP</p>
+</div>
+<div class="flex flex-col gap-2 p-2 rounded-lg cursor-grab hover:bg-primary/20 dark:hover:bg-[#1F2937] transition-colors group">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-md bg-white p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="Eibach logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDnYYRwjUK-H0HKwcuXanOJmSxD1MM6IHnK4iSNKIbqC0OVwEfEuyXQszcBpxIEtRyJNm9URtvsbuCCAjhKYUg978fym8jcH7zjxd3cB1B7wO6uaXPXc5yu9veFOiIhN-8gY8Rej9Q5UIm0Hp1EafHu6z3L8hPLAQCQLN3RMYn9d7Jg9S7xrUr73KrZPHEEPk0RjJoNEIo9Pd9lVfadvh8fXNeuXLUDvLHuqqEuxjEPLJHKSSmmYCHouj4Hy_KCibmQLYz2dxUmkbg");'></div>
+</div>
+<p class="text-slate-400 dark:text-slate-400 text-xs font-medium leading-normal text-center truncate group-hover:text-white">Eibach</p>
+</div>
+</div>
+</div>
+<!-- Upload Button -->
+<div class="px-4 py-4 mt-auto border-t border-white/10 dark:border-[#1F2937] shrink-0">
+<button class="w-full flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-300/50 dark:border-[#374151] hover:border-primary dark:hover:border-primary py-2.5 transition-colors">
+<span class="material-symbols-outlined text-slate-300 dark:text-[#9db5b9] text-[20px]">add</span>
+<span class="text-slate-300 dark:text-white text-sm font-medium">Upload Custom Logo</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

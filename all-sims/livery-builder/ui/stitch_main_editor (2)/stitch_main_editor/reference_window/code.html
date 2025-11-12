@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reference Images Modal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#20d3ee",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101f22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-background-dark antialiased">
+<div class="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-dark/80 p-8 backdrop-blur-sm">
+<!-- Floating Modal Container -->
+<div class="flex h-[700px] w-full max-w-[500px] flex-col overflow-hidden rounded-xl border border-primary bg-[#121826] shadow-2xl shadow-black/50" style="resize: both;">
+<!-- Header/Toolbar -->
+<div class="flex h-12 flex-none cursor-grab items-center justify-between border-b border-primary/20 px-4">
+<h1 class="text-base font-bold text-white">Reference Images</h1>
+<button class="p-1 text-white/70 transition-colors hover:text-white">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+</div>
+<!-- Controls Section -->
+<div class="flex-none border-b border-primary/20 p-4">
+<div class="flex flex-col gap-4">
+<!-- Opacity Slider -->
+<div class="flex w-full flex-col items-start justify-between gap-2">
+<div class="flex w-full shrink-[3] items-center justify-between">
+<p class="text-sm font-medium leading-normal text-white">Opacity</p>
+<p class="text-sm font-normal leading-normal text-white/80">90%</p>
+</div>
+<div class="flex h-4 w-full items-center gap-4">
+<div class="flex h-1.5 flex-1 rounded-full bg-primary/20">
+<div class="h-full w-[90%] rounded-full bg-primary"></div>
+<div class="relative">
+<div class="absolute -left-2 -top-1.5 size-4 rounded-full border-2 border-primary bg-[#121826]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Always on Top ListItem -->
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium leading-normal text-white">Always on Top</p>
+<div class="shrink-0">
+<label class="relative flex h-6 w-10 cursor-pointer items-center rounded-full bg-[#3b5054] p-0.5 has-[:checked]:bg-primary">
+<div class="h-5 w-5 rounded-full bg-white transition-transform duration-200 ease-in-out" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 8px, rgba(0, 0, 0, 0.06) 0px 3px 1px;"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Area: Scrollable Image Grid -->
+<div class="flex-1 overflow-y-auto p-4">
+<div class="@container">
+<div class="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-4 @[320px]:grid-cols-[repeat(auto-fit,minmax(120px,1fr))]">
+<!-- Image Card 1 -->
+<div class="group relative flex flex-col gap-2">
+<div class="relative w-full overflow-hidden rounded-lg">
+<div class="w-full bg-cover bg-center bg-no-repeat aspect-[4/3]" data-alt="Red and black abstract racing livery pattern" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDQ67EpmAZqF5GnvVraa6-URt0dsru_FKwWMTvXtrW_pgDemjn8cdl-9szlYkEfihh5sNWnGn-9u9g_9eHWs3EaIJXuX8fZVtLfNqdBuTNVKi9IYxxNQd3x7rn1d422NdgkPBiJb0uUSEXukpyAt2QocTdnjTiar8EIOduPOPRHGgaVhc4d0xZ5EUZ2dDSou6CEmwc69PIbmd5Da76PsymjWGZ1375Q8mAgWzYUHJeqWX9K3FuZhqVpZ2EmCrIsK8nIaP6mnpmOWfo");'></div>
+<div class="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
+<button class="flex size-8 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20">
+<span class="material-symbols-outlined text-lg">fullscreen</span>
+</button>
+<button class="flex size-8 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</div>
+<p class="truncate text-sm font-medium leading-normal text-white">Sponsor Logo 1</p>
+</div>
+<!-- Image Card 2 -->
+<div class="group relative flex flex-col gap-2">
+<div class="relative w-full overflow-hidden rounded-lg">
+<div class="w-full bg-cover bg-center bg-no-repeat aspect-[4/3]" data-alt="Side profile of a modern white sports car" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCSf5FM-Y6xgFktq4wkLNHMeKa1Wpz1v3kuGr-o_Tco6XJnDqTrgwCd4noTrELINKxAuTnT0jrCno0aPjpXO2dUD7rsx2UgOOzN5QNbYZCNi5KDHdPjmv65xFAn3ILJv0gdRwLkmmyoyizj98zWnCkmHKRiWsS1JYPm1-Dgn2XFBusbKg22rHFLC6UBMwiAIwq-oSx68G_c8MZEPZcGzVmZ3yRdYeowM95JqEGts6mRODrnpfhK7_FDIMXaj3RSnK6ZPCa7v2Q8ZGk");'></div>
+<div class="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
+<button class="flex size-8 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20">
+<span class="material-symbols-outlined text-lg">fullscreen</span>
+</button>
+<button class="flex size-8 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</div>
+<p class="truncate text-sm font-medium leading-normal text-white">Car Side Profile</p>
+</div>
+<!-- Image Card 3 -->
+<div class="group relative flex flex-col gap-2">
+<div class="relative w-full overflow-hidden rounded-lg">
+<div class="w-full bg-cover bg-center bg-no-repeat aspect-[4/3]" data-alt="Close up of a metallic blue and green texture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC-bINrsHp4m4X95M7ka71Q0x4T6V6Axix_U9ka4P_6Y7FrHYHUQpPns3isu5NpUxDmz9hMeGXXFKkzRf-u--8w-XrBqw93rjjTzTmJHY8xFKlaC9Kul5hP_S76npgXdoTGAzkGj_t-8P-B-FGA-YcT5O4wrxTDWzHtLb2SbQam5rbD9Ip-dDyKTLsN9Wmo4vatBNr9PovCJiPYXOBKUIaauzmw77ZYTTQpipnKPwbYu69ZpPsPT-ompdC4_fNbCH-M0HNQLnAVUeQ");'></div>
+<div class="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
+<button class="flex size-8 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20">
+<span class="material-symbols-outlined text-lg">fullscreen</span>
+</button>
+<button class="flex size-8 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</div>
+<p class="truncate text-sm font-medium leading-normal text-white">Texture Pattern</p>
+</div>
+<!-- Image Card 4 -->
+<div class="group relative flex flex-col gap-2">
+<div class="relative w-full overflow-hidden rounded-lg">
+<div class="w-full bg-cover bg-center bg-no-repeat aspect-[4/3]" data-alt="A racing car with a colorful livery on a track" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCo2uRIxNgPjSWqzkQIuvA5O5BbA6HW-C4wyDBoFU2a1tiuwJCu3cpC8IOfp4BHoLgTWqmO4IvDoT6d1Eu7AxWxBgPHl17qDWNNITJz-7T0Z80fFpE685F1d2cpSkej6xhSGFsEv-WpzF_UPmDyxMw_88ulpXeFQvI7-15WalSjgSHxpTpkr1zLx3Z2qEgkCWmBgjgWJ9_v23ADguC0LwRoGB7aKsGuADjq2IIJ5HBbwdBhj6yOolbaS3qffgBZVy6H0_DL8Evp34w");'></div>
+<div class="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
+<button class="flex size-8 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20">
+<span class="material-symbols-outlined text-lg">fullscreen</span>
+</button>
+<button class="flex size-8 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</div>
+<p class="truncate text-sm font-medium leading-normal text-white">Race Livery Example</p>
+</div>
+<!-- Empty state example (commented out) -->
+<!-- <div class="col-span-full py-10">
+                            <div class="flex flex-col items-center gap-4 text-center">
+                                <span class="material-symbols-outlined text-5xl text-white/30">image_search</span>
+                                <div class="flex flex-col gap-1">
+                                    <p class="text-base font-bold text-white">No reference images yet</p>
+                                    <p class="text-sm text-white/60">Click below to add your first one.</p>
+                                </div>
+                            </div>
+                        </div> -->
+</div>
+</div>
+</div>
+<!-- Footer/Action Area -->
+<div class="flex-none p-4 pt-0">
+<button class="flex h-12 w-full cursor-pointer items-center justify-center gap-3 rounded-lg border-2 border-dashed border-primary/40 bg-primary/10 text-sm font-bold text-primary transition-colors hover:border-primary hover:bg-primary/20">
+<span class="material-symbols-outlined text-xl">add</span>
+<span class="truncate">Add Reference Image</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

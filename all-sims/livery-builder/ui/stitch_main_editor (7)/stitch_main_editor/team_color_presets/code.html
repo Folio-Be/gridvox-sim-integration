@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Team Color Presets Dropdown</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#20d3ee",
+              "background-light": "#f6f8f8",
+              "background-dark": "#121212",
+              "simvox-border": "#2A2A2A",
+              "simvox-text-primary": "#E0E0E0",
+              "simvox-text-secondary": "#888888",
+              "simvox-hover": "#1E1E1E",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            boxShadow: {
+              'elevation-2': '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 2px 4px rgba(0, 0, 0, 0.2)',
+            },
+          },
+        },
+      }
+    </script>
+<style>
+      /* Custom scrollbar for a more modern look */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #2A2A2A;
+        border-radius: 20px;
+        border: 3px solid transparent;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #4A4A4A;
+      }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display flex items-center justify-center min-h-screen">
+<!-- The Dropdown Menu Component -->
+<div class="w-[320px] max-h-[500px] bg-background-dark rounded-lg border border-simvox-border shadow-elevation-2 flex flex-col overflow-hidden">
+<!-- Header -->
+<div class="px-4 py-3 border-b border-simvox-border">
+<h1 class="text-simvox-text-primary text-base font-semibold leading-tight tracking-tight">🎨 Team Color Presets</h1>
+</div>
+<!-- Scrollable List Container -->
+<div class="flex-1 overflow-y-auto">
+<!-- List Items -->
+<div class="flex flex-col">
+<!-- List Item 1 -->
+<div class="group cursor-pointer hover:bg-simvox-hover">
+<div class="flex items-center gap-3 p-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-8 w-8 flex-shrink-0" data-alt="Vortex Racing Team Logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCfkFtNpwZhMa9a5ERkru5cILiNVmopeBAokkrX168gSDmaaBl0wKACdaqPX090KHPBI8eablKsdQ7Jz1yNuhPcjoq4CVpHn1s6FL6y_CeHLHANfZ6nlN2fIRaYjkxBiUlLJqrd7syOymuvRwloZOlPC6s5KNqTF3sw8vyVxoAjtAC2Er0ImMhW8vnZwQktped1iFIY0F-pL0UTETZOGN-StdPM43Q4AAKoABF9F7DsMRQr1Jc4XHULcVDiKwNP4dlHyvaB2CHEdrI");'></div>
+<div class="flex flex-col justify-center min-w-0">
+<p class="text-simvox-text-primary text-sm font-medium leading-normal truncate">Vortex Racing</p>
+<p class="text-simvox-text-secondary text-xs font-normal leading-normal truncate">Blue, Silver, White</p>
+</div>
+</div>
+<div class="flex h-1 mx-3 mb-2 rounded-full overflow-hidden">
+<div class="w-1/3 h-full bg-[#0077B6]"></div>
+<div class="w-1/3 h-full bg-[#C0C0C0]"></div>
+<div class="w-1/3 h-full bg-[#FFFFFF]"></div>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="group cursor-pointer hover:bg-simvox-hover">
+<div class="flex items-center gap-3 p-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-8 w-8 flex-shrink-0" data-alt="Apex Motorsport Team Logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD7WuzwjQqoxSrlUnEGEZazTJldGu4Pc_Nu-QuyO_GUyYXoqWsa5fAJU0byCMuIafAD65kssj7dwHmV27rkY-75nnOKtt4GlKxhScVqrtaYN_s_eVNwFEgiqmjbXf0wC3IMqs9wbZtuan6C7rUe_U0qJs0EiSmh8RTvU0M9-QG8HOAtakjrQzmgJDUWC4cfNQHWZo8fW6Y4ZUu0yetaWzo2q7A7CNIG4xi-dRewlj_8Z26m6TKXsESS4hksNVzCnGsGE2HLefIM4Tk");'></div>
+<div class="flex flex-col justify-center min-w-0">
+<p class="text-simvox-text-primary text-sm font-medium leading-normal truncate">Apex Motorsport</p>
+<p class="text-simvox-text-secondary text-xs font-normal leading-normal truncate">Red, Black, Graphite</p>
+</div>
+</div>
+<div class="flex h-1 mx-3 mb-2 rounded-full overflow-hidden">
+<div class="w-1/3 h-full bg-[#D90429]"></div>
+<div class="w-1/3 h-full bg-[#111111]"></div>
+<div class="w-1/3 h-full bg-[#4B4B4B]"></div>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="group cursor-pointer hover:bg-simvox-hover">
+<div class="flex items-center gap-3 p-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-8 w-8 flex-shrink-0" data-alt="Ignition GP Team Logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBdeeoQloYzLJu8J_g8Twn8fpOqgtq7kCILEPFNH7K-q0iJEEZStxqIEUYR6fZ9O0_GxWXNrnseFM08jSQiap2a5xsvZ-2Dq5Uua0H7KcL3JRbQrwRPsyImUiiIMdC40Uosp49_bX73nyz5i1mKwcxNlSnDqcZMyRED5PEAxnS92Lf1kzRG30ft-mYuMrQzLYEVHJtc8z5oujHaVGEl5h_XVXWbekoldHUzSa1_GgYykSgMEaWqfd_cF-9srw1rhf0Xbp-wn-_hMpY");'></div>
+<div class="flex flex-col justify-center min-w-0">
+<p class="text-simvox-text-primary text-sm font-medium leading-normal truncate">Ignition GP</p>
+<p class="text-simvox-text-secondary text-xs font-normal leading-normal truncate">Fluorescent Green, Carbon, White</p>
+</div>
+</div>
+<div class="flex h-1 mx-3 mb-2 rounded-full overflow-hidden">
+<div class="w-1/3 h-full bg-[#39FF14]"></div>
+<div class="w-1/3 h-full bg-[#222222]"></div>
+<div class="w-1/3 h-full bg-[#FAFAFA]"></div>
+</div>
+</div>
+<!-- List Item 4 -->
+<div class="group cursor-pointer hover:bg-simvox-hover">
+<div class="flex items-center gap-3 p-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-8 w-8 flex-shrink-0" data-alt="Cyber-Stallions Team Logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_IW-m0VGuCWdiNMBRdgwuZjzpVqJ-ExTEo6V7LLDnl-x2reAMx1_mfYI-DPzBSv14USImQo5-p4DXhEdEqcDytnS2Y9GPeknW0xrU5kaJuFWFa-9q_7I1e0_awuE2RtU4oJXZFDmVhjSo3TP5JC_WtjmH1CA3Zz2o-7TKarHdAtX2xuZvjyE0YcKFTeMvVOpr4NEdMGrr3f8aCPfFzomoCwc5pYziiiwsmtEgt4FfWGiKHDaYqXFE2aT7abd3K3aMFEF7myttbXY");'></div>
+<div class="flex flex-col justify-center min-w-0">
+<p class="text-simvox-text-primary text-sm font-medium leading-normal truncate">Cyber-Stallions</p>
+<p class="text-simvox-text-secondary text-xs font-normal leading-normal truncate">Magenta, Cyan, Black</p>
+</div>
+</div>
+<div class="flex h-1 mx-3 mb-2 rounded-full overflow-hidden">
+<div class="w-1/3 h-full bg-[#FF00FF]"></div>
+<div class="w-1/3 h-full bg-[#00FFFF]"></div>
+<div class="w-1/3 h-full bg-[#000000]"></div>
+</div>
+</div>
+<!-- List Item 5 -->
+<div class="group cursor-pointer hover:bg-simvox-hover">
+<div class="flex items-center gap-3 p-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-8 w-8 flex-shrink-0" data-alt="Solar Flare Racing Team Logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDB4s5_tVMBz_gJhPyJS82e0arF_fUzg9tvq6UdUaJ2NaB7F1Gh37GexMRBEWrKUYeWuHJm7oUb5BLL6iyS2SHwxDqUcCN-joQQAF_UjdK31bS8EEwe5eYSJEhUNpMHR78EWu5zJj7yipajySCsg0rCnf7SAd2r00UgVtIQ4Hl3fR0p_9BXjJv0C040psJidBnAH6Fnyo4Kn0bOkgcpqzomXjdg1-tJkNPWUkPUey76OlDGbj6euYhS6tAK9UTD3CaTUpOpp-XxCys");'></div>
+<div class="flex flex-col justify-center min-w-0">
+<p class="text-simvox-text-primary text-sm font-medium leading-normal truncate">Solar Flare Racing</p>
+<p class="text-simvox-text-secondary text-xs font-normal leading-normal truncate">Orange, Yellow, Dark Grey</p>
+</div>
+</div>
+<div class="flex h-1 mx-3 mb-2 rounded-full overflow-hidden">
+<div class="w-1/3 h-full bg-[#FFA500]"></div>
+<div class="w-1/3 h-full bg-[#FFD700]"></div>
+<div class="w-1/3 h-full bg-[#333333]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Action Button -->
+<div class="p-2 border-t border-simvox-border">
+<button class="w-full flex items-center justify-center gap-2 px-4 py-2 border-2 border-dashed border-simvox-border rounded-md hover:border-primary hover:bg-primary/10 transition-colors duration-200">
+<span class="material-symbols-outlined text-primary text-lg">add</span>
+<span class="text-simvox-text-primary text-sm font-medium">Create Custom Preset</span>
+</button>
+</div>
+</div>
+</body></html>

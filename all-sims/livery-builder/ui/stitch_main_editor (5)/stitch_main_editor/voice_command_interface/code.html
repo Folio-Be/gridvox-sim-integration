@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Voice Command UI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#22d3ee",
+              "background-light": "#f6f8f8",
+              "background-dark": "#111827",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#E5E7EB]">
+<div class="relative min-h-screen w-full overflow-hidden">
+<!-- Main Workspace Area -->
+<div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCRNe60Qn-xFXAHG5FWYlDCg-7UNGg_HJSW69GgjfYb_uru2Hn7oU4QZDZ4OnruMBdTT7hL02XMo8fP9JxzPh3dPjmogs0iTzhy5YFdj9MuziSVM8jh03lsZGRpMCZf5q_8Q4SiRd1O-rOUofyL4wxa0jJkbzhoRJCCqX9WRKQFr2dCeqlXXrhVi5e6baiPGlV-6RBg9lqRod4GlcELjvEU7RcmzXaeKcVEVv8rzx1umTWDEYWExAsvEyP--JWWq78wtveKssOZG_M'); z-index: -1;">
+<div class="absolute inset-0 bg-black/50"></div>
+</div>
+<div class="flex h-full w-full items-center justify-center p-8">
+<h1 class="text-5xl font-bold text-white/80 select-none">Car Livery Design Workspace</h1>
+</div>
+<!-- Voice Command UI Components -->
+<div class="fixed top-4 right-4 z-50 flex flex-col items-end gap-4">
+<!-- A. Voice Indicator (Compact State) -->
+<div class="flex h-[60px] w-[250px] items-center gap-3 rounded-xl border border-white/10 bg-[#1F2937]/80 p-3 shadow-2xl backdrop-blur-md">
+<div class="flex shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl">mic</span>
+</div>
+<div class="flex-1 overflow-hidden whitespace-nowrap text-sm text-[#E5E7EB]">Apply metallic red paint...</div>
+<div class="relative flex size-3 shrink-0 items-center justify-center">
+<div class="absolute size-3 animate-ping rounded-full bg-primary opacity-75"></div>
+<div class="size-2 rounded-full bg-primary"></div>
+</div>
+</div>
+<!-- B. Voice Command Panel (Expanded State) -->
+<div class="flex h-[600px] w-[400px] flex-col overflow-hidden rounded-xl border border-white/10 bg-[#111827]/80 text-[#E5E7EB] shadow-2xl backdrop-blur-md">
+<!-- Status Header -->
+<div class="flex items-center gap-4 border-b border-white/10 p-4">
+<div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-[#1F2937]">
+<span class="material-symbols-outlined text-primary text-2xl">auto_awesome</span>
+</div>
+<p class="flex-1 text-base font-medium leading-normal">Command Recognized</p>
+</div>
+<!-- Last Command Card -->
+<div class="border-b border-white/10 p-4">
+<div class="flex items-center gap-4 rounded-lg bg-[#1F2937] p-4">
+<div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/20">
+<span class="material-symbols-outlined text-[#22C55E]">check_circle</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-base font-medium leading-normal text-white">Command Executed</p>
+<p class="text-sm font-normal leading-normal text-[#9CA3AF]">Applied metallic red paint to body.</p>
+</div>
+</div>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto">
+<!-- History Section -->
+<div class="p-4">
+<h3 class="px-4 pb-2 pt-0 text-lg font-bold leading-tight tracking-tight">History</h3>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-4 rounded-lg px-4 py-3 hover:bg-white/5">
+<span class="material-symbols-outlined text-sm text-[#9CA3AF]">history</span>
+<p class="flex-1 text-sm">Undo last action</p>
+</div>
+<div class="flex items-center gap-4 rounded-lg px-4 py-3 hover:bg-white/5">
+<span class="material-symbols-outlined text-sm text-[#9CA3AF]">history</span>
+<p class="flex-1 text-sm">Select hood decal</p>
+</div>
+<div class="flex items-center gap-4 rounded-lg px-4 py-3 hover:bg-white/5">
+<span class="material-symbols-outlined text-sm text-[#9CA3AF]">history</span>
+<p class="flex-1 text-sm">Zoom in</p>
+</div>
+</div>
+</div>
+<!-- Command Guide Section -->
+<div class="p-4">
+<h3 class="px-4 pb-2 pt-0 text-lg font-bold leading-tight tracking-tight">Command Guide</h3>
+<div class="flex flex-col gap-2">
+<div class="rounded-lg bg-[#1F2937] px-4 py-3">
+<p class="text-base font-medium">Painting</p>
+<ul class="mt-2 list-disc list-inside space-y-1 pl-1 text-sm text-[#9CA3AF]">
+<li>"Show color palette"</li>
+<li>"Apply [color] paint"</li>
+</ul>
+</div>
+<div class="rounded-lg bg-[#1F2937] px-4 py-3">
+<p class="text-base font-medium">Decals</p>
+<ul class="mt-2 list-disc list-inside space-y-1 pl-1 text-sm text-[#9CA3AF]">
+<li>"Add decal [name]"</li>
+<li>"Move decal left/right/up/down"</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

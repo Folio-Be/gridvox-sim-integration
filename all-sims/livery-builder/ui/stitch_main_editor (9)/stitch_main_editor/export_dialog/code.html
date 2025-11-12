@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Export Livery Modal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#20d3ee",
+              "background-light": "#f6f8f8",
+              "background-dark": "#101f22",
+              "simvox-bg": "#1A1A1A",
+              "simvox-border": "#333333",
+              "simvox-input-bg": "#252525",
+              "simvox-text-primary": "#EAEAEA",
+              "simvox-text-secondary": "#888888",
+              "simvox-primary-action": "#007BFF"
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-screen w-full items-center justify-center p-4">
+<!-- Background Overlay -->
+<div class="absolute inset-0 bg-black/50"></div>
+<!-- Modal Container -->
+<div class="relative flex h-[800px] w-full max-w-[700px] flex-col overflow-hidden rounded-xl border border-simvox-border bg-simvox-bg text-simvox-text-primary shadow-2xl">
+<!-- Header -->
+<header class="flex items-center justify-between border-b border-simvox-border p-4">
+<h1 class="text-xl font-bold tracking-tight">Export Livery</h1>
+<button class="flex items-center justify-center rounded p-1 text-simvox-text-secondary transition-colors hover:bg-white/10 hover:text-simvox-text-primary">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+</header>
+<!-- Main Content Area with Scroll -->
+<main class="flex-1 overflow-y-auto p-6">
+<div class="flex flex-col gap-8">
+<!-- Export Settings Section -->
+<section class="flex flex-col gap-4">
+<h3 class="text-lg font-bold leading-tight tracking-tight">Export Settings</h3>
+<!-- Format Tabs -->
+<div class="border-b border-simvox-border">
+<div class="flex gap-8">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-simvox-primary-action pb-3 pt-1" href="#">
+<p class="text-sm font-bold text-simvox-text-primary">PNG</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent pb-3 pt-1" href="#">
+<p class="text-sm font-bold text-simvox-text-secondary hover:text-simvox-text-primary">DDS</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent pb-3 pt-1" href="#">
+<p class="text-sm font-bold text-simvox-text-secondary hover:text-simvox-text-primary">TGA</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent pb-3 pt-1" href="#">
+<p class="text-sm font-bold text-simvox-text-secondary hover:text-simvox-text-primary">PSD</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent pb-3 pt-1" href="#">
+<p class="text-sm font-bold text-simvox-text-secondary hover:text-simvox-text-primary">All</p>
+</a>
+</div>
+</div>
+<!-- Resolution -->
+<div>
+<p class="mb-2 text-sm font-medium text-simvox-text-secondary">Resolution</p>
+<div class="flex flex-wrap items-center gap-3">
+<label class="relative flex h-10 cursor-pointer items-center justify-center rounded-lg border border-simvox-border bg-simvox-input-bg px-4 text-sm font-medium text-simvox-text-primary has-[:checked]:border-2 has-[:checked]:border-simvox-primary-action has-[:checked]:px-[15px]">
+                                    Original
+                                    <input checked="" class="invisible absolute" name="resolution" type="radio"/>
+</label>
+<label class="relative flex h-10 cursor-pointer items-center justify-center rounded-lg border border-simvox-border bg-simvox-input-bg px-4 text-sm font-medium text-simvox-text-primary has-[:checked]:border-2 has-[:checked]:border-simvox-primary-action has-[:checked]:px-[15px]">
+                                    Half
+                                    <input class="invisible absolute" name="resolution" type="radio"/>
+</label>
+<label class="relative flex h-10 cursor-pointer items-center justify-center rounded-lg border border-simvox-border bg-simvox-input-bg px-4 text-sm font-medium text-simvox-text-primary has-[:checked]:border-2 has-[:checked]:border-simvox-primary-action has-[:checked]:px-[15px]">
+                                    Quarter
+                                    <input class="invisible absolute" name="resolution" type="radio"/>
+</label>
+<label class="relative flex h-10 cursor-pointer items-center justify-center rounded-lg border border-simvox-border bg-simvox-input-bg px-4 text-sm font-medium text-simvox-text-primary has-[:checked]:border-2 has-[:checked]:border-simvox-primary-action has-[:checked]:px-[15px]">
+                                    Custom
+                                    <input class="invisible absolute" name="resolution" type="radio"/>
+</label>
+</div>
+</div>
+<!-- DDS Compression Dropdown (Disabled state example) -->
+<div>
+<label class="mb-2 block text-sm font-medium text-simvox-text-secondary" for="dds-compression">DDS Compression</label>
+<div class="relative">
+<select class="w-full appearance-none rounded-lg border border-simvox-border bg-simvox-input-bg px-3 py-2.5 text-sm text-simvox-text-primary placeholder-simvox-text-secondary/70 ring-offset-simvox-bg focus:outline-none focus:ring-2 focus:ring-simvox-primary-action focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="dds-compression">
+<option>BC1 (DXT1)</option>
+<option>BC3 (DXT5)</option>
+<option>BC7</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-simvox-text-secondary">expand_more</span>
+</div>
+</div>
+<!-- Texture & Options Checkboxes -->
+<div class="grid grid-cols-2 gap-x-8 gap-y-4">
+<div>
+<p class="mb-2 text-sm font-medium text-simvox-text-secondary">Textures</p>
+<div class="flex flex-col gap-2">
+<label class="flex items-center gap-2 text-sm">
+<input checked="" class="h-4 w-4 rounded border-simvox-border bg-simvox-input-bg text-simvox-primary-action focus:ring-simvox-primary-action focus:ring-offset-simvox-bg" type="checkbox"/> Body
+                                    </label>
+<label class="flex items-center gap-2 text-sm">
+<input checked="" class="h-4 w-4 rounded border-simvox-border bg-simvox-input-bg text-simvox-primary-action focus:ring-simvox-primary-action focus:ring-offset-simvox-bg" type="checkbox"/> Wheels
+                                    </label>
+<label class="flex items-center gap-2 text-sm">
+<input class="h-4 w-4 rounded border-simvox-border bg-simvox-input-bg text-simvox-primary-action focus:ring-simvox-primary-action focus:ring-offset-simvox-bg" type="checkbox"/> Windows
+                                    </label>
+</div>
+</div>
+<div>
+<p class="mb-2 text-sm font-medium text-simvox-text-secondary">Additional Options</p>
+<div class="flex flex-col gap-2">
+<label class="flex items-center gap-2 text-sm">
+<input checked="" class="h-4 w-4 rounded border-simvox-border bg-simvox-input-bg text-simvox-primary-action focus:ring-simvox-primary-action focus:ring-offset-simvox-bg" type="checkbox"/> Include Spec Map
+                                    </label>
+<label class="flex items-center gap-2 text-sm">
+<input class="h-4 w-4 rounded border-simvox-border bg-simvox-input-bg text-simvox-primary-action focus:ring-simvox-primary-action focus:ring-offset-simvox-bg" type="checkbox"/> Generate Mipmaps
+                                    </label>
+</div>
+</div>
+</div>
+</section>
+<!-- Divider -->
+<div class="border-t border-simvox-border"></div>
+<!-- Export Location Section -->
+<section class="flex flex-col gap-2">
+<h3 class="text-lg font-bold leading-tight tracking-tight">Export Location</h3>
+<div class="flex items-center gap-2">
+<input class="w-full flex-1 rounded-lg border border-simvox-border bg-simvox-input-bg px-3 py-2.5 text-sm text-simvox-text-primary placeholder-simvox-text-secondary/70 ring-offset-simvox-bg focus:outline-none focus:ring-2 focus:ring-simvox-primary-action focus:ring-offset-2" type="text" value="/Users/SimVox/Documents/Liveries/MyProject_V2"/>
+<button class="flex h-10 items-center justify-center rounded-lg border border-simvox-border bg-simvox-input-bg px-4 text-sm font-medium text-simvox-text-primary transition-colors hover:bg-white/5">Browse</button>
+</div>
+</section>
+<!-- Divider -->
+<div class="border-t border-simvox-border"></div>
+<!-- Preview Section -->
+<section class="flex flex-col gap-4">
+<h3 class="text-lg font-bold leading-tight tracking-tight">Preview</h3>
+<div class="flex items-center justify-center rounded-lg border border-dashed border-simvox-border bg-simvox-input-bg p-4">
+<img class="h-32 w-auto object-contain" data-alt="A futuristic sports car with a custom black and cyan livery" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlSxR7TEHQIZlVcyWl3O5Knnq7LryTWqs8keJRACXtd1UDrUI-EYOZYnzcmWwuzCswMWwsVlQPAac1dh0O7uzlvQQPOcrssmzKyt3xbDPJbf6mULWHb_sp_UBN8LG0Dasy67treWt21WfkdXO7pFTUNdHos09qRNiCeG1ZpGkjLRFxqaI-Nyof7nhzSux6F_iRJxGZ6fr-KK4OPloc5C2NXhzXU_1LMkxMpgmeyz65ot6fYHUDEuaU5AX2UDCuGvxSPQB-2H0lfQ8"/>
+</div>
+<p class="text-center text-sm text-simvox-text-secondary">Estimated File Size: 12.4 MB</p>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="flex items-center justify-end gap-3 border-t border-simvox-border bg-simvox-bg/80 p-4 backdrop-blur-sm">
+<button class="flex h-10 items-center justify-center rounded-lg border border-simvox-border px-4 text-sm font-medium text-simvox-text-primary transition-colors hover:bg-white/10">Cancel</button>
+<button class="flex h-10 items-center justify-center rounded-lg bg-simvox-primary-action px-6 text-sm font-bold text-white transition-opacity hover:opacity-90">Export</button>
+</footer>
+</div>
+</div>
+</body></html>
