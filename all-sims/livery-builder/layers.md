@@ -8,13 +8,19 @@ When you click on an object in the object tree (or click on it directly in the s
 The objects can be ordered in the object list, you can drag object rows up and down the tree, or in and out of folder rows. When an object is selected, either by clicking on in the canvas, or within the object list, the selected object row will show a lock and visibility toggle, and a delete button.
 
 #### Object manipulation menu (OM menu)
-align, spacing
+align, spacing, selection presets
 
 When an object is selected, the "object type specific" (OTS) menu appears at the top of the canvas. And the generic properties window updates (x, y, width, height, blending, blur, outline,...)
 This OTS menu will only show the tools that are specific to that kind of object
 
+##### Pixel object
 A pixel object is a special object, you can think of it as a "canvas of pixels". A picture (or better: the pixels the picture is made up out of) is automatically wrapped in a pixel object.
 When you select the pixel object (a painting with golden frame icon) from the object tools menu on the left, you have to draw a bounding box like you would draw a rectangle. The rectangle has the same manipulation handlers as any other object, but a the start, it has no "content"(pixels) yet. The picture object off course as already pixels in it. When a pixel object is selected, the OTS menu will whow pixel tools like, airbrush, soft brush, eraser, ... The moment you select one off those, the bounding box dissapears and you can draw pixels on the pixel in "drawing mode". To quit drawing mode, you either press Escape or the arrow tool(the first tool in the pixel OTS menu). Clicking the arrow tool will show the bounding box again. This bounding box has now adapted to the outer boundries of the drawn pixels by default. There is a pixel OST drowdown to show the original bounding box vs the adapted one)
+You can also convert any object to a pixel container. You cannot undo this though.
+
+##### Mirror box
+You draw the mirror box object creation tool on canvas like a rectangle, in the OTS menu you have checkboxes for vertical and horizontal mirroring, but like any other object, the mirror box can also be rotated. The mirrorbox is invisible when deselected (you have to select it in the objects tree like objects in a mask folder). But every object whose bounding box is within the bounding box of the mirror box, gets mirrored around the mirrorline (the line you see in the middle of the mirrorbox). You can change the intersection magnetism of the mirrorbox in OTS menu. (0 means the object has got to be completely in the bounding box, 100 means just 1 pixels is enough). It doesn't create a second object, it visually just mirrors it 
+
 
 ### Folders
 Objects can be dragged into folders to organize them in the objects list. you can add a folder by clicking on the add folder button at the top of the list. 
@@ -37,8 +43,11 @@ Each row has a small preview. Folders have a preview that is the combination of 
 #### Selecting
 Selecting a folder (or selecting multiple objects/and or folders with shift or control click) will result in a union selecting on the canvas, so 1 bounding box with manipulation handlers around all selected objects.
 Most of the time you will have a folder at the top of the list wich will be used as a mask for the rest of the objects. Objects in a mask subfolder are "special" in the sense that they also appear when selected in the objects tree
-The uv wrap and template mask are not part of the object list, but there is a canvas color picker
+The uv wrap and template mask are not part of the object list, but there is a canvas color picker.
+
+##### Selection groups
+Every time you use shift, control, or drag a marquee to select multiple objects. You can save that selection group to the "selection group list" in the OM menu by clicking the add to current group button (also in the OM menu). If you select an object that is part of a group, the remove from current group button is enabled.  The selection list is handy for rapid multip selections. An object can only belong to one selection group. you can add a selection group by clicking the plus button above the selection group list. when you hover over an group item in the list, all the objects in that list "light" up a bit. When you click an item, they are all selected. So an item has a hover state, a selected state (when all are selected), and a includes state (this include states in trigger when you select an object that is part of that group, so you can immediately see to which group it belongs)
 
 params into editor (colors, numbers, names, logos) so different variations of a livery can be picked "outside" the editor and exported headless
 
-Mirror line
+
