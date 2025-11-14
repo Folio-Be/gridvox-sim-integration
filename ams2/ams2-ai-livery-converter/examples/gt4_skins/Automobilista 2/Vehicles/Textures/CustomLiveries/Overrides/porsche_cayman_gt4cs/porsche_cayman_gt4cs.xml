@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<USER_OVERRIDES>
+<LIVERY_OVERRIDE LIVERY="51" NAME="TRW Racing #82" BASELIVERY="Default">
+        <PREVIEWIMAGE PATH="PORK\preview1.dds" />
+        <TEXTURE NAME="BODY" PATH="PORK\body1.dds" />
+       
+    </LIVERY_OVERRIDE>
+
+
+<LIVERY_OVERRIDE LIVERY="52" NAME="Black Racing #95" BASELIVERY="Default">
+        <PREVIEWIMAGE PATH="PORK\preview2.dds" />
+        <TEXTURE NAME="BODY" PATH="PORK\body2.dds" />
+       
+    </LIVERY_OVERRIDE>
+
+
+<LIVERY_OVERRIDE LIVERY="53" NAME="Rilmann Motorsport #20" BASELIVERY="Default">
+        <PREVIEWIMAGE PATH="PORK\preview3.dds" />
+        <TEXTURE NAME="BODY" PATH="PORK\body3.dds" />
+      
+    </LIVERY_OVERRIDE>
+
+
+<LIVERY_OVERRIDE LIVERY="54" NAME="Momo Motorsport #58" BASELIVERY="Default">
+        <PREVIEWIMAGE PATH="PORK\preview4.dds" />
+        <TEXTURE NAME="BODY" PATH="PORK\body4.dds" />
+      
+    </LIVERY_OVERRIDE>
+
+<LIVERY_OVERRIDE LIVERY="55" NAME="DMG Racing #67" BASELIVERY="Default">
+        <PREVIEWIMAGE PATH="PORK\preview5.dds" />
+        <TEXTURE NAME="BODY" PATH="PORK\body5.dds" />
+      
+    </LIVERY_OVERRIDE>
+
+
+<LIVERY_OVERRIDE LIVERY="56" NAME="Loctite Racing #42" BASELIVERY="Default">
+        <PREVIEWIMAGE PATH="PORK\preview6.dds" />
+        <TEXTURE NAME="BODY" PATH="PORK\body6.dds" />
+
+      
+    </LIVERY_OVERRIDE>
+
+</USER_OVERRIDES>

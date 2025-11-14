@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<USER_OVERRIDES>
+
+ <LIVERY_OVERRIDE LIVERY="51" NAME="Bose Motorsport #35" BASELIVERY="Default">
+    <PREVIEWIMAGE PATH="gin\preview1.dds" />
+    <TEXTURE NAME="BODY" PATH="gin\body1.dds" />
+
+	    </LIVERY_OVERRIDE>
+
+
+ <LIVERY_OVERRIDE LIVERY="52" NAME="Castrol Motorsport #27" BASELIVERY="Default">
+    <PREVIEWIMAGE PATH="gin\preview2.dds" />
+    <TEXTURE NAME="BODY" PATH="gin\body2.dds" />
+ 
+	    </LIVERY_OVERRIDE>
+
+
+ <LIVERY_OVERRIDE LIVERY="53" NAME="Jager Racing #12" BASELIVERY="Default">
+    <PREVIEWIMAGE PATH="gin\preview3.dds" />
+    <TEXTURE NAME="BODY" PATH="gin\body3.dds" />
+ 
+	    </LIVERY_OVERRIDE>
+
+
+ <LIVERY_OVERRIDE LIVERY="54" NAME="Eni Motorsport #92" BASELIVERY="Default">
+    <PREVIEWIMAGE PATH="gin\preview4.dds" />
+    <TEXTURE NAME="BODY" PATH="gin\body4.dds" />
+ 
+	    </LIVERY_OVERRIDE>
+
+ <LIVERY_OVERRIDE LIVERY="55" NAME="Wynns Motorsport #30" BASELIVERY="Default">
+    <PREVIEWIMAGE PATH="gin\preview5.dds" />
+    <TEXTURE NAME="BODY" PATH="gin\body5.dds" />
+ 
+	    </LIVERY_OVERRIDE>
+
+</USER_OVERRIDES>

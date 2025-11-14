@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ams2LayoutLabel",
+  "type": "object",
+  "required": ["screenshot", "capturedAt", "resolution", "elements"],
+  "properties": {
+    "screenshot": { "type": "string", "description": "Relative path to PNG capture" },
+    "capturedAt": { "type": "string", "format": "date-time" },
+    "resolution": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "elements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "bbox"],
+        "properties": {
+          "label": { "type": "string" },
+          "text": { "type": "string" },
+          "bbox": {
+            "type": "array",
+            "items": { "type": "number" },
+            "minItems": 4,
+            "maxItems": 4,
+            "description": "[x, y, width, height]"
+          },
+          "interactable": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

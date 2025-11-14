@@ -25,6 +25,7 @@ export interface LiveryTexture {
     height: number;
     format: TextureFormat;
     layers: Layer[];
+    layerTree?: LayerTreeNode[];
     thumbnail?: string; // base64 or URL
 }
 
@@ -121,6 +122,23 @@ export interface GradientStop {
     color: string;
 }
 
+export type LayerTreeNode = LayerTreeFolder | LayerTreeLayer;
+
+export interface LayerTreeFolder {
+    nodeType: 'folder';
+    id: string;
+    name: string;
+    folderType: 'regular' | 'mask';
+    visible: boolean;
+    locked: boolean;
+    children: LayerTreeNode[];
+}
+
+export interface LayerTreeLayer extends Layer {
+    nodeType: 'layer';
+    parentId?: string;
+}
+
 // ============================================================================
 // Tool System
 // ============================================================================
@@ -131,13 +149,20 @@ export type Tool =
     | "marquee"
     | "lasso"
     | "magic-wand"
+    | "pen"
     | "brush"
     | "pencil"
+    | "picture"
+    | "pixel"
+    | "mirror"
     | "eraser"
     | "fill"
     | "gradient"
     | "text"
     | "shape"
+    | "shape-rectangle"
+    | "shape-ellipse"
+    | "shape-polygon"
     | "eyedropper"
     | "hand"
     | "zoom";
@@ -208,6 +233,13 @@ export interface SelectionBounds {
     height: number;
 }
 
+export interface SelectionGroup {
+    id: string;
+    name: string;
+    color: string;
+    layerIds: string[];
+}
+
 // ============================================================================
 // Reference Images
 // ============================================================================
@@ -222,6 +254,18 @@ export interface ReferenceImage {
     alwaysOnTop: boolean;
     thumbnail?: string;
 }
+
+export interface PreviewSnapshot {
+    id: string;
+    title: string;
+    description?: string;
+    updatedAt: Date;
+    textureName: string;
+    camera?: string;
+    thumbnail: string;
+}
+
+
 
 // ============================================================================
 // Export Settings

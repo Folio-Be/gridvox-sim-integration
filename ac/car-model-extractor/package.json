@@ -1,0 +1,61 @@
+{
+  "name": "@simvox/ac-car-model-extractor",
+  "version": "0.1.0",
+  "description": "Extract and convert Assetto Corsa car models (.kn5) to GLTF for SimVox livery designer",
+  "type": "module",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
+  "bin": {
+    "ac-extract": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "extract": "tsx src/cli/index.ts",
+    "extract:single": "tsx src/cli/index.ts car",
+    "extract:batch": "tsx src/cli/index.ts batch",
+    "list": "tsx src/cli/index.ts list",
+    "test": "tsx src/cli/index.ts batch --test",
+    "verify": "tsx src/cli/verify-tools.ts",
+    "clean": "node -e \"require('fs').rmSync('output', {recursive: true, force: true})\" && node -e \"require('fs').mkdirSync('output/kn5', {recursive: true})\" && node -e \"require('fs').mkdirSync('output/fbx', {recursive: true})\" && node -e \"require('fs').mkdirSync('output/gltf', {recursive: true})\"",
+    "postinstall": "node tools/patch-obj2gltf.mjs"
+  },
+  "keywords": [
+    "assetto-corsa",
+    "kn5",
+    "gltf",
+    "3d-models",
+    "car-models",
+    "simvox"
+  ],
+  "author": "SimVox Team",
+  "license": "MIT",
+  "dependencies": {
+    "@napi-rs/image": "^1.11.2",
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
+    "glob": "^10.3.10",
+    "obj2gltf": "^3.1.6",
+    "ora": "^8.0.1",
+    "parse-dds": "^1.2.1",
+    "pngjs": "^7.0.0",
+    "sharp": "^0.34.5",
+    "three": "^0.181.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/lib/index.js",
+      "types": "./dist/lib/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "tools",
+    "scripts"
+  ]
+}

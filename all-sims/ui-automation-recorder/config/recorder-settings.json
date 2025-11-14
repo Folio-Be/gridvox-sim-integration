@@ -1,0 +1,78 @@
+{
+  "default_settings": {
+    "fps": 60,
+    "quality": "high",
+    "format": "mp4",
+    "encoder": "h264",
+    "cursor_capture": true,
+    "auto_detect_window": true,
+    "window_title_pattern": ".*Automobilista.*|.*Assetto Corsa.*|.*iRacing.*|.*rFactor.*"
+  },
+
+  "quality_presets": {
+    "low": {
+      "bitrate": "5000kbps",
+      "profile": "baseline",
+      "description": "Smaller file size, acceptable for dataset generation"
+    },
+    "medium": {
+      "bitrate": "8000kbps",
+      "profile": "main",
+      "description": "Balanced quality and file size"
+    },
+    "high": {
+      "bitrate": "12000kbps",
+      "profile": "high",
+      "description": "Best quality for detailed UI capture"
+    }
+  },
+
+  "encoder_settings": {
+    "h264": {
+      "preset": "fast",
+      "crf": 23,
+      "keyframe_interval": 2,
+      "b_frames": 2,
+      "notes": "Uses windows-capture crate's built-in VideoEncoder"
+    }
+  },
+
+  "capture_api": {
+    "primary": "Graphics Capture API",
+    "fallback": "DXGI Desktop Duplication",
+    "notes": "Graphics Capture API works with modern Windows 10/11, DXGI for compatibility"
+  },
+
+  "window_detection": {
+    "method": "title_match",
+    "patterns": {
+      "ams2": "Automobilista 2",
+      "acc": "Assetto Corsa Competizione",
+      "iracing": "iRacing.com Simulator",
+      "rf2": "rFactor 2",
+      "ac": "Assetto Corsa"
+    },
+    "fallback_to_manual": true
+  },
+
+  "output": {
+    "directory": "data/recordings",
+    "filename_pattern": "{sim}-{timestamp}.mp4",
+    "cleanup_on_error": true
+  },
+
+  "performance": {
+    "max_recording_duration_minutes": 30,
+    "estimated_file_size_per_minute_mb": {
+      "low": 30,
+      "medium": 50,
+      "high": 80
+    }
+  },
+
+  "notes": {
+    "reusability": "These settings are reused for SimVox race replay recording",
+    "integration": "Same recorder component used in SimVox Desktop Highlights Editor",
+    "advantages": "No external OBS dependency, native Tauri/Rust performance"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "screenshot": "../captures/ams2-2025-11-14T08-00-00-000Z.png",
+  "capturedAt": "2025-11-14T08:00:00.000Z",
+  "resolution": [1920, 1080],
+  "elements": [
+    {
+      "label": "vehicleTile",
+      "text": "Mercedes-AMG GT3",
+      "bbox": [280, 360, 420, 200],
+      "interactable": true
+    },
+    {
+      "label": "filterDropdown",
+      "text": "Class: GT3",
+      "bbox": [60, 160, 240, 60],
+      "interactable": true
+    }
+  ]
+}

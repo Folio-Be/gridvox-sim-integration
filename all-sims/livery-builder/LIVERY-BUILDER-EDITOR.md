@@ -1,27 +1,56 @@
+### Livery tabs
+
+The tabs representing each of the different livery files within the livery package
+
+### Canvas
+
+The canvas is your working space, where all the objects are displayed
+
 ### Objects tree
 
 The objects tree is a hierarchical list of all objects within the scene, grouped by folders.
 Every node in the objects tree is called a row, so we have object rows and folder rows.
 
+On top of the objects tree are 2 fixed rows with both essential layers from the livery template: the UV wrap image and the livery mask
+On the bottom is also a special "row", the background color box (color menu popup on click)
+
 ### Objects
 
-Objects are the actors (eg types are rectangles, images, text, pen shape) that are placed on the canvas, think of it as a layer which can only contain 1 thing.
+Objects are the actors (the types of objects are eg rectangles, images, text, pen shape) that are placed on the canvas
 
-To create an object on the canvas you select an object type from the object tool bar (OTB). By clicking the type icon button, you go into "object creation mode", also the "object type specific" (OTS) menu will appear beneath the OTB.  You draw an object by mouse down on the canvas( the start point), dragging and mouse up (end point) to create. For some object types you can go into "object edit mode" when you double click it (like drawing in the pixel object, or changing polygons in the polygon object, or editing text). The bounding box will dissapear.  You can go back by pressing escape or by clicking the arrow tool (the first button in the OTB).by clicking the arrow tool , You always go to "select mode" (which is the default, idle mode)
+To create an object on the canvas you select an object type from the Object Tool Bar (OTB). By clicking the type icon button, you go into "object creation mode", also the "object type specific" (OTS) menu will appear beneath the OTB.  You draw an object by mouse down on the canvas( the start point), dragging and mouse up (end point) to create. For some object types you can go into "object edit mode" when you double click it (like drawing in the pixel object, or changing polygons in the polygon object, or editing text). The bounding box will dissapear.  You can go back by pressing escape or by clicking the arrow tool (the first button in the OTB).by clicking the arrow tool , You always go to "select mode" (which is the default, idle mode)
 When you click on an object in the object tree (or click on it directly in the scene canvas), a bounding box with handlers for manipulation appear around the object, the  (MBB). These manipulation handlers allow the object to
 The objects can be ordered in the object list, you can drag object rows up and down the tree, or in and out of folder rows. When an object is selected, either by clicking on in the canvas, or within the object list, the selected object row will show a lock and visibility toggle, and a delete button.
 
-#### Object manipulation menu (OM menu)
+#### Object manipulation (OM) menu and Object Type Specific (OTS) menu
 
-align, spacing, selection presets
-
-When an object is selected, the "object type specific" (OTS) menu appears at the top of the canvas. And the generic properties window updates (x, y, width, height, blending, blur, outline,...)
+when an object, or  multiple objects are selected, the OM menu is shown with  align, spacing, group/ungroup, reorder (within folder) buttons,
+When an object create tool is chosen this OM will be replaced by the OTS menu (also when in "object edit mode")
 This OTS menu will only show the tools that are specific to that kind of object
+
+#### all object types
+
+- Pen Tool / Curvature Tool: The pen tool is fundamental for creating precise paths, complex shapes, and custom illustrations by defining anchor points and Bezier curves. The curvature tool offers an often more intuitive way to add and manage smooth curves.
+- Shapes : These allow designers to quickly generate basic geometric forms like rectangles, ellipses, polygons, and lines.
+- Pencil/Brush :  vector-based brushes that can emulate natural media like calligraphy or bristles while remaining fully scalable.
+- Type Tool: Enables the addition of horizontal or vertical text to designs, with comprehensive controls for font style, size, kerning, line spacing, and other advanced typography features.
+- picture object
+- Pixel object: see below
+- mirror box: see below
 
 ##### Pixel object
 
-A pixel object is a special object, you can think of it as a "canvas of pixels". A picture (or better: the pixels the picture is made up out of) is automatically wrapped in a pixel object.
-When you select the pixel object (a painting with golden frame icon) from the object tools menu on the left, you have to draw a bounding box like you would draw a rectangle. The rectangle has the same manipulation handlers as any other object, but a the start, it has no "content"(pixels) yet. The picture object off course as already pixels in it. When a pixel object is selected, the OTS menu will whow pixel tools like, airbrush, soft brush, eraser, ... The moment you select one off those, the bounding box dissapears and you can draw pixels on the pixel in "drawing mode". To quit drawing mode, you either press Escape or the arrow tool(the first tool in the pixel OTS menu). Clicking the arrow tool will show the bounding box again. This bounding box has now adapted to the outer boundries of the drawn pixels by default. There is a pixel OST drowdown to show the original bounding box vs the adapted one)
+A pixel object is a special object, you can think of it as a "raster of pixels". A picture (or better: the pixels the picture is made up out of) is automatically wrapped in a pixel object.
+When you select the pixel object (a painting with golden frame icon) from the object tools menu on the left, you have to draw a bounding box like you would draw a rectangle. The rectangle has the same manipulation handlers as any other object, but a the start, it has no "content"(pixels) yet. The picture object off course as already pixels in it. When a pixel object is selected, the OTS menu will show the following pixel tools
+
+- airbrush
+- brush (raster version this time)
+- eraser
+- pencil (raster version this time)
+- magic fill (bucket) tool
+- Clone Stamp Tool: Copies pixels from one area of an image to another, excellent for removing unwanted objects or fixing imperfections.
+
+The moment you select one off those, the bounding box dissapears and you can draw pixels on the pixel canvas in "drawing mode". To quit drawing mode, you either press Escape or the arrow tool(the first tool in the pixel OTS menu). Clicking the arrow tool will show the bounding box again. This bounding box has now adapted to the outer boundries of the drawn pixels by default. There is a pixel OST drowdown to show the original bounding box vs the adapted one)
 You can also convert any object to a pixel container. You cannot undo this though.
 
 ##### Mirror box
@@ -48,6 +77,20 @@ Mask folders can be exported and put on the marketplace (they are basically sten
 Double clicking on a row in the object list (object or folder) will toggle rename input
 Each row has a small preview. Folders have a preview that is the combination of all their objects. (mask or regular, but in mask, all objects are black/white)
 
+#### object fill and stroke pane
+
+fill color box + typical options
+stroke color box + typical options
+
+### blending and filter pane
+
+allows to select blending types between objects, set transparancy slider, allows for  blur, glow, shadow,... all the typical filters (with option to extend)
+Color Balance / Levels / Curves sliders
+
+#### color popup
+
+when clicking on a color box the color popups pops up with the typical hsb picker, color swatches (all colors used by order), and the color Eyedropper tool (to sample colors eg from reference photos)
+
 #### Selecting
 
 Selecting a folder (or selecting multiple objects/and or folders with shift or control click) will result in a union selecting on the canvas, so 1 bounding box with manipulation handlers around all selected objects.
@@ -58,4 +101,26 @@ The uv wrap and template mask are not part of the object list, but there is a ca
 
 Every time you use shift, control, or drag a marquee to select multiple objects. You can save that selection group to the "selection group list" in the OM menu by clicking the add to current group button (also in the OM menu). If you select an object that is part of a group, the remove from current group button is enabled.  The selection list is handy for rapid multip selections. An object can only belong to one selection group. you can add a selection group by clicking the plus button above the selection group list. when you hover over an group item in the list, all the objects in that list "light" up a bit. When you click an item, they are all selected. So an item has a hover state, a selected state (when all are selected), and a includes state (this include states in trigger when you select an object that is part of that group, so you can immediately see to which group it belongs)
 
-params into editor (colors, numbers, names, logos) so different variations of a livery can be picked "outside" the editor and exported headless
+##### object groups
+
+You also have the ability to group selected objects. when you have multiple objects selected the "group" button in OM menu is enabled. when you click it the bounding box wraps around all selected objects, not the individual ones. when you click on an object that belongs to a group, the whole group is selected and the "group" button toggles into "ungroup" button.
+
+### params
+
+TBD: params into editor (colors, numbers, names, logos) so different variations of a livery can be picked "outside" the editor and exported headless
+
+### preview box
+
+shows the live updated 3D model
+
+### reference box
+
+Allows the user to upload reference pictures with tabs per uploaded picture, allowing to sample colors with the the Eyedropper tool in the color popup
+
+### Other functionality
+
+- shift, control modifiers to select multiple ojects
+- middle mouse button for panning, scroll wheel for canvas zoom
+- copy-paste functionality (also for multiple selected objects)
+- undo-redo
+- right click context menu on objects (eg for copy paste, lock, remove, duplicate)

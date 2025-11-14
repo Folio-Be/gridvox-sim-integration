@@ -1,0 +1,66 @@
+{
+  "name": "ui-automation-recorder",
+  "version": "0.1.0",
+  "description": "Generic screen recording and labeling toolkit for racing simulator UI automation",
+  "main": "dist/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc -p .",
+    "check": "tsc --noEmit",
+    "dev": "ts-node --transpile-only",
+
+    "record-session": "ts-node scripts/record-session.ts",
+    "process-recording": "ts-node scripts/process-recording.ts",
+    "validate-profile": "ts-node scripts/validate-profile.ts",
+
+    "extract-frames": "ts-node scripts/extract-frames.ts",
+    "preannotate": "python scripts/batch_preannotate.py",
+    "test-scene": "ts-node scripts/test-scene-threshold.ts",
+    "verify-capture": "ts-node scripts/verify-capture.ts",
+
+    "label-studio:start": "label-studio start",
+    "label-studio:import": "ts-node scripts/import-to-labelstudio.ts",
+    "label-studio:export": "ts-node scripts/export-from-labelstudio.ts",
+
+    "test-recorder": "cargo test --manifest-path=src-tauri/Cargo.toml",
+    "test-ffmpeg": "ffmpeg -version",
+    "test-omniparser": "python -c \"from omniparser import OmniParser; print('OmniParser OK')\"",
+
+    "export:yolo": "ts-node scripts/exporters/yolo-exporter.ts",
+
+    "clean": "rimraf dist data/captures/*.png data/preannotations/*.json",
+    "clean:all": "rimraf dist data/"
+  },
+  "keywords": [
+    "simvox",
+    "automation",
+    "ui-automation",
+    "screen-recording",
+    "data-labeling",
+    "racing-simulator",
+    "ams2",
+    "computer-vision",
+    "rust",
+    "tauri"
+  ],
+  "author": "SimVox.ai",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "form-data": "^4.0.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "dotenv": "^16.4.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/fluent-ffmpeg": "^2.1.24",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "rimraf": "^5.0.5"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

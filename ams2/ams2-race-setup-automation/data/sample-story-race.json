@@ -1,0 +1,27 @@
+{
+  "storyId": "gt3_night_spa",
+  "title": "GT3 Endurance at Spa",
+  "vehicle": {
+    "class": "GT3_Gen2",
+    "model": "mercedes_amg_gt3_evo_2020",
+    "livery": "2020_factory_01"
+  },
+  "track": {
+    "id": "spa_francorchamps",
+    "layout": "grand_prix"
+  },
+  "session": {
+    "type": "race",
+    "laps": 12,
+    "startTime": "22:15",
+    "timeProgression": 5
+  },
+  "weather": [
+    { "slot": 1, "preset": "cloudy" },
+    { "slot": 2, "preset": "light_rain" }
+  ],
+  "aiOpponents": {
+    "gridSize": 24,
+    "difficulty": 92
+  }
+}

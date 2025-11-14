@@ -1,0 +1,38 @@
+{
+  "name": "ams2-race-setup-automation",
+  "version": "0.1.0",
+  "description": "Standalone AMS2 race setup automation prototype for SimVox MVP integration.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "start": "ts-node src/index.ts",
+    "probe": "ts-node src/probe/runHardwareProbe.ts",
+    "check": "tsc --noEmit",
+    "capture": "ts-node src/capture/captureCli.ts",
+    "specs": "ts-node specs/layoutParser.spec.ts"
+  },
+  "keywords": [
+    "simvox",
+    "ams2",
+    "automation",
+    "vision"
+  ],
+  "author": "SimVox.ai",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "ffi-napi": "^4.0.3",
+    "ref-napi": "^3.0.3",
+    "ref-struct-di": "^1.1.1",
+    "screenshot-desktop": "^1.15.3",
+    "systeminformation": "^5.27.11"
+  },
+  "devDependencies": {
+    "@types/ffi-napi": "^4.0.10",
+    "@types/node": "^24.10.1",
+    "@types/ref-napi": "^3.0.12",
+    "@types/screenshot-desktop": "^1.15.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

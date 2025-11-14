@@ -28,11 +28,9 @@ function App() {
       onSave={handleSave}
       onExport={handleExport}
       onChange={handleChange}
-      enableVoice={false}
       height="100vh"
     />
   );
 }
 
 export default App
-

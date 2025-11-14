@@ -1,0 +1,26 @@
+# Python dependencies for UI Automation Recorder
+
+# Core ML/Vision
+torch>=2.0.0
+transformers>=4.35.0
+pillow>=10.0.0
+
+# OmniParser (install from GitHub if not on PyPI)
+# git+https://github.com/microsoft/OmniParser.git
+
+# Alternative vision models (optional)
+# ultralytics>=8.0.0  # For YOLOv8 + SAM
+# opencv-python>=4.8.0  # For template matching fallback
+
+# Data labeling
+label-studio>=1.10.0
+label-studio-sdk>=0.0.30
+
+# Image processing
+opencv-python>=4.8.0
+numpy>=1.24.0
+
+# Utilities
+python-dotenv>=1.0.0
+tqdm>=4.66.0
+requests>=2.31.0

@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
 @import "tailwindcss";
 
 :root {
@@ -67,4 +67,91 @@ body,
 
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
   background: #3D4550;
+}
+
+.font-display {
+  font-family: Inter, sans-serif;
+}
+
+.bg-simvox-bg-deep { background-color: #0B0F14; }
+.bg-simvox-bg-light { background-color: #1C222B; }
+.bg-simvox-bg-med { background-color: #121826; }
+.bg-simvox-bg-elevated { background-color: #1C222B; }
+.bg-simvox-accent-primary { background-color: #22D2EE; }
+.bg-simvox-accent-secondary { background-color: #F472B6; }
+.bg-simvox-border-dark { background-color: #2D3540; }
+.bg-simvox-border-light { background-color: #39414F; }
+
+.text-simvox-text-bright { color: #F0F2F5; }
+.text-simvox-text-med { color: #8A94A3; }
+.text-simvox-text-dim { color: #64748B; }
+.text-simvox-accent-primary { color: #22D2EE; }
+.text-simvox-accent-blue { color: #22D2EE; }
+
+.border-simvox-border-dark { border-color: #2D3540; }
+.border-simvox-border-light { border-color: #39414F; }
+
+.ring-simvox-text-bright { --tw-ring-color: #F0F2F5; }
+.ring-simvox-border-light { --tw-ring-color: #39414F; }
+.ring-offset-simvox-bg-deep { --tw-ring-offset-color: #0B0F14; }
+.ring-simvox-accent-primary { --tw-ring-color: #22D2EE; }
+
+.sv-header-gradient {
+  background: linear-gradient(180deg, #1C222B 0%, #121826 100%);
+}
+
+.sv-canvas-stage {
+  background: linear-gradient(135deg, #0B0F14 0%, #000000 100%);
+}
+
+.sv-canvas-vignette {
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.56) 100%);
+  pointer-events: none;
+}
+
+.sv-range {
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 9999px;
+  background-color: #2D3540;
+  outline: none;
+}
+
+.sv-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #22D2EE;
+  cursor: pointer;
+}
+
+.sv-range::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background-color: #22D2EE;
+  cursor: pointer;
+}
+
+.sv-tree-row {
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sv-tree-row--over {
+  box-shadow: 0 0 0 1px #22D2EE;
+}
+
+.sv-tree-row--dragging {
+  opacity: 0.6;
+}
+
+.sv-tree-row--selected {
+  box-shadow: inset 0 0 0 1px #22D2EE;
+}
+
+canvas {
+  display: block;
 }

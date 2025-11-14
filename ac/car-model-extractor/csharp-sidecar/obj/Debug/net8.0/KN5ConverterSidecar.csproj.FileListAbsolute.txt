@@ -1,0 +1,5 @@
+C:\DATA\SimVox\simvox-sim-integration\ac\car-model-extractor\csharp-sidecar\obj\Debug\net8.0\KN5ConverterSidecar.GeneratedMSBuildEditorConfig.editorconfig
+C:\DATA\SimVox\simvox-sim-integration\ac\car-model-extractor\csharp-sidecar\obj\Debug\net8.0\KN5ConverterSidecar.AssemblyInfoInputs.cache
+C:\DATA\SimVox\simvox-sim-integration\ac\car-model-extractor\csharp-sidecar\obj\Debug\net8.0\KN5ConverterSidecar.AssemblyInfo.cs
+C:\DATA\SimVox\simvox-sim-integration\ac\car-model-extractor\csharp-sidecar\obj\Debug\net8.0\KN5ConverterSidecar.csproj.CoreCompileInputs.cache
+C:\DATA\SimVox\simvox-sim-integration\ac\car-model-extractor\csharp-sidecar\obj\Debug\net8.0\KN5ConverterSidecar.sourcelink.json

@@ -1,0 +1,38 @@
+{
+  "id": "ams2",
+  "windowTitle": "Automobilista 2",
+  "resolution": [1920, 1080],
+  "framerate": 60,
+  "capture": {
+    "defaultRegion": "full_ui",
+    "cursorPollHz": 12,
+    "regionPresets": {
+      "full_ui": {
+        "crop": [0, 0, 1920, 1080],
+        "description": "Full Automobilista 2 menu region"
+      },
+      "hud_strip": {
+        "crop": [0, 860, 1920, 220],
+        "description": "HUD elements only"
+      }
+    }
+  },
+  "bookmarkHotkey": {
+    "ctrl": true,
+    "shift": false,
+    "key": "L",
+    "noteMode": "stdin"
+  },
+  "paths": {
+    "recordingsDir": "data/recordings",
+    "capturesDir": "data/captures"
+  },
+  "taxonomy": {
+    "elements": ["car_tile", "track_tile", "dropdown", "button"]
+  },
+  "validation": {
+    "requiredProcesses": ["AMS2AVX.exe"],
+    "windowTitlePatterns": ["Automobilista 2", "Automobilista 2 - Championship"],
+    "resolutionWhitelist": [[1920, 1080]]
+  }
+}

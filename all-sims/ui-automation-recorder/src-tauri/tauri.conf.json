@@ -1,0 +1,56 @@
+{
+  "$schema": "https://tauri.app/schemas/tauri-config-schema.json",
+  "build": {
+    "beforeBuildCommand": "",
+    "beforeDevCommand": "",
+    "devPath": "../dist",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "UI Automation Recorder",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "bundle": {
+      "identifier": "com.simvox.ui-automation-recorder",
+      "icon": ["icons/icon.png", "icons/icon.ico"]
+    },
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": false
+    },
+    "windows": [
+      {
+        "title": "UI Automation Recorder",
+        "width": 800,
+        "height": 600,
+        "visible": false
+      }
+    ],
+    "cli": {
+      "description": "UI automation recorder CLI",
+      "args": [],
+      "subcommands": {
+        "record": {
+          "description": "Record a simulator window",
+          "args": [
+            { "name": "window", "description": "Window title to capture", "short": "w", "takesValue": true },
+            { "name": "output", "description": "Output MP4 path", "short": "o", "takesValue": true },
+            { "name": "ffmpeg", "description": "Path to ffmpeg executable", "takesValue": true },
+            { "name": "fps", "description": "Capture FPS (default 60)", "takesValue": true },
+            { "name": "bookmark-ctrl", "description": "Require Ctrl modifier for bookmark hotkey (default true)", "takesValue": true },
+            { "name": "bookmark-shift", "description": "Require Shift modifier for bookmark hotkey (default false)", "takesValue": true },
+            { "name": "bookmark-key", "description": "Virtual key to use for bookmarks (default L)", "takesValue": true },
+            { "name": "bookmark-note-mode", "description": "Bookmark note prompt mode (none|stdin)", "takesValue": true },
+            { "name": "crop-x", "description": "Capture region X offset", "takesValue": true },
+            { "name": "crop-y", "description": "Capture region Y offset", "takesValue": true },
+            { "name": "crop-width", "description": "Capture region width", "takesValue": true },
+            { "name": "crop-height", "description": "Capture region height", "takesValue": true }
+          ]
+        }
+      }
+    }
+  }
+}

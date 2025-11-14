@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Extraction output (large files)
+output/kn5/*.kn5
+output/fbx/*.fbx
+output/gltf/*.gltf
+output/gltf/*.glb
+
+# Temporary files
+*.tmp
+*.log
+
+# Tools binaries (download separately)
+tools/kn5-converter/*.exe
+tools/kn5-converter/*.dll
+tools/FBX2glTF/*.exe
+tools/FBX2glTF/*.dll
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

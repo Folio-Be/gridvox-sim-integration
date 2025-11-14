@@ -1,0 +1,44 @@
+<View>
+  <Header value="AMS2 UI Element Labeling"/>
+
+  <!-- Image Display -->
+  <Image name="image" value="$image" zoom="true" zoomControl="true" rotateControl="false"/>
+
+  <!-- Bounding Box Labels -->
+  <RectangleLabels name="label" toName="image" strokeWidth="2">
+    <Label value="button" background="#FF0000" hotkey="1"/>
+    <Label value="text-field" background="#0000FF" hotkey="2"/>
+    <Label value="dropdown" background="#00FF00" hotkey="3"/>
+    <Label value="tile-car" background="#FFA500" hotkey="4"/>
+    <Label value="tile-track" background="#800080" hotkey="5"/>
+    <Label value="slider" background="#FFFF00" hotkey="6"/>
+    <Label value="checkbox" background="#FFC0CB" hotkey="7"/>
+    <Label value="icon" background="#00FFFF" hotkey="8"/>
+    <Label value="text-static" background="#808080" hotkey="9"/>
+  </RectangleLabels>
+
+  <!-- Screen Type Classification -->
+  <Choices name="screen-type" toName="image" choice="single" required="true">
+    <Choice value="main-menu" hotkey="q"/>
+    <Choice value="career-menu" hotkey="w"/>
+    <Choice value="car-selection" hotkey="e"/>
+    <Choice value="track-selection" hotkey="r"/>
+    <Choice value="weather-setup" hotkey="t"/>
+    <Choice value="championship-config" hotkey="y"/>
+    <Choice value="race-settings" hotkey="u"/>
+    <Choice value="loading-screen" hotkey="i"/>
+    <Choice value="other" hotkey="o"/>
+  </Choices>
+
+  <!-- Optional Notes -->
+  <TextArea name="notes" toName="image"
+            placeholder="Additional notes (optional): UI variations, special states, etc."
+            rows="2" maxSubmissions="1"/>
+
+  <!-- Quality Flag -->
+  <Choices name="quality" toName="image" choice="single">
+    <Choice value="good" hint="Clear, all elements visible"/>
+    <Choice value="partial" hint="Some elements obscured or cut off"/>
+    <Choice value="skip" hint="Duplicate or unusable frame"/>
+  </Choices>
+</View>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SimVox Livery Builder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --simvox-accent-primary: #22d2ee;
+        }
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 20
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#2486ff",
+              "background-light": "#f5f7f8",
+              "background-dark": "#0f1823",
+              "simvox-bg-deep": "#0B0F14",
+              "simvox-bg-med": "#121826",
+              "simvox-bg-light": "#1C222B",
+              "simvox-border-dark": "#2D3540",
+              "simvox-border-light": "#39414F",
+              "simvox-text-bright": "#F0F2F5",
+              "simvox-text-med": "#8A94A3",
+              "simvox-text-dim": "#64748B",
+              "simvox-accent-primary": "var(--simvox-accent-primary)",
+              "simvox-accent-blue": "#22d2ee",
+              "simvox-accent-secondary": "#F472B6",
+              "simvox-accent-caution": "#F59E0B"
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-simvox-bg-deep text-simvox-text-bright font-display">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<div class="relative flex h-16 shrink-0 items-center justify-between gap-4 border-b border-simvox-border-dark bg-gradient-to-b from-simvox-bg-light to-simvox-bg-med px-6 py-2">
+<div class="flex flex-1 items-center gap-4">
+<div class="aspect-square size-10 flex-shrink-0 rounded-lg bg-cover bg-center bg-no-repeat" data-alt="Gradient thumbnail of a car part" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC0wIJthJLJyk5n9sPBtQH0aHHAH5iMiP8c0EfA2qR4MVlF4QqkrJsstP6n86d3u77rB3FcMnEGPneqp9ZazEExObAFhBEadQ2EysKEDnKa2BTAxU0OJWENpzuuCani5KQTLCW9G-R3RjNTLXAajRJx7tjt5qoTWJyVhVFgtYDmccKilywJgdxKixwpUAZVcC2sYQMN3q9V2CLy3TBbrbax-XSBWBcHgy7rsjq1D7sJYeEM0jsB3qCUXDD_m7n_q6fQ_z4zomyjSyE");'></div>
+<div class="flex flex-col justify-center">
+<p class="line-clamp-1 text-base font-semibold leading-normal text-simvox-text-bright">GT3 Endurance Series</p>
+<p class="line-clamp-2 text-sm font-normal leading-normal text-simvox-text-med">Car #24, Season 2</p>
+</div>
+</div>
+<div class="flex h-10 flex-1 items-center justify-center rounded-lg bg-simvox-bg-deep p-1">
+<a class="group relative flex h-full flex-1 items-center justify-center rounded-md bg-simvox-accent-primary px-3" href="#">
+<p class="text-sm font-medium tracking-wide text-white">car_body.dds</p>
+</a>
+<a class="group relative flex h-full flex-1 items-center justify-center rounded-md px-3 text-simvox-text-med hover:bg-simvox-bg-light hover:text-simvox-text-bright" href="#">
+<p class="text-sm font-medium tracking-wide">windows.dds</p>
+</a>
+<a class="group relative flex h-full flex-1 items-center justify-center rounded-md px-3 text-simvox-text-med hover:bg-simvox-bg-light hover:text-simvox-text-bright" href="#">
+<p class="text-sm font-medium tracking-wide">wheels.dds</p>
+</a>
+</div>
+<div class="flex flex-1 items-center justify-end gap-3">
+<button class="flex h-10 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-simvox-border-dark bg-simvox-bg-light px-4 text-sm font-bold leading-normal tracking-[0.015em] text-simvox-text-bright hover:bg-simvox-border-dark">
+<span class="truncate">Save</span>
+</button>
+<button class="flex h-10 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-simvox-accent-primary px-4 text-sm font-bold leading-normal tracking-[0.015em] text-white hover:opacity-90">
+<span class="truncate">Export</span>
+</button>
+</div>
+</div>
+<main class="flex flex-1 overflow-hidden">
+<aside class="flex w-[280px] shrink-0 flex-col overflow-y-auto border-r border-simvox-border-dark bg-simvox-bg-deep">
+<div class="flex flex-1 flex-col">
+<div class="p-4">
+<div class="flex flex-col space-y-1">
+<div class="flex h-10 items-center gap-2 rounded-lg bg-simvox-bg-light p-2 text-simvox-text-bright">
+<div class="size-6 shrink-0 rounded bg-simvox-border-dark"></div>
+<span class="material-symbols-outlined text-xl">expand_more</span>
+<span class="material-symbols-outlined text-xl">folder_open</span>
+<p class="flex-1 truncate text-sm font-medium">Bodywork</p>
+<div class="flex items-center gap-1 text-simvox-text-med">
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-simvox-text-bright">visibility</span>
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-simvox-text-bright">lock</span>
+</div>
+</div>
+<div class="ml-8 flex flex-col space-y-1 border-l border-simvox-border-dark pl-4">
+<div class="flex h-10 items-center gap-2 rounded p-2 hover:bg-simvox-bg-light">
+<div class="size-6 shrink-0 rounded bg-simvox-border-dark bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCtRWxUPRiYznPG2KPusVSAKHJYsluw1Dh9jm3aLzhc9qF000uUh6tg6N6WWY5Xs40kpIWt6Jq64xtM3vRn_q43tn1aYKjtPYvst9hZvWBYKCtfEz8KR2O_SWXQf_Urc4IBQpiuXnKqH6dHQMdo1KS2NPHA67tvK5cfCd4qnGh8L32TP9fbMtE7I-8y38DnNRUrSRI5yr1juW9BmN0HE_NpxCf8dsf5rrPp_IMw-GcnoRyoms3PHw1zvE9qSSpTKFk07f82ZMR6d0E");'></div>
+<span class="w-5"></span>
+<span class="material-symbols-outlined text-xl text-simvox-text-med">category</span>
+<p class="flex-1 truncate text-sm font-normal">Base Color</p>
+<div class="flex items-center gap-1 text-simvox-text-med">
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-simvox-text-bright">visibility_off</span>
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-simvox-text-bright">lock_open</span>
+</div>
+</div>
+<div class="flex h-10 items-center gap-2 rounded bg-simvox-accent-primary p-2 text-white">
+<div class="size-6 shrink-0 rounded bg-simvox-border-dark bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCtRWxUPRiYznPG2KPusVSAKHJYsluw1Dh9jm3aLzhc9qF000uUh6tg6N6WWY5Xs40kpIWt6Jq64xtM3vRn_q43tn1aYKjtPYvst9hZvWBYKCtfEz8KR2O_SWXQf_Urc4IBQpiuXnKqH6dHQMdo1KS2NPHA67tvK5cfCd4qnGh8L32TP9fbMtE7I-8y38DnNRUrSRI5yr1juW9BmN0HE_NpxCf8dsf5rrPp_IMw-GcnoRyoms3PHw1zvE9qSSpTKFk07f82ZMR6d0E");'></div>
+<span class="w-5"></span>
+<span class="material-symbols-outlined text-xl">title</span>
+<p class="flex-1 truncate text-sm font-normal">Sponsor Name</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-white/80">visibility</span>
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-white/80">lock</span>
+</div>
+</div>
+<div class="flex h-10 items-center gap-2 rounded p-2 hover:bg-simvox-bg-light">
+<div class="size-6 shrink-0 rounded bg-simvox-border-dark bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCtRWxUPRiYznPG2KPusVSAKHJYsluw1Dh9jm3aLzhc9qF000uUh6tg6N6WWY5Xs40kpIWt6Jq64xtM3vRn_q43tn1aYKjtPYvst9hZvWBYKCtfEz8KR2O_SWXQf_Urc4IBQpiuXnKqH6dHQMdo1KS2NPHA67tvK5cfCd4qnGh8L32TP9fbMtE7I-8y38DnNRUrSRI5yr1juW9BmN0HE_NpxCf8dsf5rrPp_IMw-GcnoRyoms3PHw1zvE9qSSpTKFk07f82ZMR6d0E");'></div>
+<span class="w-5"></span>
+<span class="material-symbols-outlined text-xl text-simvox-text-med">horizontal_rule</span>
+<p class="flex-1 truncate text-sm font-normal">Accent Stripe</p>
+<div class="flex items-center gap-1 text-simvox-text-med">
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-simvox-text-bright">visibility</span>
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-simvox-text-bright">lock</span>
+</div>
+</div>
+</div>
+<div class="flex h-10 items-center gap-2 rounded p-2 hover:bg-simvox-bg-light">
+<div class="size-6 shrink-0 rounded bg-simvox-border-dark"></div>
+<span class="material-symbols-outlined -rotate-90 text-xl">expand_more</span>
+<span class="material-symbols-outlined text-xl">folder</span>
+<p class="flex-1 truncate text-sm font-medium">Sponsor Pack</p>
+<div class="flex items-center gap-1 text-simvox-text-med">
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-simvox-text-bright">visibility</span>
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-simvox-text-bright">lock</span>
+</div>
+</div>
+<div class="flex h-10 items-center gap-2 rounded-lg bg-simvox-bg-light p-2 ring-1 ring-inset ring-simvox-border-light">
+<div class="flex size-6 shrink-0 items-center justify-center rounded bg-white">
+<span class="material-symbols-outlined text-lg text-black">texture</span>
+</div>
+<span class="w-5"></span>
+<span class="material-symbols-outlined text-xl text-simvox-text-med">texture</span>
+<p class="flex-1 truncate text-sm font-normal text-simvox-text-bright">Carbon Fiber Pattern</p>
+<div class="flex items-center gap-1 text-simvox-text-med">
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-simvox-text-bright">visibility</span>
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-simvox-text-bright">lock</span>
+</div>
+</div>
+<div class="flex h-10 items-center gap-2 rounded-lg bg-black p-2 text-white ring-1 ring-inset ring-simvox-border-light">
+<div class="flex size-6 shrink-0 items-center justify-center rounded bg-white">
+<span class="material-symbols-outlined text-lg text-black">interests</span>
+</div>
+<span class="w-5"></span>
+<span class="material-symbols-outlined text-xl">interests</span>
+<p class="flex-1 truncate text-sm font-normal">Mask Layer</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-white/80">visibility</span>
+<span class="material-symbols-outlined cursor-pointer text-lg hover:text-white/80">lock</span>
+</div>
+</div>
+</div>
+</div>
+<div class="border-t border-simvox-border-dark p-4">
+<div class="mb-3 flex items-center justify-between">
+<h3 class="px-1 text-xs font-bold uppercase tracking-wider text-simvox-text-med">Selection Groups</h3>
+<button class="flex h-6 w-6 items-center justify-center rounded-md text-simvox-text-med hover:bg-simvox-bg-light hover:text-simvox-text-bright">
+<span class="material-symbols-outlined text-xl">add</span>
+</button>
+</div>
+<div class="flex flex-col space-y-1">
+<div class="flex cursor-pointer items-center gap-3 rounded-lg bg-simvox-accent-primary p-2">
+<div class="h-6 w-1 rounded-full bg-white/50"></div>
+<div>
+<p class="text-sm font-medium">Main Sponsors</p>
+<p class="text-xs text-white/80">8 Layers</p>
+</div>
+</div>
+<div class="flex cursor-pointer items-center gap-3 rounded-lg border border-simvox-border-dark bg-simvox-bg-light p-2 hover:border-simvox-accent-primary">
+<div class="h-6 w-1 rounded-full bg-simvox-accent-secondary"></div>
+<div>
+<p class="text-sm font-medium">Accent Stripes</p>
+<p class="text-xs text-simvox-text-med">4 Layers</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<section class="relative flex flex-1 flex-col bg-simvox-bg-deep">
+<div class="absolute left-1/2 top-4 z-10 flex -translate-x-1/2 flex-col items-center gap-2">
+<div class="flex items-center justify-start gap-1 rounded-lg border border-simvox-border-dark bg-simvox-bg-med p-1 shadow-2xl">
+<button class="rounded bg-simvox-accent-primary p-2 text-white"><span class="material-symbols-outlined text-base leading-none">arrow_selector_tool</span></button>
+<button class="rounded p-2 text-simvox-text-med hover:bg-simvox-bg-light hover:text-simvox-text-bright"><span class="material-symbols-outlined text-base leading-none">edit</span></button>
+<button class="rounded p-2 text-simvox-text-med hover:bg-simvox-bg-light hover:text-simvox-text-bright"><span class="material-symbols-outlined text-base leading-none">check_box_outline_blank</span></button>
+<button class="rounded p-2 text-simvox-text-med hover:bg-simvox-bg-light hover:text-simvox-text-bright"><span class="material-symbols-outlined text-base leading-none">brush</span></button>
+<button class="rounded p-2 text-simvox-text-med hover:bg-simvox-bg-light hover:text-simvox-text-bright"><span class="material-symbols-outlined text-base leading-none">title</span></button>
+<button class="rounded p-2 text-simvox-text-med hover:bg-simvox-bg-light hover:text-simvox-text-bright"><span class="material-symbols-outlined text-base leading-none">image</span></button>
+<button class="rounded p-2 text-simvox-text-med hover:bg-simvox-bg-light hover:text-simvox-text-bright"><span class="material-symbols-outlined text-base leading-none">grid_4x4</span></button>
+<button class="rounded p-2 text-simvox-text-med hover:bg-simvox-bg-light hover:text-simvox-text-bright"><span class="material-symbols-outlined text-base leading-none">flip</span></button>
+</div>
+<div class="flex items-center justify-start gap-1 rounded-lg border border-simvox-border-dark bg-simvox-bg-med p-1 shadow-2xl">
+<button class="rounded bg-simvox-accent-primary p-2 text-white"><span class="material-symbols-outlined text-base leading-none">align_horizontal_left</span></button>
+<button class="rounded p-2 text-simvox-text-med hover:bg-simvox-bg-light hover:text-simvox-text-bright"><span class="material-symbols-outlined text-base leading-none">width</span></button>
+<button class="rounded p-2 text-simvox-text-dim opacity-40"><span class="material-symbols-outlined text-base leading-none">group_work</span></button>
+<button class="rounded p-2 text-simvox-text-dim opacity-40"><span class="material-symbols-outlined text-base leading-none">ungroup</span></button>
+<button class="rounded p-2 text-simvox-text-med hover:bg-simvox-bg-light hover:text-simvox-text-bright"><span class="material-symbols-outlined text-base leading-none">reorder</span></button>
+</div>
+</div>
+<div class="relative flex flex-1 items-center justify-center overflow-hidden bg-gradient-to-br from-simvox-bg-deep to-black p-8">
+<div class="absolute inset-0 bg-radial-gradient(ellipse_at_center, transparent 50%, #00000090 100%)"></div>
+<div class="flex h-full w-full items-center justify-center rounded-lg border border-simvox-border-dark bg-simvox-bg-med shadow-2xl">
+<p class="text-2xl font-semibold text-simvox-text-med">car_body.dds Preview</p>
+</div>
+</div>
+<div class="flex h-8 items-center justify-between border-t border-simvox-border-dark bg-simvox-bg-med px-4 text-xs text-simvox-text-med">
+<div class="flex items-center gap-4">
+<span>car_body.dds</span>
+<span>4096x4096 px</span>
+</div>
+<div class="flex items-center gap-4">
+<span>Tool: Select</span>
+<span>Zoom: 100%</span>
+<button class="flex items-center gap-1 hover:text-simvox-text-bright">
+<span class="material-symbols-outlined text-base">expand_less</span>
+</button>
+</div>
+</div>
+</section>
+<aside class="flex w-[320px] shrink-0 flex-col border-l border-simvox-border-dark bg-simvox-bg-deep">
+<div class="h-full">
+<div class="flex h-full flex-col">
+<div class="flex flex-col">
+<div class="space-y-3 p-4">
+<div class="flex items-center justify-between">
+<label class="text-sm text-simvox-text-med">Fill</label>
+<div class="flex items-center gap-2">
+<div class="h-7 w-7 cursor-pointer rounded-md bg-simvox-accent-primary ring-2 ring-offset-2 ring-offset-simvox-bg-deep ring-simvox-text-bright"></div>
+<span class="font-mono text-sm uppercase text-simvox-text-med">#22D2EE</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<label class="text-sm text-simvox-text-med">Stroke</label>
+<div class="flex items-center gap-2">
+<div class="h-7 w-7 cursor-pointer rounded-md border-2 border-dashed border-simvox-text-dim bg-transparent"></div>
+<span class="text-sm text-simvox-text-dim">No stroke</span>
+</div>
+</div>
+</div>
+<div class="space-y-4 border-t border-simvox-border-dark p-4">
+<div class="flex items-center justify-between">
+<label class="text-sm text-simvox-text-med">Opacity</label>
+<span class="text-sm font-medium text-simvox-text-bright">100%</span>
+</div>
+<input class="h-1 w-full cursor-pointer appearance-none rounded-full bg-simvox-border-dark [&amp;::-webkit-slider-thumb]:h-3 [&amp;::-webkit-slider-thumb]:w-3 [&amp;::-webkit-slider-thumb]:appearance-none [&amp;::-webkit-slider-thumb]:rounded-full [&amp;::-webkit-slider-thumb]:bg-simvox-accent-primary" max="100" min="0" type="range" value="100"/>
+<div class="flex items-center justify-between">
+<label class="text-sm text-simvox-text-med">Blend Mode</label>
+<span class="text-sm font-medium text-simvox-text-bright">Normal</span>
+</div>
+<button class="h-9 w-full rounded-md border border-simvox-border-dark bg-simvox-bg-light text-sm text-simvox-text-bright hover:border-simvox-accent-primary">Add Filter</button>
+</div>
+</div>
+<div class="flex min-h-0 flex-1 flex-col">
+<div class="flex min-h-0 flex-1 flex-col border-t border-simvox-border-dark">
+<div class="flex flex-col p-2">
+<div class="flex items-center justify-between">
+<div class="flex gap-1">
+<button class="group flex items-center gap-1.5 rounded-md bg-simvox-accent-primary py-1 pl-3 pr-2 text-sm text-white">
+<span>Ref A</span>
+<span class="material-symbols-outlined text-base opacity-70 group-hover:opacity-100">close</span>
+</button>
+<button class="group flex items-center gap-1.5 rounded-md py-1 pl-3 pr-2 text-sm text-simvox-text-med hover:bg-simvox-bg-light">
+<span>Ref B</span>
+<span class="material-symbols-outlined text-base opacity-70 group-hover:opacity-100">close</span>
+</button>
+</div>
+<button class="h-7 rounded-md bg-simvox-bg-light px-3 text-xs font-medium text-simvox-text-med hover:text-simvox-text-bright">Upload</button>
+</div>
+<div class="mt-2 flex grow items-center justify-center rounded border border-simvox-border-dark bg-simvox-bg-deep">
+<span class="text-sm text-simvox-text-dim">Reference Image</span>
+</div>
+</div>
+</div>
+<div class="group h-2.5 cursor-row-resize border-y border-simvox-border-dark bg-simvox-bg-deep hover:border-simvox-accent-primary">
+<div class="mx-auto h-full w-8 rounded-full bg-simvox-border-light group-hover:bg-simvox-accent-primary"></div>
+</div>
+<div class="flex min-h-0 flex-1 flex-col">
+<div class="flex flex-1 flex-col p-2">
+<div class="flex h-full w-full flex-col">
+<div class="relative mb-2 w-full flex-1 rounded border border-simvox-border-dark bg-simvox-bg-deep">
+<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" data-alt="3D render of a race car" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD3NZhlTuGyBIBdzJqKB2ICqsjIzr4RpaDkK5KvtsfFyQB6Iq6PQuLUxKLkISgbLrvPrlLOTgKuQpOeHdM8ILXjZIjX0JKtFo_OvgJiBZHcDD5kCCdfKkd5PO2jETsCIH1qCddDQeQggwv4H6drG9QpL3BvRQsI3msSd00Wv9tVBBFkoeGFx6a94e2XilE93FMi2pb4tiTbl6ukQUP6XhJwOMLOwXO9DZvqWhPK02UEjiRpC5v1Xm5Mahxdhp7dyPZnQ-A_4BAS58E");'></div>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-simvox-text-bright">Real-time Preview</p>
+<p class="text-xs text-simvox-text-med">Porsche 911 GT3 R</p>
+</div>
+<button class="flex h-7 items-center gap-1 rounded-md bg-simvox-bg-light px-3 text-xs font-medium text-simvox-accent-primary hover:text-simvox-accent-blue">
+<span>Open 3D</span>
+<span class="material-symbols-outlined text-base">open_in_new</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</main>
+</div>
+</body></html>
